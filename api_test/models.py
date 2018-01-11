@@ -13,11 +13,14 @@ class User(models.Model):
     nick_name = models.CharField(max_length=50, verbose_name='真实姓名')
     token = models.CharField(max_length=50, verbose_name='用户令牌')
     permission_type = models.CharField(max_length=50, verbose_name='权限类型')
-    email = models.EmailField(max_length=128, verbose_name='邮箱')
-    phone = models.CharField(max_length=50, verbose_name='手机号')
+    email = models.EmailField(max_length=128, blank=True, null=True, verbose_name='邮箱')
+    phone = models.CharField(max_length=50, blank=True, null=True, verbose_name='手机号')
     last_login = models.DateTimeField(auto_now=True, verbose_name='最近登录')
 
     def __unicode__(self):
+        return self.name
+
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -33,13 +36,16 @@ class Project(models.Model):
     name = models.CharField(max_length=50, verbose_name='项目名称')
     version = models.CharField(max_length=50, verbose_name='版本')
     type = models.CharField(max_length=50, verbose_name='类型')
-    description = models.CharField(max_length=1024, verbose_name='描述')
+    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
     status = models.BooleanField(default=True, verbose_name='状态')
     last_update_time = models.DateTimeField(auto_now=True, verbose_name='最近修改时间')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     user = models.ManyToManyField(User, through='ProjectMember')
 
     def __unicode__(self):
+        return self.name
+
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -57,7 +63,7 @@ class ProjectDynamic(models.Model):
     type = models.CharField(max_length=50, verbose_name='操作类型')
     operation_object = models.CharField(max_length=50, verbose_name='操作对象')
     user = models.CharField(max_length=50, verbose_name='操作人')
-    description = models.CharField(max_length=1024, verbose_name='描述')
+    description = models.CharField(max_length=1024, blank=True, null=True,  verbose_name='描述')
 
     def __unicode__(self):
         return self.user
@@ -89,14 +95,14 @@ class GlobalHost(models.Model):
     project_id = models.ForeignKey(Project, blank=True, null=True, on_delete=models.SET_NULL, verbose_name='项目ID')
     name = models.CharField(max_length=50, verbose_name='名称')
     host = models.CharField(max_length=1024, verbose_name='Host地址')
-    description = models.CharField(max_length=1024, verbose_name='描述')
+    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
     status = models.BooleanField(default=True, verbose_name='状态')
 
     def __unicode__(self):
         return self.name
 
     class Meta:
-        verbose_name = 'HOST管理'
+        verbose_name = 'HOST'
         verbose_name_plural = 'HOST管理'
 
 
@@ -107,9 +113,9 @@ class CustomMethod(models.Model):
     id = models.AutoField(primary_key=True)
     project_id = models.ForeignKey(Project, blank=True, null=True, on_delete=models.SET_NULL, verbose_name='项目ID')
     name = models.CharField(max_length=50, verbose_name='方法名')
-    description = models.CharField(max_length=1024, verbose_name='描述')
+    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
     type = models.CharField(max_length=50, verbose_name='类型')
-    code = models.CharField(max_length=2048, verbose_name='代码')
+    data_code = models.TextField(max_length=2048, verbose_name='代码')
     status = models.BooleanField(default=True, verbose_name='状态')
 
     def __unicode__(self):
@@ -131,9 +137,12 @@ class ApiGroupLevelFirst(models.Model):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return self.name
+
     class Meta:
-        verbose_name = '接口一级分组'
-        verbose_name_plural = '接口一级分组'
+        verbose_name = '接口分组'
+        verbose_name_plural = '接口分组'
 
 
 class ApiGroupLevelSecond(models.Model):
@@ -170,13 +179,16 @@ class ApiInfo(models.Model):
     status = models.BooleanField(default=True, verbose_name='状态')
     last_update_time = models.DateTimeField(auto_now=True, verbose_name='最近更新')
     user_update = models.CharField(max_length=50, verbose_name='更新人')
-    description = models.CharField(max_length=1024, verbose_name='描述')
+    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
 
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return self.name
+
     class Meta:
-        verbose_name = '接口管理'
+        verbose_name = '接口'
         verbose_name_plural = '接口管理'
 
 
@@ -192,8 +204,11 @@ class APIRequestHead(models.Model):
     def __unicode__(self):
         return self.key
 
+    def __str__(self):
+        return self.key
+
     class Meta:
-        verbose_name = '请求头管理'
+        verbose_name = '请求头'
         verbose_name_plural = '请求头管理'
 
 
@@ -205,15 +220,18 @@ class APIRequestParameter(models.Model):
     api_info_id = models.ForeignKey(ApiInfo, blank=True, null=True, on_delete=models.SET_NULL, verbose_name='接口ID')
     name = models.CharField(max_length=128, verbose_name='参数名')
     type = models.CharField(max_length=50, verbose_name='参数类型')
-    description = models.CharField(max_length=1024, verbose_name='描述')
+    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
     input_limits = models.CharField(max_length=1024, verbose_name='输入限制')
     required = models.BooleanField(default=True, verbose_name='是否必填')
 
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return self.name
+
     class Meta:
-        verbose_name = '请求参数管理'
+        verbose_name = '请求参数'
         verbose_name_plural = '请求参数管理'
 
 
@@ -225,13 +243,13 @@ class APIRequestParameterValue(models.Model):
     APIRequestParameter_id = models.ForeignKey(APIRequestParameter, blank=True, null=True,
                                                on_delete=models.SET_NULL, verbose_name='参数ID')
     value = models.CharField(max_length=50, verbose_name='参数值')
-    description = models.CharField(max_length=1024, verbose_name='描述')
+    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
 
     def __unicode__(self):
         return self.value
 
     class Meta:
-        verbose_name = '请求参数值管理'
+        verbose_name = '请求参数值'
         verbose_name_plural = '请求参数值管理'
 
 
@@ -243,14 +261,17 @@ class APIResponseData(models.Model):
     api_info_id = models.ForeignKey(ApiInfo, blank=True, null=True, on_delete=models.SET_NULL, verbose_name='接口ID')
     name = models.CharField(max_length=50, verbose_name='字段')
     type = models.CharField(max_length=50, verbose_name='字段类型')
-    description = models.CharField(max_length=1024, verbose_name='描述')
+    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
     required = models.BooleanField(default=True, verbose_name='是否必须包含')
 
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return self.name
+
     class Meta:
-        verbose_name = '返回参数管理'
+        verbose_name = '返回参数'
         verbose_name_plural = '返回参数管理'
 
 
@@ -262,13 +283,13 @@ class APIResponseParameterValue(models.Model):
     APIResponseData_id = models.ForeignKey(APIResponseData, blank=True, null=True,
                                            on_delete=models.SET_NULL, verbose_name='返回参数ID')
     value = models.TextField(max_length=4096, verbose_name='返回参数值')
-    description = models.CharField(max_length=1024, verbose_name='描述')
+    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
 
     def __unicode__(self):
         return self.value
 
     class Meta:
-        verbose_name = '返回参数值管理'
+        verbose_name = '返回参数值'
         verbose_name_plural = '返回参数值管理'
 
 
@@ -298,13 +319,13 @@ class ApiGeneralMock(models.Model):
     id = models.AutoField(primary_key=True)
     api_info_id = models.ForeignKey(ApiInfo, blank=True, null=True, on_delete=models.SET_NULL, verbose_name='接口ID')
     http_code = models.CharField(max_length=50, verbose_name='HTTP状态')
-    data = models.TextField(max_length=4096, verbose_name='内容')
+    data = models.TextField(max_length=4096, blank=True, null=True, verbose_name='内容')
 
     def __unicode__(self):
         return self.http_code
 
     class Meta:
-        verbose_name = '普通mock管理'
+        verbose_name = '普通mock'
         verbose_name_plural = '普通mock管理'
 
 
@@ -316,7 +337,7 @@ class ApiOperationHistory(models.Model):
     api_info_id = models.ForeignKey(ApiInfo, blank=True, null=True, on_delete=models.SET_NULL, verbose_name='接口ID')
     user = models.CharField(max_length=50, verbose_name='用户姓名')
     time = models.DateTimeField(auto_now_add=True, verbose_name='操作时间')
-    description = models.CharField(max_length=1024, verbose_name='操作内容')
+    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='操作内容')
 
     def __unicode__(self):
         return self.description
@@ -337,9 +358,12 @@ class AutomationGroupLevelFirst(models.Model):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return self.name
+
     class Meta:
-        verbose_name = '用例一级分组管理'
-        verbose_name_plural = '用例一级分组管理'
+        verbose_name = '用例分组'
+        verbose_name_plural = '用例分组管理'
 
 
 class AutomationGroupLevelSecond(models.Model):
@@ -355,7 +379,7 @@ class AutomationGroupLevelSecond(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = '用例二级分组管理'
+        verbose_name = '用例二级分组'
         verbose_name_plural = '用例二级分组管理'
 
 
@@ -369,10 +393,13 @@ class AutomationTestCase(models.Model):
     AutomationGroupLevelSecond_id = models.ForeignKey(AutomationGroupLevelSecond, blank=True, null=True,
                                                       on_delete=models.SET_NULL, verbose_name='所属用例二级组')
     case_name = models.CharField(max_length=50, verbose_name='用例名称')
-    description = models.CharField(max_length=1024, verbose_name='描述')
+    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 
     def __unicode__(self):
+        return self.case_name
+
+    def __str__(self):
         return self.case_name
 
     class Meta:
@@ -400,8 +427,11 @@ class AutomationCaseApi(models.Model):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return self.name
+
     class Meta:
-        verbose_name = '用例接口管理'
+        verbose_name = '用例接口'
         verbose_name_plural = '用例接口管理'
 
 
@@ -420,5 +450,5 @@ class AutomationParameter(models.Model):
         return self.value
 
     class Meta:
-        verbose_name = '接口参数管理'
+        verbose_name = '接口参数'
         verbose_name_plural = '接口参数管理'
