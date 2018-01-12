@@ -244,6 +244,7 @@ class APIRequestParameterValue(models.Model):
                                                on_delete=models.SET_NULL, verbose_name='参数ID')
     value = models.CharField(max_length=50, verbose_name='参数值')
     description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
+    type = models.CharField(max_length=50, verbose_name='默认')
 
     def __unicode__(self):
         return self.value

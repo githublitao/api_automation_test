@@ -5,7 +5,8 @@ from django.http import JsonResponse
 # Create your views here.
 from django.views.decorators.http import require_http_methods
 from django.core import serializers
-from api_test.models import User, Project, ApiInfo, ProjectDynamic, ProjectMember, GlobalHost
+from api_test.models import User, Project, ApiInfo, ProjectDynamic, ProjectMember, GlobalHost, CustomMethod, \
+    ApiGroupLevelFirst, ApiGroupLevelSecond, AutomationGroupLevelSecond
 
 
 @require_http_methods(["GET"])
@@ -76,9 +77,11 @@ def add_project(request):
 def geta(request):
     response = {}
     try:
-        item_list = GlobalHost.objects.all()
+        item_list = AutomationGroupLevelSecond.objects.all()
         response['data'] = json.loads(serializers.serialize("json", item_list))
-        response['sum'] = len(item_list)
+        for i in response['data']:
+            i.pop('model')
+        # response['sum'] = len(item_list)
         response['msg'] = '成功'
         response['code'] = '999999'
     except Exception as e:
