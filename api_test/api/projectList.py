@@ -1,0 +1,193 @@
+import json
+import logging
+
+from django.core import serializers
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+
+from api_test.common import GlobalStatusCode
+from api_test.common.common import del_model, verify_parameter
+from api_test.models import Project
+
+logger = logging.getLogger(__name__) # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
+
+
+@require_http_methods(["GET"])
+def project_list(request):
+    """
+    获取项目列表
+    :param request:
+    :return:
+    """
+    response = {}
+    try:
+
+        pro_list = Project.objects.all()
+        data = json.loads(serializers.serialize('json', pro_list))
+        response['data'] = del_model(data)
+        response = dict(response, **GlobalStatusCode.success)
+
+    except Exception as e:
+        logging.exception('ERROR')
+        logging.error(e)
+        response = dict(response, **GlobalStatusCode.Fail)
+
+    return JsonResponse(response)
+
+
+@require_http_methods(["POST"])
+@verify_parameter(['name', 'v', 'type'], 'POST')
+def add_project(request):
+    """
+    新增项目
+    name: 项目名称
+    v: 项目版本
+    type: 项目类型
+    description: 项目描述
+    :return:
+    """
+    response = {}
+    name = request.POST.get('name')
+    version = request.POST.get('v')
+    type = request.POST.get('type')
+    description = request.POST.get('description')
+    try:
+        if type in ['Web', 'App']:
+            obj = Project.objects.filter(name=name)
+            if len(obj) == 0:
+
+                project = Project(name=name, version=version, type=type, description=description)
+                project.save()
+                data = Project.objects.filter(name=name, version=version, type=type, description=description)
+                logging.debug(json.loads(serializers.serialize('json', data)))
+                response['project_id'] = json.loads(serializers.serialize('json', data))[0]['pk']
+                response = dict(response, **GlobalStatusCode.success)
+                return JsonResponse(response)
+
+            else:
+                return JsonResponse(GlobalStatusCode.NameRepetition)
+        else:
+            return JsonResponse(GlobalStatusCode.ParameterWrong)
+
+    except Exception as e:
+        logging.exception('ERROR')
+        logging.error(e)
+        return JsonResponse(GlobalStatusCode.Fail)
+
+
+@require_http_methods(["POST"])
+@verify_parameter(['project_id', 'name', 'v', 'type'], 'POST')
+def update_project(request):
+    """
+    修改项目
+    project_id: 项目唯一id
+    name: 项目名称
+    v: 项目版本
+    type: 项目类型
+    description: 项目描述
+    :return:
+    """
+    response = {}
+    project_id = request.POST.get('project_id')
+    name = request.POST.get('name')
+    version = request.POST.get('v')
+    type = request.POST.get('type')
+    description = request.POST.get('description')
+    try:
+
+        if type in ['Web', 'App']:
+            obj = Project.objects.filter(id=project_id)
+            if obj:
+                obi = Project.objects.filter(name=name).exclude(id=project_id)
+                if len(obi) == 0:
+
+                    obj.update(name=name, version=version, type=type, description=description)
+                    response = dict(response, **GlobalStatusCode.success)
+                    return JsonResponse(response)
+
+                else:
+                    return JsonResponse(GlobalStatusCode.ProjectIsExist)
+            else:
+                response = dict(response, **GlobalStatusCode.ProjectNotExist)
+                return JsonResponse(response)
+        else:
+            return JsonResponse(GlobalStatusCode.ParameterWrong)
+
+    except Exception as e:
+        logging.exception('ERROR')
+        logging.error(e)
+        return JsonResponse(GlobalStatusCode.Fail)
+
+
+@require_http_methods(["POST"])
+@verify_parameter(['project_id', ], 'POST')
+def del_project(request):
+    """
+    删除项目
+    project_id 待删除的项目ID
+    :return:
+    """
+    response = {}
+    project_id = request.POST.get('project_id')
+    try:
+        obj = Project.objects.filter(id=project_id)
+        if obj:
+            Project.objects.filter(id=project_id).delete()
+            return JsonResponse(GlobalStatusCode.success)
+        else:
+            return JsonResponse(GlobalStatusCode.ProjectNotExist)
+
+    except Exception as e:
+        logging.exception('ERROR')
+        logging.error(e)
+        return JsonResponse(GlobalStatusCode.Fail)
+
+
+@require_http_methods(["POST"])
+@verify_parameter(['project_id', ], 'POST')
+def disable_project(request):
+    """
+    禁用项目
+    project_id 项目ID
+    :return:
+    """
+    response = {}
+    project_id = request.POST.get('project_id')
+    try:
+        obj = Project.objects.filter(id=project_id)
+        if obj:
+            obj.update(status=False)
+            response = dict(response, **GlobalStatusCode.success)
+            return JsonResponse(response)
+        else:
+            return JsonResponse(GlobalStatusCode.ProjectNotExist)
+
+    except Exception as e:
+        logging.exception('ERROR')
+        logging.error(e)
+        return JsonResponse(GlobalStatusCode.Fail)
+
+
+@require_http_methods(["POST"])
+@verify_parameter(['project_id', ], 'POST')
+def enable_project(request):
+    """
+    启用项目
+    project_id 项目ID
+    :return:
+    """
+    response = {}
+    project_id = request.POST.get('project_id')
+    try:
+        obj = Project.objects.filter(id=project_id)
+        if obj:
+            obj.update(status=True)
+            response = dict(response, **GlobalStatusCode.success)
+            return JsonResponse(response)
+        else:
+            return JsonResponse(GlobalStatusCode.ProjectNotExist)
+
+    except Exception as e:
+        logging.exception('ERROR')
+        logging.error(e)
+        return JsonResponse(GlobalStatusCode.Fail)

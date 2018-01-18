@@ -2,13 +2,16 @@ from django.contrib import admin
 
 # Register your models here.
 
-from api_test.models import User, Project, GlobalHost, ApiGroupLevelFirst, ApiGroupLevelSecond, ApiInfo, \
+from api_test.models import Project, GlobalHost, ApiGroupLevelFirst, ApiGroupLevelSecond, ApiInfo, \
     APIRequestHead, APIRequestParameter, APIRequestParameterValue, APIResponseData, APIResponseParameterValue, \
-    APIRequestHistory, ApiGeneralMock, ApiOperationHistory, ProjectDynamic, ProjectMember, AutomationGroupLevelFirst, \
-    AutomationGroupLevelSecond, AutomationTestCase, AutomationParameter, AutomationCaseApi, CustomMethod
+    APIRequestHistory, ApiGeneralMock, ApiOperationHistory, ProjectDynamic, ProjectMember, CustomMethod, \
+    AutomationGroupLevelSecond, AutomationGroupLevelFirst, AutomationTestCase, AutomationParameter, AutomationCaseApi, \
+    AutomationTestResult, AutomationTestTask
 
 admin.site.site_header = '测试平台后台管理'
-admin.site.site_title = '后台管理'
+admin.site.siteTitle = '后台管理'
+
+display = ()
 
 
 class ReadOnlyModelAdmin(admin.ModelAdmin):
@@ -36,24 +39,24 @@ class ReadOnlyModelAdmin(admin.ModelAdmin):
         return False
 
 
-class UserForm(admin.ModelAdmin):
-    search_fields = ('name', 'nick_name', 'phone')
-    list_display = ('id', 'name', 'password', 'nick_name', 'token', 'permission_type', 'email', 'phone', 'last_login')
-    list_display_links = ('name', 'password')
-    list_per_page = 20
-    ordering = ('id',)
-    fieldsets = ([
-                     '用户', {
-                         'fields': ('name', 'password', 'nick_name', 'permission_type'),
-                     }],
-                 [
-                     '更多', {
-                         'classes': ('collapse',),
-                         'fields': ('email', 'phone'),
-                      }])
-
-
-admin.site.register(User, UserForm)
+# class UserForm(admin.ModelAdmin):
+#     search_fields = ('name', 'nickName', 'phone')
+#     list_display = ('id', 'name', 'password', 'nickName', 'token', 'permissionType', 'email', 'phone', 'lastLogin')
+#     list_display_links = ('name', 'password')
+#     list_per_page = 20
+#     ordering = ('id',)
+#     fieldsets = ([
+#                      '用户', {
+#                          'fields': ('name', 'password', 'nickName', 'permissionType'),
+#                      }],
+#                  [
+#                      '更多', {
+#                          'classes': ('collapse',),
+#                          'fields': ('email', 'phone'),
+#                       }])
+#
+#
+# admin.site.register(User, UserForm)
 
 
 class MemberInProject(admin.TabularInline):
@@ -67,7 +70,7 @@ class HostInProject(admin.TabularInline):
 class ProjectForm(admin.ModelAdmin):
     inlines = [MemberInProject, HostInProject]
     search_fields = ('name', 'type')
-    list_display = ('id', 'name', 'version', 'type', 'description', 'status', 'last_update_time', 'create_time')
+    list_display = ('id', 'name', 'version', 'type', 'description', 'status', 'LastUpdateTime', 'createTime')
     list_display_links = ('name',)
     list_filter = ('status', 'type')
     list_per_page = 20
@@ -83,10 +86,10 @@ admin.site.register(Project, ProjectForm)
 
 
 class ProjectDynamicForm(ReadOnlyModelAdmin):
-    search_fields = ('type', 'operation_object', 'user')
-    list_display = ('id', 'project_id', 'time', 'type', 'operation_object', 'user', 'description')
+    search_fields = ('type', 'operationObject', 'user')
+    list_display = ('id', 'project_id', 'time', 'type', 'operationObject', 'user', 'description')
     list_display_links = ('project_id', 'time')
-    list_filter = ('project_id', 'type', 'operation_object', 'user')
+    list_filter = ('project_id', 'type', 'operationObject', 'user')
     list_per_page = 20
     ordering = ('id',)
 
@@ -128,14 +131,14 @@ admin.site.register(GlobalHost, GlobalHostForm)
 
 class CustomMethodForm(admin.ModelAdmin):
     search_fields = ('name',)
-    list_display = ('id', 'project_id', 'name', 'description', 'type', 'status', 'data_code')
+    list_display = ('id', 'project_id', 'name', 'description', 'type', 'status', 'dataCode')
     list_display_links = ('project_id', 'name')
     list_filter = ('project_id', 'type', 'status')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '自定义方法', {
-            'fields': ('project_id', 'name', 'description', 'type', 'status', 'data_code')
+            'fields': ('project_id', 'name', 'description', 'type', 'status', 'dataCode')
         }],)
 
 
@@ -180,18 +183,18 @@ class MockInApi(admin.TabularInline):
 
 class ApiInfoForm(admin.ModelAdmin):
     inlines = [HeadInApi, RequestParameterInApi, ResponseInApi, MockInApi]
-    search_fields = ('ApiGroupLevelFirst_id', 'ApiGroupLevelSecond_id', 'name', 'http_type', 'request_type',
-                     'api_address', 'request_parameter_type', 'status')
-    list_display = ('id', 'ApiGroupLevelFirst_id', 'ApiGroupLevelSecond_id', 'name', 'http_type', 'request_type',
-                    'api_address', 'request_parameter_type', 'status', 'last_update_time', 'user_update')
+    search_fields = ('ApiGroupLevelFirst_id', 'ApiGroupLevelSecond_id', 'name', 'http_type', 'requestType',
+                     'apiAddress', 'requestParameterType', 'status')
+    list_display = ('id', 'ApiGroupLevelFirst_id', 'ApiGroupLevelSecond_id', 'name', 'http_type', 'requestType',
+                    'apiAddress', 'requestParameterType', 'status', 'lastUpdateTime', 'userUpdate')
     list_display_links = ('ApiGroupLevelFirst_id', 'ApiGroupLevelSecond_id', 'name')
-    list_filter = ('ApiGroupLevelFirst_id', 'ApiGroupLevelSecond_id', 'http_type', 'request_type', 'status')
+    list_filter = ('ApiGroupLevelFirst_id', 'ApiGroupLevelSecond_id', 'http_type', 'requestType', 'status')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '接口信息', {
-            'fields': ('ApiGroupLevelFirst_id', 'ApiGroupLevelSecond_id', 'name', 'http_type', 'request_type',
-                       'api_address', 'request_parameter_type', 'status')
+            'fields': ('project_id', 'ApiGroupLevelFirst_id', 'ApiGroupLevelSecond_id', 'name', 'http_type', 'requestType',
+                       'apiAddress', 'requestParameterType', 'status')
         }],)
 
 
@@ -199,12 +202,12 @@ admin.site.register(ApiInfo, ApiInfoForm)
 
 
 class APIRequestHeadForm(admin.ModelAdmin):
-    # search_fields = ('api_info_id', 'key')
-    # list_display = ('id', 'api_info_id', 'key', 'value')
-    # list_display_links = ('api_info_id', 'key')
+    # search_fields = ('apiInfo_id', 'key')
+    # list_display = ('id', 'apiInfo_id', 'key', 'value')
+    # list_display_links = ('apiInfo_id', 'key')
     fieldsets = ([
         '请求头', {
-            'fields': ('api_info_id', 'key', 'value')
+            'fields': ('apiInfo_id', 'key', 'value')
         }],)
 
 
@@ -217,14 +220,14 @@ class ValueInRequestParameter(admin.TabularInline):
 
 class APIRequestParameterForm(admin.ModelAdmin):
     inlines = [ValueInRequestParameter,]
-    search_fields = ('api_info_id', 'name', 'type', 'required')
-    list_display = ('id', 'api_info_id', 'name', 'type', 'required')
-    list_display_links = ('api_info_id', 'name')
+    search_fields = ('apiInfo_id', 'name', 'type', 'required')
+    list_display = ('id', 'apiInfo_id', 'name', 'type', 'required')
+    list_display_links = ('apiInfo_id', 'name')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '请求参数', {
-            'fields': ('api_info_id', 'name', 'type', 'required')
+            'fields': ('apiInfo_id', 'name', 'type', 'required')
         }],)
 
 
@@ -250,14 +253,14 @@ class ValueInApiResponse(admin.TabularInline):
 
 class APIResponseDataForm(admin.ModelAdmin):
     inlines = [ValueInApiResponse, ]
-    search_fields = ('api_info_id', 'name', 'type', 'required')
-    list_display = ('id', 'api_info_id', 'name', 'type', 'required', 'description')
-    list_display_links = ('api_info_id', 'name', 'type')
+    search_fields = ('apiInfo_id', 'name', 'type', 'required')
+    list_display = ('id', 'apiInfo_id', 'name', 'type', 'required', 'description')
+    list_display_links = ('apiInfo_id', 'name', 'type')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '返回结果', {
-            'fields': ('api_info_id', 'name', 'type', 'required', 'description')
+            'fields': ('apiInfo_id', 'name', 'type', 'required', 'description')
         }],)
 
 
@@ -265,12 +268,12 @@ admin.site.register(APIResponseData, APIResponseDataForm)
 
 
 class APIResponseParameterValueForm(admin.ModelAdmin):
-    # search_fields = ('APIResponseData_id', 'value')
-    # list_display = ('id', 'APIResponseData_id', 'value', 'description')
-    # list_display_links = ('APIResponseData_id', 'value')
+    # search_fields = ('APIResponseDataId', 'value')
+    # list_display = ('id', 'APIResponseDataId', 'value', 'description')
+    # list_display_links = ('APIResponseDataId', 'value')
     fieldsets = ([
         '返回可能值', {
-            'fields': ('APIResponseData_id', 'value', 'description')
+            'fields': ('APIResponseDataId', 'value', 'description')
         }],)
 
 
@@ -278,14 +281,14 @@ class APIResponseParameterValueForm(admin.ModelAdmin):
 
 
 class APIRequestHistoryForm(ReadOnlyModelAdmin):
-    search_fields = ('api_info_id',)
-    list_display = ('id', 'api_info_id', 'request_time', 'request_type', 'request_address', 'http_code')
-    list_display_links = ('api_info_id', 'request_time')
+    search_fields = ('apiInfo_id',)
+    list_display = ('id', 'apiInfo_id', 'requestTime', 'requestType', 'requestAddress', 'httpCode')
+    list_display_links = ('apiInfo_id', 'requestTime')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '接口请求历史', {
-            'fields': ('api_info_id', 'request_type', 'request_address', 'http_code')
+            'fields': ('apiInfo_id', 'requestType', 'requestAddress', 'httpCode')
         }],)
 
 
@@ -293,30 +296,30 @@ admin.site.register(APIRequestHistory, APIRequestHistoryForm)
 
 
 class ApiGeneralMockForm(admin.ModelAdmin):
-    search_fields = ('api_info_id', 'http_code')
-    list_display = ('id', 'api_info_id', 'http_code')
-    list_display_links = ('api_info_id', 'http_code')
+    search_fields = ('apiInfo_id', 'httpCode')
+    list_display = ('id', 'apiInfo_id', 'httpCode')
+    list_display_links = ('apiInfo_id', 'httpCode')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '普通Mock', {
-            'fields': ('api_info_id', 'http_code', 'data')
+            'fields': ('apiInfo_id', 'httpCode', 'data')
         }],)
 
 
 admin.site.register(ApiGeneralMock, ApiGeneralMockForm)
 
 
-class ApiOperationHistoryForm(admin.ModelAdmin):
-    search_fields = ('api_info_id', 'user')
-    list_display = ('id', 'api_info_id', 'user', 'time', 'description')
-    list_display_links = ('api_info_id', 'user')
+class ApiOperationHistoryForm(ReadOnlyModelAdmin):
+    search_fields = ('apiInfo_id', 'user')
+    list_display = ('id', 'apiInfo_id', 'user', 'time', 'description')
+    list_display_links = ('apiInfo_id', 'user')
     list_filter = ('user',)
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '接口操作记录', {
-            'fields': ('api_info_id', 'user', 'description')
+            'fields': ('apiInfo_id', 'user', 'description')
         }],)
 
 
@@ -345,16 +348,17 @@ admin.site.register(AutomationGroupLevelFirst, AutomationGroupLevelFirstForm)
 
 
 class AutomationTestCaseForm(admin.ModelAdmin):
-    search_fields = ('AutomationGroupLevelFirst_id', 'AutomationGroupLevelSecond_id', 'case_name')
-    list_display = ('id', 'AutomationGroupLevelFirst_id', 'AutomationGroupLevelSecond_id', 'case_name',
-                    'description', 'update_time')
-    list_display_links = ('AutomationGroupLevelFirst_id', 'AutomationGroupLevelSecond_id', 'case_name')
+    search_fields = ('AutomationGroupLevelFirst_id', 'AutomationGroupLevelSecond_id', 'caseName')
+    list_display = ('id', 'AutomationGroupLevelFirst_id', 'AutomationGroupLevelSecond_id', 'caseName',
+                    'description', 'updateTime')
+    list_display_links = ('AutomationGroupLevelFirst_id', 'AutomationGroupLevelSecond_id', 'caseName')
     list_filter = ('AutomationGroupLevelFirst_id', 'AutomationGroupLevelSecond_id')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '用例接口列表', {
-            'fields': ('AutomationGroupLevelFirst_id', 'AutomationGroupLevelSecond_id', 'case_name', 'description')
+            'fields': ('AutomationGroupLevelFirst_id', 'AutomationGroupLevelSecond_id',
+                       'caseName', 'description')
         }],)
 
 
@@ -367,19 +371,19 @@ class AutomationParameterInCase(admin.TabularInline):
 
 class AutomationCaseApiForm(admin.ModelAdmin):
     inlines = [AutomationParameterInCase, ]
-    search_fields = ('AutomationTestCase_id', 'name', 'http_type', 'request_type', 'address',
-                     'request_parameter_type', 'examine_type', 'http_code')
-    list_display = ('id', 'AutomationTestCase_id', 'name', 'http_type', 'request_type', 'address',
-                    'request_parameter_type', 'examine_type', 'http_code')
+    search_fields = ('AutomationTestCase_id', 'name', 'http_type', 'requestType', 'address',
+                     'requestParameterType', 'examineType', 'httpCode')
+    list_display = ('id', 'AutomationTestCase_id', 'name', 'http_type', 'requestType', 'address',
+                    'requestParameterType', 'examineType', 'httpCode')
     list_display_links = ('AutomationTestCase_id', 'name', 'http_type')
-    list_filter = ('AutomationTestCase_id', 'http_type', 'request_type',
-                   'request_parameter_type', 'examine_type', 'http_code')
+    list_filter = ('AutomationTestCase_id', 'http_type', 'requestType',
+                   'requestParameterType', 'examineType', 'httpCode')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '接口详情', {
-            'fields': ('AutomationTestCase_id', 'name', 'http_type', 'request_type', 'address',
-                       'request_parameter_type', 'examine_type', 'http_code')
+            'fields': ('AutomationTestCase_id', 'name', 'http_type', 'requestType', 'address',
+                       'requestParameterType', 'examineType', 'httpCode', 'responseData')
         }],)
 
 
@@ -387,18 +391,44 @@ admin.site.register(AutomationCaseApi, AutomationCaseApiForm)
 
 
 class AutomationParameterForm(admin.ModelAdmin):
-    # search_fields = ('AutomationCaseApi_id', 'key')
-    # list_display = ('id', 'AutomationCaseApi_id', 'key', 'value', 'interrelate')
-    # list_display_links = ('AutomationCaseApi_id', 'key', 'value')
+    # search_fields = ('AutomationCaseApiId', 'key')
+    # list_display = ('id', 'AutomationCaseApiId', 'key', 'value', 'interrelate')
+    # list_display_links = ('AutomationCaseApiId', 'key', 'value')
     fieldsets = ([
         '参数详情', {
-            'fields': ('AutomationCaseApi_id', 'key', 'value', 'interrelate')
+            'fields': ('AutomationCaseApiId', 'key', 'value', 'interrelate')
         }],)
 
 
 # admin.site.register(AutomationParameter, AutomationParameterForm)
 
 
+class AutomationTestResultForm(ReadOnlyModelAdmin):
+    search_fields = ('result', 'AutomationCaseApi_id', 'http_status')
+    list_display = ('id', 'AutomationCaseApi_id', 'result', 'http_status', 'test_time')
+    list_filter = ('http_status', 'result')
+    list_per_page = 20
+    ordering = ('id',)
+    fieldsets = ([
+        '测试结果', {
+            'fields': ('AutomationCaseApi_id', 'result', 'http_status', 'response_data')
+        }],)
 
 
+admin.site.register(AutomationTestResult, AutomationTestResultForm)
+
+
+class AutomationTestTaskForm(admin.ModelAdmin):
+    search_fields = ('name', 'type')
+    list_display = ('id', 'AutomationTestCase_id', 'Host', 'name', 'type', 'frequency', 'unit', 'startTime', 'endTime')
+    list_per_page = 20
+    ordering = ('id',)
+    fieldsets = ([
+          '测试任务', {
+                'fields': ('AutomationTestCase_id', 'Host', 'name', 'type', 'frequency',
+                           'unit', 'startTime', 'endTime')
+            }],)
+
+
+admin.site.register(AutomationTestTask, AutomationTestTaskForm)
 
