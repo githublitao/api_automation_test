@@ -110,11 +110,12 @@ class ProjectDynamic(models.Model):
     项目动态
     """
     id = models.AutoField(primary_key=True)
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='项目ID')
+    project_id = models.ForeignKey(Project, related_name='Project', on_delete=models.CASCADE, verbose_name='项目ID')
     time = models.DateTimeField(auto_now_add=True, verbose_name='操作时间')
     type = models.CharField(max_length=50, verbose_name='操作类型')
     operationObject = models.CharField(max_length=50, verbose_name='操作对象')
-    user = models.CharField(max_length=50, verbose_name='操作人')
+    user_id = models.ForeignKey(User, blank=True, null=True, related_name='User',
+                                on_delete=models.SET_NULL, verbose_name='操作人')
     description = models.CharField(max_length=1024, blank=True, null=True,  verbose_name='描述')
 
     def __unicode__(self):
@@ -239,8 +240,13 @@ class ApiInfo(models.Model):
     http_type = models.CharField(max_length=50, default='HTTP', verbose_name='http/https', choices=HTTP_CHOICE)
     requestType = models.CharField(max_length=50, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)
     apiAddress = models.CharField(max_length=1024, verbose_name='接口地址')
+    request_head = models.CharField(max_length=1024, blank=True, null=True, verbose_name='请求头')
     requestParameterType = models.CharField(max_length=50, verbose_name='请求参数格式', choices=REQUEST_PARAMETER_TYPE_CHOICE)
+    requestParameter = models.CharField(max_length=10240, blank=True, null=True, verbose_name='请求参数')
     status = models.BooleanField(default=True, verbose_name='状态')
+    response = models.CharField(max_length=10240, blank=True, null=True, verbose_name='返回数据')
+    mock_code = models.CharField(max_length=50, blank=True, null=True, verbose_name='HTTP状态', choices=HTTP_CODE_CHOICE)
+    data = models.TextField(max_length=4096, blank=True, null=True, verbose_name='内容')
     lastUpdateTime = models.DateTimeField(auto_now=True, verbose_name='最近更新')
     userUpdate = models.CharField(max_length=50, verbose_name='更新人')
     description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
@@ -256,104 +262,104 @@ class ApiInfo(models.Model):
         verbose_name_plural = '接口管理'
 
 
-class APIRequestHead(models.Model):
-    """
-    接口请求头
-    """
-    id = models.AutoField(primary_key=True)
-    apiInfo_id = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name='接口ID')
-    key = models.CharField(max_length=128, verbose_name='标签')
-    value = models.CharField(max_length=1024, verbose_name='内容')
-
-    def __unicode__(self):
-        return self.key
-
-    def __str__(self):
-        return self.key
-
-    class Meta:
-        verbose_name = '请求头'
-        verbose_name_plural = '请求头管理'
-
-
-class APIRequestParameter(models.Model):
-    """
-    请求参数
-    """
-    id = models.AutoField(primary_key=True)
-    apiInfo_id = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name='接口ID')
-    name = models.CharField(max_length=128, verbose_name='参数名')
-    type = models.CharField(max_length=50, verbose_name='参数类型', choices=PARAMETER_TYPE_CHOICE)
-    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
-    inputLimits = models.CharField(max_length=1024, verbose_name='输入限制')
-    required = models.BooleanField(default=True, verbose_name='是否必填')
-
-    def __unicode__(self):
-        return self.name
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = '请求参数'
-        verbose_name_plural = '请求参数管理'
-
-
-class APIRequestParameterValue(models.Model):
-    """
-    请求参数值
-    """
-    id = models.AutoField(primary_key=True)
-    APIRequestParameterId = models.ForeignKey(APIRequestParameter, on_delete=models.CASCADE, verbose_name='参数ID')
-    value = models.CharField(max_length=50, verbose_name='参数值')
-    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
-    type = models.CharField(max_length=50, verbose_name='默认')
-
-    def __unicode__(self):
-        return self.value
-
-    class Meta:
-        verbose_name = '请求参数值'
-        verbose_name_plural = '请求参数值管理'
-
-
-class APIResponseData(models.Model):
-    """
-    返回参数
-    """
-    id = models.AutoField(primary_key=True)
-    apiInfo_id = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name='接口ID')
-    name = models.CharField(max_length=50, verbose_name='字段')
-    type = models.CharField(max_length=50, verbose_name='字段类型', choices=(('Int', 'Int'), ('String', 'String')))
-    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
-    required = models.BooleanField(default=True, verbose_name='是否必须包含')
-
-    def __unicode__(self):
-        return self.name
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = '返回参数'
-        verbose_name_plural = '返回参数管理'
-
-
-class APIResponseParameterValue(models.Model):
-    """
-    返回参数的值
-    """
-    id = models.AutoField(primary_key=True)
-    APIResponseDataId = models.ForeignKey(APIResponseData, on_delete=models.CASCADE, verbose_name='返回参数ID')
-    value = models.TextField(max_length=4096, verbose_name='返回参数值')
-    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
-
-    def __unicode__(self):
-        return self.value
-
-    class Meta:
-        verbose_name = '返回参数值'
-        verbose_name_plural = '返回参数值管理'
+# class APIRequestHead(models.Model):
+#     """
+#     接口请求头
+#     """
+#     id = models.AutoField(primary_key=True)
+#     apiInfo_id = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name='接口ID')
+#     key = models.CharField(max_length=128, verbose_name='标签')
+#     value = models.CharField(max_length=1024, verbose_name='内容')
+#
+#     def __unicode__(self):
+#         return self.key
+#
+#     def __str__(self):
+#         return self.key
+#
+#     class Meta:
+#         verbose_name = '请求头'
+#         verbose_name_plural = '请求头管理'
+#
+#
+# class APIRequestParameter(models.Model):
+#     """
+#     请求参数
+#     """
+#     id = models.AutoField(primary_key=True)
+#     apiInfo_id = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name='接口ID')
+#     name = models.CharField(max_length=128, verbose_name='参数名')
+#     type = models.CharField(max_length=50, verbose_name='参数类型', choices=PARAMETER_TYPE_CHOICE)
+#     description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
+#     inputLimits = models.CharField(max_length=1024, verbose_name='输入限制')
+#     required = models.BooleanField(default=True, verbose_name='是否必填')
+#
+#     def __unicode__(self):
+#         return self.name
+#
+#     def __str__(self):
+#         return self.name
+#
+#     class Meta:
+#         verbose_name = '请求参数'
+#         verbose_name_plural = '请求参数管理'
+#
+#
+# class APIRequestParameterValue(models.Model):
+#     """
+#     请求参数值
+#     """
+#     id = models.AutoField(primary_key=True)
+#     APIRequestParameterId = models.ForeignKey(APIRequestParameter, on_delete=models.CASCADE, verbose_name='参数ID')
+#     value = models.CharField(max_length=50, verbose_name='参数值')
+#     description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
+#     type = models.CharField(max_length=50, verbose_name='默认')
+#
+#     def __unicode__(self):
+#         return self.value
+#
+#     class Meta:
+#         verbose_name = '请求参数值'
+#         verbose_name_plural = '请求参数值管理'
+#
+#
+# class APIResponseData(models.Model):
+#     """
+#     返回参数
+#     """
+#     id = models.AutoField(primary_key=True)
+#     apiInfo_id = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name='接口ID')
+#     name = models.CharField(max_length=50, verbose_name='字段')
+#     type = models.CharField(max_length=50, verbose_name='字段类型', choices=(('Int', 'Int'), ('String', 'String')))
+#     description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
+#     required = models.BooleanField(default=True, verbose_name='是否必须包含')
+#
+#     def __unicode__(self):
+#         return self.name
+#
+#     def __str__(self):
+#         return self.name
+#
+#     class Meta:
+#         verbose_name = '返回参数'
+#         verbose_name_plural = '返回参数管理'
+#
+#
+# class APIResponseParameterValue(models.Model):
+#     """
+#     返回参数的值
+#     """
+#     id = models.AutoField(primary_key=True)
+#     APIResponseDataId = models.ForeignKey(APIResponseData, on_delete=models.CASCADE, verbose_name='返回参数ID')
+#     value = models.TextField(max_length=4096, verbose_name='返回参数值')
+#     description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
+#
+#     def __unicode__(self):
+#         return self.value
+#
+#     class Meta:
+#         verbose_name = '返回参数值'
+#         verbose_name_plural = '返回参数值管理'
 
 
 class APIRequestHistory(models.Model):
@@ -375,21 +381,21 @@ class APIRequestHistory(models.Model):
         verbose_name_plural = '接口请求历史'
 
 
-class ApiGeneralMock(models.Model):
-    """
-    接口普通mock
-    """
-    id = models.AutoField(primary_key=True)
-    apiInfo_id = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name='接口ID')
-    httpCode = models.CharField(max_length=50, verbose_name='HTTP状态', choices=HTTP_CODE_CHOICE)
-    data = models.TextField(max_length=4096, blank=True, null=True, verbose_name='内容')
-
-    def __unicode__(self):
-        return self.httpCode
-
-    class Meta:
-        verbose_name = '普通mock'
-        verbose_name_plural = '普通mock管理'
+# class ApiGeneralMock(models.Model):
+#     """
+#     接口普通mock
+#     """
+#     id = models.AutoField(primary_key=True)
+#     apiInfo_id = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name='接口ID')
+#     httpCode = models.CharField(max_length=50, verbose_name='HTTP状态', choices=HTTP_CODE_CHOICE)
+#     data = models.TextField(max_length=4096, blank=True, null=True, verbose_name='内容')
+#
+#     def __unicode__(self):
+#         return self.httpCode
+#
+#     class Meta:
+#         verbose_name = '普通mock'
+#         verbose_name_plural = '普通mock管理'
 
 
 class ApiOperationHistory(models.Model):

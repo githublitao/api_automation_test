@@ -38,12 +38,8 @@ HostNotExist = {
     "code": "999992"
 }
 
-LevelFirstNotExist = {
-    "msg": "一级分组不存在",
+GroupNotExist = {
+    "msg": "分组不存在",
     "code": "999991"
 }
 
-LevelSecondNotExist = {
-    "msg": "二级分组不存在",
-    "code": "999990"
-}

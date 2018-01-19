@@ -1,13 +1,14 @@
 import json
 import logging
 
+from django.contrib.auth.models import User
 from django.core import serializers
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
 from api_test.common import GlobalStatusCode
 from api_test.common.common import del_model, verify_parameter
-from api_test.models import Project, GlobalHost
+from api_test.models import Project, GlobalHost, ProjectDynamic
 
 logger = logging.getLogger(__name__) # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -65,7 +66,11 @@ def add_host(request):
                 hosts = GlobalHost(project_id=Project.objects.get(id=project_id), name=name, host=host, description=desc)
                 hosts.save()
                 data = GlobalHost.objects.filter(project_id=project_id, name=name, host=host, description=desc)
-                response['host_id'] = json.loads(serializers.serialize('json', data))[0]['pk']
+                host_id = json.loads(serializers.serialize('json', data))[0]['pk']
+                record = ProjectDynamic(project_id=Project.objects.get(id=project_id), type='新增',
+                                        operationObject='HOST', user_id=User.objects.get(id=1), description='新增HOST')
+                record.save()
+                response['host_id'] = host_id
                 response = dict(response, **GlobalStatusCode.success)
                 return JsonResponse(response)
         else:
@@ -103,6 +108,10 @@ def update_host(request):
                 obm = GlobalHost.objects.filter(name=name).exclude(id=host_id)
                 if len(obm) == 0:
                     obi.update(project_id=Project.objects.get(id=project_id), name=name, host=host, description=desc)
+                    record = ProjectDynamic(project_id=Project.objects.get(id=project_id), type='修改',
+                                            operationObject='HOST', user_id=User.objects.get(id=1),
+                                            description='修改HOST')
+                    record.save()
                     response = dict(response, **GlobalStatusCode.success)
                     return JsonResponse(response)
                 else:
@@ -136,6 +145,9 @@ def del_host(request):
             obi = GlobalHost.objects.filter(id=host_id, project_id=project_id)
             if obi:
                 obi.delete()
+                record = ProjectDynamic(project_id=Project.objects.get(id=project_id), type='删除',
+                                        operationObject='HOST', user_id=User.objects.get(id=1), description='删除HOST')
+                record.save()
                 return JsonResponse(GlobalStatusCode.success)
             else:
                 return JsonResponse(GlobalStatusCode.HostNotExist)
@@ -166,6 +178,9 @@ def disable_host(request):
             obi = GlobalHost.objects.filter(id=host_id, project_id=project_id)
             if obi:
                 obi.update(status=False)
+                record = ProjectDynamic(project_id=Project.objects.get(id=project_id), type='禁用',
+                                        operationObject='HOST', user_id=User.objects.get(id=1), description='禁用HOST')
+                record.save()
                 return JsonResponse(GlobalStatusCode.success)
             else:
                 return JsonResponse(GlobalStatusCode.HostNotExist)
@@ -196,6 +211,9 @@ def enable_host(request):
             obi = GlobalHost.objects.filter(id=host_id, project_id=project_id)
             if obi:
                 obi.update(status=True)
+                record = ProjectDynamic(project_id=Project.objects.get(id=project_id), type='启用',
+                                        operationObject='HOST', user_id=User.objects.get(id=1), description='启用HOST')
+                record.save()
                 return JsonResponse(GlobalStatusCode.success)
             else:
                 return JsonResponse(GlobalStatusCode.HostNotExist)
