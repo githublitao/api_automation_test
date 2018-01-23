@@ -43,3 +43,12 @@ GroupNotExist = {
     "code": "999991"
 }
 
+ApiNotExist = {
+    "msg": "接口不存在",
+    "code": "999990"
+}
+
+ApiIsExist = {
+    "msg": "接口已存在",
+    "code": "999989"
+}

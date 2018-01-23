@@ -4,8 +4,8 @@ from django.db import models
 # Create your models here.
 
 HTTP_CHOICE = (
-    ('http', 'HTTP'),
-    ('https', 'HTTPS')
+    ('HTTP', 'HTTP'),
+    ('HTTPS', 'HTTPS')
 )
 
 REQUEST_TYPE_CHOICE = (
@@ -228,8 +228,7 @@ class ApiInfo(models.Model):
     接口信息
     """
     id = models.AutoField(primary_key=True)
-    project_id = models.ForeignKey(Project, blank=True, null=True, related_name='Project_id',
-                                   on_delete=models.SET_NULL, verbose_name='所属项目')
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='所属项目')
     ApiGroupLevelFirst_id = models.ForeignKey(ApiGroupLevelFirst, blank=True, null=True,
                                               related_name='ApiGroupLevelFirst_id',
                                               on_delete=models.SET_NULL, verbose_name='所属一级分组')

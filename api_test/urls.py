@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from api_test.api.ApiDoc import group, add_group, update_group, del_group, api_list, add_api
+from api_test.api.ApiDoc import group, add_group, update_group, del_group, api_list, add_api, update_api
 from api_test.api.global_parameter import host_total, add_host, update_host, del_host, enable_host, disable_host
 from api_test.api.projectList import project_list, add_project, update_project, del_project, disable_project, \
      enable_project
@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'api/del_group', del_group),
     url(r'api/api_list', api_list),
     url(r'api/add_api', add_api),
+    url(r'api/update_api', update_api),
 ]
