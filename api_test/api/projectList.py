@@ -30,7 +30,7 @@ def project_list(request):
 
     except Exception as e:
         logging.exception('ERROR')
-        logging.error(e)
+        response['error'] = '%s' % e
         response = dict(response, **GlobalStatusCode.Fail)
 
     return JsonResponse(response)
@@ -62,8 +62,8 @@ def add_project(request):
                 data = Project.objects.filter(name=name, version=version, type=type, description=description)
                 logging.debug(json.loads(serializers.serialize('json', data)))
                 project_id = json.loads(serializers.serialize('json', data))[0]['pk']
-                record = ProjectDynamic(project_id=Project.objects.get(id=project_id), type='创建',
-                                        operationObject='项目', user_id=User.objects.get(id=1), description='创建项目')
+                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='创建',
+                                        operationObject='项目', user=User.objects.get(id=1), description='创建项目')
                 record.save()
                 response['project_id'] = project_id
                 response = dict(response, **GlobalStatusCode.success)
@@ -76,7 +76,7 @@ def add_project(request):
 
     except Exception as e:
         logging.exception('ERROR')
-        logging.error(e)
+        response['error'] = '%s' % e
         return JsonResponse(GlobalStatusCode.Fail)
 
 
@@ -94,6 +94,8 @@ def update_project(request):
     """
     response = {}
     project_id = request.POST.get('project_id')
+    if not project_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
     name = request.POST.get('name')
     version = request.POST.get('v')
     type = request.POST.get('type')
@@ -107,8 +109,8 @@ def update_project(request):
                 if len(obi) == 0:
 
                     obj.update(name=name, version=version, type=type, description=description)
-                    record = ProjectDynamic(project_id=Project.objects.get(id=project_id), type='修改',
-                                            operationObject='项目', user_id=User.objects.get(id=1), description='修改项目')
+                    record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
+                                            operationObject='项目', user=User.objects.get(id=1), description='修改项目')
                     record.save()
                     response = dict(response, **GlobalStatusCode.success)
                     return JsonResponse(response)
@@ -123,7 +125,7 @@ def update_project(request):
 
     except Exception as e:
         logging.exception('ERROR')
-        logging.error(e)
+        response['error'] = '%s' % e
         return JsonResponse(GlobalStatusCode.Fail)
 
 
@@ -137,6 +139,8 @@ def del_project(request):
     """
     response = {}
     project_id = request.POST.get('project_id')
+    if not project_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
     try:
         obj = Project.objects.filter(id=project_id)
         if obj:
@@ -147,7 +151,7 @@ def del_project(request):
 
     except Exception as e:
         logging.exception('ERROR')
-        logging.error(e)
+        response['error'] = '%s' % e
         return JsonResponse(GlobalStatusCode.Fail)
 
 
@@ -161,12 +165,14 @@ def disable_project(request):
     """
     response = {}
     project_id = request.POST.get('project_id')
+    if not project_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
     try:
         obj = Project.objects.filter(id=project_id)
         if obj:
             obj.update(status=False)
-            record = ProjectDynamic(project_id=Project.objects.get(id=project_id), type='禁用',
-                                    operationObject='项目', user_id=User.objects.get(id=1), description='禁用项目')
+            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='禁用',
+                                    operationObject='项目', user=User.objects.get(id=1), description='禁用项目')
             record.save()
             response = dict(response, **GlobalStatusCode.success)
             return JsonResponse(response)
@@ -175,7 +181,7 @@ def disable_project(request):
 
     except Exception as e:
         logging.exception('ERROR')
-        logging.error(e)
+        response['error'] = '%s' % e
         return JsonResponse(GlobalStatusCode.Fail)
 
 
@@ -189,12 +195,14 @@ def enable_project(request):
     """
     response = {}
     project_id = request.POST.get('project_id')
+    if not project_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
     try:
         obj = Project.objects.filter(id=project_id)
         if obj:
             obj.update(status=True)
-            record = ProjectDynamic(project_id=Project.objects.get(id=project_id), type='启用',
-                                    operationObject='项目', user_id=User.objects.get(id=1), description='禁用项目')
+            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='启用',
+                                    operationObject='项目', user=User.objects.get(id=1), description='禁用项目')
             record.save()
             response = dict(response, **GlobalStatusCode.success)
             return JsonResponse(response)
@@ -203,5 +211,5 @@ def enable_project(request):
 
     except Exception as e:
         logging.exception('ERROR')
-        logging.error(e)
+        response['error'] = '%s' % e
         return JsonResponse(GlobalStatusCode.Fail)

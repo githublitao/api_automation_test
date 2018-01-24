@@ -23,11 +23,13 @@ def host_total(request):
     """
     response = {}
     project_id = request.GET.get('project_id')
+    if not project_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
     try:
 
         obj = Project.objects.filter(id=project_id)
         if obj:
-            obi = GlobalHost.objects.filter(project_id=project_id)
+            obi = GlobalHost.objects.filter(project=project_id)
             data = json.loads(serializers.serialize('json', obi))
             response['data'] = del_model(data)
             return JsonResponse(dict(response, **GlobalStatusCode.success))
@@ -53,22 +55,24 @@ def add_host(request):
     """
     response = {}
     project_id = request.POST.get('project_id')
+    if not project_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
     name = request.POST.get('name')
     host = request.POST.get('host')
     desc = request.POST.get('description')
     try:
         obj = Project.objects.filter(id=project_id)
         if obj:
-            obi = GlobalHost.objects.filter(name=name, project_id=project_id)
+            obi = GlobalHost.objects.filter(name=name, project=project_id)
             if obi:
                 return JsonResponse(GlobalStatusCode.NameRepetition)
             else:
-                hosts = GlobalHost(project_id=Project.objects.get(id=project_id), name=name, host=host, description=desc)
+                hosts = GlobalHost(project=Project.objects.get(id=project_id), name=name, host=host, description=desc)
                 hosts.save()
-                data = GlobalHost.objects.filter(project_id=project_id, name=name, host=host, description=desc)
+                data = GlobalHost.objects.filter(project=project_id, name=name, host=host, description=desc)
                 host_id = json.loads(serializers.serialize('json', data))[0]['pk']
-                record = ProjectDynamic(project_id=Project.objects.get(id=project_id), type='新增',
-                                        operationObject='HOST', user_id=User.objects.get(id=1), description='新增HOST')
+                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='新增',
+                                        operationObject='HOST', user=User.objects.get(id=1), description='新增HOST')
                 record.save()
                 response['host_id'] = host_id
                 response = dict(response, **GlobalStatusCode.success)
@@ -97,19 +101,21 @@ def update_host(request):
     response = {}
     project_id = request.POST.get('project_id')
     host_id = request.POST.get('host_id')
+    if not host_id.isdecimal() or not project_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
     name = request.POST.get('name')
     host = request.POST.get('host')
     desc = request.POST.get('description')
     try:
         obj = Project.objects.filter(id=project_id)
         if obj:
-            obi = GlobalHost.objects.filter(id=host_id, project_id=project_id)
+            obi = GlobalHost.objects.filter(id=host_id, project=project_id)
             if obi:
                 obm = GlobalHost.objects.filter(name=name).exclude(id=host_id)
                 if len(obm) == 0:
-                    obi.update(project_id=Project.objects.get(id=project_id), name=name, host=host, description=desc)
-                    record = ProjectDynamic(project_id=Project.objects.get(id=project_id), type='修改',
-                                            operationObject='HOST', user_id=User.objects.get(id=1),
+                    obi.update(project=Project.objects.get(id=project_id), name=name, host=host, description=desc)
+                    record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
+                                            operationObject='HOST', user=User.objects.get(id=1),
                                             description='修改HOST')
                     record.save()
                     response = dict(response, **GlobalStatusCode.success)
@@ -139,14 +145,16 @@ def del_host(request):
     response = {}
     project_id = request.POST.get('project_id')
     host_id = request.POST.get('host_id')
+    if not project_id.isdecimal() or not host_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
     try:
         obj = Project.objects.filter(id=project_id)
         if obj:
-            obi = GlobalHost.objects.filter(id=host_id, project_id=project_id)
+            obi = GlobalHost.objects.filter(id=host_id, project=project_id)
             if obi:
                 obi.delete()
-                record = ProjectDynamic(project_id=Project.objects.get(id=project_id), type='删除',
-                                        operationObject='HOST', user_id=User.objects.get(id=1), description='删除HOST')
+                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='删除',
+                                        operationObject='HOST', user=User.objects.get(id=1), description='删除HOST')
                 record.save()
                 return JsonResponse(GlobalStatusCode.success)
             else:
@@ -172,14 +180,16 @@ def disable_host(request):
     response = {}
     project_id = request.POST.get('project_id')
     host_id = request.POST.get('host_id')
+    if not project_id.isdecimal() or not host_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
     try:
         obj = Project.objects.filter(id=project_id)
         if obj:
-            obi = GlobalHost.objects.filter(id=host_id, project_id=project_id)
+            obi = GlobalHost.objects.filter(id=host_id, project=project_id)
             if obi:
                 obi.update(status=False)
-                record = ProjectDynamic(project_id=Project.objects.get(id=project_id), type='禁用',
-                                        operationObject='HOST', user_id=User.objects.get(id=1), description='禁用HOST')
+                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='禁用',
+                                        operationObject='HOST', user=User.objects.get(id=1), description='禁用HOST')
                 record.save()
                 return JsonResponse(GlobalStatusCode.success)
             else:
@@ -189,7 +199,7 @@ def disable_host(request):
 
     except Exception as e:
         logging.exception('ERROR')
-        logging.error(e)
+        response['error'] = '%s' % e
         return JsonResponse(GlobalStatusCode.Fail)
 
 
@@ -205,14 +215,16 @@ def enable_host(request):
     response = {}
     project_id = request.POST.get('project_id')
     host_id = request.POST.get('host_id')
+    if not project_id.isdecimal() or not host_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
     try:
         obj = Project.objects.filter(id=project_id)
         if obj:
-            obi = GlobalHost.objects.filter(id=host_id, project_id=project_id)
+            obi = GlobalHost.objects.filter(id=host_id, project=project_id)
             if obi:
                 obi.update(status=True)
-                record = ProjectDynamic(project_id=Project.objects.get(id=project_id), type='启用',
-                                        operationObject='HOST', user_id=User.objects.get(id=1), description='启用HOST')
+                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='启用',
+                                        operationObject='HOST', user=User.objects.get(id=1), description='启用HOST')
                 record.save()
                 return JsonResponse(GlobalStatusCode.success)
             else:

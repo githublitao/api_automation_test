@@ -52,3 +52,13 @@ ApiIsExist = {
     "msg": "接口已存在",
     "code": "999989"
 }
+
+HistoryNotExist = {
+    "msg": "请求历史不存在",
+    "code": "999988"
+}
+
+CaseNotExist = {
+    "msg": "用例不存在",
+    "code": "999987"
+}

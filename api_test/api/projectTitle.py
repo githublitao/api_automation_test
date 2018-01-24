@@ -22,6 +22,8 @@ def project_info(request):
     """
     response = {}
     project_id = request.GET.get('project_id')
+    if not project_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
     try:
         obj = Project.objects.filter(id=project_id)
         if obj:
@@ -34,7 +36,7 @@ def project_info(request):
 
     except Exception as e:
         logging.exception('ERROR')
-        logging.error(e)
+        response['error'] = '%s' % e
         return JsonResponse(GlobalStatusCode.Fail)
 
 
@@ -48,10 +50,12 @@ def api_total(request):
     """
     response = {}
     project_id = request.GET.get('project_id')
+    if not project_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
     try:
         obi = Project.objects.filter(id=project_id)
         if obi:
-            obj = ApiInfo.objects.filter(project_id=project_id)
+            obj = ApiInfo.objects.filter(project=project_id)
             response['sum'] = len(obj)
             return JsonResponse(dict(response, **GlobalStatusCode.success))
         else:
@@ -59,7 +63,7 @@ def api_total(request):
 
     except Exception as e:
         logging.exception('ERROR')
-        logging.error(e)
+        response['error'] = '%s' % e
         return JsonResponse(GlobalStatusCode.Fail)
 
 
@@ -73,10 +77,12 @@ def dynamic_total(request):
     """
     response = {}
     project_id = request.GET.get('project_id')
+    if not project_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
     try:
         obi = Project.objects.filter(id=project_id)
         if obi:
-            obj = ProjectDynamic.objects.filter(project_id=project_id)
+            obj = ProjectDynamic.objects.filter(project=project_id)
             response['sum'] = len(obj)
             return JsonResponse(dict(response, **GlobalStatusCode.success))
         else:
@@ -84,7 +90,7 @@ def dynamic_total(request):
 
     except Exception as e:
         logging.exception('ERROR')
-        logging.error(e)
+        response['error'] = '%s' % e
         return JsonResponse(GlobalStatusCode.Fail)
 
 
@@ -98,10 +104,12 @@ def project_member(request):
     """
     response = {}
     project_id = request.GET.get('project_id')
+    if not project_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
     try:
         obi = Project.objects.filter(id=project_id)
         if obi:
-            obj = ProjectMember.objects.filter(project_id=project_id)
+            obj = ProjectMember.objects.filter(project=project_id)
             response['sum'] = len(obj)
             return JsonResponse(dict(response, **GlobalStatusCode.success))
         else:
@@ -109,5 +117,5 @@ def project_member(request):
 
     except Exception as e:
         logging.exception('ERROR')
-        logging.error(e)
+        response['error'] = '%s' % e
         return JsonResponse(GlobalStatusCode.Fail)
