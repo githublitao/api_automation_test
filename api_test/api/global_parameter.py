@@ -39,7 +39,7 @@ def host_total(request):
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(["POST"])
@@ -83,7 +83,7 @@ def add_host(request):
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(["POST"])
@@ -130,7 +130,7 @@ def update_host(request):
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(["POST"])
@@ -165,7 +165,7 @@ def del_host(request):
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(["POST"])
@@ -200,7 +200,7 @@ def disable_host(request):
     except Exception as e:
         logging.exception('ERROR')
         response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(["POST"])
@@ -235,4 +235,4 @@ def enable_host(request):
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))

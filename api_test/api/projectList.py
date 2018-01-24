@@ -77,7 +77,7 @@ def add_project(request):
     except Exception as e:
         logging.exception('ERROR')
         response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(["POST"])
@@ -126,7 +126,7 @@ def update_project(request):
     except Exception as e:
         logging.exception('ERROR')
         response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(["POST"])
@@ -152,7 +152,7 @@ def del_project(request):
     except Exception as e:
         logging.exception('ERROR')
         response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(["POST"])
@@ -182,7 +182,7 @@ def disable_project(request):
     except Exception as e:
         logging.exception('ERROR')
         response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(["POST"])
@@ -212,4 +212,4 @@ def enable_project(request):
     except Exception as e:
         logging.exception('ERROR')
         response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))

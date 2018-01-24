@@ -438,7 +438,7 @@ def update_case(request):
     except Exception as e:
         logging.exception('ERROR')
         response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(['POST'])
@@ -477,7 +477,7 @@ def del_case(request):
     except Exception as e:
         logging.exception('ERROR')
         response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(['GET'])
@@ -521,4 +521,4 @@ def api_list(request):
     except Exception as e:
         logging.exception('ERROR')
         response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))

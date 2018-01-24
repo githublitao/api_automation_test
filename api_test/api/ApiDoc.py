@@ -48,7 +48,7 @@ def group(request):
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(['POST'])
@@ -101,7 +101,7 @@ def add_group(request):
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(['POST'])
@@ -158,7 +158,7 @@ def update_group(request):
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(['POST'])
@@ -210,7 +210,7 @@ def del_group(request):
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(['GET'])
@@ -262,7 +262,7 @@ def api_list(request):
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(['POST'])
@@ -361,7 +361,7 @@ def add_api(request):
     except Exception as e:
         logging.exception('ERROR')
         response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(['POST'])
@@ -465,7 +465,7 @@ def update_api(request):
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(['GET'])
@@ -494,7 +494,7 @@ def select_api(request):
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(['POST'])
@@ -533,7 +533,7 @@ def del_api(request):
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(['POST'])
@@ -596,7 +596,7 @@ def update_api_group(request):
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(['GET'])
@@ -628,7 +628,7 @@ def api_info(request):
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(['POST'])
@@ -682,7 +682,7 @@ def add_history(request):
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(['POST'])
@@ -723,4 +723,4 @@ def del_history(request):
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))

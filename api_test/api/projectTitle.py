@@ -37,7 +37,7 @@ def project_info(request):
     except Exception as e:
         logging.exception('ERROR')
         response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(["GET"])
@@ -64,7 +64,7 @@ def api_total(request):
     except Exception as e:
         logging.exception('ERROR')
         response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(["GET"])
@@ -91,7 +91,7 @@ def dynamic_total(request):
     except Exception as e:
         logging.exception('ERROR')
         response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
 
 
 @require_http_methods(["GET"])
@@ -118,4 +118,4 @@ def project_member(request):
     except Exception as e:
         logging.exception('ERROR')
         response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
