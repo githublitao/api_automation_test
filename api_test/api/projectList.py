@@ -21,18 +21,9 @@ def project_list(request):
     :return:
     """
     response = {}
-    try:
-
-        pro_list = Project.objects.all()
-        data = json.loads(serializers.serialize('json', pro_list))
-        response['data'] = del_model(data)
-        response = dict(response, **GlobalStatusCode.success)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        response = dict(response, **GlobalStatusCode.Fail)
-
+    pro_list = Project.objects.all()
+    data = json.loads(serializers.serialize('json', pro_list))
+    response['data'] = del_model(data)
     return JsonResponse(response)
 
 
@@ -50,34 +41,28 @@ def add_project(request):
     response = {}
     name = request.POST.get('name')
     version = request.POST.get('v')
-    type = request.POST.get('type')
+    _type = request.POST.get('type')
     description = request.POST.get('description')
-    try:
-        if type in ['Web', 'App']:
-            obj = Project.objects.filter(name=name)
-            if len(obj) == 0:
+    if type in ['Web', 'App']:
+        obj = Project.objects.filter(name=name)
+        if len(obj) == 0:
 
-                project = Project(name=name, version=version, type=type, description=description)
-                project.save()
-                data = Project.objects.filter(name=name, version=version, type=type, description=description)
-                logging.debug(json.loads(serializers.serialize('json', data)))
-                project_id = json.loads(serializers.serialize('json', data))[0]['pk']
-                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='创建',
-                                        operationObject='项目', user=User.objects.get(id=1), description='创建项目')
-                record.save()
-                response['project_id'] = project_id
-                response = dict(response, **GlobalStatusCode.success)
-                return JsonResponse(response)
+            project = Project(name=name, version=version, type=_type, description=description)
+            project.save()
+            data = Project.objects.filter(name=name, version=version, type=_type, description=description)
+            logging.debug(json.loads(serializers.serialize('json', data)))
+            project_id = json.loads(serializers.serialize('json', data))[0]['pk']
+            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='创建',
+                                    operationObject='项目', user=User.objects.get(id=1), description='创建项目')
+            record.save()
+            response['project_id'] = project_id
+            response = dict(response, **GlobalStatusCode.success)
+            return JsonResponse(response)
 
-            else:
-                return JsonResponse(GlobalStatusCode.NameRepetition)
         else:
-            return JsonResponse(GlobalStatusCode.ParameterWrong)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
+            return JsonResponse(GlobalStatusCode.NameRepetition)
+    else:
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
 
 
 @require_http_methods(["POST"])
@@ -98,35 +83,28 @@ def update_project(request):
         return JsonResponse(GlobalStatusCode.ParameterWrong)
     name = request.POST.get('name')
     version = request.POST.get('v')
-    type = request.POST.get('type')
+    _type = request.POST.get('type')
     description = request.POST.get('description')
-    try:
+    if _type in ['Web', 'App']:
+        obj = Project.objects.filter(id=project_id)
+        if obj:
+            obi = Project.objects.filter(name=name).exclude(id=project_id)
+            if len(obi) == 0:
 
-        if type in ['Web', 'App']:
-            obj = Project.objects.filter(id=project_id)
-            if obj:
-                obi = Project.objects.filter(name=name).exclude(id=project_id)
-                if len(obi) == 0:
-
-                    obj.update(name=name, version=version, type=type, description=description)
-                    record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
-                                            operationObject='项目', user=User.objects.get(id=1), description='修改项目')
-                    record.save()
-                    response = dict(response, **GlobalStatusCode.success)
-                    return JsonResponse(response)
-
-                else:
-                    return JsonResponse(GlobalStatusCode.ProjectIsExist)
-            else:
-                response = dict(response, **GlobalStatusCode.ProjectNotExist)
+                obj.update(name=name, version=version, type=_type, description=description)
+                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
+                                        operationObject='项目', user=User.objects.get(id=1), description='修改项目')
+                record.save()
+                response = dict(response, **GlobalStatusCode.success)
                 return JsonResponse(response)
-        else:
-            return JsonResponse(GlobalStatusCode.ParameterWrong)
 
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
+            else:
+                return JsonResponse(GlobalStatusCode.ProjectIsExist)
+        else:
+            response = dict(response, **GlobalStatusCode.ProjectNotExist)
+            return JsonResponse(response)
+    else:
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
 
 
 @require_http_methods(["POST"])
@@ -141,18 +119,12 @@ def del_project(request):
     project_id = request.POST.get('project_id')
     if not project_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    try:
         obj = Project.objects.filter(id=project_id)
-        if obj:
-            Project.objects.filter(id=project_id).delete()
-            return JsonResponse(GlobalStatusCode.success)
-        else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
+    if obj:
+        Project.objects.filter(id=project_id).delete()
+        return JsonResponse(GlobalStatusCode.success)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(["POST"])
@@ -167,22 +139,16 @@ def disable_project(request):
     project_id = request.POST.get('project_id')
     if not project_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    try:
         obj = Project.objects.filter(id=project_id)
-        if obj:
-            obj.update(status=False)
-            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='禁用',
-                                    operationObject='项目', user=User.objects.get(id=1), description='禁用项目')
-            record.save()
-            response = dict(response, **GlobalStatusCode.success)
-            return JsonResponse(response)
-        else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
+    if obj:
+        obj.update(status=False)
+        record = ProjectDynamic(project=Project.objects.get(id=project_id), type='禁用',
+                                operationObject='项目', user=User.objects.get(id=1), description='禁用项目')
+        record.save()
+        response = dict(response, **GlobalStatusCode.success)
+        return JsonResponse(response)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(["POST"])
@@ -197,19 +163,14 @@ def enable_project(request):
     project_id = request.POST.get('project_id')
     if not project_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    try:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            obj.update(status=True)
-            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='启用',
-                                    operationObject='项目', user=User.objects.get(id=1), description='禁用项目')
-            record.save()
-            response = dict(response, **GlobalStatusCode.success)
-            return JsonResponse(response)
-        else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obj.update(status=True)
+        record = ProjectDynamic(project=Project.objects.get(id=project_id), type='启用',
+                                operationObject='项目', user=User.objects.get(id=1), description='禁用项目')
+        record.save()
+        response = dict(response, **GlobalStatusCode.success)
+        return JsonResponse(response)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))

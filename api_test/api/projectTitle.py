@@ -24,20 +24,14 @@ def project_info(request):
     project_id = request.GET.get('project_id')
     if not project_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    try:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            data = json.loads(serializers.serialize('json', obj))
-            logging.debug(data)
-            response['data'] = del_model(data)
-            return JsonResponse(dict(response, **GlobalStatusCode.success))
-        else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        data = json.loads(serializers.serialize('json', obj))
+        logging.debug(data)
+        response['data'] = del_model(data)
+        return JsonResponse(dict(response, **GlobalStatusCode.success))
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(["GET"])
@@ -52,19 +46,13 @@ def api_total(request):
     project_id = request.GET.get('project_id')
     if not project_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    try:
-        obi = Project.objects.filter(id=project_id)
-        if obi:
-            obj = ApiInfo.objects.filter(project=project_id)
-            response['sum'] = len(obj)
-            return JsonResponse(dict(response, **GlobalStatusCode.success))
-        else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
+    obi = Project.objects.filter(id=project_id)
+    if obi:
+        obj = ApiInfo.objects.filter(project=project_id)
+        response['sum'] = len(obj)
+        return JsonResponse(dict(response, **GlobalStatusCode.success))
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(["GET"])
@@ -79,19 +67,13 @@ def dynamic_total(request):
     project_id = request.GET.get('project_id')
     if not project_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    try:
-        obi = Project.objects.filter(id=project_id)
-        if obi:
-            obj = ProjectDynamic.objects.filter(project=project_id)
-            response['sum'] = len(obj)
-            return JsonResponse(dict(response, **GlobalStatusCode.success))
-        else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
+    obi = Project.objects.filter(id=project_id)
+    if obi:
+        obj = ProjectDynamic.objects.filter(project=project_id)
+        response['sum'] = len(obj)
+        return JsonResponse(dict(response, **GlobalStatusCode.success))
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(["GET"])
@@ -106,16 +88,10 @@ def project_member(request):
     project_id = request.GET.get('project_id')
     if not project_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    try:
-        obi = Project.objects.filter(id=project_id)
-        if obi:
-            obj = ProjectMember.objects.filter(project=project_id)
-            response['sum'] = len(obj)
-            return JsonResponse(dict(response, **GlobalStatusCode.success))
-        else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
+    obi = Project.objects.filter(id=project_id)
+    if obi:
+        obj = ProjectMember.objects.filter(project=project_id)
+        response['sum'] = len(obj)
+        return JsonResponse(dict(response, **GlobalStatusCode.success))
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)

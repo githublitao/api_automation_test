@@ -27,28 +27,22 @@ def group(request):
     project_id = request.GET.get('project_id')
     if not project_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    try:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            obi = AutomationGroupLevelFirst.objects.filter(project=project_id)
-            level_first = json.loads(serializers.serialize('json', obi))
-            data = del_model(level_first)
-            j = 0
-            for i in level_first:
-                level_second = AutomationGroupLevelSecond.objects.filter(automationGroupLevelFirst=i['pk'])
-                level_second = json.loads(serializers.serialize('json', level_second))
-                level_second = del_model(level_second)
-                data[j]['fields']['levelSecond'] = level_second
-                j = j+1
-            response['data'] = data
-            return JsonResponse(dict(response, **GlobalStatusCode.success))
-        else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = AutomationGroupLevelFirst.objects.filter(project=project_id)
+        level_first = json.loads(serializers.serialize('json', obi))
+        data = del_model(level_first)
+        j = 0
+        for i in level_first:
+            level_second = AutomationGroupLevelSecond.objects.filter(automationGroupLevelFirst=i['pk'])
+            level_second = json.loads(serializers.serialize('json', level_second))
+            level_second = del_model(level_second)
+            data[j]['fields']['levelSecond'] = level_second
+            j = j+1
+        response['data'] = data
+        return JsonResponse(dict(response, **GlobalStatusCode.success))
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(['POST'])
@@ -67,41 +61,35 @@ def add_group(request):
     first_group_id = request.POST.get('first_group_id')
     if not project_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    try:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            # 添加二级分组名称
-            if first_group_id:
-                if not first_group_id.isdecimal():
-                    return JsonResponse(GlobalStatusCode.ParameterWrong)
-                obi = AutomationGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
-                if obi:
-                    first_group = AutomationGroupLevelSecond(automationGroupLevelFirst=
-                                                             AutomationGroupLevelFirst.objects.get(id=first_group_id), name=name)
-                    first_group.save()
-                    record = ProjectDynamic(project=Project.objects.get(id=project_id), type='新增',
-                                            operationObject='用例分组', user=User.objects.get(id=1),
-                                            description='新增用例分组')
-                    record.save()
-                    return JsonResponse(GlobalStatusCode.success)
-                else:
-                    return JsonResponse(GlobalStatusCode.GroupNotExist)
-            # 添加一级分组名称
-            else:
-                obi = AutomationGroupLevelFirst(project=Project.objects.get(id=project_id), name=name)
-                obi.save()
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        # 添加二级分组名称
+        if first_group_id:
+            if not first_group_id.isdecimal():
+                return JsonResponse(GlobalStatusCode.ParameterWrong)
+            obi = AutomationGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
+            if obi:
+                first_group = AutomationGroupLevelSecond(automationGroupLevelFirst=
+                                                         AutomationGroupLevelFirst.objects.get(id=first_group_id), name=name)
+                first_group.save()
                 record = ProjectDynamic(project=Project.objects.get(id=project_id), type='新增',
                                         operationObject='用例分组', user=User.objects.get(id=1),
                                         description='新增用例分组')
                 record.save()
                 return JsonResponse(GlobalStatusCode.success)
+            else:
+                return JsonResponse(GlobalStatusCode.GroupNotExist)
+        # 添加一级分组名称
         else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+            obi = AutomationGroupLevelFirst(project=Project.objects.get(id=project_id), name=name)
+            obi.save()
+            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='新增',
+                                    operationObject='用例分组', user=User.objects.get(id=1),
+                                    description='新增用例分组')
+            record.save()
+            return JsonResponse(GlobalStatusCode.success)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(['POST'])
@@ -120,41 +108,36 @@ def del_group(request):
     if not project_id.isdecimal() or not first_group_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
     second_group_id = request.POST.get('second_group_id')
-    try:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            obi = AutomationGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
-            if obi:
-                # 删除二级分组
-                if second_group_id:
-                    if not second_group_id.isdecimal():
-                        return JsonResponse(GlobalStatusCode.ParameterWrong)
-                    obm = AutomationGroupLevelSecond.objects.filter(id=second_group_id,
-                                                                    automationGroupLevelFirst=first_group_id)
-                    if obm:
-                        obm.delete()
-                        record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
-                                                operationObject='用例分组', user=User.objects.get(id=1),
-                                                description='删除用例分组')
-                        record.save()
-                        return JsonResponse(GlobalStatusCode.success)
-                    else:
-                        return JsonResponse(GlobalStatusCode.GroupNotExist)
-                else:
-                    obi.delete()
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = AutomationGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
+        if obi:
+            # 删除二级分组
+            if second_group_id:
+                if not second_group_id.isdecimal():
+                    return JsonResponse(GlobalStatusCode.ParameterWrong)
+                obm = AutomationGroupLevelSecond.objects.filter(id=second_group_id,
+                                                                automationGroupLevelFirst=first_group_id)
+                if obm:
+                    obm.delete()
                     record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
                                             operationObject='用例分组', user=User.objects.get(id=1),
                                             description='删除用例分组')
                     record.save()
                     return JsonResponse(GlobalStatusCode.success)
+                else:
+                    return JsonResponse(GlobalStatusCode.GroupNotExist)
             else:
-                return JsonResponse(GlobalStatusCode.GroupNotExist)
+                obi.delete()
+                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
+                                        operationObject='用例分组', user=User.objects.get(id=1),
+                                        description='删除用例分组')
+                record.save()
+                return JsonResponse(GlobalStatusCode.success)
         else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+            return JsonResponse(GlobalStatusCode.GroupNotExist)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(['POST'])
@@ -175,43 +158,37 @@ def update_group(request):
     second_group_id = request.POST.get('second_group_id')
     if not project_id.isdecimal() or not first_group_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    try:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            obi = AutomationGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
-            if obi:
-                # 修改二级分组名称
-                if second_group_id:
-                    if not second_group_id.isdecimal():
-                        return JsonResponse(GlobalStatusCode.ParameterWrong)
-                    obm = AutomationGroupLevelSecond.objects.filter(automationGroupLevelFirst=first_group_id,
-                                                                    automationGroupLevelSecond=second_group_id)
-                    if obm:
-                        obm.update(name=name)
-                        record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
-                                                operationObject='用例分组', user=User.objects.get(id=1),
-                                                description='修改用例分组')
-                        record.save()
-                        return JsonResponse(GlobalStatusCode.success)
-                    else:
-                        return JsonResponse(GlobalStatusCode.GroupNotExist)
-                # 修改一级分组名称
-                else:
-                    obi.update(name=name)
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = AutomationGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
+        if obi:
+            # 修改二级分组名称
+            if second_group_id:
+                if not second_group_id.isdecimal():
+                    return JsonResponse(GlobalStatusCode.ParameterWrong)
+                obm = AutomationGroupLevelSecond.objects.filter(automationGroupLevelFirst=first_group_id,
+                                                                automationGroupLevelSecond=second_group_id)
+                if obm:
+                    obm.update(name=name)
                     record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
                                             operationObject='用例分组', user=User.objects.get(id=1),
                                             description='修改用例分组')
                     record.save()
                     return JsonResponse(GlobalStatusCode.success)
+                else:
+                    return JsonResponse(GlobalStatusCode.GroupNotExist)
+            # 修改一级分组名称
             else:
-                return JsonResponse(GlobalStatusCode.GroupNotExist)
+                obi.update(name=name)
+                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
+                                        operationObject='用例分组', user=User.objects.get(id=1),
+                                        description='修改用例分组')
+                record.save()
+                return JsonResponse(GlobalStatusCode.success)
         else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+            return JsonResponse(GlobalStatusCode.GroupNotExist)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(['POST'])
@@ -233,48 +210,43 @@ def update_case_group(request):
     second_group_id = request.POST.get('second_group_id')
     if not project_id.isdecimal() or not first_group_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    try:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            api_first_group = AutomationGroupLevelFirst.objects.filter(id=first_group_id)
-            if api_first_group:
-                if first_group_id and second_group_id:
-                    if not second_group_id.isdecimal():
-                        return JsonResponse(GlobalStatusCode.ParameterWrong)
-                    api_second_group = AutomationGroupLevelSecond.objects.filter(id=second_group_id)
-                    if api_second_group:
-                        for i in id_list:
-                            if not i.isdecimal():
-                                return JsonResponse(GlobalStatusCode.ParameterWrong)
-                        for j in id_list:
-                            AutomationTestCase.objects.filter(id=j, project=project_id).update(
-                                automationGroupLevelFirst=AutomationGroupLevelFirst.objects.get(id=first_group_id),
-                                automationGroupLevelSecond=AutomationGroupLevelSecond.objects.get(id=second_group_id))
-                    else:
-                        return JsonResponse(GlobalStatusCode.GroupNotExist)
-                elif first_group_id and second_group_id is None:
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        api_first_group = AutomationGroupLevelFirst.objects.filter(id=first_group_id)
+        if api_first_group:
+            if first_group_id and second_group_id:
+                if not second_group_id.isdecimal():
+                    return JsonResponse(GlobalStatusCode.ParameterWrong)
+                api_second_group = AutomationGroupLevelSecond.objects.filter(id=second_group_id)
+                if api_second_group:
                     for i in id_list:
                         if not i.isdecimal():
                             return JsonResponse(GlobalStatusCode.ParameterWrong)
                     for j in id_list:
                         AutomationTestCase.objects.filter(id=j, project=project_id).update(
-                            automationGroupLevelFirst=AutomationGroupLevelFirst.objects.get(id=first_group_id))
+                            automationGroupLevelFirst=AutomationGroupLevelFirst.objects.get(id=first_group_id),
+                            automationGroupLevelSecond=AutomationGroupLevelSecond.objects.get(id=second_group_id))
                 else:
-                    return JsonResponse(GlobalStatusCode.ParameterWrong)
-
-                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
-                                        operationObject='用例', user=User.objects.get(id=1),
-                                        description='修改用例分组，列表"%s"' % id_list)
-                record.save()
-                return JsonResponse(GlobalStatusCode.success)
+                    return JsonResponse(GlobalStatusCode.GroupNotExist)
+            elif first_group_id and second_group_id is None:
+                for i in id_list:
+                    if not i.isdecimal():
+                        return JsonResponse(GlobalStatusCode.ParameterWrong)
+                for j in id_list:
+                    AutomationTestCase.objects.filter(id=j, project=project_id).update(
+                        automationGroupLevelFirst=AutomationGroupLevelFirst.objects.get(id=first_group_id))
             else:
-                return JsonResponse(GlobalStatusCode.GroupNotExist)
+                return JsonResponse(GlobalStatusCode.ParameterWrong)
+
+            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
+                                    operationObject='用例', user=User.objects.get(id=1),
+                                    description='修改用例分组，列表"%s"' % id_list)
+            record.save()
+            return JsonResponse(GlobalStatusCode.success)
         else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+            return JsonResponse(GlobalStatusCode.GroupNotExist)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(['GET'])
@@ -297,38 +269,32 @@ def case_list(request):
     if not page.isdecimal() or not project_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
     page = int(page)
-    try:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            if first_group_id and second_group_id is None:
-                if not first_group_id.isdecimal():
-                    return JsonResponse(GlobalStatusCode.ParameterWrong)
-                obi = AutomationTestCase.objects.filter(project=project_id,
-                                                        automationGroupLevelFirsta=first_group_id)
-            elif first_group_id and second_group_id:
-                if not first_group_id.isdecimal() or not second_group_id.isdecimal():
-                    return JsonResponse(GlobalStatusCode.ParameterWrong)
-                obi = AutomationTestCase.objects.filter(project=project_id,
-                                                        automationGroupLevelFirst=first_group_id,
-                                                        automationGroupLevelSecond=second_group_id)
-            else:
-                obi = AutomationTestCase.objects.filter(project=project_id)
-            data = json.loads(serializers.serialize('json', obi))
-            page_num = math.ceil(float(len(data)) / num)
-            if 0 < page <= page_num:
-                data = data[(page-1)*num:page*num]
-            else:
-                data = data[0:num]
-            response['data'] = del_model(data)
-            response['pageNum'] = page_num
-            return JsonResponse(dict(response, **GlobalStatusCode.success))
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        if first_group_id and second_group_id is None:
+            if not first_group_id.isdecimal():
+                return JsonResponse(GlobalStatusCode.ParameterWrong)
+            obi = AutomationTestCase.objects.filter(project=project_id,
+                                                    automationGroupLevelFirsta=first_group_id)
+        elif first_group_id and second_group_id:
+            if not first_group_id.isdecimal() or not second_group_id.isdecimal():
+                return JsonResponse(GlobalStatusCode.ParameterWrong)
+            obi = AutomationTestCase.objects.filter(project=project_id,
+                                                    automationGroupLevelFirst=first_group_id,
+                                                    automationGroupLevelSecond=second_group_id)
         else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(GlobalStatusCode.Fail)
+            obi = AutomationTestCase.objects.filter(project=project_id)
+        data = json.loads(serializers.serialize('json', obi))
+        page_num = math.ceil(float(len(data)) / num)
+        if 0 < page <= page_num:
+            data = data[(page-1)*num:page*num]
+        else:
+            data = data[0:num]
+        response['data'] = del_model(data)
+        response['pageNum'] = page_num
+        return JsonResponse(dict(response, **GlobalStatusCode.success))
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(['POST'])
@@ -351,52 +317,47 @@ def add_case(request):
     description = request.POST.get('description')
     if not project_id.isdecimal() or not first_group_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    try:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            obi = AutomationTestCase.objects.filter(caseName=name, project=project_id)
-            if len(obi) == 0:
-                first_group = AutomationGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
-                if len(first_group) == 0:
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = AutomationTestCase.objects.filter(caseName=name, project=project_id)
+        if len(obi) == 0:
+            first_group = AutomationGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
+            if len(first_group) == 0:
+                return JsonResponse(GlobalStatusCode.GroupNotExist)
+            if first_group_id and second_group_id:
+                if not second_group_id.isdecimal():
+                    return JsonResponse(GlobalStatusCode.ParameterWrong)
+                second_group = AutomationGroupLevelSecond.objects.filter(id=second_group_id,
+                                                                         automationGroupLevelFirst=first_group_id)
+                if len(second_group) == 0:
                     return JsonResponse(GlobalStatusCode.GroupNotExist)
-                if first_group_id and second_group_id:
-                    if not second_group_id.isdecimal():
-                        return JsonResponse(GlobalStatusCode.ParameterWrong)
-                    second_group = AutomationGroupLevelSecond.objects.filter(id=second_group_id,
-                                                                             automationGroupLevelFirst=first_group_id)
-                    if len(second_group) == 0:
-                        return JsonResponse(GlobalStatusCode.GroupNotExist)
-                    case = AutomationTestCase(
-                        project=Project.objects.get(id=project_id),
-                        automationGroupLevelFirst=AutomationGroupLevelFirst.objects.get(id=first_group_id),
-                        automationGroupLevelSecond=AutomationGroupLevelSecond.objects.get(id=second_group_id),
-                        caseName=name, description=description)
-                    case.save()
-                elif first_group_id and second_group_id is None:
-                    case = AutomationTestCase(
-                        project=Project.objects.get(id=project_id),
-                        automationGroupLevelFirst=AutomationGroupLevelFirst.objects.get(id=first_group_id),
-                        caseName=name, description=description)
-                    case.save()
-                else:
-                    case = AutomationTestCase(caseName=name, description=description)
-                    case.save()
-                data = AutomationTestCase.objects.filter(project=project_id, caseName=name)
-                case_id = json.loads(serializers.serialize('json', data))[0]['pk']
-                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='新增',
-                                        operationObject='用例', user=User.objects.get(id=1),
-                                        description='新增用例"%s"' % name)
-                record.save()
-                response['case_id'] = case_id
-                return JsonResponse(dict(response, **GlobalStatusCode.success))
+                case = AutomationTestCase(
+                    project=Project.objects.get(id=project_id),
+                    automationGroupLevelFirst=AutomationGroupLevelFirst.objects.get(id=first_group_id),
+                    automationGroupLevelSecond=AutomationGroupLevelSecond.objects.get(id=second_group_id),
+                    caseName=name, description=description)
+                case.save()
+            elif first_group_id and second_group_id is None:
+                case = AutomationTestCase(
+                    project=Project.objects.get(id=project_id),
+                    automationGroupLevelFirst=AutomationGroupLevelFirst.objects.get(id=first_group_id),
+                    caseName=name, description=description)
+                case.save()
             else:
-                return JsonResponse(GlobalStatusCode.NameRepetition)
+                case = AutomationTestCase(caseName=name, description=description)
+                case.save()
+            data = AutomationTestCase.objects.filter(project=project_id, caseName=name)
+            case_id = json.loads(serializers.serialize('json', data))[0]['pk']
+            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='新增',
+                                    operationObject='用例', user=User.objects.get(id=1),
+                                    description='新增用例"%s"' % name)
+            record.save()
+            response['case_id'] = case_id
+            return JsonResponse(dict(response, **GlobalStatusCode.success))
         else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
+            return JsonResponse(GlobalStatusCode.NameRepetition)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(['POST'])
@@ -417,28 +378,23 @@ def update_case(request):
     description = request.POST.get('description')
     if not project_id.isdecimal() or not case_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    try:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            obm = AutomationTestCase.objects.filter(id=case_id, project=project_id)
-            if len(obm) == 0:
-                return JsonResponse(GlobalStatusCode.CaseNotExist)
-            obi = AutomationTestCase.objects.filter(caseName=name, project=project_id).exclude(id=case_id)
-            if len(obi) == 0:
-                obm.update(caseName=name, description=description)
-                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
-                                        operationObject='用例', user=User.objects.get(id=1),
-                                        description='修改用例"%s"' % name)
-                record.save()
-                return JsonResponse(dict(response, **GlobalStatusCode.success))
-            else:
-                return JsonResponse(GlobalStatusCode.NameRepetition)
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obm = AutomationTestCase.objects.filter(id=case_id, project=project_id)
+        if len(obm) == 0:
+            return JsonResponse(GlobalStatusCode.CaseNotExist)
+        obi = AutomationTestCase.objects.filter(caseName=name, project=project_id).exclude(id=case_id)
+        if len(obi) == 0:
+            obm.update(caseName=name, description=description)
+            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
+                                    operationObject='用例', user=User.objects.get(id=1),
+                                    description='修改用例"%s"' % name)
+            record.save()
+            return JsonResponse(dict(response, **GlobalStatusCode.success))
         else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
+            return JsonResponse(GlobalStatusCode.NameRepetition)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(['POST'])
@@ -456,28 +412,23 @@ def del_case(request):
         return JsonResponse(GlobalStatusCode.ParameterWrong)
     ids = request.POST.get('case_ids')
     id_list = ids.split(',')
-    try:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            for i in id_list:
-                if not i.isdecimal():
-                    return JsonResponse(GlobalStatusCode.ParameterWrong)
-            for j in id_list:
-                obi = AutomationTestCase.objects.filter(id=j, project=project_id)
-                if len(obi) != 0:
-                    name = json.loads(serializers.serialize('json', obi))[0]['fields']['caseName']
-                    obi.delete()
-                    record = ProjectDynamic(project=Project.objects.get(id=project_id), type='删除',
-                                            operationObject='用例', user=User.objects.get(id=1),
-                                            description='删除用例"%s"' % name)
-                    record.save()
-            return JsonResponse(GlobalStatusCode.success)
-        else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        for i in id_list:
+            if not i.isdecimal():
+                return JsonResponse(GlobalStatusCode.ParameterWrong)
+        for j in id_list:
+            obi = AutomationTestCase.objects.filter(id=j, project=project_id)
+            if len(obi) != 0:
+                name = json.loads(serializers.serialize('json', obi))[0]['fields']['caseName']
+                obi.delete()
+                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='删除',
+                                        operationObject='用例', user=User.objects.get(id=1),
+                                        description='删除用例"%s"' % name)
+                record.save()
+        return JsonResponse(GlobalStatusCode.success)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(['GET'])
@@ -498,27 +449,22 @@ def api_list(request):
     if not project_id.isdecimal() or not case_id.isdecimal() or not page.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
     page = int(page)
-    try:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
-            if obi:
-                data = AutomationCaseApi.objects.filter(automationTestCase=case_id)
-                data = json.loads(serializers.serialize('json', data))
-                page_num = math.ceil(float(len(data)) / num)
-                if 0 < page <= page_num:
-                    data = data[(page - 1) * num:page * num]
-                else:
-                    data = data[0:num]
-                response['data'] = del_model(data)
-                response['pageNum'] = page_num
-                return JsonResponse(dict(response, **GlobalStatusCode.success))
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
+        if obi:
+            data = AutomationCaseApi.objects.filter(automationTestCase=case_id)
+            data = json.loads(serializers.serialize('json', data))
+            page_num = math.ceil(float(len(data)) / num)
+            if 0 < page <= page_num:
+                data = data[(page - 1) * num:page * num]
             else:
-                return JsonResponse(GlobalStatusCode.CaseNotExist)
+                data = data[0:num]
+            response['data'] = del_model(data)
+            response['pageNum'] = page_num
+            return JsonResponse(dict(response, **GlobalStatusCode.success))
         else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
+            return JsonResponse(GlobalStatusCode.CaseNotExist)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))

@@ -25,21 +25,14 @@ def host_total(request):
     project_id = request.GET.get('project_id')
     if not project_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    try:
-
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            obi = GlobalHost.objects.filter(project=project_id)
-            data = json.loads(serializers.serialize('json', obi))
-            response['data'] = del_model(data)
-            return JsonResponse(dict(response, **GlobalStatusCode.success))
-        else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        logging.error(e)
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = GlobalHost.objects.filter(project=project_id)
+        data = json.loads(serializers.serialize('json', obi))
+        response['data'] = del_model(data)
+        return JsonResponse(dict(response, **GlobalStatusCode.success))
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(["POST"])
@@ -60,30 +53,24 @@ def add_host(request):
     name = request.POST.get('name')
     host = request.POST.get('host')
     desc = request.POST.get('description')
-    try:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            obi = GlobalHost.objects.filter(name=name, project=project_id)
-            if obi:
-                return JsonResponse(GlobalStatusCode.NameRepetition)
-            else:
-                hosts = GlobalHost(project=Project.objects.get(id=project_id), name=name, host=host, description=desc)
-                hosts.save()
-                data = GlobalHost.objects.filter(project=project_id, name=name, host=host, description=desc)
-                host_id = json.loads(serializers.serialize('json', data))[0]['pk']
-                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='新增',
-                                        operationObject='HOST', user=User.objects.get(id=1), description='新增HOST')
-                record.save()
-                response['host_id'] = host_id
-                response = dict(response, **GlobalStatusCode.success)
-                return JsonResponse(response)
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = GlobalHost.objects.filter(name=name, project=project_id)
+        if obi:
+            return JsonResponse(GlobalStatusCode.NameRepetition)
         else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        logging.error(e)
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
+            hosts = GlobalHost(project=Project.objects.get(id=project_id), name=name, host=host, description=desc)
+            hosts.save()
+            data = GlobalHost.objects.filter(project=project_id, name=name, host=host, description=desc)
+            host_id = json.loads(serializers.serialize('json', data))[0]['pk']
+            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='新增',
+                                    operationObject='HOST', user=User.objects.get(id=1), description='新增HOST')
+            record.save()
+            response['host_id'] = host_id
+            response = dict(response, **GlobalStatusCode.success)
+            return JsonResponse(response)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(["POST"])
@@ -106,31 +93,25 @@ def update_host(request):
     name = request.POST.get('name')
     host = request.POST.get('host')
     desc = request.POST.get('description')
-    try:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            obi = GlobalHost.objects.filter(id=host_id, project=project_id)
-            if obi:
-                obm = GlobalHost.objects.filter(name=name).exclude(id=host_id)
-                if len(obm) == 0:
-                    obi.update(project=Project.objects.get(id=project_id), name=name, host=host, description=desc)
-                    record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
-                                            operationObject='HOST', user=User.objects.get(id=1),
-                                            description='修改HOST')
-                    record.save()
-                    response = dict(response, **GlobalStatusCode.success)
-                    return JsonResponse(response)
-                else:
-                    return JsonResponse(GlobalStatusCode.NameRepetition)
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = GlobalHost.objects.filter(id=host_id, project=project_id)
+        if obi:
+            obm = GlobalHost.objects.filter(name=name).exclude(id=host_id)
+            if len(obm) == 0:
+                obi.update(project=Project.objects.get(id=project_id), name=name, host=host, description=desc)
+                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
+                                        operationObject='HOST', user=User.objects.get(id=1),
+                                        description='修改HOST')
+                record.save()
+                response = dict(response, **GlobalStatusCode.success)
+                return JsonResponse(response)
             else:
-                return JsonResponse(GlobalStatusCode.HostNotExist)
+                return JsonResponse(GlobalStatusCode.NameRepetition)
         else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        logging.error(e)
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
+            return JsonResponse(GlobalStatusCode.HostNotExist)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(["POST"])
@@ -147,25 +128,19 @@ def del_host(request):
     host_id = request.POST.get('host_id')
     if not project_id.isdecimal() or not host_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    try:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            obi = GlobalHost.objects.filter(id=host_id, project=project_id)
-            if obi:
-                obi.delete()
-                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='删除',
-                                        operationObject='HOST', user=User.objects.get(id=1), description='删除HOST')
-                record.save()
-                return JsonResponse(GlobalStatusCode.success)
-            else:
-                return JsonResponse(GlobalStatusCode.HostNotExist)
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = GlobalHost.objects.filter(id=host_id, project=project_id)
+        if obi:
+            obi.delete()
+            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='删除',
+                                    operationObject='HOST', user=User.objects.get(id=1), description='删除HOST')
+            record.save()
+            return JsonResponse(GlobalStatusCode.success)
         else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        logging.error(e)
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
+            return JsonResponse(GlobalStatusCode.HostNotExist)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(["POST"])
@@ -182,25 +157,19 @@ def disable_host(request):
     host_id = request.POST.get('host_id')
     if not project_id.isdecimal() or not host_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    try:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            obi = GlobalHost.objects.filter(id=host_id, project=project_id)
-            if obi:
-                obi.update(status=False)
-                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='禁用',
-                                        operationObject='HOST', user=User.objects.get(id=1), description='禁用HOST')
-                record.save()
-                return JsonResponse(GlobalStatusCode.success)
-            else:
-                return JsonResponse(GlobalStatusCode.HostNotExist)
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = GlobalHost.objects.filter(id=host_id, project=project_id)
+        if obi:
+            obi.update(status=False)
+            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='禁用',
+                                    operationObject='HOST', user=User.objects.get(id=1), description='禁用HOST')
+            record.save()
+            return JsonResponse(GlobalStatusCode.success)
         else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        response['error'] = '%s' % e
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
+            return JsonResponse(GlobalStatusCode.HostNotExist)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
 @require_http_methods(["POST"])
@@ -217,22 +186,16 @@ def enable_host(request):
     host_id = request.POST.get('host_id')
     if not project_id.isdecimal() or not host_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    try:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            obi = GlobalHost.objects.filter(id=host_id, project=project_id)
-            if obi:
-                obi.update(status=True)
-                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='启用',
-                                        operationObject='HOST', user=User.objects.get(id=1), description='启用HOST')
-                record.save()
-                return JsonResponse(GlobalStatusCode.success)
-            else:
-                return JsonResponse(GlobalStatusCode.HostNotExist)
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = GlobalHost.objects.filter(id=host_id, project=project_id)
+        if obi:
+            obi.update(status=True)
+            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='启用',
+                                    operationObject='HOST', user=User.objects.get(id=1), description='启用HOST')
+            record.save()
+            return JsonResponse(GlobalStatusCode.success)
         else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
-
-    except Exception as e:
-        logging.exception('ERROR')
-        logging.error(e)
-        return JsonResponse(dict(response, **GlobalStatusCode.Fail))
+            return JsonResponse(GlobalStatusCode.HostNotExist)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
