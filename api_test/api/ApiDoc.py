@@ -466,11 +466,11 @@ def del_api(request):
         return JsonResponse(GlobalStatusCode.ParameterWrong)
     ids = request.POST.get('api_ids')
     id_list = ids.split(',')
+    for i in id_list:
+        if not i.isdecimal():
+            return JsonResponse(GlobalStatusCode.ParameterWrong)
     obj = Project.objects.filter(id=project_id)
     if obj:
-        for i in id_list:
-            if not i.isdecimal():
-                return JsonResponse(GlobalStatusCode.ParameterWrong)
         for j in id_list:
             obi = ApiInfo.objects.filter(id=j, project=project_id)
             if len(obi) != 0:
@@ -612,6 +612,34 @@ def add_history(request):
             data = APIRequestHistory.objects.filter(apiInfo=api_id).order_by('-requestTime')
             history_id = json.loads(serializers.serialize('json', data))[0]['pk']
             response['history_id'] = history_id
+            return JsonResponse(dict(response, **GlobalStatusCode.success))
+        else:
+            return JsonResponse(GlobalStatusCode.ApiNotExist)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+
+
+@require_http_methods(['GET'])
+@verify_parameter(['project_id', 'api_id'], 'GET')
+def history_list(request):
+    """
+    获取请求历史
+    project_id 项目ID
+    api_id 接口ID
+    :return:
+    """
+    response = {}
+    project_id = request.GET.get('project_id')
+    api_id = request.GET.get('api_id')
+    if not project_id.isdecimal() or not api_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = ApiInfo.objects.filter(id=api_id, project=project_id)
+        if obi:
+            history = APIRequestHistory.objects.filter(apiInfo=ApiInfo.objects.get(id=api_id, project=project_id))
+            data = json.loads(serializers.serialize('json', history))
+            response['data'] = del_model(data)
             return JsonResponse(dict(response, **GlobalStatusCode.success))
         else:
             return JsonResponse(GlobalStatusCode.ApiNotExist)

@@ -1,16 +1,20 @@
 import json
 import logging
+import re
+
 import math
 
 from django.contrib.auth.models import User
 from django.core import serializers
+from django.db import transaction
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
 from api_test.common import GlobalStatusCode
 from api_test.common.common import del_model, verify_parameter
+from api_test.common.confighttp import test_api
 from api_test.models import Project, AutomationGroupLevelFirst, AutomationGroupLevelSecond, ProjectDynamic, \
-    AutomationTestCase, AutomationCaseApi
+    AutomationTestCase, AutomationCaseApi, AutomationParameter, GlobalHost, AutomationTestResult, AutomationHead
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -468,3 +472,266 @@ def api_list(request):
     else:
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
+
+@require_http_methods(['POST'])
+@verify_parameter(['project_id', 'case_id', 'name', 'httpType', 'requestType', 'address',
+                   'requestParameterType', 'examineType'], 'POST')
+def add_new_api(request):
+    """
+    新增用例接口
+    project_id 项目ID
+    case_id 用例ID
+    name 接口名称
+    httpType  请求协议
+    requestType 请求方式
+    address 请求地址
+    headDict 请求头
+    requestParameterType 请求的参数格式
+    requestList 请求参数列表
+    examineType 校验方式
+    httpCode 校验的http状态
+    responseData 校验的内容
+    :return:
+    """
+    response = {}
+    project_id = request.POST.get('project_id')
+    case_id = request.POST.get('case_id')
+    name = request.POST.get('name')
+    http_type = request.POST.get('httpType')
+    request_type = request.POST.get('requestType')
+    address = request.POST.get('address')
+    head_dict = request.POST.get('headDict')
+    request_parameter_type = request.POST.get('requestParameterType')
+    request_list = request.POST.get('requestList')
+    examine_type = request.POST.get('examineType')
+    http_code = request.POST.get('httpCode')
+    response_data = request.POST.get('responseData')
+    if not project_id.isdecimal() or not case_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    if http_type not in ['HTTP', 'HTTPS']:
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    if request_type not in ['POST', 'GET', 'PUT', 'DELETE']:
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    if request_parameter_type not in ['form-data', 'raw', 'Restful']:
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    if examine_type not in ['no_check-data', 'json', 'entirely_check', 'Regular_check']:
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    if http_code not in ['200', '404', '400', '502', '500', '302']:
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
+        if obi:
+            obm = AutomationCaseApi.objects.filter(name=name, automationTestCase=case_id)
+            if len(obm) == 0:
+                with transaction.atomic():
+                    case_api = AutomationCaseApi(automationTestCase=AutomationTestCase.objects.get(id=case_id),
+                                                 name=name, http_type=http_type, requestType=request_type,
+                                                 address=address,
+                                                 requestParameterType=request_parameter_type, examineType=examine_type,
+                                                 httpCode=http_code, responseData=response_data)
+                    case_api.save()
+                    obn = AutomationCaseApi.objects.filter(name=name, automationTestCase=case_id)
+                    case_api_id = json.loads(serializers.serialize('json', obn))[0]['pk']
+                    response['case_api_id'] = case_api_id
+                    request_parameter = re.findall('{.*?}', request_list)
+                    for i in request_parameter:
+                        i = eval(i)
+                        parameter = AutomationParameter(automationCaseApi=AutomationCaseApi.objects.get(id=case_api_id),
+                                                        key=i['k'], value=i['v'], interrelate=i['b'])
+                        parameter.save()
+                    headers = re.findall('{.*?}', head_dict)
+                    for i in headers:
+                        i = eval(i)
+                        head = AutomationHead(automationCaseApi=AutomationCaseApi.objects.get(id=case_api_id),
+                                              key=i['k'], value=i['v'], interrelate=i['b'])
+                        head.save()
+                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='新增',
+                                        operationObject='新增用例接口', user=User.objects.get(id=1),
+                                        description='新增用例接口"%s"' % name)
+                record.save()
+                return JsonResponse(dict(response, **GlobalStatusCode.success))
+            else:
+                return JsonResponse(GlobalStatusCode.NameRepetition)
+        else:
+            return JsonResponse(GlobalStatusCode.CaseNotExist)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+
+
+@require_http_methods(['POST'])
+@verify_parameter(['project_id', 'case_id', 'case_api_id', 'name', 'httpType', 'requestType', 'address',
+                   'requestParameterType', 'examineType'], 'POST')
+def update_api(request):
+    """
+    新增用例接口
+    project_id 项目ID
+    case_id 用例ID
+    case_api_id 接口ID
+    name 接口名称
+    httpType  请求协议
+    requestType 请求方式
+    address 请求地址
+    headDict 请求头
+    requestParameterType 请求的参数格式
+    requestList 请求参数列表
+    examineType 校验方式
+    httpCode 校验的http状态
+    responseData 校验的内容
+    :return:
+    """
+    response = {}
+    project_id = request.POST.get('project_id')
+    case_id = request.POST.get('case_id')
+    case_api_id = request.POST.get('case_api_id')
+    name = request.POST.get('name')
+    http_type = request.POST.get('httpType')
+    request_type = request.POST.get('requestType')
+    address = request.POST.get('address')
+    head_dict = request.POST.get('headDict')
+    request_parameter_type = request.POST.get('requestParameterType')
+    request_list = request.POST.get('requestList')
+    examine_type = request.POST.get('examineType')
+    http_code = request.POST.get('httpCode')
+    response_data = request.POST.get('responseData')
+    if not project_id.isdecimal() or not case_id.isdecimal() or not case_api_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    if http_type not in ['HTTP', 'HTTPS']:
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    if request_type not in ['POST', 'GET', 'PUT', 'DELETE']:
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    if request_parameter_type not in ['form-data', 'raw', 'Restful']:
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    if examine_type not in ['no_check-data', 'json', 'entirely_check', 'Regular_check']:
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    if http_code not in ['200', '404', '400', '502', '500', '302']:
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
+        if obi:
+            obm = AutomationCaseApi.objects.filter(id=case_api_id, automationTestCase=case_id)
+            if obm:
+                obn = AutomationCaseApi.objects.filter(name=name).exclude(id=case_api_id)
+                if len(obn) == 0:
+                    with transaction.atomic():
+                        obm.update(name=name, http_type=http_type, requestType=request_type,
+                                   address=address,
+                                   requestParameterType=request_parameter_type, examineType=examine_type,
+                                   httpCode=http_code, responseData=response_data)
+                        AutomationParameter.objects.filter(automationCaseApi=case_api_id).delete()
+                        request_parameter = re.findall('{.*?}', request_list)
+                        for i in request_parameter:
+                            i = eval(i)
+                            parameter = AutomationParameter(
+                                automationCaseApi=AutomationCaseApi.objects.get(id=case_api_id),
+                                key=i['k'], value=i['v'], interrelate=i['b'])
+                            parameter.save()
+                        AutomationHead.objects.filter(automationCaseApi=case_api_id).delete()
+                        headers = re.findall('{.*?}', head_dict)
+                        for i in headers:
+                            i = eval(i)
+                            head = AutomationHead(
+                                automationCaseApi=AutomationCaseApi.objects.get(id=case_api_id),
+                                key=i['k'], value=i['v'], interrelate=i['b'])
+                            head.save()
+                    record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
+                                            operationObject='修改用例接口', user=User.objects.get(id=1),
+                                            description='修改用例接口"%s"' % name)
+                    record.save()
+                    return JsonResponse(GlobalStatusCode.success)
+                else:
+                    return JsonResponse(GlobalStatusCode.NameRepetition)
+            else:
+                return JsonResponse(GlobalStatusCode.ApiNotExist)
+        else:
+            return JsonResponse(GlobalStatusCode.CaseNotExist)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+
+
+@require_http_methods(['POST'])
+@verify_parameter(['project_id', 'case_id', 'ids'], 'POST')
+def del_api(request):
+    """
+    删除用例下的接口
+    project_id  项目ID
+    case_id  用例ID
+    ids 接口ID列表
+    :return:
+    """
+    response = {}
+    project_id = request.POST.get('project_id')
+    case_id = request.POST.get('case_id')
+    if not project_id.isdecimal() or not case_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    ids = request.POST.get('ids')
+    id_list = ids.split(',')
+    for i in id_list:
+        if not i.isdecimal():
+            return JsonResponse(GlobalStatusCode.ParameterWrong)
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obm = AutomationTestCase.objects.filter(id=case_id, project=project_id)
+        if obm:
+            case_name = json.loads(serializers.serialize('json', obm))[0]['fields']['caseName']
+            for j in id_list:
+                obi = AutomationCaseApi.objects.filter(id=j, automationTestCase=case_id)
+                if len(obi) != 0:
+                    name = json.loads(serializers.serialize('json', obi))[0]['fields']['name']
+                    obi.delete()
+                    record = ProjectDynamic(project=Project.objects.get(id=project_id), type='删除',
+                                            operationObject='删除接口', user=User.objects.get(id=1),
+                                            description='删除用例"%s"的接口"%s"' % (case_name, name))
+                    record.save()
+            return JsonResponse(GlobalStatusCode.success)
+        else:
+            return JsonResponse(GlobalStatusCode.CaseNotExist)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+
+
+@require_http_methods(['POST'])
+@verify_parameter(['project_id', 'case_id', 'host_id', 'id'], 'POST')
+def start_test(request):
+    """
+    执行测试用例
+    project_id 项目ID
+    case_id 用例ID
+    host_id hostID
+    id 接口ID
+    :return:
+    """
+    response = {}
+    project_id = request.POST.get('project_id')
+    case_id = request.POST.get('case_id')
+    host_id = request.POST.get('host_id')
+    _id = request.POST.get('id')
+    if not project_id.isdecimal() or not case_id.isdecimal() or not host_id.isdecimal() or not _id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
+        if obi:
+            obm = GlobalHost.objects.filter(id=host_id, project=project_id)
+            if obm:
+                host = json.loads(serializers.serialize('json', obm))[0]['fields']['host']
+                obn = AutomationCaseApi.objects.filter(id=_id, automationTestCase=case_id)
+                if obn:
+                    code, data = test_api(host_id, case_id, _id, project_id)
+                    rt = AutomationTestResult.objects.filter(automationCaseApi=_id)
+                    if rt:
+                        rt.update(result='fail', http_status=code, response_data=data)
+                    else:
+                        result = AutomationTestResult(automationCaseApi=AutomationCaseApi.objects.get(id=_id),
+                                                      result='pass', http_status=code, response_data=data)
+                        result.save()
+                    return JsonResponse(GlobalStatusCode.success)
+                else:
+                    return JsonResponse(GlobalStatusCode.ApiNotExist)
+            else:
+                return JsonResponse(GlobalStatusCode.HostNotExist)
+        else:
+            return JsonResponse(GlobalStatusCode.CaseNotExist)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)

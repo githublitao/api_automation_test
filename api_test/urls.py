@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'api/update_api_group', ApiDoc.update_api_group),
     url(r'api/api_info', ApiDoc.api_info),
     url(r'api/add_history', ApiDoc.add_history),
+    url(r'api/history_list', ApiDoc.history_list),
     url(r'api/del_history', ApiDoc.del_history),
     url(r'automation/group', case.group),
     url(r'automation/add_group', case.add_group),
@@ -46,4 +47,8 @@ urlpatterns = [
     url(r'automation/update_case', case.update_case),
     url(r'automation/del_case', case.del_case),
     url(r'automation/api_list', case.api_list),
+    url(r'automation/add_new_api', case.add_new_api),
+    url(r'automation/update_api', case.update_api),
+    url(r'automation/del_api', case.del_api),
+    url(r'automation/start_test', case.start_test),
 ]

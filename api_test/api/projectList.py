@@ -119,7 +119,7 @@ def del_project(request):
     project_id = request.POST.get('project_id')
     if not project_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-        obj = Project.objects.filter(id=project_id)
+    obj = Project.objects.filter(id=project_id)
     if obj:
         Project.objects.filter(id=project_id).delete()
         return JsonResponse(GlobalStatusCode.success)
@@ -139,7 +139,7 @@ def disable_project(request):
     project_id = request.POST.get('project_id')
     if not project_id.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-        obj = Project.objects.filter(id=project_id)
+    obj = Project.objects.filter(id=project_id)
     if obj:
         obj.update(status=False)
         record = ProjectDynamic(project=Project.objects.get(id=project_id), type='禁用',

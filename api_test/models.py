@@ -176,7 +176,7 @@ class CustomMethod(models.Model):
     name = models.CharField(max_length=50, verbose_name='方法名')
     description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
     type = models.CharField(max_length=50, verbose_name='类型')
-    dataCode = models.TextField(max_length=2048, verbose_name='代码')
+    dataCode = models.TextField(verbose_name='代码')
     status = models.BooleanField(default=True, verbose_name='状态')
 
     def __unicode__(self):
@@ -241,11 +241,11 @@ class ApiInfo(models.Model):
     apiAddress = models.CharField(max_length=1024, verbose_name='接口地址')
     request_head = models.CharField(max_length=1024, blank=True, null=True, verbose_name='请求头')
     requestParameterType = models.CharField(max_length=50, verbose_name='请求参数格式', choices=REQUEST_PARAMETER_TYPE_CHOICE)
-    requestParameter = models.CharField(max_length=10240, blank=True, null=True, verbose_name='请求参数')
+    requestParameter = models.CharField(max_length=1024, blank=True, null=True, verbose_name='请求参数')
     status = models.BooleanField(default=True, verbose_name='状态')
-    response = models.CharField(max_length=10240, blank=True, null=True, verbose_name='返回数据')
+    response = models.CharField(max_length=1024, blank=True, null=True, verbose_name='返回数据')
     mock_code = models.CharField(max_length=50, blank=True, null=True, verbose_name='HTTP状态', choices=HTTP_CODE_CHOICE)
-    data = models.TextField(max_length=4096, blank=True, null=True, verbose_name='内容')
+    data = models.TextField(max_length=1024, blank=True, null=True, verbose_name='内容')
     lastUpdateTime = models.DateTimeField(auto_now=True, verbose_name='最近更新')
     userUpdate = models.CharField(max_length=50, verbose_name='更新人')
     description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
@@ -369,11 +369,10 @@ class AutomationCaseApi(models.Model):
     http_type = models.CharField(max_length=50, default='HTTP', verbose_name='HTTP/HTTPS', choices=HTTP_CHOICE)
     requestType = models.CharField(max_length=50, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)
     address = models.CharField(max_length=1024, verbose_name='接口地址')
-    header = models.CharField(max_length=1024, verbose_name='请求头')
     requestParameterType = models.CharField(max_length=50, verbose_name='参数请求格式', choices=REQUEST_PARAMETER_TYPE_CHOICE)
     examineType = models.CharField(max_length=50, verbose_name='校验方式', choices=EXAMINE_TYPE_CHOICE)
     httpCode = models.CharField(max_length=50, blank=True, null=True, verbose_name='HTTP状态', choices=HTTP_CODE_CHOICE)
-    responseData = models.TextField(max_length=10240, blank=True, null=True, verbose_name='返回内容')
+    responseData = models.TextField(blank=True, null=True, verbose_name='返回内容')
 
     def __unicode__(self):
         return self.name
@@ -386,6 +385,24 @@ class AutomationCaseApi(models.Model):
         verbose_name_plural = '用例接口管理'
 
 
+class AutomationHead(models.Model):
+    """
+    请求头
+    """
+    id = models.AutoField(primary_key=True)
+    automationCaseApi = models.ForeignKey(AutomationCaseApi, on_delete=models.CASCADE, verbose_name='接口ID')
+    key = models.CharField(max_length=1024, verbose_name='参数名')
+    value = models.CharField(max_length=1024, verbose_name='内容')
+    interrelate = models.BooleanField(default=False, verbose_name='是否关联')
+
+    def __unicode__(self):
+        return self.value
+
+    class Meta:
+        verbose_name = '请求头'
+        verbose_name_plural = '请求头管理'
+
+
 class AutomationParameter(models.Model):
     """
     请求的参数
@@ -393,7 +410,7 @@ class AutomationParameter(models.Model):
     id = models.AutoField(primary_key=True)
     automationCaseApi = models.ForeignKey(AutomationCaseApi, on_delete=models.CASCADE, verbose_name='接口ID')
     key = models.CharField(max_length=1024, verbose_name='参数名')
-    value = models.CharField(max_length=10240, verbose_name='内容')
+    value = models.CharField(max_length=1024, verbose_name='内容')
     interrelate = models.BooleanField(default=False, verbose_name='是否关联')
 
     def __unicode__(self):
@@ -409,7 +426,7 @@ class AutomationTestResult(models.Model):
     用例执行结果
     """
     id = models.AutoField(primary_key=True)
-    automationCaseApi = models.ForeignKey(AutomationCaseApi, on_delete=models.CASCADE, verbose_name='接口ID')
+    automationCaseApi = models.OneToOneField(AutomationCaseApi, on_delete=models.CASCADE, verbose_name='接口ID')
     result = models.CharField(max_length=50, verbose_name='测试结果')
     http_status = models.CharField(max_length=50, blank=True, null=True, verbose_name='http状态')
     response_data = models.TextField(blank=True, null=True, verbose_name='实际返回内容')
