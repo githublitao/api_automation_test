@@ -37,6 +37,7 @@ HTTP_CODE_CHOICE = (
 
 EXAMINE_TYPE_CHOICE = (
     ('no_check', '不校验'),
+    ('only_check_status', '校验http状态'),
     ('json', 'JSON校验'),
     ('entirely_check', '完全校验'),
     ('Regular_check', '正则校验'),
@@ -48,6 +49,11 @@ UNIT_CHOICE = (
     ('h', '时'),
     ('d', '天'),
     ('w', '周'),
+)
+
+RESULT_CHOICE = (
+    ('PASS', '成功'),
+    ('FAIL', '失败'),
 )
 
 
@@ -427,7 +433,7 @@ class AutomationTestResult(models.Model):
     """
     id = models.AutoField(primary_key=True)
     automationCaseApi = models.OneToOneField(AutomationCaseApi, on_delete=models.CASCADE, verbose_name='接口ID')
-    result = models.CharField(max_length=50, verbose_name='测试结果')
+    result = models.CharField(max_length=50, verbose_name='测试结果', choices=RESULT_CHOICE)
     http_status = models.CharField(max_length=50, blank=True, null=True, verbose_name='http状态')
     response_data = models.TextField(blank=True, null=True, verbose_name='实际返回内容')
     test_time = models.DateTimeField(auto_now_add=True, verbose_name='测试时间')

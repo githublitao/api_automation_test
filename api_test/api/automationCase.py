@@ -14,7 +14,7 @@ from api_test.common import GlobalStatusCode
 from api_test.common.common import del_model, verify_parameter
 from api_test.common.confighttp import test_api
 from api_test.models import Project, AutomationGroupLevelFirst, AutomationGroupLevelSecond, ProjectDynamic, \
-    AutomationTestCase, AutomationCaseApi, AutomationParameter, GlobalHost, AutomationTestResult, AutomationHead
+    AutomationTestCase, AutomationCaseApi, AutomationParameter, GlobalHost, AutomationHead
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -514,7 +514,7 @@ def add_new_api(request):
         return JsonResponse(GlobalStatusCode.ParameterWrong)
     if request_parameter_type not in ['form-data', 'raw', 'Restful']:
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    if examine_type not in ['no_check-data', 'json', 'entirely_check', 'Regular_check']:
+    if examine_type not in ['no_check',  'only_check_status', 'json', 'entirely_check', 'Regular_check']:
         return JsonResponse(GlobalStatusCode.ParameterWrong)
     if http_code not in ['200', '404', '400', '502', '500', '302']:
         return JsonResponse(GlobalStatusCode.ParameterWrong)
@@ -602,7 +602,7 @@ def update_api(request):
         return JsonResponse(GlobalStatusCode.ParameterWrong)
     if request_parameter_type not in ['form-data', 'raw', 'Restful']:
         return JsonResponse(GlobalStatusCode.ParameterWrong)
-    if examine_type not in ['no_check-data', 'json', 'entirely_check', 'Regular_check']:
+    if examine_type not in ['no_check',  'only_check_status', 'json', 'entirely_check', 'Regular_check']:
         return JsonResponse(GlobalStatusCode.ParameterWrong)
     if http_code not in ['200', '404', '400', '502', '500', '302']:
         return JsonResponse(GlobalStatusCode.ParameterWrong)
@@ -715,18 +715,10 @@ def start_test(request):
         if obi:
             obm = GlobalHost.objects.filter(id=host_id, project=project_id)
             if obm:
-                host = json.loads(serializers.serialize('json', obm))[0]['fields']['host']
                 obn = AutomationCaseApi.objects.filter(id=_id, automationTestCase=case_id)
                 if obn:
-                    code, data = test_api(host_id, case_id, _id, project_id)
-                    rt = AutomationTestResult.objects.filter(automationCaseApi=_id)
-                    if rt:
-                        rt.update(result='fail', http_status=code, response_data=data)
-                    else:
-                        result = AutomationTestResult(automationCaseApi=AutomationCaseApi.objects.get(id=_id),
-                                                      result='pass', http_status=code, response_data=data)
-                        result.save()
-                    return JsonResponse(GlobalStatusCode.success)
+                    response['data'] = test_api(host_id, case_id, _id, project_id)
+                    return JsonResponse(dict(response, **GlobalStatusCode.success))
                 else:
                     return JsonResponse(GlobalStatusCode.ApiNotExist)
             else:
@@ -735,3 +727,32 @@ def start_test(request):
             return JsonResponse(GlobalStatusCode.CaseNotExist)
     else:
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
+
+
+@require_http_methods(['POST'])
+@verify_parameter(['project_id', 'case_id', 'host_id', 'name', 'type', 'startTime', 'endTime'], 'POST')
+def add_time_task(request):
+    """
+    添加定时任务
+    project_id： 项目ID
+    case_id 用例ID
+    host_id HOST_ID
+    name 任务名称
+    type 任务类型
+    startTime 任务开始时间
+    endTime 任务结束时间
+    :return:
+    """
+    pass
+    response = {}
+    project_id = request.POST.get('project_id')
+    case_id = request.POST.get('case_id')
+    host_id = request.POST.get('host_id')
+    name = request.POST.get('name')
+    _type = request.POST.get('type')
+    frequency = request.POST.get('frequency')
+    unit = request.POST.get('unit')
+    startTime = request.POST.get('startTime')
+    endTime = request.POST.get('endTime')
+
+
