@@ -57,29 +57,10 @@ RESULT_CHOICE = (
 )
 
 
-# class User(models.Model):
-#     """
-#     用户表
-#     """
-#     id = models.AutoField(primary_key=True)
-#     name = models.CharField(max_length=50, verbose_name='账号')
-#     password = models.CharField(max_length=50, verbose_name='登录密码')
-#     nickName = models.CharField(max_length=50, verbose_name='真实姓名')
-#     token = models.CharField(max_length=50, verbose_name='用户令牌')
-#     permissionType = models.CharField(max_length=50, verbose_name='权限类型')
-#     email = models.EmailField(max_length=128, blank=True, null=True, verbose_name='邮箱')
-#     phone = models.CharField(max_length=50, blank=True, null=True, verbose_name='手机号')
-#     lastLogin = models.DateTimeField(auto_now=True, verbose_name='最近登录')
-#
-#     def __unicode__(self):
-#         return self.name
-#
-#     def __str__(self):
-#         return self.name
-#
-#     class Meta:
-#         verbose_name = '用户'
-#         verbose_name_plural = '用户'
+TASK_CHOICE = (
+    ('circulation', '循环'),
+    ('timing', '定时'),
+)
 
 
 class Project(models.Model):
@@ -144,7 +125,7 @@ class ProjectMember(models.Model):
     id = models.AutoField(primary_key=True)
     permission_type = models.CharField(max_length=50, verbose_name='权限角色', choices=CHOICES)
     project = models.ForeignKey(Project,  on_delete=models.CASCADE, verbose_name='项目ID')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='用户ID')
+    user = models.ForeignKey(User, related_name='UserInfo', on_delete=models.CASCADE, verbose_name='用户ID')
 
     class Meta:
         verbose_name = '项目成员'
@@ -159,7 +140,7 @@ class GlobalHost(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='项目ID')
     name = models.CharField(max_length=50, verbose_name='名称')
     host = models.CharField(max_length=1024, verbose_name='Host地址')
-    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
+    description = models.TextField(blank=True, null=True, verbose_name='描述')
     status = models.BooleanField(default=True, verbose_name='状态')
 
     def __unicode__(self):
@@ -224,6 +205,9 @@ class ApiGroupLevelSecond(models.Model):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = '接口二级分组'
         verbose_name_plural = '接口二级分组'
@@ -236,18 +220,18 @@ class ApiInfo(models.Model):
     id = models.AutoField(primary_key=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='所属项目')
     apiGroupLevelFirst = models.ForeignKey(ApiGroupLevelFirst, blank=True, null=True,
-                                              related_name='ApiGroupLevelFirst_id',
-                                              on_delete=models.SET_NULL, verbose_name='所属一级分组')
+                                           related_name='ApiGroupLevelFirst_id',
+                                           on_delete=models.SET_NULL, verbose_name='所属一级分组')
     apiGroupLevelSecond = models.ForeignKey(ApiGroupLevelSecond, blank=True, null=True,
-                                               related_name='ApiGroupLevelSecond_id',
-                                               on_delete=models.SET_NULL, verbose_name='所属二级分组')
+                                            related_name='ApiGroupLevelSecond_id',
+                                            on_delete=models.SET_NULL, verbose_name='所属二级分组')
     name = models.CharField(max_length=50, verbose_name='接口名称')
     http_type = models.CharField(max_length=50, default='HTTP', verbose_name='http/https', choices=HTTP_CHOICE)
     requestType = models.CharField(max_length=50, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)
     apiAddress = models.CharField(max_length=1024, verbose_name='接口地址')
-    request_head = models.CharField(max_length=1024, blank=True, null=True, verbose_name='请求头')
+    request_head = models.TextField(blank=True, null=True, verbose_name='请求头')
     requestParameterType = models.CharField(max_length=50, verbose_name='请求参数格式', choices=REQUEST_PARAMETER_TYPE_CHOICE)
-    requestParameter = models.CharField(max_length=1024, blank=True, null=True, verbose_name='请求参数')
+    requestParameter = models.TextField(blank=True, null=True, verbose_name='请求参数')
     status = models.BooleanField(default=True, verbose_name='状态')
     response = models.CharField(max_length=1024, blank=True, null=True, verbose_name='返回数据')
     mock_code = models.CharField(max_length=50, blank=True, null=True, verbose_name='HTTP状态', choices=HTTP_CODE_CHOICE)
@@ -433,8 +417,15 @@ class AutomationTestResult(models.Model):
     """
     id = models.AutoField(primary_key=True)
     automationCaseApi = models.OneToOneField(AutomationCaseApi, on_delete=models.CASCADE, verbose_name='接口ID')
+    url = models.CharField(max_length=1024, verbose_name='请求地址')
+    request_type = models.CharField(max_length=1024, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)
+    header = models.CharField(max_length=1024, blank=True, null=True, verbose_name='请求头')
+    parameter = models.TextField(blank=True, null=True, verbose_name='请求参数')
+    status_code = models.CharField(max_length=1024, verbose_name='期望HTTP状态', choices=HTTP_CODE_CHOICE)
+    examineType = models.CharField(max_length=1024, verbose_name='匹配规则', choices=EXAMINE_TYPE_CHOICE)
+    data = models.TextField(blank=True, null=True, verbose_name='规则内容')
     result = models.CharField(max_length=50, verbose_name='测试结果', choices=RESULT_CHOICE)
-    http_status = models.CharField(max_length=50, blank=True, null=True, verbose_name='http状态')
+    http_status = models.CharField(max_length=50, blank=True, null=True, verbose_name='http状态', choices=HTTP_CODE_CHOICE)
     response_data = models.TextField(blank=True, null=True, verbose_name='实际返回内容')
     test_time = models.DateTimeField(auto_now_add=True, verbose_name='测试时间')
 
@@ -451,16 +442,19 @@ class AutomationTestTask(models.Model):
     用例定时任务
     """
     id = models.AutoField(primary_key=True)
-    automationTestCase = models.ForeignKey(AutomationTestCase, on_delete=models.CASCADE, verbose_name='接口ID')
+    automationTestCase = models.OneToOneField(AutomationTestCase, on_delete=models.CASCADE, verbose_name='用例ID')
     Host = models.ForeignKey(GlobalHost, on_delete=models.CASCADE, verbose_name='HOST')
     name = models.CharField(max_length=50, verbose_name='任务名称')
-    type = models.CharField(max_length=50, verbose_name='类型', choices=(('circulation', '循环'), ('timing', '定时')))
+    type = models.CharField(max_length=50, verbose_name='类型', choices=TASK_CHOICE)
     frequency = models.IntegerField(blank=True, null=True, verbose_name='间隔')
     unit = models.CharField(max_length=50, blank=True, null=True, verbose_name='单位', choices=UNIT_CHOICE)
     startTime = models.DateTimeField(max_length=50, verbose_name='开始时间')
     endTime = models.DateTimeField(max_length=50, verbose_name='结束时间')
 
     def __unicode__(self):
+        return self.name
+
+    def __str__(self):
         return self.name
 
     class Meta:

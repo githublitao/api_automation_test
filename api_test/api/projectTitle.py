@@ -59,7 +59,7 @@ def api_total(request):
 @verify_parameter(['project_id', ], 'GET')
 def dynamic_total(request):
     """
-    获取接口数量
+    获取动态数量
     project_id  项目ID
     :return:
     """
@@ -80,7 +80,7 @@ def dynamic_total(request):
 @verify_parameter(['project_id', ], 'GET')
 def project_member(request):
     """
-    获取接口数量
+    获取成员数量
     project_id  项目ID
     :return:
     """

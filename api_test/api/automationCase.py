@@ -3,6 +3,7 @@ import logging
 import re
 
 import math
+from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.core import serializers
@@ -11,10 +12,11 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
 from api_test.common import GlobalStatusCode
-from api_test.common.common import del_model, verify_parameter
+from api_test.common.common import del_model, verify_parameter, record_dynamic
 from api_test.common.confighttp import test_api
 from api_test.models import Project, AutomationGroupLevelFirst, AutomationGroupLevelSecond, ProjectDynamic, \
-    AutomationTestCase, AutomationCaseApi, AutomationParameter, GlobalHost, AutomationHead
+    AutomationTestCase, AutomationCaseApi, AutomationParameter, GlobalHost, AutomationHead, AutomationTestTask, \
+    AutomationTestResult
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -76,22 +78,14 @@ def add_group(request):
                 first_group = AutomationGroupLevelSecond(automationGroupLevelFirst=
                                                          AutomationGroupLevelFirst.objects.get(id=first_group_id), name=name)
                 first_group.save()
-                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='新增',
-                                        operationObject='用例分组', user=User.objects.get(id=1),
-                                        description='新增用例分组')
-                record.save()
-                return JsonResponse(GlobalStatusCode.success)
             else:
                 return JsonResponse(GlobalStatusCode.GroupNotExist)
         # 添加一级分组名称
         else:
             obi = AutomationGroupLevelFirst(project=Project.objects.get(id=project_id), name=name)
             obi.save()
-            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='新增',
-                                    operationObject='用例分组', user=User.objects.get(id=1),
-                                    description='新增用例分组')
-            record.save()
-            return JsonResponse(GlobalStatusCode.success)
+        record_dynamic(project_id, '新增', '用例分组', '新增用例分组')
+        return JsonResponse(GlobalStatusCode.success)
     else:
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
@@ -124,20 +118,12 @@ def del_group(request):
                                                                 automationGroupLevelFirst=first_group_id)
                 if obm:
                     obm.delete()
-                    record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
-                                            operationObject='用例分组', user=User.objects.get(id=1),
-                                            description='删除用例分组')
-                    record.save()
-                    return JsonResponse(GlobalStatusCode.success)
                 else:
                     return JsonResponse(GlobalStatusCode.GroupNotExist)
             else:
                 obi.delete()
-                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
-                                        operationObject='用例分组', user=User.objects.get(id=1),
-                                        description='删除用例分组')
-                record.save()
-                return JsonResponse(GlobalStatusCode.success)
+            record_dynamic(project_id, '删除', '用例分组', '删除用例分组')
+            return JsonResponse(GlobalStatusCode.success)
         else:
             return JsonResponse(GlobalStatusCode.GroupNotExist)
     else:
@@ -174,21 +160,13 @@ def update_group(request):
                                                                 automationGroupLevelSecond=second_group_id)
                 if obm:
                     obm.update(name=name)
-                    record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
-                                            operationObject='用例分组', user=User.objects.get(id=1),
-                                            description='修改用例分组')
-                    record.save()
-                    return JsonResponse(GlobalStatusCode.success)
                 else:
                     return JsonResponse(GlobalStatusCode.GroupNotExist)
             # 修改一级分组名称
             else:
                 obi.update(name=name)
-                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
-                                        operationObject='用例分组', user=User.objects.get(id=1),
-                                        description='修改用例分组')
-                record.save()
-                return JsonResponse(GlobalStatusCode.success)
+            record_dynamic(project_id, '修改', '用例分组', '修改用例分组')
+            return JsonResponse(GlobalStatusCode.success)
         else:
             return JsonResponse(GlobalStatusCode.GroupNotExist)
     else:
@@ -241,11 +219,7 @@ def update_case_group(request):
                         automationGroupLevelFirst=AutomationGroupLevelFirst.objects.get(id=first_group_id))
             else:
                 return JsonResponse(GlobalStatusCode.ParameterWrong)
-
-            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
-                                    operationObject='用例', user=User.objects.get(id=1),
-                                    description='修改用例分组，列表"%s"' % id_list)
-            record.save()
+            record_dynamic(project_id, '修改', '用例', '修改用例分组，列表"%s"' % id_list)
             return JsonResponse(GlobalStatusCode.success)
         else:
             return JsonResponse(GlobalStatusCode.GroupNotExist)
@@ -352,10 +326,7 @@ def add_case(request):
                 case.save()
             data = AutomationTestCase.objects.filter(project=project_id, caseName=name)
             case_id = json.loads(serializers.serialize('json', data))[0]['pk']
-            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='新增',
-                                    operationObject='用例', user=User.objects.get(id=1),
-                                    description='新增用例"%s"' % name)
-            record.save()
+            record_dynamic(project_id, '新增', '用例', '新增用例"%s"' % name)
             response['case_id'] = case_id
             return JsonResponse(dict(response, **GlobalStatusCode.success))
         else:
@@ -390,10 +361,7 @@ def update_case(request):
         obi = AutomationTestCase.objects.filter(caseName=name, project=project_id).exclude(id=case_id)
         if len(obi) == 0:
             obm.update(caseName=name, description=description)
-            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
-                                    operationObject='用例', user=User.objects.get(id=1),
-                                    description='修改用例"%s"' % name)
-            record.save()
+            record_dynamic(project_id, '修改', '用例', '修改用例"%s"' % name)
             return JsonResponse(dict(response, **GlobalStatusCode.success))
         else:
             return JsonResponse(GlobalStatusCode.NameRepetition)
@@ -426,10 +394,7 @@ def del_case(request):
             if len(obi) != 0:
                 name = json.loads(serializers.serialize('json', obi))[0]['fields']['caseName']
                 obi.delete()
-                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='删除',
-                                        operationObject='用例', user=User.objects.get(id=1),
-                                        description='删除用例"%s"' % name)
-                record.save()
+                record_dynamic(project_id, '删除', '用例', '删除用例"%s"' % name)
         return JsonResponse(GlobalStatusCode.success)
     else:
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
@@ -546,10 +511,7 @@ def add_new_api(request):
                         head = AutomationHead(automationCaseApi=AutomationCaseApi.objects.get(id=case_api_id),
                                               key=i['k'], value=i['v'], interrelate=i['b'])
                         head.save()
-                record = ProjectDynamic(project=Project.objects.get(id=project_id), type='新增',
-                                        operationObject='新增用例接口', user=User.objects.get(id=1),
-                                        description='新增用例接口"%s"' % name)
-                record.save()
+                record_dynamic(project_id, '新增', '用例接口', '新增用例“%s”接口"%s"' % (list(obi)[0], name))
                 return JsonResponse(dict(response, **GlobalStatusCode.success))
             else:
                 return JsonResponse(GlobalStatusCode.NameRepetition)
@@ -635,10 +597,7 @@ def update_api(request):
                                 automationCaseApi=AutomationCaseApi.objects.get(id=case_api_id),
                                 key=i['k'], value=i['v'], interrelate=i['b'])
                             head.save()
-                    record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
-                                            operationObject='修改用例接口', user=User.objects.get(id=1),
-                                            description='修改用例接口"%s"' % name)
-                    record.save()
+                    record_dynamic(project_id, '修改', '用例接口', '修改用例“%s”接口"%s"' % (list(obi)[0], name))
                     return JsonResponse(GlobalStatusCode.success)
                 else:
                     return JsonResponse(GlobalStatusCode.NameRepetition)
@@ -674,16 +633,12 @@ def del_api(request):
     if obj:
         obm = AutomationTestCase.objects.filter(id=case_id, project=project_id)
         if obm:
-            case_name = json.loads(serializers.serialize('json', obm))[0]['fields']['caseName']
             for j in id_list:
                 obi = AutomationCaseApi.objects.filter(id=j, automationTestCase=case_id)
                 if len(obi) != 0:
                     name = json.loads(serializers.serialize('json', obi))[0]['fields']['name']
                     obi.delete()
-                    record = ProjectDynamic(project=Project.objects.get(id=project_id), type='删除',
-                                            operationObject='删除接口', user=User.objects.get(id=1),
-                                            description='删除用例"%s"的接口"%s"' % (case_name, name))
-                    record.save()
+                    record_dynamic(project_id, '修改', '用例接口', '删除用例"%s"的接口"%s"' % (list(obm)[0], name))
             return JsonResponse(GlobalStatusCode.success)
         else:
             return JsonResponse(GlobalStatusCode.CaseNotExist)
@@ -718,11 +673,39 @@ def start_test(request):
                 obn = AutomationCaseApi.objects.filter(id=_id, automationTestCase=case_id)
                 if obn:
                     response['data'] = test_api(host_id, case_id, _id, project_id)
+                    record_dynamic(project_id, '测试', '用例接口', '测试用例“%s”接口"%s"' % (list(obi)[0], list(obn)[0]))
                     return JsonResponse(dict(response, **GlobalStatusCode.success))
                 else:
                     return JsonResponse(GlobalStatusCode.ApiNotExist)
             else:
                 return JsonResponse(GlobalStatusCode.HostNotExist)
+        else:
+            return JsonResponse(GlobalStatusCode.CaseNotExist)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+
+
+@require_http_methods(['GET'])
+@verify_parameter(['project_id', 'case_id'], 'GET')
+def time_task(request):
+    """
+    获取定时任务
+    project_id 项目ID
+    case_id  用例ID
+    :return:
+    """
+    response = {}
+    project_id = request.GET.get('project_id')
+    case_id = request.GET.get('case_id')
+    if not project_id.isdecimal() or not case_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
+        if obi:
+            data = json.loads(serializers.serialize('json', AutomationTestTask.objects.filter(automationTestCase=case_id)))
+            response['data'] = del_model(data)
+            return JsonResponse(dict(response, **GlobalStatusCode.success))
         else:
             return JsonResponse(GlobalStatusCode.CaseNotExist)
     else:
@@ -739,11 +722,12 @@ def add_time_task(request):
     host_id HOST_ID
     name 任务名称
     type 任务类型
+    frequency 时间间隔
+    unit 单位
     startTime 任务开始时间
     endTime 任务结束时间
     :return:
     """
-    pass
     response = {}
     project_id = request.POST.get('project_id')
     case_id = request.POST.get('case_id')
@@ -752,7 +736,125 @@ def add_time_task(request):
     _type = request.POST.get('type')
     frequency = request.POST.get('frequency')
     unit = request.POST.get('unit')
-    startTime = request.POST.get('startTime')
-    endTime = request.POST.get('endTime')
+    if not project_id.isdecimal() or not case_id.isdecimal() or not host_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    if _type not in ['circulation', 'timing']:
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    try:
+        start_time = datetime.strptime(request.POST.get('startTime'), '%Y-%m-%d %H:%M:%S')
+        end_time = datetime.strptime(request.POST.get('endTime'), '%Y-%m-%d %H:%M:%S')
+        if start_time > end_time:
+            return JsonResponse(GlobalStatusCode.ParameterWrong)
+    except ValueError:
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    start_time = datetime.strftime(start_time, '%Y-%m-%dT%H:%M:%SZ')
+    end_time = datetime.strftime(end_time, '%Y-%m-%dT%H:%M:%SZ')
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
+        if obi:
+            obm = GlobalHost.objects.filter(id=host_id, project=project_id)
+            if obm:
+                if _type == 'circulation':
+                    if not frequency.isdecimal():
+                        return JsonResponse(GlobalStatusCode.ParameterWrong)
+                    if unit not in ['s', 'm', 'h', 'd', 'w']:
+                        return JsonResponse(GlobalStatusCode.ParameterWrong)
+                    rt = AutomationTestTask.objects.filter(automationTestCase=case_id)
+                    if rt:
+                        rt.update(Host=GlobalHost.objects.get(id=host_id),
+                                  name=name, type=_type, frequency=frequency, unit=unit,
+                                  startTime=start_time, endTime=end_time)
+                    else:
+                        AutomationTestTask(project=Project.objects.get(id=project_id),
+                                           automationTestCase=AutomationTestCase.objects.get(id=case_id),
+                                           Host=GlobalHost.objects.get(id=host_id),
+                                           name=name, type=_type, frequency=frequency, unit=unit,
+                                           startTime=start_time, endTime=end_time).save()
+                    record_dynamic(project_id, '新增', '任务', '新增循环任务"%s"' % name)
+                else:
+                    rt = AutomationTestTask.objects.filter(automationTestCase=case_id)
+                    if rt:
+                        rt.update(Host=GlobalHost.objects.get(id=host_id),
+                                  name=name, type=_type, startTime=start_time, endTime=end_time)
+                    else:
+                        AutomationTestTask(project=Project.objects.get(id=project_id),
+                                           automationTestCase=AutomationTestCase.objects.get(id=case_id),
+                                           Host=GlobalHost.objects.get(id=host_id),
+                                           name=name, type=_type, startTime=start_time, endTime=end_time).save()
+                    record_dynamic(project_id, '新增', '任务', '新增定时任务"%s"' % name)
+                data = AutomationTestTask.objects.filter(automationTestCase=case_id)
+                response['task_id'] = json.loads(serializers.serialize('json', data))[0]['pk']
+                return JsonResponse(dict(response, **GlobalStatusCode.success))
+            else:
+                return JsonResponse(GlobalStatusCode.HostNotExist)
+        else:
+            return JsonResponse(GlobalStatusCode.CaseNotExist)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
+@require_http_methods(['POST'])
+@verify_parameter(['project_id', 'case_id', 'task_id'], 'POST')
+def del_task(request):
+    """
+    添加定时任务
+    project_id： 项目ID
+    case_id 用例ID
+    task_id 任务ID
+    :return:
+    """
+    project_id = request.POST.get('project_id')
+    case_id = request.POST.get('case_id')
+    task_id = request.POST.get('task_id')
+    if not project_id.isdecimal() or not case_id.isdecimal() or not task_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
+        if obi:
+            obm = AutomationTestTask.objects.filter(id=task_id, automationTestCase=case_id)
+            if obm:
+                obm.delete()
+                record_dynamic(project_id, '删除', '任务', '删除任务')
+                return JsonResponse(GlobalStatusCode.success)
+            else:
+                return JsonResponse(GlobalStatusCode.TaskNotExist)
+        else:
+            return JsonResponse(GlobalStatusCode.CaseNotExist)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+
+
+@require_http_methods(['GET'])
+@verify_parameter(['project_id', 'case_id', 'api_id'], 'GET')
+def look_result(request):
+    """
+    查看测试结果详情
+    project_id 项目ID
+    api_id 接口ID
+    case_id 用例ID
+    :return:
+    """
+    response = {}
+    project_id = request.GET.get('project_id')
+    case_id = request.GET.get('case_id')
+    api_id = request.GET.get('api_id')
+    if not project_id.isdecimal() or not api_id.isdecimal():
+        return JsonResponse(GlobalStatusCode.ParameterWrong)
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
+        if obi:
+            obm = AutomationCaseApi.objects.filter(id=api_id, automationTestCase=case_id)
+            if obm:
+                data = json.loads(serializers.serialize('json',
+                                                        AutomationTestResult.objects.filter(automationCaseApi=api_id)))
+                response['data'] = del_model(data)
+                return JsonResponse(dict(response, **GlobalStatusCode.success))
+            else:
+                return JsonResponse(GlobalStatusCode.ApiNotExist)
+        else:
+            return JsonResponse(GlobalStatusCode.CaseNotExist)
+    else:
+        return JsonResponse(GlobalStatusCode.ProjectNotExist)
