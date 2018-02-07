@@ -87,7 +87,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api_test',
     'rest_framework',
+    'rest_framework.authtoken',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "frontend/dist/static"),

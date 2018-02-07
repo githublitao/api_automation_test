@@ -1,9 +1,8 @@
-from django.contrib import admin
 
 # Register your models here.
 
 from api_test.models import Project, GlobalHost, ApiGroupLevelFirst, ApiGroupLevelSecond, ApiInfo, \
-    APIRequestHistory, ApiOperationHistory, ProjectDynamic, ProjectMember, CustomMethod, \
+    APIRequestHistory, ApiOperationHistory, ProjectDynamic, ProjectMember, \
     AutomationGroupLevelSecond, AutomationGroupLevelFirst, AutomationTestCase, AutomationParameter, AutomationCaseApi, \
     AutomationTestResult, AutomationTestTask, AutomationHead
 
@@ -24,10 +23,10 @@ def find_model_index(name):
 
 def index_decorator(func):
     def inner(*args, **kwargs):
-        templateresponse = func(*args, **kwargs)
-        for app in templateresponse.context_data['app_list']:
+        template_response = func(*args, **kwargs)
+        for app in template_response.context_data['app_list']:
             app['models'].sort(key=lambda x: find_model_index(x['name']))
-        return templateresponse
+        return template_response
 
     return inner
 
@@ -79,8 +78,8 @@ class HostInProject(admin.TabularInline):
 class ProjectForm(admin.ModelAdmin):
     inlines = [MemberInProject, HostInProject]
     search_fields = ('name', 'type')
-    list_display = ('id', 'name', 'version', 'type', 'description', 'status', 'LastUpdateTime', 'createTime')
-    list_display_links = ('name',)
+    list_display = ('id', 'name', 'version', 'type', 'status', 'LastUpdateTime', 'createTime')
+    list_display_links = ('id', 'name',)
     list_filter = ('status', 'type')
     list_per_page = 20
     ordering = ('id',)
@@ -95,9 +94,9 @@ admin.site.register(Project, ProjectForm)
 
 
 class GlobalHostForm(admin.ModelAdmin):
-    search_fields = ('name',)
-    list_display = ('id', 'project', 'name', 'host', 'description', 'status')
-    list_display_links = ('project', 'name', 'host')
+    search_fields = ('name', 'project')
+    list_display = ('id', 'project', 'name', 'host', 'status')
+    list_display_links = ('id', 'project', 'name', 'host')
     list_filter = ('project', 'status')
     list_per_page = 20
     ordering = ('id',)
@@ -113,7 +112,7 @@ admin.site.register(GlobalHost, GlobalHostForm)
 class CustomMethodForm(admin.ModelAdmin):
     search_fields = ('name',)
     list_display = ('id', 'project', 'name', 'description', 'type', 'status', 'dataCode')
-    list_display_links = ('project', 'name')
+    list_display_links = ('id', 'project', 'name')
     list_filter = ('project', 'type', 'status')
     list_per_page = 20
     ordering = ('id',)
@@ -123,14 +122,32 @@ class CustomMethodForm(admin.ModelAdmin):
         }],)
 
 
+class APIGroupLevelSecondInFirst(admin.TabularInline):
+    model = ApiGroupLevelSecond
+
+
+class ApiGroupLevelFirstForm(admin.ModelAdmin):
+    inlines = [APIGroupLevelSecondInFirst]
+    search_fields = ('name', 'project')
+    list_display = ('id', 'project', 'name')
+    list_display_links = ('id', 'project', 'name')
+    list_per_page = 20
+    ordering = ('id',)
+    fieldsets = ([
+        '接口分组', {
+            'fields': ('project', 'name')
+        }],)
+
+
+admin.site.register(ApiGroupLevelFirst, ApiGroupLevelFirstForm)
+
+
 class ApiInfoForm(admin.ModelAdmin):
-    # inlines = [MockInApi, ]
-    search_fields = ('apiGroupLevelFirst', 'apiGroupLevelSecond', 'name', 'http_type', 'requestType',
-                     'apiAddress', 'requestParameterType', 'status')
-    list_display = ('id', 'apiGroupLevelFirst', 'apiGroupLevelSecond', 'name', 'http_type', 'requestType',
-                    'apiAddress', 'requestParameterType', 'status', 'lastUpdateTime', 'userUpdate')
-    list_display_links = ('apiGroupLevelFirst', 'apiGroupLevelSecond', 'name')
-    list_filter = ('apiGroupLevelFirst', 'apiGroupLevelSecond', 'http_type', 'requestType', 'status')
+    search_fields = ('name', 'project', 'http_type', 'requestType', 'apiAddress', 'requestParameterType')
+    list_display = ('id', 'project', 'name', 'http_type', 'requestType',
+                    'apiAddress', 'status', 'lastUpdateTime', 'userUpdate')
+    list_display_links = ('id', 'name', 'project')
+    list_filter = ('project', 'http_type', 'requestType', 'status')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
@@ -144,30 +161,11 @@ class ApiInfoForm(admin.ModelAdmin):
 admin.site.register(ApiInfo, ApiInfoForm)
 
 
-class APIGroupLevelSecondInFirst(admin.TabularInline):
-    model = ApiGroupLevelSecond
-
-
-class ApiGroupLevelFirstForm(admin.ModelAdmin):
-    inlines = [APIGroupLevelSecondInFirst]
-    search_fields = ('name',)
-    list_display = ('id', 'project', 'name')
-    list_display_links = ('project', 'name')
-    list_per_page = 20
-    ordering = ('id',)
-    fieldsets = ([
-        '接口分组', {
-            'fields': ('project', 'name')
-        }],)
-
-
-admin.site.register(ApiGroupLevelFirst, ApiGroupLevelFirstForm)
-
-
 class APIRequestHistoryForm(ReadOnlyModelAdmin):
-    search_fields = ('apiInfo',)
-    list_display = ('id', 'apiInfo', 'requestTime', 'requestType', 'requestAddress', 'httpCode')
-    list_display_links = ('apiInfo', 'requestTime')
+    search_fields = ('apiInfo', 'requestType', 'httpCode')
+    list_display = ('id', 'apiInfo', 'requestType', 'requestAddress', 'httpCode', 'requestTime')
+    list_display_links = ('id', 'apiInfo', 'requestTime')
+    list_filter = ('requestType', 'httpCode')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
@@ -181,8 +179,8 @@ admin.site.register(APIRequestHistory, APIRequestHistoryForm)
 
 class ApiOperationHistoryForm(ReadOnlyModelAdmin):
     search_fields = ('apiInfo', 'user')
-    list_display = ('id', 'apiInfo', 'user', 'time', 'description')
-    list_display_links = ('apiInfo', 'user')
+    list_display = ('id', 'apiInfo', 'user', 'description', 'time')
+    list_display_links = ('id', 'apiInfo', 'user')
     list_filter = ('user',)
     list_per_page = 20
     ordering = ('id',)
@@ -195,24 +193,6 @@ class ApiOperationHistoryForm(ReadOnlyModelAdmin):
 admin.site.register(ApiOperationHistory, ApiOperationHistoryForm)
 
 
-class AutomationTestCaseForm(admin.ModelAdmin):
-    search_fields = ('automationGroupLevelFirst', 'automationGroupLevelSecond', 'caseName')
-    list_display = ('id', 'project', 'automationGroupLevelFirst', 'automationGroupLevelSecond', 'caseName',
-                    'description', 'updateTime')
-    list_display_links = ('automationGroupLevelFirst', 'automationGroupLevelSecond', 'caseName')
-    list_filter = ('automationGroupLevelFirst', 'automationGroupLevelSecond')
-    list_per_page = 20
-    ordering = ('id',)
-    fieldsets = ([
-        '用例接口列表', {
-            'fields': ('project', 'automationGroupLevelFirst', 'automationGroupLevelSecond',
-                       'caseName', 'description')
-        }],)
-
-
-admin.site.register(AutomationTestCase, AutomationTestCaseForm)
-
-
 class AutomationGroupLevelSecondInFirst(admin.TabularInline):
     model = AutomationGroupLevelSecond
 
@@ -221,7 +201,7 @@ class AutomationGroupLevelFirstForm(admin.ModelAdmin):
     inlines = [AutomationGroupLevelSecondInFirst]
     search_fields = ('project', 'name')
     list_display = ('id', 'project', 'name')
-    list_display_links = ('project', 'name')
+    list_display_links = ('id', 'project', 'name')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
@@ -234,6 +214,23 @@ class AutomationGroupLevelFirstForm(admin.ModelAdmin):
 admin.site.register(AutomationGroupLevelFirst, AutomationGroupLevelFirstForm)
 
 
+class AutomationTestCaseForm(admin.ModelAdmin):
+    search_fields = ('caseName', 'project')
+    list_display = ('id', 'project', 'caseName', 'updateTime')
+    list_display_links = ('id', 'caseName', 'project')
+    list_filter = ('project',)
+    list_per_page = 20
+    ordering = ('id',)
+    fieldsets = ([
+        '用例接口列表', {
+            'fields': ('project', 'automationGroupLevelFirst', 'automationGroupLevelSecond',
+                       'caseName', 'description')
+        }],)
+
+
+admin.site.register(AutomationTestCase, AutomationTestCaseForm)
+
+
 class AutomationParameterInCase(admin.TabularInline):
     model = AutomationParameter
 
@@ -244,13 +241,10 @@ class AutomationHeadInCase(admin.TabularInline):
 
 class AutomationCaseApiForm(admin.ModelAdmin):
     inlines = [AutomationHeadInCase, AutomationParameterInCase]
-    search_fields = ('automationTestCase', 'name', 'http_type', 'requestType', 'address',
-                     'requestParameterType', 'examineType', 'httpCode')
-    list_display = ('id', 'automationTestCase', 'name', 'http_type', 'requestType', 'address',
-                    'requestParameterType', 'examineType', 'httpCode')
-    list_display_links = ('automationTestCase', 'name', 'http_type')
-    list_filter = ('automationTestCase', 'http_type', 'requestType',
-                   'requestParameterType', 'examineType', 'httpCode')
+    search_fields = ('automationTestCase', 'name', 'address')
+    list_display = ('id', 'automationTestCase', 'name', 'http_type', 'requestType', 'address', 'examineType')
+    list_display_links = ('id', 'automationTestCase', 'name', 'http_type')
+    list_filter = ('http_type', 'requestType', 'requestParameterType', 'examineType')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
@@ -263,13 +257,6 @@ class AutomationCaseApiForm(admin.ModelAdmin):
 admin.site.register(AutomationCaseApi, AutomationCaseApiForm)
 
 
-class AutomationHead(admin.ModelAdmin):
-    fieldsets = ([
-        '参数详情', {
-            'fields': ('automationCaseApi', 'key', 'value', 'interrelate')
-        }],)
-
-
 class AutomationParameterForm(admin.ModelAdmin):
     fieldsets = ([
         '参数详情', {
@@ -278,14 +265,16 @@ class AutomationParameterForm(admin.ModelAdmin):
 
 
 class AutomationTestResultForm(ReadOnlyModelAdmin):
-    search_fields = ('result', 'automationCaseApi', 'http_status')
+    search_fields = ('automationCaseApi',)
     list_display = ('id', 'automationCaseApi', 'result', 'http_status', 'test_time')
-    list_filter = ('http_status', 'result')
+    list_display_links = ('id', 'automationCaseApi', 'result')
+    list_filter = ('id', 'http_status', 'result')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '测试结果', {
-            'fields': ('automationCaseApi', 'result', 'http_status', 'response_data')
+            'fields': ('automationCaseApi', 'test_time', 'url', 'request_type', 'header', 'parameter', 'status_code',
+                       'examineType', 'data', 'result', 'http_status', 'response_data')
         }],)
 
 
@@ -293,8 +282,10 @@ admin.site.register(AutomationTestResult, AutomationTestResultForm)
 
 
 class AutomationTestTaskForm(admin.ModelAdmin):
-    search_fields = ('name', 'type')
-    list_display = ('id', 'automationTestCase', 'Host', 'name', 'type', 'frequency', 'unit', 'startTime', 'endTime')
+    search_fields = ('automationTestCase', 'name')
+    list_display = ('id', 'automationTestCase', 'Host', 'name', 'type', 'startTime', 'endTime')
+    list_display_links = ('id', 'automationTestCase', 'Host', 'name')
+    list_filter = ('type',)
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
@@ -307,22 +298,11 @@ class AutomationTestTaskForm(admin.ModelAdmin):
 admin.site.register(AutomationTestTask, AutomationTestTaskForm)
 
 
-class ProjectDynamicForm(ReadOnlyModelAdmin):
-    search_fields = ('type', 'operationObject', 'user')
-    list_display = ('id', 'project', 'time', 'type', 'operationObject', 'user', 'description')
-    list_display_links = ('project', 'time')
-    list_filter = ('project', 'type', 'operationObject', 'user')
-    list_per_page = 20
-    ordering = ('id',)
-
-
-admin.site.register(ProjectDynamic, ProjectDynamicForm)
-
-
 class ProjectMemberForm(admin.ModelAdmin):
+    search_fields = ('user', 'project')
     list_display = ('id', 'permission_type', 'project', 'user')
     list_display_links = ('permission_type', 'project')
-    list_filter = ('permission_type', 'project', 'user')
+    list_filter = ('id', 'permission_type', 'project', 'user')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
@@ -333,3 +313,15 @@ class ProjectMemberForm(admin.ModelAdmin):
 
 
 admin.site.register(ProjectMember, ProjectMemberForm)
+
+
+class ProjectDynamicForm(ReadOnlyModelAdmin):
+    search_fields = ('operationObject', 'user')
+    list_display = ('id', 'project', 'time', 'type', 'operationObject', 'description', 'user')
+    list_display_links = ('id', 'project', 'time')
+    list_filter = ('project', 'type')
+    list_per_page = 20
+    ordering = ('-id',)
+
+
+admin.site.register(ProjectDynamic, ProjectDynamicForm)
