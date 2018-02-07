@@ -4,6 +4,7 @@ import logging
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.core import serializers
+from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
 from api_test.common.common import verify_parameter, del_model
@@ -12,7 +13,7 @@ from api_test.models import Project, ProjectDynamic
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
 
-@require_http_methods(['GET'])
+@api_view(['GET'])
 @verify_parameter(['project_id', ], 'GET')
 def dynamic(request):
     """

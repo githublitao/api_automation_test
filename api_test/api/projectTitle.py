@@ -4,6 +4,7 @@ import logging
 from django.core import serializers
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
 from api_test.common.common import del_model, verify_parameter
@@ -12,8 +13,8 @@ from api_test.models import Project, ApiInfo, ProjectDynamic, ProjectMember
 logger = logging.getLogger(__name__) # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
 
-@require_http_methods(["GET"])
-@verify_parameter(['project', ], 'GET')
+@api_view(['GET'])
+@verify_parameter(['project_id', ], 'GET')
 def project_info(request):
     """
     获取项目详情
@@ -34,7 +35,7 @@ def project_info(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(["GET"])
+@api_view(['GET'])
 @verify_parameter(['project_id', ], 'GET')
 def api_total(request):
     """
@@ -55,7 +56,7 @@ def api_total(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(["GET"])
+@api_view(['GET'])
 @verify_parameter(['project_id', ], 'GET')
 def dynamic_total(request):
     """
@@ -76,7 +77,7 @@ def dynamic_total(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(["GET"])
+@api_view(['GET'])
 @verify_parameter(['project_id', ], 'GET')
 def project_member(request):
     """

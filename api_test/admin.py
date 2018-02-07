@@ -193,23 +193,6 @@ class ApiOperationHistoryForm(ReadOnlyModelAdmin):
 admin.site.register(ApiOperationHistory, ApiOperationHistoryForm)
 
 
-class AutomationTestCaseForm(admin.ModelAdmin):
-    search_fields = ('caseName', 'project')
-    list_display = ('id', 'project', 'caseName', 'updateTime')
-    list_display_links = ('id', 'caseName', 'project')
-    list_filter = ('project',)
-    list_per_page = 20
-    ordering = ('id',)
-    fieldsets = ([
-        '用例接口列表', {
-            'fields': ('project', 'automationGroupLevelFirst', 'automationGroupLevelSecond',
-                       'caseName', 'description')
-        }],)
-
-
-admin.site.register(AutomationTestCase, AutomationTestCaseForm)
-
-
 class AutomationGroupLevelSecondInFirst(admin.TabularInline):
     model = AutomationGroupLevelSecond
 
@@ -229,6 +212,23 @@ class AutomationGroupLevelFirstForm(admin.ModelAdmin):
 
 
 admin.site.register(AutomationGroupLevelFirst, AutomationGroupLevelFirstForm)
+
+
+class AutomationTestCaseForm(admin.ModelAdmin):
+    search_fields = ('caseName', 'project')
+    list_display = ('id', 'project', 'caseName', 'updateTime')
+    list_display_links = ('id', 'caseName', 'project')
+    list_filter = ('project',)
+    list_per_page = 20
+    ordering = ('id',)
+    fieldsets = ([
+        '用例接口列表', {
+            'fields': ('project', 'automationGroupLevelFirst', 'automationGroupLevelSecond',
+                       'caseName', 'description')
+        }],)
+
+
+admin.site.register(AutomationTestCase, AutomationTestCaseForm)
 
 
 class AutomationParameterInCase(admin.TabularInline):
@@ -317,11 +317,11 @@ admin.site.register(ProjectMember, ProjectMemberForm)
 
 class ProjectDynamicForm(ReadOnlyModelAdmin):
     search_fields = ('operationObject', 'user')
-    list_display = ('id', 'project', 'time', 'type', 'operationObject', 'user')
+    list_display = ('id', 'project', 'time', 'type', 'operationObject', 'description', 'user')
     list_display_links = ('id', 'project', 'time')
     list_filter = ('project', 'type')
     list_per_page = 20
-    ordering = ('id',)
+    ordering = ('-id',)
 
 
 admin.site.register(ProjectDynamic, ProjectDynamicForm)

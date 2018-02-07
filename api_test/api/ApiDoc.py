@@ -5,16 +5,17 @@ import math
 from django.core import serializers
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
 from api_test.common.common import del_model, verify_parameter, record_dynamic
-from api_test.models import Project, ApiGroupLevelFirst, ApiGroupLevelSecond, ProjectDynamic, ApiInfo, \
+from api_test.models import Project, ApiGroupLevelFirst, ApiGroupLevelSecond, ApiInfo, \
     ApiOperationHistory, APIRequestHistory
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
 
-@require_http_methods(['GET'])
+@api_view(['GET'])
 @verify_parameter(['project_id', ], 'GET')
 def group(request):
     """
@@ -47,7 +48,7 @@ def group(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'name'], 'POST')
 def add_group(request):
     """
@@ -72,7 +73,7 @@ def add_group(request):
                 return JsonResponse(GlobalStatusCode.ParameterWrong)
             obi = ApiGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
             if obi:
-                first_group = ApiGroupLevelSecond(ApiGroupLevelFirst=
+                first_group = ApiGroupLevelSecond(apiGroupLevelFirst=
                                                   ApiGroupLevelFirst.objects.get(id=first_group_id), name=name)
                 first_group.save()
             else:
@@ -87,7 +88,7 @@ def add_group(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'name', 'first_group_id'], 'POST')
 def update_group(request):
     """
@@ -113,8 +114,8 @@ def update_group(request):
             if second_group_id:
                 if not second_group_id.isdecimal():
                     return JsonResponse(GlobalStatusCode.ParameterWrong)
-                obm = ApiGroupLevelSecond.objects.filter(apiGroupLevelFirst=first_group_id,
-                                                         apiGroupLevelSecond=second_group_id)
+                obm = ApiGroupLevelSecond.objects.filter(id=second_group_id,
+                                                         apiGroupLevelFirst=first_group_id)
                 if obm:
                     obm.update(name=name)
                 else:
@@ -130,7 +131,7 @@ def update_group(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'first_group_id'], 'POST')
 def del_group(request):
     """
@@ -169,7 +170,7 @@ def del_group(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['GET'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'page'], 'GET')
 def api_list(request):
     """
@@ -215,7 +216,7 @@ def api_list(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'first_group_id', 'name', 'httpType', 'requestType', 'address',
                    'requestParameterType'], 'POST')
 def add_api(request):
@@ -273,7 +274,7 @@ def add_api(request):
                 if not second_group_id.isdecimal():
                     return JsonResponse(GlobalStatusCode.ParameterWrong)
                 second_group = ApiGroupLevelSecond.objects.filter(id=second_group_id,
-                                                                  apiGroupLevelFirst=ApiGroupLevelFirst)
+                                                                  apiGroupLevelFirst=first_group_id)
                 if len(second_group) == 0:
                     return JsonResponse(GlobalStatusCode.GroupNotExist)
                 oba = ApiInfo(project=Project.objects.get(id=project_id),
@@ -305,7 +306,7 @@ def add_api(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'api_id', 'first_group_id', 'name', 'httpType', 'requestType', 'address',
                    'requestParameterType'], 'POST')
 def update_api(request):
@@ -365,7 +366,7 @@ def update_api(request):
                     if not second_group_id.isdecimal():
                         return JsonResponse(GlobalStatusCode.ParameterWrong)
                     second_group = ApiGroupLevelSecond.objects.filter(id=second_group_id,
-                                                                      apiGroupLevelFirst=ApiGroupLevelFirst)
+                                                                      apiGroupLevelFirst=first_group_id)
                     if len(second_group) == 0:
                         return JsonResponse(GlobalStatusCode.GroupNotExist)
                     obm.update(project=Project.objects.get(id=project_id),
@@ -400,31 +401,41 @@ def update_api(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['GET'])
-@verify_parameter(['project_id', 'name'], 'GET')
+@api_view(['GET'])
+@verify_parameter(['project_id', 'name', 'page'], 'GET')
 def select_api(request):
     """
     查询接口
     project_id 项目ID
     name  查询名称
+    page 页码
     :return:
     """
     response = {}
+    num = 20
     project_id = request.GET.get('project_id')
     name = request.GET.get('name')
-    if not project_id.isdecimal():
+    page = request.GET.get('page')
+    if not project_id.isdecimal() or not page.isdecimal():
         return JsonResponse(GlobalStatusCode.ParameterWrong)
+    page = int(page)
     obj = Project.objects.filter(id=project_id)
     if obj:
-        obi = ApiInfo.objects.filter(name=name, project=project_id)
+        obi = ApiInfo.objects.filter(name__contains=name, project=project_id)
         data = json.loads(serializers.serialize('json', obi))
+        page_num = math.ceil(float(len(data)) / num)
+        if 0 < page <= page_num:
+            data = data[(page - 1) * num:page * num]
+        else:
+            data = data[0:num]
         response['data'] = del_model(data)
+        response['pageNum'] = page_num
         return JsonResponse(dict(response, **GlobalStatusCode.success))
     else:
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'api_ids'], 'POST')
 def del_api(request):
     """
@@ -455,7 +466,7 @@ def del_api(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'api_ids', 'first_group_id'], 'POST')
 def update_api_group(request):
     """
@@ -509,7 +520,7 @@ def update_api_group(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['GET'])
+@api_view(['GET'])
 @verify_parameter(['project_id', 'api_id'], 'GET')
 def api_info(request):
     """
@@ -536,7 +547,7 @@ def api_info(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'api_id', 'requestType', 'url', 'httpStatus'], 'POST')
 def add_history(request):
     """
@@ -582,7 +593,7 @@ def add_history(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['GET'])
+@api_view(['GET'])
 @verify_parameter(['project_id', 'api_id'], 'GET')
 def history_list(request):
     """
@@ -610,7 +621,7 @@ def history_list(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'api_id', 'history_id'], 'POST')
 def del_history(request):
     """

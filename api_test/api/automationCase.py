@@ -10,6 +10,7 @@ from django.core import serializers
 from django.db import transaction
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
 from api_test.common.common import del_model, verify_parameter, record_dynamic
@@ -21,7 +22,7 @@ from api_test.models import Project, AutomationGroupLevelFirst, AutomationGroupL
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
 
-@require_http_methods(['GET'])
+@api_view(['GET'])
 @verify_parameter(['project_id'], 'GET')
 def group(request):
     """
@@ -51,7 +52,7 @@ def group(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'name'], 'POST')
 def add_group(request):
     """
@@ -76,7 +77,8 @@ def add_group(request):
             obi = AutomationGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
             if obi:
                 first_group = AutomationGroupLevelSecond(automationGroupLevelFirst=
-                                                         AutomationGroupLevelFirst.objects.get(id=first_group_id), name=name)
+                                                         AutomationGroupLevelFirst.objects.get(id=first_group_id),
+                                                         name=name)
                 first_group.save()
             else:
                 return JsonResponse(GlobalStatusCode.GroupNotExist)
@@ -90,7 +92,7 @@ def add_group(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'first_group_id'], 'POST')
 def del_group(request):
     """
@@ -130,11 +132,11 @@ def del_group(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'name', 'first_group_id'], 'POST')
 def update_group(request):
     """
-    添加用例分组
+    修改用例分组
     project_id 项目ID
     name  名称
     first_group_id 一级分组ID
@@ -156,8 +158,8 @@ def update_group(request):
             if second_group_id:
                 if not second_group_id.isdecimal():
                     return JsonResponse(GlobalStatusCode.ParameterWrong)
-                obm = AutomationGroupLevelSecond.objects.filter(automationGroupLevelFirst=first_group_id,
-                                                                automationGroupLevelSecond=second_group_id)
+                obm = AutomationGroupLevelSecond.objects.filter(id=second_group_id,
+                                                                automationGroupLevelFirst=first_group_id)
                 if obm:
                     obm.update(name=name)
                 else:
@@ -173,6 +175,7 @@ def update_group(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
+@api_view(['POST'])
 @require_http_methods(['POST'])
 @verify_parameter(['project_id', 'api_ids', 'first_group_id'], 'POST')
 def update_case_group(request):
@@ -227,7 +230,7 @@ def update_case_group(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['GET'])
+@api_view(['GET'])
 @verify_parameter(['project_id', 'page'], 'GET')
 def case_list(request):
     """
@@ -275,7 +278,7 @@ def case_list(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'first_group_id', 'name'], 'POST')
 def add_case(request):
     """
@@ -335,6 +338,7 @@ def add_case(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
+@api_view(['POST'])
 @require_http_methods(['POST'])
 @verify_parameter(['project_id', 'case_id', 'name'], 'POST')
 def update_case(request):
@@ -369,7 +373,7 @@ def update_case(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'case_ids'], 'POST')
 def del_case(request):
     """
@@ -400,7 +404,7 @@ def del_case(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['GET'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'case_id', 'page'], 'GET')
 def api_list(request):
     """
@@ -438,7 +442,7 @@ def api_list(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'case_id', 'name', 'httpType', 'requestType', 'address',
                    'requestParameterType', 'examineType'], 'POST')
 def add_new_api(request):
@@ -521,7 +525,7 @@ def add_new_api(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'case_id', 'case_api_id', 'name', 'httpType', 'requestType', 'address',
                    'requestParameterType', 'examineType'], 'POST')
 def update_api(request):
@@ -609,7 +613,7 @@ def update_api(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'case_id', 'ids'], 'POST')
 def del_api(request):
     """
@@ -646,7 +650,7 @@ def del_api(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'case_id', 'host_id', 'id'], 'POST')
 def start_test(request):
     """
@@ -685,7 +689,7 @@ def start_test(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['GET'])
+@api_view(['GET'])
 @verify_parameter(['project_id', 'case_id'], 'GET')
 def time_task(request):
     """
@@ -712,7 +716,7 @@ def time_task(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'case_id', 'host_id', 'name', 'type', 'startTime', 'endTime'], 'POST')
 def add_time_task(request):
     """
@@ -794,7 +798,7 @@ def add_time_task(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['POST'])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'case_id', 'task_id'], 'POST')
 def del_task(request):
     """
@@ -826,7 +830,7 @@ def del_task(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(['GET'])
+@api_view(['GET'])
 @verify_parameter(['project_id', 'case_id', 'api_id'], 'GET')
 def look_result(request):
     """

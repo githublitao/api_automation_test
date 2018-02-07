@@ -1,6 +1,7 @@
 from django.conf.urls import url
+from rest_framework.authtoken import views
 
-from api_test.api import ApiDoc, automationCase as case, member, dynamic
+from api_test.api import ApiDoc, automationCase as Case, member, dynamic
 from api_test.api.global_parameter import host_total, add_host, update_host, del_host, enable_host, disable_host
 from api_test.api.projectList import project_list, add_project, update_project, del_project, disable_project, \
      enable_project
@@ -37,24 +38,25 @@ urlpatterns = [
     url(r'api/add_history', ApiDoc.add_history),
     url(r'api/history_list', ApiDoc.history_list),
     url(r'api/del_history', ApiDoc.del_history),
-    url(r'automation/group', case.group),
-    url(r'automation/add_group', case.add_group),
-    url(r'automation/del_group', case.del_group),
-    url(r'automation/update_group', case.update_group),
-    url(r'automation/update_case_group', case.update_case_group),
-    url(r'automation/case_list', case.case_list),
-    url(r'automation/add_case', case.add_case),
-    url(r'automation/update_case', case.update_case),
-    url(r'automation/del_case', case.del_case),
-    url(r'automation/api_list', case.api_list),
-    url(r'automation/add_new_api', case.add_new_api),
-    url(r'automation/update_api', case.update_api),
-    url(r'automation/del_api', case.del_api),
-    url(r'automation/start_test', case.start_test),
-    url(r'automation/time_task', case.time_task),
-    url(r'automation/add_time_task', case.add_time_task),
-    url(r'automation/del_task', case.del_task),
-    url(r'automation/look_result', case.look_result),
+    url(r'automation/group', Case.group),
+    url(r'automation/add_group', Case.add_group),
+    url(r'automation/del_group', Case.del_group),
+    url(r'automation/update_group', Case.update_group),
+    url(r'automation/update_case_group', Case.update_case_group),
+    url(r'automation/case_list', Case.case_list),
+    url(r'automation/add_case', Case.add_case),
+    url(r'automation/update_case', Case.update_case),
+    url(r'automation/del_case', Case.del_case),
+    url(r'automation/api_list', Case.api_list),
+    url(r'automation/add_new_api', Case.add_new_api),
+    url(r'automation/update_api', Case.update_api),
+    url(r'automation/del_api', Case.del_api),
+    url(r'automation/start_test', Case.start_test),
+    url(r'automation/time_task', Case.time_task),
+    url(r'automation/add_time_task', Case.add_time_task),
+    url(r'automation/del_task', Case.del_task),
+    url(r'automation/look_result', Case.look_result),
     url(r'member/project_member', member.project_member),
     url(r'dynamic/dynamic', dynamic.dynamic),
+    url(r'user/login', views.obtain_auth_token),
 ]
