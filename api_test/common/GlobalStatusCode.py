@@ -62,3 +62,8 @@ CaseNotExist = {
     "msg": "用例不存在",
     "code": "999987"
 }
+
+TaskNotExist = {
+    "msg": "任务不存在",
+    "code": "999986"
+}

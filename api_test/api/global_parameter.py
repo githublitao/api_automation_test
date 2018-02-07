@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core import serializers
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
 from api_test.common.common import del_model, verify_parameter
@@ -13,7 +14,7 @@ from api_test.models import Project, GlobalHost, ProjectDynamic
 logger = logging.getLogger(__name__) # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
 
-@require_http_methods(["GET"])
+@api_view(['GET'])
 @verify_parameter(['project_id', ], 'GET')
 def host_total(request):
     """
@@ -35,7 +36,7 @@ def host_total(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(["POST"])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'name', 'host'], 'POST')
 def add_host(request):
     """
@@ -64,7 +65,8 @@ def add_host(request):
             data = GlobalHost.objects.filter(project=project_id, name=name, host=host, description=desc)
             host_id = json.loads(serializers.serialize('json', data))[0]['pk']
             record = ProjectDynamic(project=Project.objects.get(id=project_id), type='新增',
-                                    operationObject='HOST', user=User.objects.get(id=1), description='新增HOST')
+                                    operationObject='HOST', user=User.objects.get(id=1),
+                                    description='新增HOST“%s”' % name)
             record.save()
             response['host_id'] = host_id
             response = dict(response, **GlobalStatusCode.success)
@@ -73,7 +75,7 @@ def add_host(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(["POST"])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'host_id', 'name', 'host'], 'POST')
 def update_host(request):
     """
@@ -102,7 +104,7 @@ def update_host(request):
                 obi.update(project=Project.objects.get(id=project_id), name=name, host=host, description=desc)
                 record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
                                         operationObject='HOST', user=User.objects.get(id=1),
-                                        description='修改HOST')
+                                        description='修改HOST“%s”' % name)
                 record.save()
                 response = dict(response, **GlobalStatusCode.success)
                 return JsonResponse(response)
@@ -114,7 +116,7 @@ def update_host(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(["POST"])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'host_id'], 'POST')
 def del_host(request):
     """
@@ -134,7 +136,8 @@ def del_host(request):
         if obi:
             obi.delete()
             record = ProjectDynamic(project=Project.objects.get(id=project_id), type='删除',
-                                    operationObject='HOST', user=User.objects.get(id=1), description='删除HOST')
+                                    operationObject='HOST', user=User.objects.get(id=1),
+                                    description='删除HOST“%s”' % list(obi)[0])
             record.save()
             return JsonResponse(GlobalStatusCode.success)
         else:
@@ -143,7 +146,7 @@ def del_host(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(["POST"])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'host_id'], 'POST')
 def disable_host(request):
     """
@@ -163,7 +166,8 @@ def disable_host(request):
         if obi:
             obi.update(status=False)
             record = ProjectDynamic(project=Project.objects.get(id=project_id), type='禁用',
-                                    operationObject='HOST', user=User.objects.get(id=1), description='禁用HOST')
+                                    operationObject='HOST', user=User.objects.get(id=1),
+                                    description='禁用HOST“%s”' % list(obi)[0])
             record.save()
             return JsonResponse(GlobalStatusCode.success)
         else:
@@ -172,7 +176,7 @@ def disable_host(request):
         return JsonResponse(GlobalStatusCode.ProjectNotExist)
 
 
-@require_http_methods(["POST"])
+@api_view(['POST'])
 @verify_parameter(['project_id', 'host_id'], 'POST')
 def enable_host(request):
     """
@@ -192,7 +196,8 @@ def enable_host(request):
         if obi:
             obi.update(status=True)
             record = ProjectDynamic(project=Project.objects.get(id=project_id), type='启用',
-                                    operationObject='HOST', user=User.objects.get(id=1), description='启用HOST')
+                                    operationObject='HOST', user=User.objects.get(id=1),
+                                    description='启用HOST“%s”' % list(obi)[0])
             record.save()
             return JsonResponse(GlobalStatusCode.success)
         else:
