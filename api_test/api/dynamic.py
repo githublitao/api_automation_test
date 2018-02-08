@@ -9,6 +9,7 @@ from rest_framework.decorators import api_view
 from api_test.common import GlobalStatusCode
 from api_test.common.common import verify_parameter, del_model
 from api_test.models import Project, ProjectDynamic
+from api_test.serializers import ProjectDynamicSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -28,7 +29,8 @@ def dynamic(request):
     obi = Project.objects.filter(id=project_id)
     if obi:
         obj = ProjectDynamic.objects.filter(project=project_id).order_by('-time')
-        response['data'] = del_model(json.loads(serializers.serialize('json', obj)))
+        serialize = ProjectDynamicSerializer(obj, many=True).data
+        response['data'] = serialize
         return JsonResponse(dict(response, **GlobalStatusCode.success))
     else:
         return JsonResponse(GlobalStatusCode.ProjectNotExist)

@@ -302,7 +302,7 @@ class ProjectMemberForm(admin.ModelAdmin):
     search_fields = ('user', 'project')
     list_display = ('id', 'permission_type', 'project', 'user')
     list_display_links = ('permission_type', 'project')
-    list_filter = ('id', 'permission_type', 'project', 'user')
+    list_filter = ('permission_type', 'project', 'user')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([

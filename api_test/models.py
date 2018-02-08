@@ -107,19 +107,16 @@ class ProjectDynamic(models.Model):
     项目动态
     """
     id = models.AutoField(primary_key=True)
-    project = models.ForeignKey(Project, related_name='Project', on_delete=models.CASCADE, verbose_name='所属项目')
+    project = models.ForeignKey(Project, related_name='projectInfo', on_delete=models.CASCADE, verbose_name='所属项目')
     time = models.DateTimeField(auto_now_add=True, verbose_name='操作时间')
     type = models.CharField(max_length=50, verbose_name='操作类型')
     operationObject = models.CharField(max_length=50, verbose_name='操作对象')
-    user = models.ForeignKey(User, blank=True, null=True, related_name='User',
+    user = models.ForeignKey(User, blank=True, null=True, related_name='userName',
                              on_delete=models.SET_NULL, verbose_name='操作人')
     description = models.CharField(max_length=1024, blank=True, null=True,  verbose_name='描述')
 
     def __unicode__(self):
-        return self.user
-
-    def __str__(self):
-        return self.user
+        return self.type
 
     class Meta:
         verbose_name = '项目动态'
@@ -141,10 +138,10 @@ class ProjectMember(models.Model):
     user = models.ForeignKey(User, related_name='UserInfo', on_delete=models.CASCADE, verbose_name='用户')
 
     def __unicode__(self):
-        return self.user
+        return self.permission_type
 
     def __str__(self):
-        return self.user
+        return self.permission_type
 
     class Meta:
         verbose_name = '项目成员'
