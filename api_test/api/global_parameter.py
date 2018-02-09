@@ -1,17 +1,15 @@
-import json
 import logging
 
 from django.contrib.auth.models import User
-from django.core import serializers
-from django.http import JsonResponse
-from django.views.decorators.http import require_http_methods
 from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
-from api_test.common.common import del_model, verify_parameter
+from api_test.common.api_response import JsonResponse
+from api_test.common.common import verify_parameter
 from api_test.models import Project, GlobalHost, ProjectDynamic
+from api_test.serializers import GlobalHostSerializer
 
-logger = logging.getLogger(__name__) # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
+logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
 
 @api_view(['GET'])
@@ -22,18 +20,16 @@ def host_total(request):
     project_id 项目ID
     :return:
     """
-    response = {}
     project_id = request.GET.get('project_id')
     if not project_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = GlobalHost.objects.filter(project=project_id)
-        data = json.loads(serializers.serialize('json', obi))
-        response['data'] = del_model(data)
-        return JsonResponse(dict(response, **GlobalStatusCode.success))
+        serialize = GlobalHostSerializer(obi, many=True)
+        return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -50,7 +46,7 @@ def add_host(request):
     response = {}
     project_id = request.POST.get('project_id')
     if not project_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     name = request.POST.get('name')
     host = request.POST.get('host')
     desc = request.POST.get('description')
@@ -58,21 +54,18 @@ def add_host(request):
     if obj:
         obi = GlobalHost.objects.filter(name=name, project=project_id)
         if obi:
-            return JsonResponse(GlobalStatusCode.NameRepetition)
+            return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
         else:
             hosts = GlobalHost(project=Project.objects.get(id=project_id), name=name, host=host, description=desc)
             hosts.save()
-            data = GlobalHost.objects.filter(project=project_id, name=name, host=host, description=desc)
-            host_id = json.loads(serializers.serialize('json', data))[0]['pk']
             record = ProjectDynamic(project=Project.objects.get(id=project_id), type='新增',
                                     operationObject='HOST', user=User.objects.get(id=1),
                                     description='新增HOST“%s”' % name)
             record.save()
-            response['host_id'] = host_id
-            response = dict(response, **GlobalStatusCode.success)
-            return JsonResponse(response)
+            response['host_id'] = hosts.pk
+            return JsonResponse(data=response, code_msg=GlobalStatusCode.success())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -87,11 +80,10 @@ def update_host(request):
     description 描述
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     host_id = request.POST.get('host_id')
     if not host_id.isdecimal() or not project_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     name = request.POST.get('name')
     host = request.POST.get('host')
     desc = request.POST.get('description')
@@ -106,14 +98,13 @@ def update_host(request):
                                         operationObject='HOST', user=User.objects.get(id=1),
                                         description='修改HOST“%s”' % name)
                 record.save()
-                response = dict(response, **GlobalStatusCode.success)
-                return JsonResponse(response)
+                return JsonResponse(code_msg=GlobalStatusCode.success())
             else:
-                return JsonResponse(GlobalStatusCode.NameRepetition)
+                return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
         else:
-            return JsonResponse(GlobalStatusCode.HostNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.history_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -125,11 +116,10 @@ def del_host(request):
     host_id 地址ID
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     host_id = request.POST.get('host_id')
     if not project_id.isdecimal() or not host_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = GlobalHost.objects.filter(id=host_id, project=project_id)
@@ -139,11 +129,11 @@ def del_host(request):
                                     operationObject='HOST', user=User.objects.get(id=1),
                                     description='删除HOST“%s”' % list(obi)[0])
             record.save()
-            return JsonResponse(GlobalStatusCode.success)
+            return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(GlobalStatusCode.HostNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.host_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -155,11 +145,10 @@ def disable_host(request):
     host_id 地址ID
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     host_id = request.POST.get('host_id')
     if not project_id.isdecimal() or not host_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = GlobalHost.objects.filter(id=host_id, project=project_id)
@@ -169,11 +158,11 @@ def disable_host(request):
                                     operationObject='HOST', user=User.objects.get(id=1),
                                     description='禁用HOST“%s”' % list(obi)[0])
             record.save()
-            return JsonResponse(GlobalStatusCode.success)
+            return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(GlobalStatusCode.HostNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.host_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -185,11 +174,10 @@ def enable_host(request):
     host_id 地址ID
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     host_id = request.POST.get('host_id')
     if not project_id.isdecimal() or not host_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = GlobalHost.objects.filter(id=host_id, project=project_id)
@@ -199,8 +187,8 @@ def enable_host(request):
                                     operationObject='HOST', user=User.objects.get(id=1),
                                     description='启用HOST“%s”' % list(obi)[0])
             record.save()
-            return JsonResponse(GlobalStatusCode.success)
+            return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(GlobalStatusCode.HostNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.host_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())

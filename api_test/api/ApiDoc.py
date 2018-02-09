@@ -3,14 +3,15 @@ import logging
 import math
 
 from django.core import serializers
-from django.http import JsonResponse
-from django.views.decorators.http import require_http_methods
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
+from api_test.common.api_response import JsonResponse
 from api_test.common.common import del_model, verify_parameter, record_dynamic
 from api_test.models import Project, ApiGroupLevelFirst, ApiGroupLevelSecond, ApiInfo, \
     ApiOperationHistory, APIRequestHistory
+from api_test.serializers import ApiGroupLevelFirstSerializer, ApiInfoSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -23,29 +24,17 @@ def group(request):
     project_id 项目ID
     :return:
     """
-    response = {}
     project_id = request.GET.get('project_id')
     if not project_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
 
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = ApiGroupLevelFirst.objects.filter(project=project_id)
-        level_first = json.loads(serializers.serialize('json', obi))
-        data = del_model(level_first)
-        j = 0
-
-        for i in level_first:
-            level_second = ApiGroupLevelSecond.objects.filter(apiGroupLevelFirst=i['pk'])
-            level_second = json.loads(serializers.serialize('json', level_second))
-            level_second = del_model(level_second)
-            data[j]['fields']['levelSecond'] = level_second
-            j = j+1
-
-        response['data'] = data
-        return JsonResponse(dict(response, **GlobalStatusCode.success))
+        serialize = ApiGroupLevelFirstSerializer(obi, many=True)
+        return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -63,29 +52,30 @@ def add_group(request):
     name = request.POST.get('name')
     first_group_id = request.POST.get('first_group_id')
     if not project_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
 
     obj = Project.objects.filter(id=project_id)
     if obj:
         # 添加二级分组名称
         if first_group_id:
             if not first_group_id.isdecimal():
-                return JsonResponse(GlobalStatusCode.ParameterWrong)
+                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             obi = ApiGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
             if obi:
-                first_group = ApiGroupLevelSecond(apiGroupLevelFirst=
-                                                  ApiGroupLevelFirst.objects.get(id=first_group_id), name=name)
-                first_group.save()
+                obi = ApiGroupLevelSecond(apiGroupLevelFirst=
+                                          ApiGroupLevelFirst.objects.get(id=first_group_id), name=name)
+                obi.save()
             else:
-                return JsonResponse(GlobalStatusCode.GroupNotExist)
+                return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
         # 添加一级分组名称
         else:
             obi = ApiGroupLevelFirst(project=Project.objects.get(id=project_id), name=name)
             obi.save()
-        record_dynamic(project_id, '新增', '接口分组', '新增接口分组')
-        return JsonResponse(GlobalStatusCode.success)
+        record_dynamic(project_id, '新增', '接口分组', '新增接口分组“%s”' % obi.name)
+        response['group_id'] = obi.pk
+        return JsonResponse(data=response, code_msg=GlobalStatusCode.success())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -99,13 +89,12 @@ def update_group(request):
     second_group_id 二级分组id
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     name = request.POST.get('name')
     first_group_id = request.POST.get('first_group_id')
     second_group_id = request.POST.get('second_group_id')
     if not project_id.isdecimal() or not first_group_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = ApiGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
@@ -113,22 +102,22 @@ def update_group(request):
             # 修改二级分组名称
             if second_group_id:
                 if not second_group_id.isdecimal():
-                    return JsonResponse(GlobalStatusCode.ParameterWrong)
+                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                 obm = ApiGroupLevelSecond.objects.filter(id=second_group_id,
                                                          apiGroupLevelFirst=first_group_id)
                 if obm:
                     obm.update(name=name)
                 else:
-                    return JsonResponse(GlobalStatusCode.GroupNotExist)
+                    return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
             # 修改一级分组名称
             else:
                 obi.update(name=name)
-            record_dynamic(project_id, '修改', '接口分组', '修改接口分组')
-            return JsonResponse(GlobalStatusCode.success)
+            record_dynamic(project_id, '修改', '接口分组', '修改接口分组“%s”' % name)
+            return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(GlobalStatusCode.GroupNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -141,11 +130,10 @@ def del_group(request):
     second_group_id 二级分组id
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     first_group_id = request.POST.get('first_group_id')
     if not project_id.isdecimal() or not first_group_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     second_group_id = request.POST.get('second_group_id')
     obj = Project.objects.filter(id=project_id)
     if obj:
@@ -154,66 +142,72 @@ def del_group(request):
             # 删除二级分组
             if second_group_id:
                 if not second_group_id.isdecimal():
-                    return JsonResponse(GlobalStatusCode.ParameterWrong)
-                obm = ApiGroupLevelSecond.objects.filter(id=second_group_id, apiGroupLevelFirst=first_group_id)
-                if obm:
-                    obm.delete()
+                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                obi = ApiGroupLevelSecond.objects.filter(id=second_group_id, apiGroupLevelFirst=first_group_id)
+                if obi:
+                    obi.delete()
                 else:
-                    return JsonResponse(GlobalStatusCode.GroupNotExist)
+                    return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
             else:
                 obi.delete()
-            record_dynamic(project_id, '删除', '接口分组', '删除接口分组')
-            return JsonResponse(GlobalStatusCode.success)
+            record_dynamic(project_id, '删除', '接口分组', '删除接口分组“%s”' % obi.name)
+            return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(GlobalStatusCode.GroupNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
-@api_view(['POST'])
-@verify_parameter(['project_id', 'page'], 'GET')
+@api_view(['GET'])
+@verify_parameter(['project_id'], 'GET')
 def api_list(request):
     """
     获取接口列表
     project_id 项目ID
     first_group_id 一级分组ID
     second_group_id 二级分组ID
+    page_size  每一页条数
     page 页码
     :return:
     """
-    response = {}
-    num = 20
+    try:
+        page_size = int(request.GET.get('page_size', 2))
+        page = int(request.GET.get('page', 1))
+    except (TypeError, ValueError):
+        return JsonResponse(code_msg=GlobalStatusCode.page_not_int())
     project_id = request.GET.get('project_id')
     first_group_id = request.GET.get('first_group_id')
     second_group_id = request.GET.get('second_group_id')
-    page = request.GET.get('page')
-    if not page.isdecimal() or not project_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
-    page = int(page)
+    if not project_id.isdecimal():
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         if first_group_id and second_group_id is None:
             if not first_group_id.isdecimal():
-                return JsonResponse(GlobalStatusCode.ParameterWrong)
-            obi = ApiInfo.objects.filter(project=project_id, apiGroupLevelFirst=first_group_id)
+                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            obi = ApiInfo.objects.filter(project=project_id, apiGroupLevelFirst=first_group_id).order_by('name')
         elif first_group_id and second_group_id:
             if not first_group_id.isdecimal() or not second_group_id.isdecimal():
-                return JsonResponse(GlobalStatusCode.ParameterWrong)
+                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             obi = ApiInfo.objects.filter(project=project_id, apiGroupLevelFirst=first_group_id,
-                                         apiGroupLevelSecond=second_group_id)
+                                         apiGroupLevelSecond=second_group_id).order_by('name')
         else:
-            obi = ApiInfo.objects.filter(project=project_id)
-        data = json.loads(serializers.serialize('json', obi))
-        page_num = math.ceil(float(len(data)) / num)
-        if 0 < page <= page_num:
-            data = data[(page-1)*num:page*num]
-        else:
-            data = data[0:num]
-        response['data'] = del_model(data)
-        response['pageNum'] = page_num
-        return JsonResponse(dict(response, **GlobalStatusCode.success))
+            obi = ApiInfo.objects.filter(project=project_id).order_by('name')
+        paginator = Paginator(obi, page_size)  # paginator对象
+        total = paginator.num_pages  # 总页数
+        try:
+            obm = paginator.page(page)
+        except PageNotAnInteger:
+            obm = paginator.page(1)
+        except EmptyPage:
+            obm = paginator.page(paginator.num_pages)
+        serialize = ApiInfoSerializer(obm, many=True)
+        return JsonResponse(data={'data': serialize.data,
+                                  'page': page,
+                                  'total': total
+                                  }, code_msg=GlobalStatusCode.success())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -254,29 +248,29 @@ def add_api(request):
     code = request.POST.get('code')
     description = request.POST.get('description')
     if not project_id.isdecimal() or not first_group_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if http_type not in ['HTTP', 'HTTPS']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if request_type not in ['POST', 'GE', 'PUT', 'DELETE']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if request_parameter_type not in ['form-data', 'raw', 'Restful']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = ApiInfo.objects.filter(name=name, project=project_id)
         if obi:
-            return JsonResponse(GlobalStatusCode.NameRepetition)
+            return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
         else:
             first_group = ApiGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
             if len(first_group) == 0:
-                return JsonResponse(GlobalStatusCode.GroupNotExist)
+                return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
             if first_group_id and second_group_id:
                 if not second_group_id.isdecimal():
-                    return JsonResponse(GlobalStatusCode.ParameterWrong)
+                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                 second_group = ApiGroupLevelSecond.objects.filter(id=second_group_id,
                                                                   apiGroupLevelFirst=first_group_id)
                 if len(second_group) == 0:
-                    return JsonResponse(GlobalStatusCode.GroupNotExist)
+                    return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
                 oba = ApiInfo(project=Project.objects.get(id=project_id),
                               apiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=first_group_id),
                               apiGroupLevelSecond=ApiGroupLevelSecond.objects.get(id=second_group_id),
@@ -292,18 +286,17 @@ def add_api(request):
                               requestParameter=request_list, response=response_list, mock_code=mock_status,
                               data=code, description=description)
             else:
-                return JsonResponse(GlobalStatusCode.ParameterWrong)
+                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             oba.save()
             record_dynamic(project_id, '新增', '接口', '新增接口“%s”' % name)
-            data = ApiInfo.objects.filter(name=name, project=project_id)
-            api_id = json.loads(serializers.serialize('json', data))[0]['pk']
-            api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=api_id), user='admin',
+            api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=oba.pk), user='admin',
                                              description='新增接口"%s"' % name)
             api_record.save()
-            response['api_id'] = api_id
-            return JsonResponse(dict(response, **GlobalStatusCode.success))
+            return JsonResponse(data={
+                'api_id': oba.pk
+            }, code_msg=GlobalStatusCode.success())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -335,7 +328,7 @@ def update_api(request):
     first_group_id = request.POST.get('first_group_id')
     second_group_id = request.POST.get('second_group_id')
     if not project_id.isdecimal() or not api_id.isdecimal() or not first_group_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     name = request.POST.get('name')
     http_type = request.POST.get('httpType')
     request_type = request.POST.get('requestType')
@@ -348,11 +341,11 @@ def update_api(request):
     code = request.POST.get('code')
     description = request.POST.get('description')
     if http_type not in ['HTTP', 'HTTPS']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if request_type not in ['POST', 'GE', 'PUT', 'DELETE']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if request_parameter_type not in ['form-data', 'raw', 'Restful']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obm = ApiInfo.objects.filter(id=api_id, project=project_id)
@@ -361,14 +354,14 @@ def update_api(request):
             if len(obi) == 0:
                 first_group = ApiGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
                 if len(first_group) == 0:
-                    return JsonResponse(GlobalStatusCode.GroupNotExist)
+                    return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
                 if first_group_id and second_group_id:
                     if not second_group_id.isdecimal():
-                        return JsonResponse(GlobalStatusCode.ParameterWrong)
+                        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                     second_group = ApiGroupLevelSecond.objects.filter(id=second_group_id,
                                                                       apiGroupLevelFirst=first_group_id)
                     if len(second_group) == 0:
-                        return JsonResponse(GlobalStatusCode.GroupNotExist)
+                        return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
                     obm.update(project=Project.objects.get(id=project_id),
                                apiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=first_group_id),
                                apiGroupLevelSecond=ApiGroupLevelSecond.objects.get(id=second_group_id),
@@ -386,53 +379,59 @@ def update_api(request):
                                requestParameter=request_list, response=response_list, mock_code=mock_status,
                                data=code, description=description)
                 else:
-                    return JsonResponse(GlobalStatusCode.ParameterWrong)
+                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
 
                 record_dynamic(project_id, '修改', '接口', '修改接口“%s”' % name)
                 api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=api_id), user='admin',
                                                  description='修改接口"%s"' % name)
                 api_record.save()
-                return JsonResponse(GlobalStatusCode.success)
+                return JsonResponse(code_msg=GlobalStatusCode.success())
             else:
-                return JsonResponse(GlobalStatusCode.ApiIsExist)
+                return JsonResponse(code_msg=GlobalStatusCode.api_is_exist())
         else:
-            return JsonResponse(GlobalStatusCode.ApiNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['GET'])
-@verify_parameter(['project_id', 'name', 'page'], 'GET')
+@verify_parameter(['project_id', 'name'], 'GET')
 def select_api(request):
     """
     查询接口
     project_id 项目ID
     name  查询名称
+    page_size 条数
     page 页码
     :return:
     """
-    response = {}
-    num = 20
+    try:
+        page_size = int(request.GET.get('page_size', 2))
+        page = int(request.GET.get('page', 1))
+    except (TypeError, ValueError):
+        return JsonResponse(code_msg=GlobalStatusCode.page_not_int())
     project_id = request.GET.get('project_id')
     name = request.GET.get('name')
-    page = request.GET.get('page')
-    if not project_id.isdecimal() or not page.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
-    page = int(page)
+    if not project_id.isdecimal():
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = ApiInfo.objects.filter(name__contains=name, project=project_id)
-        data = json.loads(serializers.serialize('json', obi))
-        page_num = math.ceil(float(len(data)) / num)
-        if 0 < page <= page_num:
-            data = data[(page - 1) * num:page * num]
-        else:
-            data = data[0:num]
-        response['data'] = del_model(data)
-        response['pageNum'] = page_num
-        return JsonResponse(dict(response, **GlobalStatusCode.success))
+        paginator = Paginator(obi, page_size)  # paginator对象
+        total = paginator.num_pages  # 总页数
+        try:
+            obm = paginator.page(page)
+        except PageNotAnInteger:
+            obm = paginator.page(1)
+        except EmptyPage:
+            obm = paginator.page(paginator.num_pages)
+        serialize = ApiInfoSerializer(obm, many=True)
+        return JsonResponse(data={'data': serialize.data,
+                                  'page': page,
+                                  'total': total
+                                  }, code_msg=GlobalStatusCode.success())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -444,15 +443,14 @@ def del_api(request):
     api_ids 接口ID列表
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     if not project_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     ids = request.POST.get('api_ids')
     id_list = ids.split(',')
     for i in id_list:
         if not i.isdecimal():
-            return JsonResponse(GlobalStatusCode.ParameterWrong)
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         for j in id_list:
@@ -461,9 +459,9 @@ def del_api(request):
                 name = json.loads(serializers.serialize('json', obi))[0]['fields']['name']
                 obi.delete()
                 record_dynamic(project_id, '删除', '接口', '删除接口“%s”' % name)
-        return JsonResponse(GlobalStatusCode.success)
+        return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -484,40 +482,40 @@ def update_api_group(request):
     first_group_id = request.POST.get('first_group_id')
     second_group_id = request.POST.get('second_group_id')
     if not project_id.isdecimal() or not first_group_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         api_first_group = ApiGroupLevelFirst.objects.filter(id=first_group_id)
         if api_first_group:
             if first_group_id and second_group_id:
                 if not second_group_id.isdecimal():
-                    return JsonResponse(GlobalStatusCode.ParameterWrong)
+                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                 api_second_group = ApiGroupLevelSecond.objects.filter(id=second_group_id)
                 if api_second_group:
                     for i in id_list:
                         if not i.isdecimal():
-                            return JsonResponse(GlobalStatusCode.ParameterWrong)
+                            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                     for j in id_list:
                         ApiInfo.objects.filter(id=j, project=project_id).update(
                             apiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=first_group_id),
                             apiGroupLevelSecond=ApiGroupLevelSecond.objects.get(id=second_group_id))
                 else:
-                    return JsonResponse(GlobalStatusCode.GroupNotExist)
+                    return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
             elif first_group_id and second_group_id is None:
                 for i in id_list:
                     if not i.isdecimal():
-                        return JsonResponse(GlobalStatusCode.ParameterWrong)
+                        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                 for j in id_list:
                     ApiInfo.objects.filter(id=j, project=project_id).update(
                         apiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=first_group_id))
             else:
-                return JsonResponse(GlobalStatusCode.ParameterWrong)
+                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             record_dynamic(project_id, '修改', '接口', '修改接口分组，列表“%s”' % id_list)
-            return JsonResponse(GlobalStatusCode.success)
+            return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(GlobalStatusCode.GroupNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['GET'])
@@ -532,19 +530,17 @@ def api_info(request):
     project_id = request.GET.get('project_id')
     api_id = request.GET.get('api_id')
     if not project_id.isdecimal() or not api_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = ApiInfo.objects.filter(id=api_id, project=project_id)
         if len(obi) != 0:
-            data = json.loads(serializers.serialize('json', obi))
-            data = del_model(data)
-            response['data'] = data
-            return JsonResponse(dict(response, **GlobalStatusCode.success))
+            serialize = ApiInfoSerializer(obi, many=True)
+            return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(GlobalStatusCode.ApiNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -566,11 +562,11 @@ def add_history(request):
     url = request.POST.get('url')
     http_status = request.POST.get('httpStatus')
     if not project_id.isdecimal() or not api_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if request_type not in ['POST', 'GE', 'PUT', 'DELETE']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if http_status not in ['200', '404', '400', '502', '500', '302']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = ApiInfo.objects.filter(id=api_id, project=project_id)
@@ -586,11 +582,11 @@ def add_history(request):
             data = APIRequestHistory.objects.filter(apiInfo=api_id).order_by('-requestTime')
             history_id = json.loads(serializers.serialize('json', data))[0]['pk']
             response['history_id'] = history_id
-            return JsonResponse(dict(response, **GlobalStatusCode.success))
+            return JsonResponse(data=response, code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(GlobalStatusCode.ApiNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['GET'])
@@ -606,7 +602,7 @@ def history_list(request):
     project_id = request.GET.get('project_id')
     api_id = request.GET.get('api_id')
     if not project_id.isdecimal() or not api_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = ApiInfo.objects.filter(id=api_id, project=project_id)
@@ -614,11 +610,11 @@ def history_list(request):
             history = APIRequestHistory.objects.filter(apiInfo=ApiInfo.objects.get(id=api_id, project=project_id))
             data = json.loads(serializers.serialize('json', history))
             response['data'] = del_model(data)
-            return JsonResponse(dict(response, **GlobalStatusCode.success))
+            return JsonResponse(data=response, code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(GlobalStatusCode.ApiNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -636,7 +632,7 @@ def del_history(request):
     api_id = request.POST.get('api_id')
     history_id = request.POST.get('history_id')
     if not project_id.isdecimal() or not api_id.isdecimal() or not history_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = ApiInfo.objects.filter(id=api_id, project=project_id)
@@ -647,11 +643,11 @@ def del_history(request):
                 api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=api_id), user='admin',
                                                  description='删除请求历史记录')
                 api_record.save()
-                return JsonResponse(GlobalStatusCode.success)
+                return JsonResponse(code_msg=GlobalStatusCode.success())
             else:
-                return JsonResponse(GlobalStatusCode.HistoryNotExist)
+                return JsonResponse(code_msg=GlobalStatusCode.history_not_exist())
         else:
-            return JsonResponse(GlobalStatusCode.ApiNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.p)
 

@@ -1,9 +1,10 @@
 import logging
 
 from django.contrib.auth.models import User
-from django.http import JsonResponse
+from rest_framework.views import exception_handler
 
 from api_test.common import GlobalStatusCode
+from api_test.common.api_response import JsonResponse
 from api_test.models import AutomationTestResult, AutomationCaseApi, ProjectDynamic, Project
 
 
@@ -16,6 +17,22 @@ def del_model(data):
     for i in data:
         i.pop('model')
     return data
+
+
+def custom_exception_handler(exc, context):
+    # Call REST framework's default exception handler first,
+    # to get the standard error response.
+    response = exception_handler(exc, context)
+
+    # Now add the HTTP status code to the response.
+    if response is not None:
+        response.data['code'] = response.status_code
+        response.data['msg'] = response.data['detail']
+        #   response.data['data'] = None #可以存在
+        # 删除detail字段
+        del response.data['detail']
+
+    return response
 
 
 def verify_parameter(expect_parameter, method):
@@ -43,16 +60,16 @@ def verify_parameter(expect_parameter, method):
                 if set(expect_parameter).issubset(list(parameter)):
                     for i in expect_parameter:
                         if parameter[i] == ['']:
-                            return JsonResponse(GlobalStatusCode.ParameterWrong)
+                            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                 else:
-                    return JsonResponse(GlobalStatusCode.ParameterWrong)
+                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
 
                 return func(reality_parameter)
 
             except Exception as e:
                 logging.exception('ERROR')
                 logging.error(e)
-                return JsonResponse(GlobalStatusCode.Fail)
+                return JsonResponse(code_msg=GlobalStatusCode.fail())
         return verify
     return api
 

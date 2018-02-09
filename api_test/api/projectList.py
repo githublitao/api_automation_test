@@ -1,15 +1,13 @@
-import json
 import logging
 
 from django.contrib.auth.models import User
-from django.core import serializers
-from django.http import JsonResponse
-from django.views.decorators.http import require_http_methods
 from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
-from api_test.common.common import del_model, verify_parameter
+from api_test.common.api_response import JsonResponse
+from api_test.common.common import verify_parameter
 from api_test.models import Project, ProjectDynamic
+from api_test.serializers import ProjectSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -21,11 +19,9 @@ def project_list(request):
     :param request:
     :return:
     """
-    response = {}
     pro_list = Project.objects.all()
-    data = json.loads(serializers.serialize('json', pro_list))
-    response['data'] = del_model(data)
-    return JsonResponse(response)
+    serialize = ProjectSerializer(pro_list, many=True)
+    return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
 
 
 @api_view(['POST'])
@@ -51,20 +47,16 @@ def add_project(request):
 
             project = Project(name=name, version=version, type=_type, description=description)
             project.save()
-            data = Project.objects.filter(name=name, version=version, type=_type, description=description)
-            logging.debug(json.loads(serializers.serialize('json', data)))
-            project_id = json.loads(serializers.serialize('json', data))[0]['pk']
-            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='创建',
+            record = ProjectDynamic(project=Project.objects.get(id=project.pk), type='创建',
                                     operationObject='项目', user=User.objects.get(id=1), description='创建项目“%s”' % name)
             record.save()
-            response['project_id'] = project_id
-            response = dict(response, **GlobalStatusCode.success)
-            return JsonResponse(response)
+            response['project_id'] = project.pk
+            return JsonResponse(data=response, code_msg=GlobalStatusCode.success())
 
         else:
-            return JsonResponse(GlobalStatusCode.NameRepetition)
+            return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
     else:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
 
 
 @api_view(['POST'])
@@ -79,10 +71,9 @@ def update_project(request):
     description: 项目描述
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     if not project_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     name = request.POST.get('name')
     version = request.POST.get('v')
     _type = request.POST.get('type')
@@ -98,15 +89,14 @@ def update_project(request):
                                         operationObject='项目', user=User.objects.get(id=1),
                                         description='修改项目“%s”' % name)
                 record.save()
-                response = dict(response, **GlobalStatusCode.success)
-                return JsonResponse(response)
+                return JsonResponse(code_msg=GlobalStatusCode.success())
 
             else:
-                return JsonResponse(GlobalStatusCode.NameRepetition)
+                return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
         else:
-            return JsonResponse(GlobalStatusCode.ProjectNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
 
 
 @api_view(['POST'])
@@ -117,16 +107,15 @@ def del_project(request):
     project_id 待删除的项目ID
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     if not project_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         Project.objects.filter(id=project_id).delete()
-        return JsonResponse(GlobalStatusCode.success)
+        return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -137,10 +126,9 @@ def disable_project(request):
     project_id 项目ID
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     if not project_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obj.update(status=False)
@@ -148,10 +136,9 @@ def disable_project(request):
                                 operationObject='项目', user=User.objects.get(id=1),
                                 description='禁用项目“%s”' % list(obj)[0])
         record.save()
-        response = dict(response, **GlobalStatusCode.success)
-        return JsonResponse(response)
+        return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -162,10 +149,9 @@ def enable_project(request):
     project_id 项目ID
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     if not project_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obj.update(status=True)
@@ -173,8 +159,7 @@ def enable_project(request):
                                 operationObject='项目', user=User.objects.get(id=1),
                                 description='禁用项目“%s”' % list(obj)[0])
         record.save()
-        response = dict(response, **GlobalStatusCode.success)
-        return JsonResponse(response)
+        return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 

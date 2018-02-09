@@ -1,13 +1,10 @@
-import json
 import logging
 
-from django.http import JsonResponse
-from django.views.decorators.http import require_http_methods
-from django.core import serializers
 from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
-from api_test.common.common import verify_parameter, del_model
+from api_test.common.api_response import JsonResponse
+from api_test.common.common import verify_parameter
 from api_test.models import Project, ProjectDynamic
 from api_test.serializers import ProjectDynamicSerializer
 
@@ -22,15 +19,13 @@ def dynamic(request):
     project_id  项目ID
     :return:
     """
-    response = {}
     project_id = request.GET.get('project_id')
     if not project_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obi = Project.objects.filter(id=project_id)
     if obi:
         obj = ProjectDynamic.objects.filter(project=project_id).order_by('-time')
-        serialize = ProjectDynamicSerializer(obj, many=True).data
-        response['data'] = serialize
-        return JsonResponse(dict(response, **GlobalStatusCode.success))
+        serialize = ProjectDynamicSerializer(obj, many=True)
+        return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())

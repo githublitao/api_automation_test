@@ -1,69 +1,58 @@
-success = {
-    "msg": "成功",
-    "code": "999999"
-}
+def success():
+    return '999999', '成功'
 
-Fail = {
-    "msg": "失败",
-    "code": "999998"
-}
 
-NameRepetition = {
-    "msg": "存在相同名称",
-    "code": "999997"
-}
+def fail():
+    return '999998', '失败'
 
-ParameterWrong = {
-    "msg": "参数有误",
-    "code": "999996"
-}
 
-ProjectNotExist = {
-    "msg": "项目不存在",
-    "code": "999995"
-}
+def name_repetition():
+    return '999997', '存在相同名称'
 
-ProjectIsExist = {
-    "msg": "项目已存在",
-    "code": "999994"
-}
 
-HostIsExist = {
-    "msg": "host已存在",
-    "code": "999993"
-}
+def parameter_wrong():
+    return '999996', '参数有误'
 
-HostNotExist = {
-    "msg": "host不存在",
-    "code": "999992"
-}
 
-GroupNotExist = {
-    "msg": "分组不存在",
-    "code": "999991"
-}
+def project_not_exist():
+    return '999995', '项目不存在'
 
-ApiNotExist = {
-    "msg": "接口不存在",
-    "code": "999990"
-}
 
-ApiIsExist = {
-    "msg": "接口已存在",
-    "code": "999989"
-}
+def project_is_exist():
+    return '999994', '项目已存在'
 
-HistoryNotExist = {
-    "msg": "请求历史不存在",
-    "code": "999988"
-}
 
-CaseNotExist = {
-    "msg": "用例不存在",
-    "code": "999987"
-}
+def host_is_exist():
+    return '999993', 'host已存在'
 
-TaskNotExist = {
-    "msg": "任务不存在",
-    "code": "999986"
-}
+
+def host_not_exist():
+    return '999992', 'host不存在'
+
+
+def group_not_exist():
+    return '999991', '分组不存在'
+
+
+def api_not_exist():
+    return '999990', '接口不存在'
+
+
+def api_is_exist():
+    return '999989', '接口已存在'
+
+
+def history_not_exist():
+    return '999988', '请求历史不存在'
+
+
+def case_not_exist():
+    return '999987', '用例不存在'
+
+
+def task_not_exist():
+    return '999986', '任务不存在'
+
+
+def page_not_int():
+    return '999985', 'page and page_size must be integer!'

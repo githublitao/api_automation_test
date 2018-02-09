@@ -107,7 +107,7 @@ class ProjectDynamic(models.Model):
     项目动态
     """
     id = models.AutoField(primary_key=True)
-    project = models.ForeignKey(Project, related_name='projectInfo', on_delete=models.CASCADE, verbose_name='所属项目')
+    project = models.ForeignKey(Project, related_name='dynamic_project', on_delete=models.CASCADE, verbose_name='所属项目')
     time = models.DateTimeField(auto_now_add=True, verbose_name='操作时间')
     type = models.CharField(max_length=50, verbose_name='操作类型')
     operationObject = models.CharField(max_length=50, verbose_name='操作对象')
@@ -134,8 +134,8 @@ class ProjectMember(models.Model):
     )
     id = models.AutoField(primary_key=True)
     permission_type = models.CharField(max_length=50, verbose_name='权限角色', choices=CHOICES)
-    project = models.ForeignKey(Project,  on_delete=models.CASCADE, verbose_name='所属项目')
-    user = models.ForeignKey(User, related_name='UserInfo', on_delete=models.CASCADE, verbose_name='用户')
+    project = models.ForeignKey(Project, related_name='member_project', on_delete=models.CASCADE, verbose_name='所属项目')
+    user = models.ForeignKey(User, related_name='member_user', on_delete=models.CASCADE, verbose_name='用户')
 
     def __unicode__(self):
         return self.permission_type
@@ -214,7 +214,7 @@ class ApiGroupLevelSecond(models.Model):
     接口二级分组
     """
     id = models.AutoField(primary_key=True)
-    apiGroupLevelFirst = models.ForeignKey(ApiGroupLevelFirst,
+    apiGroupLevelFirst = models.ForeignKey(ApiGroupLevelFirst, related_name='secondGroup',
                                            on_delete=models.CASCADE, verbose_name='项目')
     name = models.CharField(max_length=50, verbose_name='接口二级分组名称')
 
@@ -234,7 +234,7 @@ class ApiInfo(models.Model):
     接口信息
     """
     id = models.AutoField(primary_key=True)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='所属项目')
+    project = models.ForeignKey(Project, related_name='api_project', on_delete=models.CASCADE, verbose_name='所属项目')
     apiGroupLevelFirst = models.ForeignKey(ApiGroupLevelFirst, blank=True, null=True,
                                            related_name='ApiGroupLevelFirst_id',
                                            on_delete=models.SET_NULL, verbose_name='所属一级分组')

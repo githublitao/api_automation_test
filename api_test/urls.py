@@ -5,7 +5,7 @@ from api_test.api import ApiDoc, automationCase as Case, member, dynamic
 from api_test.api.global_parameter import host_total, add_host, update_host, del_host, enable_host, disable_host
 from api_test.api.projectList import project_list, add_project, update_project, del_project, disable_project, \
      enable_project
-from api_test.api.projectTitle import project_info, api_total, dynamic_total, project_member
+from api_test.api.projectTitle import project_info
 
 urlpatterns = [
     url(r'project/project_list', project_list),
@@ -15,9 +15,6 @@ urlpatterns = [
     url(r'project/disable_project', disable_project),
     url(r'project/enable_project', enable_project),
     url(r'title/project_info', project_info),
-    url(r'title/api_total', api_total),
-    url(r'title/dynamic_total', dynamic_total),
-    url(r'title/project_member', project_member),
     url(r'global/host_total', host_total),
     url(r'global/add_host', add_host),
     url(r'global/update_host', update_host),

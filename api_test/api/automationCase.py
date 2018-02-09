@@ -5,14 +5,13 @@ import re
 import math
 from datetime import datetime
 
-from django.contrib.auth.models import User
 from django.core import serializers
 from django.db import transaction
-from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
+from api_test.common.api_response import JsonResponse
 from api_test.common.common import del_model, verify_parameter, record_dynamic
 from api_test.common.confighttp import test_api
 from api_test.models import Project, AutomationGroupLevelFirst, AutomationGroupLevelSecond, ProjectDynamic, \
@@ -33,7 +32,7 @@ def group(request):
     response = {}
     project_id = request.GET.get('project_id')
     if not project_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = AutomationGroupLevelFirst.objects.filter(project=project_id)
@@ -47,9 +46,9 @@ def group(request):
             data[j]['fields']['levelSecond'] = level_second
             j = j+1
         response['data'] = data
-        return JsonResponse(dict(response, **GlobalStatusCode.success))
+        return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -67,13 +66,13 @@ def add_group(request):
     name = request.POST.get('name')
     first_group_id = request.POST.get('first_group_id')
     if not project_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         # 添加二级分组名称
         if first_group_id:
             if not first_group_id.isdecimal():
-                return JsonResponse(GlobalStatusCode.ParameterWrong)
+                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             obi = AutomationGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
             if obi:
                 first_group = AutomationGroupLevelSecond(automationGroupLevelFirst=
@@ -81,15 +80,15 @@ def add_group(request):
                                                          name=name)
                 first_group.save()
             else:
-                return JsonResponse(GlobalStatusCode.GroupNotExist)
+                return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
         # 添加一级分组名称
         else:
             obi = AutomationGroupLevelFirst(project=Project.objects.get(id=project_id), name=name)
             obi.save()
         record_dynamic(project_id, '新增', '用例分组', '新增用例分组')
-        return JsonResponse(GlobalStatusCode.success)
+        return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -106,7 +105,7 @@ def del_group(request):
     project_id = request.POST.get('project_id')
     first_group_id = request.POST.get('first_group_id')
     if not project_id.isdecimal() or not first_group_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     second_group_id = request.POST.get('second_group_id')
     obj = Project.objects.filter(id=project_id)
     if obj:
@@ -115,21 +114,21 @@ def del_group(request):
             # 删除二级分组
             if second_group_id:
                 if not second_group_id.isdecimal():
-                    return JsonResponse(GlobalStatusCode.ParameterWrong)
+                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                 obm = AutomationGroupLevelSecond.objects.filter(id=second_group_id,
                                                                 automationGroupLevelFirst=first_group_id)
                 if obm:
                     obm.delete()
                 else:
-                    return JsonResponse(GlobalStatusCode.GroupNotExist)
+                    return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
             else:
                 obi.delete()
             record_dynamic(project_id, '删除', '用例分组', '删除用例分组')
-            return JsonResponse(GlobalStatusCode.success)
+            return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(GlobalStatusCode.GroupNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -149,7 +148,7 @@ def update_group(request):
     first_group_id = request.POST.get('first_group_id')
     second_group_id = request.POST.get('second_group_id')
     if not project_id.isdecimal() or not first_group_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = AutomationGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
@@ -157,22 +156,22 @@ def update_group(request):
             # 修改二级分组名称
             if second_group_id:
                 if not second_group_id.isdecimal():
-                    return JsonResponse(GlobalStatusCode.ParameterWrong)
+                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                 obm = AutomationGroupLevelSecond.objects.filter(id=second_group_id,
                                                                 automationGroupLevelFirst=first_group_id)
                 if obm:
                     obm.update(name=name)
                 else:
-                    return JsonResponse(GlobalStatusCode.GroupNotExist)
+                    return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
             # 修改一级分组名称
             else:
                 obi.update(name=name)
             record_dynamic(project_id, '修改', '用例分组', '修改用例分组')
-            return JsonResponse(GlobalStatusCode.success)
+            return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(GlobalStatusCode.GroupNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -194,40 +193,40 @@ def update_case_group(request):
     first_group_id = request.POST.get('first_group_id')
     second_group_id = request.POST.get('second_group_id')
     if not project_id.isdecimal() or not first_group_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         api_first_group = AutomationGroupLevelFirst.objects.filter(id=first_group_id)
         if api_first_group:
             if first_group_id and second_group_id:
                 if not second_group_id.isdecimal():
-                    return JsonResponse(GlobalStatusCode.ParameterWrong)
+                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                 api_second_group = AutomationGroupLevelSecond.objects.filter(id=second_group_id)
                 if api_second_group:
                     for i in id_list:
                         if not i.isdecimal():
-                            return JsonResponse(GlobalStatusCode.ParameterWrong)
+                            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                     for j in id_list:
                         AutomationTestCase.objects.filter(id=j, project=project_id).update(
                             automationGroupLevelFirst=AutomationGroupLevelFirst.objects.get(id=first_group_id),
                             automationGroupLevelSecond=AutomationGroupLevelSecond.objects.get(id=second_group_id))
                 else:
-                    return JsonResponse(GlobalStatusCode.GroupNotExist)
+                    return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
             elif first_group_id and second_group_id is None:
                 for i in id_list:
                     if not i.isdecimal():
-                        return JsonResponse(GlobalStatusCode.ParameterWrong)
+                        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                 for j in id_list:
                     AutomationTestCase.objects.filter(id=j, project=project_id).update(
                         automationGroupLevelFirst=AutomationGroupLevelFirst.objects.get(id=first_group_id))
             else:
-                return JsonResponse(GlobalStatusCode.ParameterWrong)
+                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             record_dynamic(project_id, '修改', '用例', '修改用例分组，列表"%s"' % id_list)
-            return JsonResponse(GlobalStatusCode.success)
+            return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(GlobalStatusCode.GroupNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['GET'])
@@ -248,18 +247,18 @@ def case_list(request):
     second_group_id = request.GET.get('second_group_id')
     page = request.GET.get('page')
     if not page.isdecimal() or not project_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     page = int(page)
     obj = Project.objects.filter(id=project_id)
     if obj:
         if first_group_id and second_group_id is None:
             if not first_group_id.isdecimal():
-                return JsonResponse(GlobalStatusCode.ParameterWrong)
+                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             obi = AutomationTestCase.objects.filter(project=project_id,
                                                     automationGroupLevelFirsta=first_group_id)
         elif first_group_id and second_group_id:
             if not first_group_id.isdecimal() or not second_group_id.isdecimal():
-                return JsonResponse(GlobalStatusCode.ParameterWrong)
+                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             obi = AutomationTestCase.objects.filter(project=project_id,
                                                     automationGroupLevelFirst=first_group_id,
                                                     automationGroupLevelSecond=second_group_id)
@@ -273,9 +272,9 @@ def case_list(request):
             data = data[0:num]
         response['data'] = del_model(data)
         response['pageNum'] = page_num
-        return JsonResponse(dict(response, **GlobalStatusCode.success))
+        return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -297,21 +296,21 @@ def add_case(request):
     name = request.POST.get('name')
     description = request.POST.get('description')
     if not project_id.isdecimal() or not first_group_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = AutomationTestCase.objects.filter(caseName=name, project=project_id)
         if len(obi) == 0:
             first_group = AutomationGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
             if len(first_group) == 0:
-                return JsonResponse(GlobalStatusCode.GroupNotExist)
+                return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
             if first_group_id and second_group_id:
                 if not second_group_id.isdecimal():
-                    return JsonResponse(GlobalStatusCode.ParameterWrong)
+                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                 second_group = AutomationGroupLevelSecond.objects.filter(id=second_group_id,
                                                                          automationGroupLevelFirst=first_group_id)
                 if len(second_group) == 0:
-                    return JsonResponse(GlobalStatusCode.GroupNotExist)
+                    return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
                 case = AutomationTestCase(
                     project=Project.objects.get(id=project_id),
                     automationGroupLevelFirst=AutomationGroupLevelFirst.objects.get(id=first_group_id),
@@ -331,11 +330,11 @@ def add_case(request):
             case_id = json.loads(serializers.serialize('json', data))[0]['pk']
             record_dynamic(project_id, '新增', '用例', '新增用例"%s"' % name)
             response['case_id'] = case_id
-            return JsonResponse(dict(response, **GlobalStatusCode.success))
+            return JsonResponse(data=response, code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(GlobalStatusCode.NameRepetition)
+            return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -356,21 +355,21 @@ def update_case(request):
     name = request.POST.get('name')
     description = request.POST.get('description')
     if not project_id.isdecimal() or not case_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obm = AutomationTestCase.objects.filter(id=case_id, project=project_id)
         if len(obm) == 0:
-            return JsonResponse(GlobalStatusCode.CaseNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
         obi = AutomationTestCase.objects.filter(caseName=name, project=project_id).exclude(id=case_id)
         if len(obi) == 0:
             obm.update(caseName=name, description=description)
             record_dynamic(project_id, '修改', '用例', '修改用例"%s"' % name)
-            return JsonResponse(dict(response, **GlobalStatusCode.success))
+            return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(GlobalStatusCode.NameRepetition)
+            return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -385,14 +384,14 @@ def del_case(request):
     response = {}
     project_id = request.POST.get('project_id')
     if not project_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     ids = request.POST.get('case_ids')
     id_list = ids.split(',')
     obj = Project.objects.filter(id=project_id)
     if obj:
         for i in id_list:
             if not i.isdecimal():
-                return JsonResponse(GlobalStatusCode.ParameterWrong)
+                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
         for j in id_list:
             obi = AutomationTestCase.objects.filter(id=j, project=project_id)
             if len(obi) != 0:
@@ -401,7 +400,7 @@ def del_case(request):
                 record_dynamic(project_id, '删除', '用例', '删除用例"%s"' % name)
         return JsonResponse(GlobalStatusCode.success)
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -420,7 +419,7 @@ def api_list(request):
     case_id = request.GET.get('case_id')
     page = request.GET.get('page')
     if not project_id.isdecimal() or not case_id.isdecimal() or not page.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     page = int(page)
     obj = Project.objects.filter(id=project_id)
     if obj:
@@ -435,11 +434,11 @@ def api_list(request):
                 data = data[0:num]
             response['data'] = del_model(data)
             response['pageNum'] = page_num
-            return JsonResponse(dict(response, **GlobalStatusCode.success))
+            return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(GlobalStatusCode.CaseNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -476,17 +475,17 @@ def add_new_api(request):
     http_code = request.POST.get('httpCode')
     response_data = request.POST.get('responseData')
     if not project_id.isdecimal() or not case_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if http_type not in ['HTTP', 'HTTPS']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if request_type not in ['POST', 'GET', 'PUT', 'DELETE']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if request_parameter_type not in ['form-data', 'raw', 'Restful']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if examine_type not in ['no_check',  'only_check_status', 'json', 'entirely_check', 'Regular_check']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if http_code not in ['200', '404', '400', '502', '500', '302']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
@@ -516,13 +515,13 @@ def add_new_api(request):
                                               key=i['k'], value=i['v'], interrelate=i['b'])
                         head.save()
                 record_dynamic(project_id, '新增', '用例接口', '新增用例“%s”接口"%s"' % (list(obi)[0], name))
-                return JsonResponse(dict(response, **GlobalStatusCode.success))
+                return JsonResponse(code_msg=GlobalStatusCode.success())
             else:
-                return JsonResponse(GlobalStatusCode.NameRepetition)
+                return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
         else:
-            return JsonResponse(GlobalStatusCode.CaseNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -561,17 +560,17 @@ def update_api(request):
     http_code = request.POST.get('httpCode')
     response_data = request.POST.get('responseData')
     if not project_id.isdecimal() or not case_id.isdecimal() or not case_api_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if http_type not in ['HTTP', 'HTTPS']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if request_type not in ['POST', 'GET', 'PUT', 'DELETE']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if request_parameter_type not in ['form-data', 'raw', 'Restful']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if examine_type not in ['no_check',  'only_check_status', 'json', 'entirely_check', 'Regular_check']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if http_code not in ['200', '404', '400', '502', '500', '302']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
@@ -602,15 +601,15 @@ def update_api(request):
                                 key=i['k'], value=i['v'], interrelate=i['b'])
                             head.save()
                     record_dynamic(project_id, '修改', '用例接口', '修改用例“%s”接口"%s"' % (list(obi)[0], name))
-                    return JsonResponse(GlobalStatusCode.success)
+                    return JsonResponse(code_msg=GlobalStatusCode.success())
                 else:
-                    return JsonResponse(GlobalStatusCode.NameRepetition)
+                    return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
             else:
-                return JsonResponse(GlobalStatusCode.ApiNotExist)
+                return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
         else:
-            return JsonResponse(GlobalStatusCode.CaseNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -627,12 +626,12 @@ def del_api(request):
     project_id = request.POST.get('project_id')
     case_id = request.POST.get('case_id')
     if not project_id.isdecimal() or not case_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     ids = request.POST.get('ids')
     id_list = ids.split(',')
     for i in id_list:
         if not i.isdecimal():
-            return JsonResponse(GlobalStatusCode.ParameterWrong)
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obm = AutomationTestCase.objects.filter(id=case_id, project=project_id)
@@ -643,11 +642,11 @@ def del_api(request):
                     name = json.loads(serializers.serialize('json', obi))[0]['fields']['name']
                     obi.delete()
                     record_dynamic(project_id, '修改', '用例接口', '删除用例"%s"的接口"%s"' % (list(obm)[0], name))
-            return JsonResponse(GlobalStatusCode.success)
+            return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(GlobalStatusCode.CaseNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -667,7 +666,7 @@ def start_test(request):
     host_id = request.POST.get('host_id')
     _id = request.POST.get('id')
     if not project_id.isdecimal() or not case_id.isdecimal() or not host_id.isdecimal() or not _id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
@@ -678,15 +677,15 @@ def start_test(request):
                 if obn:
                     response['data'] = test_api(host_id, case_id, _id, project_id)
                     record_dynamic(project_id, '测试', '用例接口', '测试用例“%s”接口"%s"' % (list(obi)[0], list(obn)[0]))
-                    return JsonResponse(dict(response, **GlobalStatusCode.success))
+                    return JsonResponse(code_msg=GlobalStatusCode.success())
                 else:
-                    return JsonResponse(GlobalStatusCode.ApiNotExist)
+                    return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
             else:
-                return JsonResponse(GlobalStatusCode.HostNotExist)
+                return JsonResponse(code_msg=GlobalStatusCode.host_not_exist())
         else:
-            return JsonResponse(GlobalStatusCode.CaseNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['GET'])
@@ -702,18 +701,18 @@ def time_task(request):
     project_id = request.GET.get('project_id')
     case_id = request.GET.get('case_id')
     if not project_id.isdecimal() or not case_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
         if obi:
             data = json.loads(serializers.serialize('json', AutomationTestTask.objects.filter(automationTestCase=case_id)))
             response['data'] = del_model(data)
-            return JsonResponse(dict(response, **GlobalStatusCode.success))
+            return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(GlobalStatusCode.CaseNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -741,16 +740,16 @@ def add_time_task(request):
     frequency = request.POST.get('frequency')
     unit = request.POST.get('unit')
     if not project_id.isdecimal() or not case_id.isdecimal() or not host_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if _type not in ['circulation', 'timing']:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     try:
         start_time = datetime.strptime(request.POST.get('startTime'), '%Y-%m-%d %H:%M:%S')
         end_time = datetime.strptime(request.POST.get('endTime'), '%Y-%m-%d %H:%M:%S')
         if start_time > end_time:
-            return JsonResponse(GlobalStatusCode.ParameterWrong)
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     except ValueError:
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     start_time = datetime.strftime(start_time, '%Y-%m-%dT%H:%M:%SZ')
     end_time = datetime.strftime(end_time, '%Y-%m-%dT%H:%M:%SZ')
     obj = Project.objects.filter(id=project_id)
@@ -761,9 +760,9 @@ def add_time_task(request):
             if obm:
                 if _type == 'circulation':
                     if not frequency.isdecimal():
-                        return JsonResponse(GlobalStatusCode.ParameterWrong)
+                        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                     if unit not in ['s', 'm', 'h', 'd', 'w']:
-                        return JsonResponse(GlobalStatusCode.ParameterWrong)
+                        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                     rt = AutomationTestTask.objects.filter(automationTestCase=case_id)
                     if rt:
                         rt.update(Host=GlobalHost.objects.get(id=host_id),
@@ -789,13 +788,13 @@ def add_time_task(request):
                     record_dynamic(project_id, '新增', '任务', '新增定时任务"%s"' % name)
                 data = AutomationTestTask.objects.filter(automationTestCase=case_id)
                 response['task_id'] = json.loads(serializers.serialize('json', data))[0]['pk']
-                return JsonResponse(dict(response, **GlobalStatusCode.success))
+                return JsonResponse(data=response, code_msg=GlobalStatusCode.success())
             else:
-                return JsonResponse(GlobalStatusCode.HostNotExist)
+                return JsonResponse(code_msg=GlobalStatusCode.host_not_exist())
         else:
-            return JsonResponse(GlobalStatusCode.CaseNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['POST'])
@@ -812,7 +811,7 @@ def del_task(request):
     case_id = request.POST.get('case_id')
     task_id = request.POST.get('task_id')
     if not project_id.isdecimal() or not case_id.isdecimal() or not task_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
@@ -821,13 +820,13 @@ def del_task(request):
             if obm:
                 obm.delete()
                 record_dynamic(project_id, '删除', '任务', '删除任务')
-                return JsonResponse(GlobalStatusCode.success)
+                return JsonResponse(code_msg=GlobalStatusCode.success())
             else:
-                return JsonResponse(GlobalStatusCode.TaskNotExist)
+                return JsonResponse(code_msg=GlobalStatusCode.task_not_exist())
         else:
-            return JsonResponse(GlobalStatusCode.CaseNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['GET'])
@@ -845,7 +844,7 @@ def look_result(request):
     case_id = request.GET.get('case_id')
     api_id = request.GET.get('api_id')
     if not project_id.isdecimal() or not api_id.isdecimal():
-        return JsonResponse(GlobalStatusCode.ParameterWrong)
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
@@ -855,10 +854,10 @@ def look_result(request):
                 data = json.loads(serializers.serialize('json',
                                                         AutomationTestResult.objects.filter(automationCaseApi=api_id)))
                 response['data'] = del_model(data)
-                return JsonResponse(dict(response, **GlobalStatusCode.success))
+                return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
             else:
-                return JsonResponse(GlobalStatusCode.ApiNotExist)
+                return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
         else:
-            return JsonResponse(GlobalStatusCode.CaseNotExist)
+            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
     else:
-        return JsonResponse(GlobalStatusCode.ProjectNotExist)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
