@@ -43,7 +43,6 @@ def add_host(request):
     description host描述
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     if not project_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
@@ -62,8 +61,9 @@ def add_host(request):
                                     operationObject='HOST', user=User.objects.get(id=1),
                                     description='新增HOST“%s”' % name)
             record.save()
-            response['host_id'] = hosts.pk
-            return JsonResponse(data=response, code_msg=GlobalStatusCode.success())
+            return JsonResponse(data={
+                'host_id': hosts.pk
+            }, code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 

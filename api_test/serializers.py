@@ -2,7 +2,8 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from api_test.models import Project, ProjectDynamic, ProjectMember, GlobalHost, ApiGroupLevelSecond, ApiGroupLevelFirst, \
-    ApiInfo
+    ApiInfo, APIRequestHistory, ApiOperationHistory, AutomationGroupLevelFirst, AutomationGroupLevelSecond, \
+    AutomationTestCase, AutomationCaseApi, AutomationHead, AutomationParameter
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -91,11 +92,108 @@ class ApiGroupLevelFirstSerializer(serializers.ModelSerializer):
 
 class ApiInfoSerializer(serializers.ModelSerializer):
     """
-    接口一级分组信息序列化
+    接口详细信息序列化
+    """
+    class Meta:
+        model = ApiInfo
+        fields = ('id', 'name', 'http_type', 'requestType', 'apiAddress', 'request_head',
+                  'requestParameterType', 'requestParameter', 'status',
+                  'response', 'mock_code', 'data', 'lastUpdateTime', 'userUpdate', 'description')
+
+
+class ApiInfoListSerializer(serializers.ModelSerializer):
+    """
+    接口详细信息序列化
+    """
+    class Meta:
+        model = ApiInfo
+        fields = ('id', 'name', 'requestType', 'apiAddress', 'lastUpdateTime', 'userUpdate')
+
+
+class APIRequestHistorySerializer(serializers.ModelSerializer):
+    """
+    接口请求历史信息序列化
+    """
+    class Meta:
+        model = APIRequestHistory
+        fields = ('id', 'requestTime', 'requestType', 'requestAddress', 'httpCode')
+
+
+class ApiOperationHistorySerializer(serializers.ModelSerializer):
+    """
+    接口操作历史信息序列化
+    """
+    class Meta:
+        model = ApiOperationHistory
+        fields = ('id', 'user', 'time', 'description')
+
+
+class AutomationGroupLevelSecondSerializer(serializers.ModelSerializer):
+    """
+    自动化用例二级分组信息序列化
     """
 
     class Meta:
-        model = ApiInfo
-        fields = ('id', 'project_id', 'apiGroupLevelFirst_id', 'apiGroupLevelSecond_id', 'name', 'http_type',
-                  'requestType', 'apiAddress', 'request_head', 'requestParameterType', 'requestParameter', 'status',
-                  'response', 'mock_code', 'data', 'lastUpdateTime', 'userUpdate', 'description')
+        model = AutomationGroupLevelSecond
+        fields = ('id', 'name')
+
+
+class AutomationGroupLevelFirstSerializer(serializers.ModelSerializer):
+    """
+    自动化用例一级分组信息序列化
+    """
+    secondGroup = AutomationGroupLevelSecondSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = AutomationGroupLevelFirst
+        fields = ('id', 'project_id', 'name', 'secondGroup')
+
+
+class AutomationTestCaseSerializer(serializers.ModelSerializer):
+    """
+    自动化用例一级分组信息序列化
+    """
+    class Meta:
+        model = AutomationTestCase
+        fields = ('id', 'automationGroupLevelFirst', 'automationGroupLevelSecond', 'caseName', 'description',
+                  'updateTime')
+
+
+class AutomationHeadSerializer(serializers.ModelSerializer):
+    """
+    自动化用例接口请求头信息序列化
+    """
+    class Meta:
+        model = AutomationHead
+        fields = ('id', 'key', 'value', 'interrelate')
+
+
+class AutomationParameterSerializer(serializers.ModelSerializer):
+    """
+    自动化用例接口请求参数信息序列化
+    """
+    class Meta:
+        model = AutomationParameter
+        fields = ('id', 'key', 'value', 'interrelate')
+
+
+class AutomationCaseApiSerializer(serializers.ModelSerializer):
+    """
+    自动化用例接口详细信息序列化
+    """
+    header = AutomationHeadSerializer(many=True, read_only=True)
+    parameterList = AutomationParameterSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = AutomationCaseApi
+        fields = ('id', 'name', 'http_type', 'requestType', 'address', 'header', 'requestParameterType',
+                  'parameterList', 'examineType', 'httpCode', 'responseData')
+
+
+class AutomationCaseApiListSerializer(serializers.ModelSerializer):
+    """
+    自动化用例接口列表信息序列化
+    """
+    class Meta:
+        model = AutomationCaseApi
+        fields = ('id', 'name', 'requestType', 'address')

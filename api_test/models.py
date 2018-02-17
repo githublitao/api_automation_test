@@ -329,6 +329,7 @@ class AutomationGroupLevelSecond(models.Model):
     """
     id = models.AutoField(primary_key=True)
     automationGroupLevelFirst = models.ForeignKey(AutomationGroupLevelFirst,
+                                                  related_name='secondGroup',
                                                   on_delete=models.CASCADE, verbose_name='一级分组')
     name = models.CharField(max_length=50, verbose_name='用例二级分组名称')
 
@@ -399,7 +400,8 @@ class AutomationHead(models.Model):
     请求头
     """
     id = models.AutoField(primary_key=True)
-    automationCaseApi = models.ForeignKey(AutomationCaseApi, on_delete=models.CASCADE, verbose_name='接口')
+    automationCaseApi = models.ForeignKey(AutomationCaseApi, related_name='header',
+                                          on_delete=models.CASCADE, verbose_name='接口')
     key = models.CharField(max_length=1024, verbose_name='参数名')
     value = models.CharField(max_length=1024, verbose_name='内容')
     interrelate = models.BooleanField(default=False, verbose_name='是否关联')
@@ -417,7 +419,8 @@ class AutomationParameter(models.Model):
     请求的参数
     """
     id = models.AutoField(primary_key=True)
-    automationCaseApi = models.ForeignKey(AutomationCaseApi, on_delete=models.CASCADE, verbose_name='接口')
+    automationCaseApi = models.ForeignKey(AutomationCaseApi, related_name='parameterList',
+                                          on_delete=models.CASCADE, verbose_name='接口')
     key = models.CharField(max_length=1024, verbose_name='参数名')
     value = models.CharField(max_length=1024, verbose_name='内容')
     interrelate = models.BooleanField(default=False, verbose_name='是否关联')

@@ -2,51 +2,43 @@ import json
 import logging
 import re
 
-import math
 from datetime import datetime
 
 from django.core import serializers
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
-from django.views.decorators.http import require_http_methods
 from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
 from api_test.common.api_response import JsonResponse
 from api_test.common.common import del_model, verify_parameter, record_dynamic
 from api_test.common.confighttp import test_api
-from api_test.models import Project, AutomationGroupLevelFirst, AutomationGroupLevelSecond, ProjectDynamic, \
+from api_test.models import Project, AutomationGroupLevelFirst, AutomationGroupLevelSecond, \
     AutomationTestCase, AutomationCaseApi, AutomationParameter, GlobalHost, AutomationHead, AutomationTestTask, \
     AutomationTestResult
+from api_test.serializers import AutomationGroupLevelFirstSerializer, AutomationTestCaseSerializer, \
+    AutomationCaseApiSerializer, AutomationCaseApiListSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
 
 @api_view(['GET'])
-@verify_parameter(['project_id'], 'GET')
+@verify_parameter(['project_id', ], 'GET')
 def group(request):
     """
-    获取用例分组
-    :param request:
+    接口分组
+    project_id 项目ID
     :return:
     """
-    response = {}
     project_id = request.GET.get('project_id')
     if not project_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = AutomationGroupLevelFirst.objects.filter(project=project_id)
-        level_first = json.loads(serializers.serialize('json', obi))
-        data = del_model(level_first)
-        j = 0
-        for i in level_first:
-            level_second = AutomationGroupLevelSecond.objects.filter(automationGroupLevelFirst=i['pk'])
-            level_second = json.loads(serializers.serialize('json', level_second))
-            level_second = del_model(level_second)
-            data[j]['fields']['levelSecond'] = level_second
-            j = j+1
-        response['data'] = data
-        return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
+        serialize = AutomationGroupLevelFirstSerializer(obi, many=True)
+        return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
@@ -61,7 +53,6 @@ def add_group(request):
     first_group_id 一级分组ID
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     name = request.POST.get('name')
     first_group_id = request.POST.get('first_group_id')
@@ -85,7 +76,7 @@ def add_group(request):
         else:
             obi = AutomationGroupLevelFirst(project=Project.objects.get(id=project_id), name=name)
             obi.save()
-        record_dynamic(project_id, '新增', '用例分组', '新增用例分组')
+        record_dynamic(project_id, '新增', '用例分组', '新增用例分组“%s”' % obi.name)
         return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
@@ -101,7 +92,6 @@ def del_group(request):
     second_group_id 二级分组id
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     first_group_id = request.POST.get('first_group_id')
     if not project_id.isdecimal() or not first_group_id.isdecimal():
@@ -115,15 +105,15 @@ def del_group(request):
             if second_group_id:
                 if not second_group_id.isdecimal():
                     return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-                obm = AutomationGroupLevelSecond.objects.filter(id=second_group_id,
+                obi = AutomationGroupLevelSecond.objects.filter(id=second_group_id,
                                                                 automationGroupLevelFirst=first_group_id)
-                if obm:
-                    obm.delete()
+                if obi:
+                    obi.delete()
                 else:
                     return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
             else:
                 obi.delete()
-            record_dynamic(project_id, '删除', '用例分组', '删除用例分组')
+            record_dynamic(project_id, '删除', '用例分组', '删除用例分组“%s”' % obi.name)
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
@@ -142,7 +132,6 @@ def update_group(request):
     second_group_id 二级分组id
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     name = request.POST.get('name')
     first_group_id = request.POST.get('first_group_id')
@@ -166,7 +155,7 @@ def update_group(request):
             # 修改一级分组名称
             else:
                 obi.update(name=name)
-            record_dynamic(project_id, '修改', '用例分组', '修改用例分组')
+            record_dynamic(project_id, '修改', '用例分组', '修改用例分组“%s”' % name)
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
@@ -175,7 +164,6 @@ def update_group(request):
 
 
 @api_view(['POST'])
-@require_http_methods(['POST'])
 @verify_parameter(['project_id', 'api_ids', 'first_group_id'], 'POST')
 def update_case_group(request):
     """
@@ -186,7 +174,6 @@ def update_case_group(request):
     second_group_id 二级分组ID
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     ids = request.POST.get('api_ids')
     id_list = ids.split(',')
@@ -230,49 +217,53 @@ def update_case_group(request):
 
 
 @api_view(['GET'])
-@verify_parameter(['project_id', 'page'], 'GET')
+@verify_parameter(['project_id'], 'GET')
 def case_list(request):
     """
     获取用例列表
     project_id 项目ID
     first_group_id 一级分组ID
     second_group_id 二级分组ID
-    page 页码
     :return:
     """
-    response = {}
-    num = 2
+    try:
+        page_size = int(request.GET.get('page_size', 20))
+        page = int(request.GET.get('page', 1))
+    except (TypeError, ValueError):
+        return JsonResponse(code_msg=GlobalStatusCode.page_not_int())
     project_id = request.GET.get('project_id')
     first_group_id = request.GET.get('first_group_id')
     second_group_id = request.GET.get('second_group_id')
-    page = request.GET.get('page')
-    if not page.isdecimal() or not project_id.isdecimal():
+    if not project_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    page = int(page)
     obj = Project.objects.filter(id=project_id)
     if obj:
         if first_group_id and second_group_id is None:
             if not first_group_id.isdecimal():
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             obi = AutomationTestCase.objects.filter(project=project_id,
-                                                    automationGroupLevelFirsta=first_group_id)
+                                                    automationGroupLevelFirsta=first_group_id).order_by('id')
         elif first_group_id and second_group_id:
             if not first_group_id.isdecimal() or not second_group_id.isdecimal():
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             obi = AutomationTestCase.objects.filter(project=project_id,
                                                     automationGroupLevelFirst=first_group_id,
-                                                    automationGroupLevelSecond=second_group_id)
+                                                    automationGroupLevelSecond=second_group_id).order_by('id')
         else:
-            obi = AutomationTestCase.objects.filter(project=project_id)
-        data = json.loads(serializers.serialize('json', obi))
-        page_num = math.ceil(float(len(data)) / num)
-        if 0 < page <= page_num:
-            data = data[(page-1)*num:page*num]
-        else:
-            data = data[0:num]
-        response['data'] = del_model(data)
-        response['pageNum'] = page_num
-        return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
+            obi = AutomationTestCase.objects.filter(project=project_id).order_by('id')
+        paginator = Paginator(obi, page_size)  # paginator对象
+        total = paginator.num_pages  # 总页数
+        try:
+            obm = paginator.page(page)
+        except PageNotAnInteger:
+            obm = paginator.page(1)
+        except EmptyPage:
+            obm = paginator.page(paginator.num_pages)
+        serialize = AutomationTestCaseSerializer(obm, many=True)
+        return JsonResponse(data={'data': serialize.data,
+                                  'page': page,
+                                  'total': total
+                                  }, code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
@@ -289,7 +280,6 @@ def add_case(request):
     description 描述
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     first_group_id = request.POST.get('first_group_id')
     second_group_id = request.POST.get('second_group_id')
@@ -326,11 +316,10 @@ def add_case(request):
             else:
                 case = AutomationTestCase(caseName=name, description=description)
                 case.save()
-            data = AutomationTestCase.objects.filter(project=project_id, caseName=name)
-            case_id = json.loads(serializers.serialize('json', data))[0]['pk']
             record_dynamic(project_id, '新增', '用例', '新增用例"%s"' % name)
-            response['case_id'] = case_id
-            return JsonResponse(data=response, code_msg=GlobalStatusCode.success())
+            return JsonResponse(data={
+                'case_id': case.pk
+            }, code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
     else:
@@ -338,7 +327,6 @@ def add_case(request):
 
 
 @api_view(['POST'])
-@require_http_methods(['POST'])
 @verify_parameter(['project_id', 'case_id', 'name'], 'POST')
 def update_case(request):
     """
@@ -349,7 +337,6 @@ def update_case(request):
     description 描述
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     case_id = request.POST.get('case_id')
     name = request.POST.get('name')
@@ -381,7 +368,6 @@ def del_case(request):
     case_ids 用例ID列表
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     if not project_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
@@ -395,16 +381,15 @@ def del_case(request):
         for j in id_list:
             obi = AutomationTestCase.objects.filter(id=j, project=project_id)
             if len(obi) != 0:
-                name = json.loads(serializers.serialize('json', obi))[0]['fields']['caseName']
                 obi.delete()
-                record_dynamic(project_id, '删除', '用例', '删除用例"%s"' % name)
+                record_dynamic(project_id, '删除', '用例', '删除用例"%s"' % obi.name)
         return JsonResponse(GlobalStatusCode.success)
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
-@api_view(['POST'])
-@verify_parameter(['project_id', 'case_id', 'page'], 'GET')
+@api_view(['GET'])
+@verify_parameter(['project_id', 'case_id'], 'GET')
 def api_list(request):
     """
     获取用例中接口列表
@@ -413,28 +398,64 @@ def api_list(request):
     page 页码
     :return:
     """
-    response = {}
-    num = 2
+    try:
+        page_size = int(request.GET.get('page_size', 20))
+        page = int(request.GET.get('page', 1))
+    except (TypeError, ValueError):
+        return JsonResponse(code_msg=GlobalStatusCode.page_not_int())
     project_id = request.GET.get('project_id')
     case_id = request.GET.get('case_id')
-    page = request.GET.get('page')
-    if not project_id.isdecimal() or not case_id.isdecimal() or not page.isdecimal():
+    if not project_id.isdecimal() or not case_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    page = int(page)
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
         if obi:
-            data = AutomationCaseApi.objects.filter(automationTestCase=case_id)
-            data = json.loads(serializers.serialize('json', data))
-            page_num = math.ceil(float(len(data)) / num)
-            if 0 < page <= page_num:
-                data = data[(page - 1) * num:page * num]
+            data = AutomationCaseApi.objects.filter(automationTestCase=case_id).order_by('id')
+            paginator = Paginator(data, page_size)  # paginator对象
+            total = paginator.num_pages  # 总页数
+            try:
+                obm = paginator.page(page)
+            except PageNotAnInteger:
+                obm = paginator.page(1)
+            except EmptyPage:
+                obm = paginator.page(paginator.num_pages)
+            serialize = AutomationCaseApiListSerializer(obm, many=True)
+            return JsonResponse(data={'data': serialize.data,
+                                      'page': page,
+                                      'total': total
+                                      }, code_msg=GlobalStatusCode.success())
+        else:
+            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
+    else:
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+
+
+@api_view(['GET'])
+@verify_parameter(['project_id', 'case_id', 'api_id'], 'GET')
+def api_info(request):
+    """
+    获取接口详情
+    project_id 项目ID
+    case_id 自动化用例ID
+    api_id 接口ID
+    :return:
+    """
+    project_id = request.GET.get('project_id')
+    case_id = request.GET.get('case_id')
+    api_id = request.GET.get('api_id')
+    if not project_id.isdecimal() or not api_id.isdecimal() or not case_id.isdecimal():
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
+        if obi:
+            obm = AutomationCaseApi.objects.filter(id=api_id, automationTestCase=case_id)
+            if len(obm) != 0:
+                data = AutomationCaseApiSerializer(obm).data
+                return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
             else:
-                data = data[0:num]
-            response['data'] = del_model(data)
-            response['pageNum'] = page_num
-            return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
+                return JsonResponse(GlobalStatusCode.api_not_exist())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
     else:
@@ -545,7 +566,6 @@ def update_api(request):
     responseData 校验的内容
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     case_id = request.POST.get('case_id')
     case_api_id = request.POST.get('case_api_id')

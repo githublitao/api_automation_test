@@ -1,17 +1,15 @@
-import json
 import logging
-import math
 
-from django.core import serializers
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
 from api_test.common.api_response import JsonResponse
-from api_test.common.common import del_model, verify_parameter, record_dynamic
+from api_test.common.common import verify_parameter, record_dynamic
 from api_test.models import Project, ApiGroupLevelFirst, ApiGroupLevelSecond, ApiInfo, \
     ApiOperationHistory, APIRequestHistory
-from api_test.serializers import ApiGroupLevelFirstSerializer, ApiInfoSerializer
+from api_test.serializers import ApiGroupLevelFirstSerializer, ApiInfoSerializer, APIRequestHistorySerializer, \
+    ApiOperationHistorySerializer, ApiInfoListSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -47,7 +45,6 @@ def add_group(request):
     first_group_id 一级分组ID
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     name = request.POST.get('name')
     first_group_id = request.POST.get('first_group_id')
@@ -72,8 +69,9 @@ def add_group(request):
             obi = ApiGroupLevelFirst(project=Project.objects.get(id=project_id), name=name)
             obi.save()
         record_dynamic(project_id, '新增', '接口分组', '新增接口分组“%s”' % obi.name)
-        response['group_id'] = obi.pk
-        return JsonResponse(data=response, code_msg=GlobalStatusCode.success())
+        return JsonResponse(data={
+            'group_id': obi.pk
+        }, code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
@@ -171,7 +169,7 @@ def api_list(request):
     :return:
     """
     try:
-        page_size = int(request.GET.get('page_size', 2))
+        page_size = int(request.GET.get('page_size', 20))
         page = int(request.GET.get('page', 1))
     except (TypeError, ValueError):
         return JsonResponse(code_msg=GlobalStatusCode.page_not_int())
@@ -185,14 +183,14 @@ def api_list(request):
         if first_group_id and second_group_id is None:
             if not first_group_id.isdecimal():
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-            obi = ApiInfo.objects.filter(project=project_id, apiGroupLevelFirst=first_group_id).order_by('name')
+            obi = ApiInfo.objects.filter(project=project_id, apiGroupLevelFirst=first_group_id).order_by('id')
         elif first_group_id and second_group_id:
             if not first_group_id.isdecimal() or not second_group_id.isdecimal():
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             obi = ApiInfo.objects.filter(project=project_id, apiGroupLevelFirst=first_group_id,
-                                         apiGroupLevelSecond=second_group_id).order_by('name')
+                                         apiGroupLevelSecond=second_group_id).order_by('id')
         else:
-            obi = ApiInfo.objects.filter(project=project_id).order_by('name')
+            obi = ApiInfo.objects.filter(project=project_id).order_by('id')
         paginator = Paginator(obi, page_size)  # paginator对象
         total = paginator.num_pages  # 总页数
         try:
@@ -201,7 +199,7 @@ def api_list(request):
             obm = paginator.page(1)
         except EmptyPage:
             obm = paginator.page(paginator.num_pages)
-        serialize = ApiInfoSerializer(obm, many=True)
+        serialize = ApiInfoListSerializer(obm, many=True)
         return JsonResponse(data={'data': serialize.data,
                                   'page': page,
                                   'total': total
@@ -232,7 +230,6 @@ def add_api(request):
     description 描述
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     first_group_id = request.POST.get('first_group_id')
     second_group_id = request.POST.get('second_group_id')
@@ -304,25 +301,24 @@ def add_api(request):
                    'requestParameterType'], 'POST')
 def update_api(request):
     """
-        修改接口信息
-        project_id 项目ID
-        api_id 接口ID
-        first_group_id 一级分组ID
-        second_group_id 二级分组ID
-        name 接口名称
-        httpType  HTTP/HTTPS
-        requestType 请求方式
-        address  请求地址
-        headDict 头文件
-        requestParameterType 参数请求格式
-        requestList 请求参数列表
-        responseList 返回参数列表
-        mockStatus  mockhttp状态
-        code mock代码
-        description 描述
-        :return:
-        """
-    response = {}
+    修改接口信息
+    project_id 项目ID
+    api_id 接口ID
+    first_group_id 一级分组ID
+    second_group_id 二级分组ID
+    name 接口名称
+    httpType  HTTP/HTTPS
+    requestType 请求方式
+    address  请求地址
+    headDict 头文件
+    requestParameterType 参数请求格式
+    requestList 请求参数列表
+    responseList 返回参数列表
+    mockStatus  mockhttp状态
+    code mock代码
+    description 描述
+    :return:
+    """
     project_id = request.POST.get('project_id')
     api_id = request.POST.get('api_id')
     first_group_id = request.POST.get('first_group_id')
@@ -406,7 +402,7 @@ def select_api(request):
     :return:
     """
     try:
-        page_size = int(request.GET.get('page_size', 2))
+        page_size = int(request.GET.get('page_size', 20))
         page = int(request.GET.get('page', 1))
     except (TypeError, ValueError):
         return JsonResponse(code_msg=GlobalStatusCode.page_not_int())
@@ -416,7 +412,7 @@ def select_api(request):
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
     obj = Project.objects.filter(id=project_id)
     if obj:
-        obi = ApiInfo.objects.filter(name__contains=name, project=project_id)
+        obi = ApiInfo.objects.filter(name__contains=name, project=project_id).order_by('id')
         paginator = Paginator(obi, page_size)  # paginator对象
         total = paginator.num_pages  # 总页数
         try:
@@ -425,7 +421,7 @@ def select_api(request):
             obm = paginator.page(1)
         except EmptyPage:
             obm = paginator.page(paginator.num_pages)
-        serialize = ApiInfoSerializer(obm, many=True)
+        serialize = ApiInfoListSerializer(obm, many=True)
         return JsonResponse(data={'data': serialize.data,
                                   'page': page,
                                   'total': total
@@ -456,9 +452,8 @@ def del_api(request):
         for j in id_list:
             obi = ApiInfo.objects.filter(id=j, project=project_id)
             if len(obi) != 0:
-                name = json.loads(serializers.serialize('json', obi))[0]['fields']['name']
                 obi.delete()
-                record_dynamic(project_id, '删除', '接口', '删除接口“%s”' % name)
+                record_dynamic(project_id, '删除', '接口', '删除接口“%s”' % obi.name)
         return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
@@ -475,7 +470,6 @@ def update_api_group(request):
     second_group_id 二级分组ID
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     ids = request.POST.get('api_ids')
     id_list = ids.split(',')
@@ -523,10 +517,10 @@ def update_api_group(request):
 def api_info(request):
     """
     获取接口详情
-    :param request:
+    project_id 项目ID
+    api_id 接口ID
     :return:
     """
-    response = {}
     project_id = request.GET.get('project_id')
     api_id = request.GET.get('api_id')
     if not project_id.isdecimal() or not api_id.isdecimal():
@@ -555,7 +549,6 @@ def add_history(request):
     httpStatus htt状态
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     api_id = request.POST.get('api_id')
     request_type = request.POST.get('requestType')
@@ -574,15 +567,13 @@ def add_history(request):
             history = APIRequestHistory(apiInfo=ApiInfo.objects.get(id=api_id, project=project_id),
                                         requestType=request_type, requestAddress=url, httpCode=http_status)
             history.save()
-            name = json.loads(serializers.serialize('json', obi))[0]['fields']['name']
-            record_dynamic(project_id, '测试', '接口', '测试接口“%s”' % name)
+            record_dynamic(project_id, '测试', '接口', '测试接口“%s”' % obi.name)
             api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=api_id), user='admin',
-                                             description='测试接口"%s"' % name)
+                                             description='测试接口"%s"' % obi.name)
             api_record.save()
-            data = APIRequestHistory.objects.filter(apiInfo=api_id).order_by('-requestTime')
-            history_id = json.loads(serializers.serialize('json', data))[0]['pk']
-            response['history_id'] = history_id
-            return JsonResponse(data=response, code_msg=GlobalStatusCode.success())
+            return JsonResponse(data={
+                'history_id': history.pk
+            }, code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
     else:
@@ -598,7 +589,6 @@ def history_list(request):
     api_id 接口ID
     :return:
     """
-    response = {}
     project_id = request.GET.get('project_id')
     api_id = request.GET.get('api_id')
     if not project_id.isdecimal() or not api_id.isdecimal():
@@ -608,9 +598,8 @@ def history_list(request):
         obi = ApiInfo.objects.filter(id=api_id, project=project_id)
         if obi:
             history = APIRequestHistory.objects.filter(apiInfo=ApiInfo.objects.get(id=api_id, project=project_id))
-            data = json.loads(serializers.serialize('json', history))
-            response['data'] = del_model(data)
-            return JsonResponse(data=response, code_msg=GlobalStatusCode.success())
+            data = APIRequestHistorySerializer(history, many=True).data
+            return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
     else:
@@ -627,7 +616,6 @@ def del_history(request):
     history_id 请求历史ID
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     api_id = request.POST.get('api_id')
     history_id = request.POST.get('history_id')
@@ -649,5 +637,48 @@ def del_history(request):
         else:
             return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
     else:
-        return JsonResponse(code_msg=GlobalStatusCode.p)
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
+
+@api_view(['GET'])
+@verify_parameter(['project_id', 'api_id'], 'GET')
+def operation_history(request):
+    """
+    接口操作历史
+    project_id 项目ID
+    api_id 接口ID
+    page_size 条数
+    page 页码
+    :return:
+    """
+    try:
+        page_size = int(request.GET.get('page_size', 20))
+        page = int(request.GET.get('page', 1))
+    except (TypeError, ValueError):
+        return JsonResponse(code_msg=GlobalStatusCode.page_not_int())
+    project_id = request.GET.get('project_id')
+    api_id = request.GET.get('api_id')
+    if not project_id.isdecimal() or not api_id.isdecimal():
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        obi = ApiInfo.objects.filter(id=api_id, project=project_id)
+        if obi:
+            obn = ApiOperationHistory.objects.filter(apiInfo=api_id).order_by('-time')
+            paginator = Paginator(obn, page_size)  # paginator对象
+            total = paginator.num_pages  # 总页数
+            try:
+                obm = paginator.page(page)
+            except PageNotAnInteger:
+                obm = paginator.page(1)
+            except EmptyPage:
+                obm = paginator.page(paginator.num_pages)
+            serialize = ApiOperationHistorySerializer(obm, many=True)
+            return JsonResponse(data={'data': serialize.data,
+                                      'page': page,
+                                      'total': total
+                                      }, code_msg=GlobalStatusCode.success())
+        else:
+            return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
+    else:
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())

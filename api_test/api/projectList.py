@@ -35,7 +35,6 @@ def add_project(request):
     description: 项目描述
     :return:
     """
-    response = {}
     name = request.POST.get('name')
     version = request.POST.get('v')
     _type = request.POST.get('type')
@@ -50,8 +49,9 @@ def add_project(request):
             record = ProjectDynamic(project=Project.objects.get(id=project.pk), type='创建',
                                     operationObject='项目', user=User.objects.get(id=1), description='创建项目“%s”' % name)
             record.save()
-            response['project_id'] = project.pk
-            return JsonResponse(data=response, code_msg=GlobalStatusCode.success())
+            return JsonResponse(data={
+                'project_id': project.pk
+            }, code_msg=GlobalStatusCode.success())
 
         else:
             return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
