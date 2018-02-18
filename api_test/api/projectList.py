@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from rest_framework.decorators import api_view
 
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from api_test.common import GlobalStatusCode
 from api_test.common.api_response import JsonResponse
 from api_test.common.common import verify_parameter
@@ -20,9 +21,26 @@ def project_list(request):
     :param request:
     :return:
     """
-    pro_list = Project.objects.all()
-    serialize = ProjectSerializer(pro_list, many=True)
-    return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
+    try:
+        page_size = int(request.GET.get('page_size', 20))
+        page = int(request.GET.get('page', 1))
+    except (TypeError, ValueError):
+        return JsonResponse(code_msg=GlobalStatusCode.page_not_int())
+    obi = Project.objects.all().order_by('id')
+    # serialize = ProjectSerializer(pro_list, many=True)
+    paginator = Paginator(obi, page_size)  # paginator对象
+    total = paginator.num_pages  # 总页数
+    try:
+        obm = paginator.page(page)
+    except PageNotAnInteger:
+        obm = paginator.page(1)
+    except EmptyPage:
+        obm = paginator.page(paginator.num_pages)
+    serialize = ProjectSerializer(obm, many=True)
+    return JsonResponse(data={'data': serialize.data,
+                              'page': page,
+                              'total': total
+                             }, code_msg=GlobalStatusCode.success())
 
 
 @api_view(['POST'])

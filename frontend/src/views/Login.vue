@@ -53,7 +53,6 @@ export default {
           // _this.$router.replace('/table')
           _this.logining = true
           // NProgress.start()
-          console.log(test)
           $.ajax({
           	  type: "post",
           	  url: test+"/api/user/login",
