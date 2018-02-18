@@ -17,22 +17,26 @@
 
 		<!--列表-->
 		<el-table :data="project" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
-			<el-table-column type="selection" width="55">
+			<el-table-column type="selection" min-width="5%">
 			</el-table-column>
-			<el-table-column prop="name" label="项目名称" width="700" sortable>
+			<el-table-column prop="name" label="项目名称" min-width="25%" sortable>
+                <template slot-scope="scope">
+                    <el-icon name="name"></el-icon>
+                    <router-link to="/projectInfo" style='text-decoration: none;color: #000000;'>{{ scope.row.name }}</router-link>
+                </template>
 			</el-table-column>
-			<el-table-column prop="version" label="项目版本" width="150" sortable>
+			<el-table-column prop="version" label="项目版本" min-width="13%" sortable>
 			</el-table-column>
-			<el-table-column prop="type" label="类型" width="100" sortable>
+			<el-table-column prop="type" label="类型" min-width="10%" sortable>
 			</el-table-column>
-			<el-table-column prop="LastUpdateTime" label="最后修改时间" width="220" sortable>
+			<el-table-column prop="LastUpdateTime" label="最后修改时间" min-width="18%" sortable>
 			</el-table-column>
-			<el-table-column prop="status" label="状态" width="190" sortable>
+			<el-table-column prop="status" label="状态" min-width="10%" sortable>
 			    <template slot-scope="scope">
 			        {{scope.row.status===true?'启用':'禁用'}}
                 </template>
 			</el-table-column>
-            <el-table-column label="操作" width="215">
+            <el-table-column label="操作" min-width="19%">
                 <template slot-scope="scope">
                     <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
@@ -63,7 +67,7 @@
                 <el-form-item label="版本号" prop='version'>
                     <el-input v-model="editForm.version" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="描述">
+                <el-form-item label="描述" prop='description'>
                     <el-input type="textarea" :rows="7" v-model="editForm.description"></el-input>
                 </el-form-item>
             </el-form>
@@ -88,7 +92,7 @@
                 <el-form-item label="版本号" prop='version'>
                     <el-input v-model="addForm.version" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="描述">
+                <el-form-item label="描述" prop='description'>
                     <el-input type="textarea" :rows="7" v-model="addForm.description"></el-input>
                 </el-form-item>
             </el-form>
@@ -121,13 +125,19 @@ export default {
 			editLoading: false,
 			editFormRules: {
 				name: [
-					{ required: true, message: '请输入名称', trigger: 'blur' }
+					{ required: true, message: '请输入名称', trigger: 'blur' },
+                    { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
 				],
 				type: [
                     { required: true, message: '请选择类型', trigger: 'blur' }
                 ],
 				version: [
-                    { required: true, message: '请输入版本号', trigger: 'blur' }
+                    { required: true, message: '请输入版本号', trigger: 'blur' },
+                    { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
+                ],
+                description: [
+                    { required: false, message: '请输入描述', trigger: 'blur' },
+                    { max: 1024, message: '不能超过1024个字符', trigger: 'blur' }
                 ]
 			},
 			//编辑界面数据
@@ -142,13 +152,19 @@ export default {
 			addLoading: false,
 			addFormRules: {
 				name: [
-					{ required: true, message: '请输入名称', trigger: 'blur' }
+					{ required: true, message: '请输入名称', trigger: 'blur' },
+                    { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
 				],
 				type: [
                     { required: true, message: '请选择类型', trigger: 'blur' }
                 ],
 				version: [
-                    { required: true, message: '请输入版本号', trigger: 'blur' }
+                    { required: true, message: '请输入版本号', trigger: 'blur' },
+                    { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
+                ],
+                description: [
+                    { required: false, message: '请输入版本号', trigger: 'blur' },
+                    { max: 1024, message: '不能超过1024个字符', trigger: 'blur' }
                 ]
 			},
 			//新增界面数据

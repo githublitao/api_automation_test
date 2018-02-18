@@ -4,11 +4,6 @@
 			<el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
 				<router-link to="/" style='text-decoration: none;color: #FFFFFF;'>{{collapsed?'':sysName}}</router-link>
 			</el-col>
-			<el-col :span="10">
-				<div class="tools" @click.prevent="collapse">
-					<i class="fa fa-align-justify"></i>
-				</div>
-			</el-col>
 			<el-col :span="4" class="userinfo">
 				<el-dropdown trigger="hover">
 					<span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{sysUserName}}</span>
@@ -21,32 +16,21 @@
 			</el-col>
 		</el-col>
 		<el-col :span="24" class="main">
-            <aside :class="collapsed?'menu-collapsed':'menu-expanded'">
-                <!--导航菜单-->
-                <el-menu :default-active="$route.path" class="el-menu-vertical-demo" @select="handleselect"
-                     unique-opened router v-show="!collapsed">
-                    <template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
-                        <el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden"><i :class="child.iconCls"></i>{{child.name}}</el-menu-item>       
-                    </template>
-                </el-menu>
-			</aside>
-			<section class="content-container">
-				<div class="grid-content bg-purple-light">
-					<el-col :span="24" class="breadcrumb-container">
-						<strong class="title">{{$route.name}}</strong>
-						<el-breadcrumb separator="/" class="breadcrumb-inner">
-							<el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
-								{{ item.name }}
-							</el-breadcrumb-item>
-						</el-breadcrumb>
-					</el-col>
-					<el-col :span="24" class="content-wrapper">
-						<transition name="fade" mode="out-in">
-							<router-view></router-view>
-						</transition>
-					</el-col>
-				</div>
-			</section>
+            <el-menu :default-active="$route.path" class="el-menu-vertical-demo" mode="horizontal" @open="handleopen" @close="handleclose" @select="handleselect"
+                    unique-opened router v-show="!collapsed">
+                <template v-for="(item,index) in $router.options.routes" v-if="!item.projectHidden">
+                    <el-submenu :index="index+''" v-if="!item.leaf">
+                        <template slot="title">{{item.name}}</template>
+                        <el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
+                    </el-submenu>
+                    <el-menu-item v-if="item.leaf" :index="item.path" :key="item.path">{{item.name}}</el-menu-item>
+                </template>
+            </el-menu>
+            <el-col :span="24" class="content-wrapper">
+                <transition name="fade" mode="out-in">
+                    <router-view></router-view>
+                </transition>
+            </el-col>
 		</el-col>
 	</el-row>
 </template>
@@ -75,8 +59,6 @@
 			onSubmit() {
 				console.log('submit!');
 			},
-			handleselect: function (a, b) {
-			},
 			//退出登录
 			logout: function () {
 				var _this = this;
@@ -90,10 +72,6 @@
 				});
 
 
-			},
-			//折叠导航栏
-			collapse:function(){
-				this.collapsed=!this.collapsed;
 			},
 			showMenu(i,status){
 				this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-'+i)[0].style.display=status?'block':'none';
@@ -174,71 +152,7 @@
 			}
 		}
 		.main {
-			display: flex;
-			// background: #324057;
-			position: absolute;
-			top: 60px;
-			bottom: 0px;
-			overflow: hidden;
-			aside {
-				flex:0 0 230px;
-				width: 230px;
-				// position: absolute;
-				// top: 0px;
-				// bottom: 0px;
-				.el-menu{
-					height: 100%;
-				}
-				.collapsed{
-					width:60px;
-					.item{
-						position: relative;
-					}
-					.submenu{
-						position:absolute;
-						top:0px;
-						left:60px;
-						z-index:99999;
-						height:auto;
-						display:none;
-					}
-
-				}
-			}
-			.menu-collapsed{
-				flex:0 0 60px;
-				width: 60px;
-			}
-			.menu-expanded{
-				flex:0 0 230px;
-				width: 230px;
-			}
-			.content-container {
-				// background: #f1f2f7;
-				flex:1;
-				// position: absolute;
-				// right: 0px;
-				// top: 0px;
-				// bottom: 0px;
-				// left: 230px;
-				overflow-y: scroll;
-				padding: 20px;
-				.breadcrumb-container {
-					//margin-bottom: 15px;
-					.title {
-						width: 200px;
-						float: left;
-						color: #475669;
-					}
-					.breadcrumb-inner {
-						float: right;
-					}
-				}
-				.content-wrapper {
-					background-color: #fff;
-					box-sizing: border-box;
-				}
-			}
+		
 		}
 	}
 </style>
