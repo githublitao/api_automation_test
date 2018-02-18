@@ -1,5 +1,6 @@
 import logging
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from rest_framework.decorators import api_view
 
@@ -271,22 +272,22 @@ def add_api(request):
                 oba = ApiInfo(project=Project.objects.get(id=project_id),
                               apiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=first_group_id),
                               apiGroupLevelSecond=ApiGroupLevelSecond.objects.get(id=second_group_id),
-                              name=name, http_type=http_type, requestType=request_type, apiAddress=address,
-                              request_head=head_dict, requestParameterType=request_parameter_type,
-                              requestParameter=request_list, response=response_list, mock_code=mock_status,
+                              name=name, httpType=http_type, requestType=request_type, apiAddress=address,
+                              requestHead=head_dict, requestParameterType=request_parameter_type,
+                              requestParameter=request_list, response=response_list, mockCode=mock_status,
                               data=code, description=description)
             elif first_group_id and second_group_id is None:
                 oba = ApiInfo(project=Project.objects.get(id=project_id),
                               ApiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=first_group_id),
-                              name=name, http_type=http_type, requestType=request_type, apiAddress=address,
-                              request_head=head_dict, requestParameterType=request_parameter_type,
-                              requestParameter=request_list, response=response_list, mock_code=mock_status,
+                              name=name, httpType=http_type, requestType=request_type, apiAddress=address,
+                              requestHead=head_dict, requestParameterType=request_parameter_type,
+                              requestParameter=request_list, response=response_list, mockCode=mock_status,
                               data=code, description=description)
             else:
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             oba.save()
             record_dynamic(project_id, '新增', '接口', '新增接口“%s”' % name)
-            api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=oba.pk), user='admin',
+            api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=oba.pk), user=request.user.first_name,
                                              description='新增接口"%s"' % name)
             api_record.save()
             return JsonResponse(data={
@@ -361,24 +362,24 @@ def update_api(request):
                     obm.update(project=Project.objects.get(id=project_id),
                                apiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=first_group_id),
                                apiGroupLevelSecond=ApiGroupLevelSecond.objects.get(id=second_group_id),
-                               name=name, http_type=http_type, requestType=request_type, apiAddress=address,
-                               request_head=head_dict, requestParameterType=request_parameter_type,
-                               requestParameter=request_list, response=response_list, mock_code=mock_status,
+                               name=name, httpType=http_type, requestType=request_type, apiAddress=address,
+                               requestHead=head_dict, requestParameterType=request_parameter_type,
+                               requestParameter=request_list, response=response_list, mockCode=mock_status,
                                data=code, description=description)
 
                 elif first_group_id and second_group_id is None:
 
                     obm.update(project=Project.objects.get(id=project_id),
                                apiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=first_group_id),
-                               name=name, http_type=http_type, requestType=request_type, apiAddress=address,
-                               request_head=head_dict, requestParameterType=request_parameter_type,
-                               requestParameter=request_list, response=response_list, mock_code=mock_status,
+                               name=name, httpType=http_type, requestType=request_type, apiAddress=address,
+                               requestHead=head_dict, requestParameterType=request_parameter_type,
+                               requestParameter=request_list, response=response_list, mockCode=mock_status,
                                data=code, description=description)
                 else:
                     return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
 
                 record_dynamic(project_id, '修改', '接口', '修改接口“%s”' % name)
-                api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=api_id), user='admin',
+                api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=api_id), user=request.user.first_name,
                                                  description='修改接口"%s"' % name)
                 api_record.save()
                 return JsonResponse(code_msg=GlobalStatusCode.success())
@@ -527,11 +528,11 @@ def api_info(request):
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
-        obi = ApiInfo.objects.filter(id=api_id, project=project_id)
-        if len(obi) != 0:
-            serialize = ApiInfoSerializer(obi, many=True)
+        try:
+            obi = ApiInfo.objects.get(id=api_id, project=project_id)
+            serialize = ApiInfoSerializer(obi)
             return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
-        else:
+        except ObjectDoesNotExist:
             return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
@@ -568,7 +569,7 @@ def add_history(request):
                                         requestType=request_type, requestAddress=url, httpCode=http_status)
             history.save()
             record_dynamic(project_id, '测试', '接口', '测试接口“%s”' % obi.name)
-            api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=api_id), user='admin',
+            api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=api_id), user=request.user.first_name,
                                              description='测试接口"%s"' % obi.name)
             api_record.save()
             return JsonResponse(data={
@@ -628,7 +629,7 @@ def del_history(request):
             obm = APIRequestHistory.objects.filter(id=history_id, apiInfo=api_id)
             if obm:
                 obm.delete()
-                api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=api_id), user='admin',
+                api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=api_id), user=request.user.first_name,
                                                  description='删除请求历史记录')
                 api_record.save()
                 return JsonResponse(code_msg=GlobalStatusCode.success())

@@ -1,23 +1,23 @@
-import json
 import logging
 import re
 
 from datetime import datetime
 
-from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
 from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
 from api_test.common.api_response import JsonResponse
-from api_test.common.common import del_model, verify_parameter, record_dynamic
+from api_test.common.common import verify_parameter, record_dynamic
 from api_test.common.confighttp import test_api
 from api_test.models import Project, AutomationGroupLevelFirst, AutomationGroupLevelSecond, \
     AutomationTestCase, AutomationCaseApi, AutomationParameter, GlobalHost, AutomationHead, AutomationTestTask, \
     AutomationTestResult
 from api_test.serializers import AutomationGroupLevelFirstSerializer, AutomationTestCaseSerializer, \
-    AutomationCaseApiSerializer, AutomationCaseApiListSerializer
+    AutomationCaseApiSerializer, AutomationCaseApiListSerializer, AutomationTestTaskSerializer, \
+    AutomationTestResultSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -450,11 +450,11 @@ def api_info(request):
     if obj:
         obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
         if obi:
-            obm = AutomationCaseApi.objects.filter(id=api_id, automationTestCase=case_id)
-            if len(obm) != 0:
+            try:
+                obm = AutomationCaseApi.objects.get(id=api_id, automationTestCase=case_id)
                 data = AutomationCaseApiSerializer(obm).data
                 return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
-            else:
+            except ObjectDoesNotExist:
                 return JsonResponse(GlobalStatusCode.api_not_exist())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
@@ -482,7 +482,6 @@ def add_new_api(request):
     responseData 校验的内容
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     case_id = request.POST.get('case_id')
     name = request.POST.get('name')
@@ -515,28 +514,27 @@ def add_new_api(request):
             if len(obm) == 0:
                 with transaction.atomic():
                     case_api = AutomationCaseApi(automationTestCase=AutomationTestCase.objects.get(id=case_id),
-                                                 name=name, http_type=http_type, requestType=request_type,
+                                                 name=name, httpType=http_type, requestType=request_type,
                                                  address=address,
                                                  requestParameterType=request_parameter_type, examineType=examine_type,
                                                  httpCode=http_code, responseData=response_data)
                     case_api.save()
-                    obn = AutomationCaseApi.objects.filter(name=name, automationTestCase=case_id)
-                    case_api_id = json.loads(serializers.serialize('json', obn))[0]['pk']
-                    response['case_api_id'] = case_api_id
                     request_parameter = re.findall('{.*?}', request_list)
                     for i in request_parameter:
                         i = eval(i)
-                        parameter = AutomationParameter(automationCaseApi=AutomationCaseApi.objects.get(id=case_api_id),
+                        parameter = AutomationParameter(automationCaseApi=AutomationCaseApi.objects.get(id=case_api.pk),
                                                         key=i['k'], value=i['v'], interrelate=i['b'])
                         parameter.save()
                     headers = re.findall('{.*?}', head_dict)
                     for i in headers:
                         i = eval(i)
-                        head = AutomationHead(automationCaseApi=AutomationCaseApi.objects.get(id=case_api_id),
+                        head = AutomationHead(automationCaseApi=AutomationCaseApi.objects.get(id=case_api.pk),
                                               key=i['k'], value=i['v'], interrelate=i['b'])
                         head.save()
-                record_dynamic(project_id, '新增', '用例接口', '新增用例“%s”接口"%s"' % (list(obi)[0], name))
-                return JsonResponse(code_msg=GlobalStatusCode.success())
+                record_dynamic(project_id, '新增', '用例接口', '新增用例“%s”接口"%s"' % (obi.name, name))
+                return JsonResponse(data={
+                    'api_id': case_api.pk
+                }, code_msg=GlobalStatusCode.success())
             else:
                 return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
         else:
@@ -620,7 +618,7 @@ def update_api(request):
                                 automationCaseApi=AutomationCaseApi.objects.get(id=case_api_id),
                                 key=i['k'], value=i['v'], interrelate=i['b'])
                             head.save()
-                    record_dynamic(project_id, '修改', '用例接口', '修改用例“%s”接口"%s"' % (list(obi)[0], name))
+                    record_dynamic(project_id, '修改', '用例接口', '修改用例“%s”接口"%s"' % (obi.name, name))
                     return JsonResponse(code_msg=GlobalStatusCode.success())
                 else:
                     return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
@@ -642,7 +640,6 @@ def del_api(request):
     ids 接口ID列表
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     case_id = request.POST.get('case_id')
     if not project_id.isdecimal() or not case_id.isdecimal():
@@ -659,9 +656,8 @@ def del_api(request):
             for j in id_list:
                 obi = AutomationCaseApi.objects.filter(id=j, automationTestCase=case_id)
                 if len(obi) != 0:
-                    name = json.loads(serializers.serialize('json', obi))[0]['fields']['name']
                     obi.delete()
-                    record_dynamic(project_id, '修改', '用例接口', '删除用例"%s"的接口"%s"' % (list(obm)[0], name))
+                    record_dynamic(project_id, '删除', '用例接口', '删除用例"%s"的接口"%s"' % (obm.name, obi.name))
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
@@ -680,7 +676,6 @@ def start_test(request):
     id 接口ID
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     case_id = request.POST.get('case_id')
     host_id = request.POST.get('host_id')
@@ -695,9 +690,11 @@ def start_test(request):
             if obm:
                 obn = AutomationCaseApi.objects.filter(id=_id, automationTestCase=case_id)
                 if obn:
-                    response['data'] = test_api(host_id, case_id, _id, project_id)
-                    record_dynamic(project_id, '测试', '用例接口', '测试用例“%s”接口"%s"' % (list(obi)[0], list(obn)[0]))
-                    return JsonResponse(code_msg=GlobalStatusCode.success())
+                    result = test_api(host_id, case_id, _id, project_id)
+                    record_dynamic(project_id, '测试', '用例接口', '测试用例“%s”接口"%s"' % (obi.name, obn.name))
+                    return JsonResponse(data={
+                        'result': result
+                    }, code_msg=GlobalStatusCode.success())
                 else:
                     return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
             else:
@@ -717,7 +714,6 @@ def time_task(request):
     case_id  用例ID
     :return:
     """
-    response = {}
     project_id = request.GET.get('project_id')
     case_id = request.GET.get('case_id')
     if not project_id.isdecimal() or not case_id.isdecimal():
@@ -726,9 +722,12 @@ def time_task(request):
     if obj:
         obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
         if obi:
-            data = json.loads(serializers.serialize('json', AutomationTestTask.objects.filter(automationTestCase=case_id)))
-            response['data'] = del_model(data)
-            return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
+            try:
+                obm = AutomationTestTask.objects.get(automationTestCase=case_id)
+                serialize = AutomationTestTaskSerializer(obm)
+                return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
+            except ObjectDoesNotExist:
+                return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
     else:
@@ -751,7 +750,6 @@ def add_time_task(request):
     endTime 任务结束时间
     :return:
     """
-    response = {}
     project_id = request.POST.get('project_id')
     case_id = request.POST.get('case_id')
     host_id = request.POST.get('host_id')
@@ -807,8 +805,9 @@ def add_time_task(request):
                                            name=name, type=_type, startTime=start_time, endTime=end_time).save()
                     record_dynamic(project_id, '新增', '任务', '新增定时任务"%s"' % name)
                 data = AutomationTestTask.objects.filter(automationTestCase=case_id)
-                response['task_id'] = json.loads(serializers.serialize('json', data))[0]['pk']
-                return JsonResponse(data=response, code_msg=GlobalStatusCode.success())
+                return JsonResponse(data={
+                    'task_id': data.pk
+                }, code_msg=GlobalStatusCode.success())
             else:
                 return JsonResponse(code_msg=GlobalStatusCode.host_not_exist())
         else:
@@ -859,7 +858,6 @@ def look_result(request):
     case_id 用例ID
     :return:
     """
-    response = {}
     project_id = request.GET.get('project_id')
     case_id = request.GET.get('case_id')
     api_id = request.GET.get('api_id')
@@ -871,10 +869,12 @@ def look_result(request):
         if obi:
             obm = AutomationCaseApi.objects.filter(id=api_id, automationTestCase=case_id)
             if obm:
-                data = json.loads(serializers.serialize('json',
-                                                        AutomationTestResult.objects.filter(automationCaseApi=api_id)))
-                response['data'] = del_model(data)
-                return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
+                try:
+                    data = AutomationTestResult.objects.get(automationCaseApi=api_id)
+                    serialize = AutomationTestResultSerializer(data)
+                    return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
+                except ObjectDoesNotExist:
+                    return JsonResponse(code_msg=GlobalStatusCode.success())
             else:
                 return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
         else:

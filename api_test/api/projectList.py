@@ -47,7 +47,8 @@ def add_project(request):
             project = Project(name=name, version=version, type=_type, description=description)
             project.save()
             record = ProjectDynamic(project=Project.objects.get(id=project.pk), type='创建',
-                                    operationObject='项目', user=User.objects.get(id=1), description='创建项目“%s”' % name)
+                                    operationObject='项目', user=User.objects.get(id=request.user.pk),
+                                    description='创建项目“%s”' % name)
             record.save()
             return JsonResponse(data={
                 'project_id': project.pk
@@ -86,7 +87,7 @@ def update_project(request):
 
                 obj.update(name=name, version=version, type=_type, description=description)
                 record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
-                                        operationObject='项目', user=User.objects.get(id=1),
+                                        operationObject='项目', user=User.objects.get(id=request.user.pk),
                                         description='修改项目“%s”' % name)
                 record.save()
                 return JsonResponse(code_msg=GlobalStatusCode.success())
@@ -133,8 +134,8 @@ def disable_project(request):
     if obj:
         obj.update(status=False)
         record = ProjectDynamic(project=Project.objects.get(id=project_id), type='禁用',
-                                operationObject='项目', user=User.objects.get(id=1),
-                                description='禁用项目“%s”' % list(obj)[0])
+                                operationObject='项目', user=User.objects.get(id=request.user.pk),
+                                description='禁用项目“%s”' % obj.name)
         record.save()
         return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
@@ -156,8 +157,8 @@ def enable_project(request):
     if obj:
         obj.update(status=True)
         record = ProjectDynamic(project=Project.objects.get(id=project_id), type='启用',
-                                operationObject='项目', user=User.objects.get(id=1),
-                                description='禁用项目“%s”' % list(obj)[0])
+                                operationObject='项目', user=User.objects.get(id=request.user.pk),
+                                description='禁用项目“%s”' % obj.name)
         record.save()
         return JsonResponse(code_msg=GlobalStatusCode.success())
     else:

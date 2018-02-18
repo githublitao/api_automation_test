@@ -1,5 +1,6 @@
 import logging
 
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
@@ -22,9 +23,9 @@ def project_info(request):
     project_id = request.GET.get('project_id')
     if not project_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    obj = Project.objects.filter(id=project_id)
-    if obj:
-        serialize = ProjectSerializer(obj, many=True)
+    try:
+        obj = Project.objects.get(id=project_id)
+        serialize = ProjectSerializer(obj)
         return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
-    else:
+    except ObjectDoesNotExist:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())

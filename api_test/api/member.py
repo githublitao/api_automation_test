@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义
 @verify_parameter(['project_id', ], 'GET')
 def project_member(request):
     """
-    获取成员数量
+    获取成员信息
     project_id  项目ID
     :return:
     """

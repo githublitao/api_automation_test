@@ -133,15 +133,15 @@ class ProjectMember(models.Model):
         ('tester', '测试人员')
     )
     id = models.AutoField(primary_key=True)
-    permission_type = models.CharField(max_length=50, verbose_name='权限角色', choices=CHOICES)
+    permissionType = models.CharField(max_length=50, verbose_name='权限角色', choices=CHOICES)
     project = models.ForeignKey(Project, related_name='member_project', on_delete=models.CASCADE, verbose_name='所属项目')
     user = models.ForeignKey(User, related_name='member_user', on_delete=models.CASCADE, verbose_name='用户')
 
     def __unicode__(self):
-        return self.permission_type
+        return self.permissionType
 
     def __str__(self):
-        return self.permission_type
+        return self.permissionType
 
     class Meta:
         verbose_name = '项目成员'
@@ -242,15 +242,15 @@ class ApiInfo(models.Model):
                                             related_name='ApiGroupLevelSecond_id',
                                             on_delete=models.SET_NULL, verbose_name='所属二级分组')
     name = models.CharField(max_length=50, verbose_name='接口名称')
-    http_type = models.CharField(max_length=50, default='HTTP', verbose_name='http/https', choices=HTTP_CHOICE)
+    httpType = models.CharField(max_length=50, default='HTTP', verbose_name='http/https', choices=HTTP_CHOICE)
     requestType = models.CharField(max_length=50, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)
     apiAddress = models.CharField(max_length=1024, verbose_name='接口地址')
-    request_head = models.TextField(blank=True, null=True, verbose_name='请求头')
+    requestHead = models.TextField(blank=True, null=True, verbose_name='请求头')
     requestParameterType = models.CharField(max_length=50, verbose_name='请求参数格式', choices=REQUEST_PARAMETER_TYPE_CHOICE)
     requestParameter = models.TextField(blank=True, null=True, verbose_name='请求参数')
     status = models.BooleanField(default=True, verbose_name='状态')
     response = models.TextField(blank=True, null=True, verbose_name='返回数据')
-    mock_code = models.CharField(max_length=50, blank=True, null=True, verbose_name='HTTP状态', choices=HTTP_CODE_CHOICE)
+    mockCode = models.CharField(max_length=50, blank=True, null=True, verbose_name='HTTP状态', choices=HTTP_CODE_CHOICE)
     data = models.TextField(max_length=1024, blank=True, null=True, verbose_name='mock内容')
     lastUpdateTime = models.DateTimeField(auto_now=True, verbose_name='最近更新')
     userUpdate = models.CharField(max_length=50, verbose_name='更新人')
@@ -376,7 +376,7 @@ class AutomationCaseApi(models.Model):
     id = models.AutoField(primary_key=True)
     automationTestCase = models.ForeignKey(AutomationTestCase, on_delete=models.PROTECT, verbose_name='用例')
     name = models.CharField(max_length=50, verbose_name='接口名称')
-    http_type = models.CharField(max_length=50, default='HTTP', verbose_name='HTTP/HTTPS', choices=HTTP_CHOICE)
+    httpType = models.CharField(max_length=50, default='HTTP', verbose_name='HTTP/HTTPS', choices=HTTP_CHOICE)
     requestType = models.CharField(max_length=50, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)
     address = models.CharField(max_length=1024, verbose_name='接口地址')
     requestParameterType = models.CharField(max_length=50, verbose_name='参数请求格式', choices=REQUEST_PARAMETER_TYPE_CHOICE)
@@ -440,19 +440,19 @@ class AutomationTestResult(models.Model):
     id = models.AutoField(primary_key=True)
     automationCaseApi = models.OneToOneField(AutomationCaseApi, on_delete=models.CASCADE, verbose_name='接口')
     url = models.CharField(max_length=1024, verbose_name='请求地址')
-    request_type = models.CharField(max_length=1024, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)
+    requestType = models.CharField(max_length=1024, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)
     header = models.CharField(max_length=1024, blank=True, null=True, verbose_name='请求头')
     parameter = models.TextField(blank=True, null=True, verbose_name='请求参数')
-    status_code = models.CharField(max_length=1024, verbose_name='期望HTTP状态', choices=HTTP_CODE_CHOICE)
+    statusCode = models.CharField(max_length=1024, verbose_name='期望HTTP状态', choices=HTTP_CODE_CHOICE)
     examineType = models.CharField(max_length=1024, verbose_name='匹配规则', choices=EXAMINE_TYPE_CHOICE)
     data = models.TextField(blank=True, null=True, verbose_name='规则内容')
     result = models.CharField(max_length=50, verbose_name='测试结果', choices=RESULT_CHOICE)
-    http_status = models.CharField(max_length=50, blank=True, null=True, verbose_name='http状态', choices=HTTP_CODE_CHOICE)
-    response_data = models.TextField(blank=True, null=True, verbose_name='实际返回内容')
-    test_time = models.DateTimeField(auto_now_add=True, verbose_name='测试时间')
+    httpStatus = models.CharField(max_length=50, blank=True, null=True, verbose_name='http状态', choices=HTTP_CODE_CHOICE)
+    responseData = models.TextField(blank=True, null=True, verbose_name='实际返回内容')
+    testTime = models.DateTimeField(auto_now_add=True, verbose_name='测试时间')
 
     def __unicode__(self):
-        return self.http_status
+        return self.httpStatus
 
     class Meta:
         verbose_name = '测试结果'

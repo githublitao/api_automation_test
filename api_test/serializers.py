@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 from api_test.models import Project, ProjectDynamic, ProjectMember, GlobalHost, ApiGroupLevelSecond, ApiGroupLevelFirst, \
     ApiInfo, APIRequestHistory, ApiOperationHistory, AutomationGroupLevelFirst, AutomationGroupLevelSecond, \
-    AutomationTestCase, AutomationCaseApi, AutomationHead, AutomationParameter
+    AutomationTestCase, AutomationCaseApi, AutomationHead, AutomationParameter, AutomationTestTask, AutomationTestResult
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -56,7 +56,7 @@ class ProjectMemberSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProjectMember
-        fields = ('id', 'permission_type', 'username', 'userPhone', 'userEmail')
+        fields = ('id', 'permissionType', 'username', 'userPhone', 'userEmail')
 
 
 class GlobalHostSerializer(serializers.ModelSerializer):
@@ -96,9 +96,9 @@ class ApiInfoSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = ApiInfo
-        fields = ('id', 'name', 'http_type', 'requestType', 'apiAddress', 'request_head',
+        fields = ('id', 'name', 'httpType', 'requestType', 'apiAddress', 'requestHead',
                   'requestParameterType', 'requestParameter', 'status',
-                  'response', 'mock_code', 'data', 'lastUpdateTime', 'userUpdate', 'description')
+                  'response', 'mockCode', 'data', 'lastUpdateTime', 'userUpdate', 'description')
 
 
 class ApiInfoListSerializer(serializers.ModelSerializer):
@@ -186,7 +186,7 @@ class AutomationCaseApiSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AutomationCaseApi
-        fields = ('id', 'name', 'http_type', 'requestType', 'address', 'header', 'requestParameterType',
+        fields = ('id', 'name', 'httpType', 'requestType', 'address', 'header', 'requestParameterType',
                   'parameterList', 'examineType', 'httpCode', 'responseData')
 
 
@@ -197,3 +197,22 @@ class AutomationCaseApiListSerializer(serializers.ModelSerializer):
     class Meta:
         model = AutomationCaseApi
         fields = ('id', 'name', 'requestType', 'address')
+
+
+class AutomationTestTaskSerializer(serializers.ModelSerializer):
+    """
+    定时任务信息序列化
+    """
+    class Meta:
+        model = AutomationTestTask
+        fields = ('id', 'Host', 'name', 'type', 'frequency', 'unit', 'startTime', 'endTime')
+
+
+class AutomationTestResultSerializer(serializers.ModelSerializer):
+    """
+    测试结果详情序列化
+    """
+    class Meta:
+        model = AutomationTestResult
+        fields = ('id', 'url', 'requestType', 'header', 'parameter', 'statusCode', 'examineType', 'data',
+                  'result', 'httpStatus', 'responseData', 'testTime')

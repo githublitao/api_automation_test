@@ -58,7 +58,7 @@ def add_host(request):
             hosts = GlobalHost(project=Project.objects.get(id=project_id), name=name, host=host, description=desc)
             hosts.save()
             record = ProjectDynamic(project=Project.objects.get(id=project_id), type='新增',
-                                    operationObject='HOST', user=User.objects.get(id=1),
+                                    operationObject='HOST', user=User.objects.get(id=request.user.pk),
                                     description='新增HOST“%s”' % name)
             record.save()
             return JsonResponse(data={
@@ -95,7 +95,7 @@ def update_host(request):
             if len(obm) == 0:
                 obi.update(project=Project.objects.get(id=project_id), name=name, host=host, description=desc)
                 record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
-                                        operationObject='HOST', user=User.objects.get(id=1),
+                                        operationObject='HOST', user=User.objects.get(id=request.user.pk),
                                         description='修改HOST“%s”' % name)
                 record.save()
                 return JsonResponse(code_msg=GlobalStatusCode.success())
@@ -126,8 +126,8 @@ def del_host(request):
         if obi:
             obi.delete()
             record = ProjectDynamic(project=Project.objects.get(id=project_id), type='删除',
-                                    operationObject='HOST', user=User.objects.get(id=1),
-                                    description='删除HOST“%s”' % list(obi)[0])
+                                    operationObject='HOST', user=User.objects.get(id=request.user.pk),
+                                    description='删除HOST“%s”' % obi.name)
             record.save()
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
@@ -155,8 +155,8 @@ def disable_host(request):
         if obi:
             obi.update(status=False)
             record = ProjectDynamic(project=Project.objects.get(id=project_id), type='禁用',
-                                    operationObject='HOST', user=User.objects.get(id=1),
-                                    description='禁用HOST“%s”' % list(obi)[0])
+                                    operationObject='HOST', user=User.objects.get(id=request.user.pk),
+                                    description='禁用HOST“%s”' % obi.name)
             record.save()
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
@@ -184,8 +184,8 @@ def enable_host(request):
         if obi:
             obi.update(status=True)
             record = ProjectDynamic(project=Project.objects.get(id=project_id), type='启用',
-                                    operationObject='HOST', user=User.objects.get(id=1),
-                                    description='启用HOST“%s”' % list(obi)[0])
+                                    operationObject='HOST', user=User.objects.get(id=request.user.pk),
+                                    description='启用HOST“%s”' % obi.name)
             record.save()
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:

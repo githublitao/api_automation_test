@@ -143,18 +143,18 @@ admin.site.register(ApiGroupLevelFirst, ApiGroupLevelFirstForm)
 
 
 class ApiInfoForm(admin.ModelAdmin):
-    search_fields = ('name', 'project', 'http_type', 'requestType', 'apiAddress', 'requestParameterType')
-    list_display = ('id', 'project', 'name', 'http_type', 'requestType',
+    search_fields = ('name', 'project', 'httpType', 'requestType', 'apiAddress', 'requestParameterType')
+    list_display = ('id', 'project', 'name', 'httpType', 'requestType',
                     'apiAddress', 'status', 'lastUpdateTime', 'userUpdate')
     list_display_links = ('id', 'name', 'project')
-    list_filter = ('project', 'http_type', 'requestType', 'status')
+    list_filter = ('project', 'httpType', 'requestType', 'status')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '接口信息', {
-            'fields': ('project', 'apiGroupLevelFirst', 'apiGroupLevelSecond', 'name', 'http_type',
-                       'requestType', 'apiAddress', 'request_head', 'requestParameterType', 'requestParameter',
-                       'status', 'response', 'mock_code', 'data')
+            'fields': ('project', 'apiGroupLevelFirst', 'apiGroupLevelSecond', 'name', 'httpType',
+                       'requestType', 'apiAddress', 'requestHead', 'requestParameterType', 'requestParameter',
+                       'status', 'response', 'mockCode', 'data')
         }],)
 
 
@@ -242,14 +242,14 @@ class AutomationHeadInCase(admin.TabularInline):
 class AutomationCaseApiForm(admin.ModelAdmin):
     inlines = [AutomationHeadInCase, AutomationParameterInCase]
     search_fields = ('automationTestCase', 'name', 'address')
-    list_display = ('id', 'automationTestCase', 'name', 'http_type', 'requestType', 'address', 'examineType')
-    list_display_links = ('id', 'automationTestCase', 'name', 'http_type')
-    list_filter = ('http_type', 'requestType', 'requestParameterType', 'examineType')
+    list_display = ('id', 'automationTestCase', 'name', 'httpType', 'requestType', 'address', 'examineType')
+    list_display_links = ('id', 'automationTestCase', 'name', 'httpType')
+    list_filter = ('httpType', 'requestType', 'requestParameterType', 'examineType')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '接口详情', {
-            'fields': ('automationTestCase', 'name', 'http_type', 'requestType', 'address',
+            'fields': ('automationTestCase', 'name', 'httpType', 'requestType', 'address',
                        'requestParameterType', 'examineType', 'httpCode', 'responseData')
         }],)
 
@@ -266,15 +266,15 @@ class AutomationParameterForm(admin.ModelAdmin):
 
 class AutomationTestResultForm(ReadOnlyModelAdmin):
     search_fields = ('automationCaseApi',)
-    list_display = ('id', 'automationCaseApi', 'result', 'http_status', 'test_time')
+    list_display = ('id', 'automationCaseApi', 'result', 'httpStatus', 'testTime')
     list_display_links = ('id', 'automationCaseApi', 'result')
-    list_filter = ('id', 'http_status', 'result')
+    list_filter = ('id', 'httpStatus', 'result')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '测试结果', {
-            'fields': ('automationCaseApi', 'test_time', 'url', 'request_type', 'header', 'parameter', 'status_code',
-                       'examineType', 'data', 'result', 'http_status', 'response_data')
+            'fields': ('automationCaseApi', 'testTime', 'url', 'requestType', 'header', 'parameter', 'statusCode',
+                       'examineType', 'data', 'result', 'httpStatus', 'responseData')
         }],)
 
 
@@ -300,14 +300,14 @@ admin.site.register(AutomationTestTask, AutomationTestTaskForm)
 
 class ProjectMemberForm(admin.ModelAdmin):
     search_fields = ('user', 'project')
-    list_display = ('id', 'permission_type', 'project', 'user')
-    list_display_links = ('permission_type', 'project')
-    list_filter = ('permission_type', 'project', 'user')
+    list_display = ('id', 'permissionType', 'project', 'user')
+    list_display_links = ('permissionType', 'project')
+    list_filter = ('permissionType', 'project', 'user')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '项目成员', {
-            'fields': ('permission_type', 'project', 'user')
+            'fields': ('permissionType', 'project', 'user')
         }],
     )
 

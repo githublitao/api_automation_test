@@ -8,17 +8,6 @@ from api_test.common.api_response import JsonResponse
 from api_test.models import AutomationTestResult, AutomationCaseApi, ProjectDynamic, Project
 
 
-def del_model(data):
-    """
-    删除序列中model
-    :param data:
-    :return:
-    """
-    for i in data:
-        i.pop('model')
-    return data
-
-
 def custom_exception_handler(exc, context):
     # Call REST framework's default exception handler first,
     # to get the standard error response.
@@ -127,14 +116,14 @@ def record_results(_id, url, request_type, header, parameter,
     """
     rt = AutomationTestResult.objects.filter(automationCaseApi=_id)
     if rt:
-        rt.update(url=url, request_type=request_type, header=header, parameter=parameter,
-                  status_code=status_code, examineType=examine_type, data=examine_data,
-                  result=_result, http_status=code, response_data=response_data)
+        rt.update(url=url, requestType=request_type, header=header, parameter=parameter,
+                  statusCode=status_code, examineType=examine_type, data=examine_data,
+                  result=_result, httpStatus=code, responseData=response_data)
     else:
         result_ = AutomationTestResult(automationCaseApi=AutomationCaseApi.objects.get(id=_id),
-                                       url=url, request_type=request_type, header=header, parameter=parameter,
-                                       status_code=status_code, examineType=examine_type, data=examine_data,
-                                       result=_result, http_status=code, response_data=response_data)
+                                       url=url, requestType=request_type, header=header, parameter=parameter,
+                                       statusCode=status_code, examineType=examine_type, data=examine_data,
+                                       result=_result, httpStatus=code, responseData=response_data)
         result_.save()
 
 
