@@ -64,7 +64,7 @@ export default {
           	  	if (data.code === '999999') {
           	  	  sessionStorage.setItem('username', JSON.stringify(data.data.first_name))
           	  		sessionStorage.setItem('token', JSON.stringify(data.data.key))
-          	  		_this.$router.push('/project');
+          	  		_this.$router.push('/projectList');
           	  	}
           	  	else {
           	  		_this.$message.error({

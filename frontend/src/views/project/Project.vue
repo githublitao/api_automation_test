@@ -1,466 +1,166 @@
 <template>
-	<section>
-		<!--工具条-->
-		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-			<el-form :inline="true" :model="filters">
-				<el-form-item>
-					<el-input v-model="filters.name" placeholder="名称" @keyup.enter.native="getProjectList"></el-input>
-				</el-form-item>
-				<el-form-item>
-					<el-button type="primary" @click="getProjectList">查询</el-button>
-				</el-form-item>
-				<el-form-item>
-					<el-button type="primary" @click="handleAdd">新增</el-button>
-				</el-form-item>
-			</el-form>
+	<el-row class="container">
+		<el-col :span="24" class="header">
+			<el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
+				<router-link to="/projectList" style='text-decoration: none;color: #FFFFFF;'>{{collapsed?'':sysName}}</router-link>
+			</el-col>
+			<el-col :span="4" class="userinfo">
+				<el-dropdown trigger="hover">
+					<span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{sysUserName}}</span>
+					<el-dropdown-menu slot="dropdown">
+						<el-dropdown-item>我的消息</el-dropdown-item>
+						<el-dropdown-item>设置</el-dropdown-item>
+						<el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
+					</el-dropdown-menu>
+				</el-dropdown>
+			</el-col>
 		</el-col>
-
-		<!--列表-->
-		<el-table :data="project" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
-			<el-table-column type="selection" min-width="5%">
-			</el-table-column>
-			<el-table-column prop="name" label="项目名称" min-width="30%" sortable>
-                <template slot-scope="scope">
-                    <el-icon name="name"></el-icon>
-                    <router-link :to="{ name: '项目', params: {project_id: scope.row.id}}" style='text-decoration: none;color: #000000;'>{{ scope.row.name }}</router-link>
-                </template>
-			</el-table-column>
-			<el-table-column prop="version" label="项目版本" min-width="12%" sortable>
-			</el-table-column>
-			<el-table-column prop="type" label="类型" min-width="9%" sortable>
-			</el-table-column>
-			<el-table-column prop="LastUpdateTime" label="最后修改时间" min-width="17%" sortable>
-			</el-table-column>
-			<el-table-column prop="status" label="状态" min-width="9%" sortable>
-			    <template slot-scope="scope">
-			        {{scope.row.status===true?'启用':'禁用'}}
-                </template>
-			</el-table-column>
-            <el-table-column label="操作" min-width="18%">
-                <template slot-scope="scope">
-                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-                    <el-button type="info" size="small" @click="handleChangeStatus(scope.$index, scope.row)">{{scope.row.status===false?'启用':'禁用'}}</el-button>
-                </template>
-            </el-table-column>
-		</el-table>
-
-		<!--工具条-->
-		<el-col :span="24" class="toolbar">
-			<el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
-			<el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :page-count="total" style="float:right;">
-			</el-pagination>
+		<el-col :span="24">
+		    <template :index='project_id'>
+				<el-menu :default-active="$route.path" class="el-menu-vertical-demo" mode="horizontal" @select="handleselect"
+						unique-opened v-show="!collapsed">
+					<template v-for="item in $router.options.routes" v-if="!item.projectHidden">
+						<template v-for="items,index in item.children">
+							<el-menu-item :index="items.path" v-if="items.leaf" :key="items.path">
+								<router-link :to="{ name: items.name, params: {id: project_id}}" style='text-decoration: none;color: #000000;'>{{items.name }}</router-link>
+							</el-menu-item>
+							<el-submenu :index="index+''" v-if="!items.leaf">
+								<template slot="title"></i>{{items.name}}</template>
+								<el-menu-item v-for="child in items.children" :key="child.path" :index="child.path">
+									{{child.name}}
+								</el-menu-item>
+							</el-submenu>
+						</template> 
+					</template>
+				</el-menu>
+			</template>
+			<strong class="title">{{$route.name}}</strong>
 		</el-col>
-
-		<!--编辑界面-->
-		<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
-		    <el-form :model="editForm" label-width="80px"  :rules="editFormRules" ref="editForm">
-                <el-form-item label="项目名称" prop="name">
-                    <el-input v-model="editForm.name" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="类型" prop='type'>
-                    <el-radio-group v-model="editForm.type">
-                        <el-radio label="Web">Web</el-radio>
-                        <el-radio label="App">App</el-radio>
-                    </el-radio-group>
-                </el-form-item>
-                <el-form-item label="版本号" prop='version'>
-                    <el-input v-model="editForm.version" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="描述" prop='description'>
-                    <el-input type="textarea" :rows="7" v-model="editForm.description"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click.native="editFormVisible = false">取消</el-button>
-                <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
-            </div>
-		</el-dialog>
-
-		<!--新增界面-->
-		<el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
-		    <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
-                <el-form-item label="项目名称" prop="name">
-                    <el-input v-model="addForm.name" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="类型" prop='type'>
-                    <el-radio-group v-model="addForm.type">
-                        <el-radio label="Web">Web</el-radio>
-                        <el-radio label="App">App</el-radio>
-                    </el-radio-group>
-                </el-form-item>
-                <el-form-item label="版本号" prop='version'>
-                    <el-input v-model="addForm.version" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="描述" prop='description'>
-                    <el-input type="textarea" :rows="7" v-model="addForm.description"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click.native="addFormVisible = false">取消</el-button>
-                <el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
-            </div>
-		</el-dialog>
-	</section>
+		<el-col :span="24">
+			<transition name="fade" mode="out-in">
+				<router-view></router-view>
+			</transition>
+		</el-col>
+	</el-row>
 </template>
 
 <script>
-	//import NProgress from 'nprogress'
 import { test } from '../../api/api'
 import $ from 'jquery'
-export default {
-	data() {
-		return {
-			filters: {
-				name: ''
-			},
-			project: [],
-			total: 0,
-			page: 1,
-			listLoading: false,
-			sels: [],//列表选中列
-
-			editFormVisible: false,//编辑界面是否显示
-			editLoading: false,
-			editFormRules: {
-				name: [
-					{ required: true, message: '请输入名称', trigger: 'blur' },
-                    { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-				],
-				type: [
-                    { required: true, message: '请选择类型', trigger: 'blur' }
-                ],
-				version: [
-                    { required: true, message: '请输入版本号', trigger: 'blur' },
-                    { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-                ],
-                description: [
-                    { required: false, message: '请输入描述', trigger: 'blur' },
-                    { max: 1024, message: '不能超过1024个字符', trigger: 'blur' }
-                ]
-			},
-			//编辑界面数据
-			editForm: {
-			    name: '',
-			    version: '',
-			    type: '',
-			    description: ''
-			},
-
-			addFormVisible: false,//新增界面是否显示
-			addLoading: false,
-			addFormRules: {
-				name: [
-					{ required: true, message: '请输入名称', trigger: 'blur' },
-                    { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-				],
-				type: [
-                    { required: true, message: '请选择类型', trigger: 'blur' }
-                ],
-				version: [
-                    { required: true, message: '请输入版本号', trigger: 'blur' },
-                    { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-                ],
-                description: [
-                    { required: false, message: '请输入版本号', trigger: 'blur' },
-                    { max: 1024, message: '不能超过1024个字符', trigger: 'blur' }
-                ]
-			},
-			//新增界面数据
-			addForm: {
-			    name: '',
-                version: '',
-                type: '',
-                description: ''
+	export default {
+		data() {
+			return {
+				tabPosition: 'top',
+			    project_id:'',
+				sysName:'自动化测试平台',
+				collapsed:false,
+				sysUserName: '',
+				sysUserAvatar: '',
 			}
+		},
+		methods: {
+		    handleselect: function (a, b) {
+            },
+			onSubmit() {
+				console.log('submit!');
+			},
+			//退出登录
+			logout: function () {
+				var _this = this;
+				this.$confirm('确认退出吗?', '提示', {
+					//type: 'warning'
+				}).then(() => {
+					sessionStorage.removeItem('token');
+					_this.$router.push('/login');
+				}).catch(() => {
 
+				});
+			},
+			showMenu(i,status){
+				this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-'+i)[0].style.display=status?'block':'none';
+			},
+		},
+		mounted() {
+			var user = sessionStorage.getItem('username');
+			if (user) {
+				name = JSON.parse(user);
+				this.sysUserName = name || '';
+//				this.sysUserAvatar = '../assets/user.png';
+			}
+			this.project_id = this.$route.params.project_id
 		}
-	},
-methods: {
-		// 获取项目列表
-		getProjectList() {
-			this.listLoading = true;
-			var self = this
-			$.ajax({
-				type: "get",
-				url: test+"/api/project/project_list",
-				async: true,
-				data: { page: self.page, name: self.filters.name},
-				headers: {
-					Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-				},
-				timeout: 5000,
-				success: function(data) {
-					self.listLoading = false
-					if (data.code === '999999') {
-						self.total = data.data.total,
-						self.project = data.data.data
-					}
-					else {
-						self.$message.error({
-							message: data.msg,
-							center: true,
-						})
-					}
-				},
-			})
-		},
-		//删除
-		handleDel: function (index, row) {
-			this.$confirm('确认删除该记录吗?', '提示', {
-				type: 'warning'
-			}).then(() => {
-				this.listLoading = true;
-				//NProgress.start();
-				let self = this
-				$.ajax({
-                type: "post",
-                url: test+"/api/project/del_project",
-                async: true,
-                data: {ids: row.id},
-                headers: {
-                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                },
-                timeout: 5000,
-                success: function(data) {
-                    if (data.code === '999999') {
-                        self.$message({
-                            message: '删除成功',
-                            center: true,
-                            type: 'success'
-                        })
-                    } else {
-                        self.$message.error({
-                            message: data.msg,
-                            center: true,
-                        })
-                    }
-                    self.getProjectList()
-                },
-            })
-
-			}).catch(() => {
-			});
-		},
-		handleChangeStatus: function(index, row) {
-		    let self = this
-		    this.listLoading = true;
-		    if (row.status) {
-		        $.ajax({
-                    type: "post",
-                    url: test+"/api/project/disable_project",
-                    async: true,
-                    data: { project_id: row.id},
-                    headers: {
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        self.listLoading = false
-                        if (data.code === '999999') {
-                            self.$message({
-                                message: '禁用成功',
-                                center: true,
-                                type: 'success'
-                            })
-                            row.status = !row.status;
-                        }
-                        else {
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                    },
-                })
-		    } else {
-		        $.ajax({
-                    type: "post",
-                    url: test+"/api/project/enable_project",
-                    async: true,
-                    data: { project_id: row.id},
-                    headers: {
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        self.listLoading = false
-                        if (data.code === '999999') {
-                            self.$message({
-                                message: '启用成功',
-                                center: true,
-                                type: 'success'
-                            })
-                            row.status = !row.status;
-                        }
-                        else {
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                    },
-                })
-		    }
-		},
-	    handleCurrentChange(val) {
-            this.page = val;
-            this.getProjectList()
-        },
-		//显示编辑界面
-		handleEdit: function (index, row) {
-			this.editFormVisible = true;
-			this.editForm = Object.assign({}, row);
-		},
-		//显示新增界面
-		handleAdd: function () {
-			this.addFormVisible = true;
-		},
-		//编辑
-		editSubmit: function () {
-		    let self = this
-			this.$refs.editForm.validate((valid) => {
-				if (valid) {
-					this.$confirm('确认提交吗？', '提示', {}).then(() => {
-						self.editLoading = true;
-						//NProgress.start();
-						$.ajax({
-                            type: "post",
-                            url: test+"/api/project/update_project",
-                            async: true,
-                            data: { project_id: self.editForm.id, name: self.editForm.name, type: self.editForm.type, v: self.editForm.version, description: self.editForm.description },
-                            headers: {
-                                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                            },
-                            timeout: 5000,
-                            success: function(data) {
-                                self.editLoading = false;
-                                if (data.code === '999999') {
-                                    self.$message({
-                                        message: '修改成功',
-                                        center: true,
-                                        type: 'success'
-                                    })
-                                    self.$refs['editForm'].resetFields();
-                                    self.editFormVisible = false;  
-                                    self.getProjectList()
-                                } else if (data.code === '999997'){
-                                    self.$message.error({
-                                        message: data.msg,
-                                        center: true,
-                                    })
-                                } else {
-                                    self.$message.error({
-                                        message: data.msg,
-                                        center: true,
-                                    })
-                                }
-                            },
-                        })
-					});
-				}
-			});
-		},
-		//新增
-		addSubmit: function () {
-			this.$refs.addForm.validate((valid) => {
-				if (valid) {
-				    let self = this
-					this.$confirm('确认提交吗？', '提示', {}).then(() => {
-						self.addLoading = true;
-						//NProgress.start();
-                        $.ajax({
-                            type: "post",
-                            url: test+"/api/project/add_project",
-                            async: true,
-                            data: { name: self.addForm.name, type: self.addForm.type, v: self.addForm.version, description: self.addForm.description },
-                            headers: {
-                                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                            },
-                            timeout: 5000,
-                            success: function(data) {
-                                self.addLoading = false;
-                                if (data.code === '999999') {
-                                    self.$message({
-                                        message: '添加成功',
-                                        center: true,
-                                        type: 'success'
-                                    })
-                                    self.$refs['addForm'].resetFields();
-                                    self.addFormVisible = false;  
-                                    self.getProjectList()
-                                } else if (data.code === '999997'){
-                                    self.$message.error({
-                                        message: data.msg,
-                                        center: true,
-                                    })
-                                } else {
-                                    self.$message.error({
-                                        message: data.msg,
-                                        center: true,
-                                    })
-                                    self.$refs['addForm'].resetFields();
-                                    self.addFormVisible = false;  
-                                    self.getProjectList()
-                                }
-                            },
-                        })
-					});
-				}
-			});
-		},
-		selsChange: function (sels) {
-			this.sels = sels;
-		},
-		//批量删除
-		batchRemove: function () {
-			var ids = this.sels.map(item => item.id).toString();
-			let self = this
-			this.$confirm('确认删除选中记录吗？', '提示', {
-				type: 'warning'
-			}).then(() => {
-				self.listLoading = true;
-				//NProgress.start();
-				let para = { ids: ids };
-                $.ajax({
-                    type: "post",
-                    url: test+"/api/project/del_project",
-                    async: true,
-                    data:{ids: ids},
-                    headers: {
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        self.listLoading = false
-                        if (data.code === '999999') {
-                            self.$message({
-                                message: '删除成功',
-                                center: true,
-                                type: 'success'
-                            })
-                        }
-                        else {
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                        self.getProjectList()
-                    },
-                })
-			}).catch(() => {
-
-			});
-		}
-	},
-	mounted() {
-		this.getProjectList();
 	}
-}
 
 </script>
 
-<style>
-
+<style scoped lang="scss">
+	@import '~scss_vars';
+	
+	.container {
+		position: absolute;
+		top: 0px;
+		bottom: 0px;
+		width: 100%;
+		.header {
+			height: 60px;
+			line-height: 60px;
+			background: $color-primary;
+			color:#fff;
+			.userinfo {
+				text-align: right;
+				padding-right: 35px;
+				float: right;
+				.userinfo-inner {
+					cursor: pointer;
+					color:#fff;
+					img {
+						width: 40px;
+						height: 40px;
+						border-radius: 20px;
+						margin: 10px 0px 10px 10px;
+						float: right;
+					}
+				}
+			}
+			.logo {
+				//width:230px;
+				height:60px;
+				font-size: 22px;
+				padding-left:20px;
+				padding-right:20px;
+				border-color: rgba(238,241,146,0.3);
+				border-right-width: 1px;
+				border-right-style: solid;
+				img {
+					width: 40px;
+					float: left;
+					margin: 10px 10px 10px 18px;
+				}
+				.txt {
+					color:#fff;
+				}
+			}
+			.logo-width{
+				width:230px;
+			}
+			.logo-collapse-width{
+				width:60px
+			}
+			.tools{
+				padding: 0px 23px;
+				width:14px;
+				height: 60px;
+				line-height: 60px;
+				cursor: pointer;
+			}
+		}
+		.title {
+			width: 200px;
+			float: left;
+			color: #475669;
+			font-size: 25px;
+    		margin: 15px;
+			font-family: PingFang SC;
+		}
+	}
 </style>
