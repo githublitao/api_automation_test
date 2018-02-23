@@ -102,7 +102,7 @@ def update_host(request):
             else:
                 return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
         else:
-            return JsonResponse(code_msg=GlobalStatusCode.history_not_exist())
+            return JsonResponse(code_msg=GlobalStatusCode.host_not_exist())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
@@ -124,10 +124,11 @@ def del_host(request):
     if obj:
         obi = GlobalHost.objects.filter(id=host_id, project=project_id)
         if obi:
+            name = obi[0].name
             obi.delete()
             record = ProjectDynamic(project=Project.objects.get(id=project_id), type='删除',
                                     operationObject='HOST', user=User.objects.get(id=request.user.pk),
-                                    description='删除HOST“%s”' % obi.name)
+                                    description='删除HOST“%s”' % name)
             record.save()
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
@@ -156,7 +157,7 @@ def disable_host(request):
             obi.update(status=False)
             record = ProjectDynamic(project=Project.objects.get(id=project_id), type='禁用',
                                     operationObject='HOST', user=User.objects.get(id=request.user.pk),
-                                    description='禁用HOST“%s”' % obi.name)
+                                    description='禁用HOST“%s”' % obi[0].name)
             record.save()
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
@@ -185,7 +186,7 @@ def enable_host(request):
             obi.update(status=True)
             record = ProjectDynamic(project=Project.objects.get(id=project_id), type='启用',
                                     operationObject='HOST', user=User.objects.get(id=request.user.pk),
-                                    description='启用HOST“%s”' % obi.name)
+                                    description='启用HOST“%s”' % obi[0].name)
             record.save()
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:

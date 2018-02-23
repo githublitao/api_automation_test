@@ -66,10 +66,10 @@ def add_group(request):
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             obi = AutomationGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
             if obi:
-                first_group = AutomationGroupLevelSecond(automationGroupLevelFirst=
-                                                         AutomationGroupLevelFirst.objects.get(id=first_group_id),
-                                                         name=name)
-                first_group.save()
+                obi = AutomationGroupLevelSecond(automationGroupLevelFirst=
+                                                 AutomationGroupLevelFirst.objects.get(id=first_group_id),
+                                                 name=name)
+                obi.save()
             else:
                 return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
         # 添加一级分组名称
@@ -101,6 +101,7 @@ def del_group(request):
     if obj:
         obi = AutomationGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
         if obi:
+            name = obi[0].name
             # 删除二级分组
             if second_group_id:
                 if not second_group_id.isdecimal():
@@ -113,7 +114,7 @@ def del_group(request):
                     return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
             else:
                 obi.delete()
-            record_dynamic(project_id, '删除', '用例分组', '删除用例分组“%s”' % obi.name)
+            record_dynamic(project_id, '删除', '用例分组', '删除用例分组“%s”' % name)
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
@@ -373,17 +374,18 @@ def del_case(request):
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     ids = request.POST.get('case_ids')
     id_list = ids.split(',')
+    for i in id_list:
+        if not i.isdecimal():
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
-        for i in id_list:
-            if not i.isdecimal():
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
         for j in id_list:
             obi = AutomationTestCase.objects.filter(id=j, project=project_id)
             if len(obi) != 0:
+                name = obi[0].caseName
                 obi.delete()
-                record_dynamic(project_id, '删除', '用例', '删除用例"%s"' % obi.name)
-        return JsonResponse(GlobalStatusCode.success)
+                record_dynamic(project_id, '删除', '用例', '删除用例"%s"' % name)
+        return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
@@ -455,7 +457,7 @@ def api_info(request):
                 data = AutomationCaseApiSerializer(obm).data
                 return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
             except ObjectDoesNotExist:
-                return JsonResponse(GlobalStatusCode.api_not_exist())
+                return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
     else:
@@ -504,8 +506,9 @@ def add_new_api(request):
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if examine_type not in ['no_check',  'only_check_status', 'json', 'entirely_check', 'Regular_check']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if http_code not in ['200', '404', '400', '502', '500', '302']:
-        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+    if http_code:
+        if http_code not in ['200', '404', '400', '502', '500', '302']:
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
@@ -519,19 +522,28 @@ def add_new_api(request):
                                                  requestParameterType=request_parameter_type, examineType=examine_type,
                                                  httpCode=http_code, responseData=response_data)
                     case_api.save()
-                    request_parameter = re.findall('{.*?}', request_list)
-                    for i in request_parameter:
-                        i = eval(i)
-                        parameter = AutomationParameter(automationCaseApi=AutomationCaseApi.objects.get(id=case_api.pk),
-                                                        key=i['k'], value=i['v'], interrelate=i['b'])
-                        parameter.save()
-                    headers = re.findall('{.*?}', head_dict)
-                    for i in headers:
-                        i = eval(i)
-                        head = AutomationHead(automationCaseApi=AutomationCaseApi.objects.get(id=case_api.pk),
-                                              key=i['k'], value=i['v'], interrelate=i['b'])
-                        head.save()
-                record_dynamic(project_id, '新增', '用例接口', '新增用例“%s”接口"%s"' % (obi.name, name))
+                    if request_list:
+                        request_parameter = re.findall('{.*?}', request_list)
+                        for i in request_parameter:
+                            i = eval(i)
+                            if i['b'] in ['True', 'False']:
+                                parameter = AutomationParameter(automationCaseApi=
+                                                                AutomationCaseApi.objects.get(id=case_api.pk),
+                                                                key=i['k'], value=i['v'], interrelate=i['b'])
+                                parameter.save()
+                            else:
+                                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                    if head_dict:
+                        headers = re.findall('{.*?}', head_dict)
+                        for i in headers:
+                            i = eval(i)
+                            if i['b'] in ['True', 'False']:
+                                head = AutomationHead(automationCaseApi=AutomationCaseApi.objects.get(id=case_api.pk),
+                                                      key=i['k'], value=i['v'], interrelate=i['b'])
+                                head.save()
+                            else:
+                                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                record_dynamic(project_id, '新增', '用例接口', '新增用例“%s”接口"%s"' % (case_api.name, name))
                 return JsonResponse(data={
                     'api_id': case_api.pk
                 }, code_msg=GlobalStatusCode.success())
@@ -587,8 +599,9 @@ def update_api(request):
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if examine_type not in ['no_check',  'only_check_status', 'json', 'entirely_check', 'Regular_check']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if http_code not in ['200', '404', '400', '502', '500', '302']:
-        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+    if http_code:
+        if http_code not in ['200', '404', '400', '502', '500', '302']:
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
@@ -598,27 +611,35 @@ def update_api(request):
                 obn = AutomationCaseApi.objects.filter(name=name).exclude(id=case_api_id)
                 if len(obn) == 0:
                     with transaction.atomic():
-                        obm.update(name=name, http_type=http_type, requestType=request_type,
+                        obm.update(name=name, httpType=http_type, requestType=request_type,
                                    address=address,
                                    requestParameterType=request_parameter_type, examineType=examine_type,
                                    httpCode=http_code, responseData=response_data)
                         AutomationParameter.objects.filter(automationCaseApi=case_api_id).delete()
-                        request_parameter = re.findall('{.*?}', request_list)
-                        for i in request_parameter:
-                            i = eval(i)
-                            parameter = AutomationParameter(
-                                automationCaseApi=AutomationCaseApi.objects.get(id=case_api_id),
-                                key=i['k'], value=i['v'], interrelate=i['b'])
-                            parameter.save()
+                        if request_list:
+                            request_parameter = re.findall('{.*?}', request_list)
+                            for i in request_parameter:
+                                i = eval(i)
+                                if i['b'] in ['False', 'True']:
+                                    parameter = AutomationParameter(
+                                        automationCaseApi=AutomationCaseApi.objects.get(id=case_api_id),
+                                        key=i['k'], value=i['v'], interrelate=i['b'])
+                                    parameter.save()
+                                else:
+                                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                         AutomationHead.objects.filter(automationCaseApi=case_api_id).delete()
-                        headers = re.findall('{.*?}', head_dict)
-                        for i in headers:
-                            i = eval(i)
-                            head = AutomationHead(
-                                automationCaseApi=AutomationCaseApi.objects.get(id=case_api_id),
-                                key=i['k'], value=i['v'], interrelate=i['b'])
-                            head.save()
-                    record_dynamic(project_id, '修改', '用例接口', '修改用例“%s”接口"%s"' % (obi.name, name))
+                        if head_dict:
+                            headers = re.findall('{.*?}', head_dict)
+                            for i in headers:
+                                i = eval(i)
+                                if i['b'] in ['False', 'True']:
+                                    head = AutomationHead(
+                                        automationCaseApi=AutomationCaseApi.objects.get(id=case_api_id),
+                                        key=i['k'], value=i['v'], interrelate=i['b'])
+                                    head.save()
+                                else:
+                                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                    record_dynamic(project_id, '修改', '用例接口', '修改用例“%s”接口"%s"' % (obi[0].caseName, name))
                     return JsonResponse(code_msg=GlobalStatusCode.success())
                 else:
                     return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
@@ -656,8 +677,9 @@ def del_api(request):
             for j in id_list:
                 obi = AutomationCaseApi.objects.filter(id=j, automationTestCase=case_id)
                 if len(obi) != 0:
+                    name = obi[0].name
                     obi.delete()
-                    record_dynamic(project_id, '删除', '用例接口', '删除用例"%s"的接口"%s"' % (obm.name, obi.name))
+                    record_dynamic(project_id, '删除', '用例接口', '删除用例"%s"的接口"%s"' % (obm[0].caseName, name))
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
@@ -691,7 +713,7 @@ def start_test(request):
                 obn = AutomationCaseApi.objects.filter(id=_id, automationTestCase=case_id)
                 if obn:
                     result = test_api(host_id, case_id, _id, project_id)
-                    record_dynamic(project_id, '测试', '用例接口', '测试用例“%s”接口"%s"' % (obi.name, obn.name))
+                    record_dynamic(project_id, '测试', '用例接口', '测试用例“%s”接口"%s"' % (obi[0].caseName, obn[0].name))
                     return JsonResponse(data={
                         'result': result
                     }, code_msg=GlobalStatusCode.success())
@@ -768,8 +790,8 @@ def add_time_task(request):
             return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     except ValueError:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    start_time = datetime.strftime(start_time, '%Y-%m-%dT%H:%M:%SZ')
-    end_time = datetime.strftime(end_time, '%Y-%m-%dT%H:%M:%SZ')
+    start_time = datetime.strftime(start_time, '%Y-%m-%dT%H:%M:%S')
+    end_time = datetime.strftime(end_time, '%Y-%m-%dT%H:%M:%S')
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
@@ -786,27 +808,28 @@ def add_time_task(request):
                         rt.update(Host=GlobalHost.objects.get(id=host_id),
                                   name=name, type=_type, frequency=frequency, unit=unit,
                                   startTime=start_time, endTime=end_time)
+                        _id = rt[0].pk
                     else:
-                        AutomationTestTask(project=Project.objects.get(id=project_id),
-                                           automationTestCase=AutomationTestCase.objects.get(id=case_id),
-                                           Host=GlobalHost.objects.get(id=host_id),
-                                           name=name, type=_type, frequency=frequency, unit=unit,
-                                           startTime=start_time, endTime=end_time).save()
+                        _id = AutomationTestTask(automationTestCase=AutomationTestCase.objects.get(id=case_id),
+                                                 Host=GlobalHost.objects.get(id=host_id),
+                                                 name=name, type=_type, frequency=frequency, unit=unit,
+                                                 startTime=start_time, endTime=end_time)
+                        _id.save()
                     record_dynamic(project_id, '新增', '任务', '新增循环任务"%s"' % name)
                 else:
                     rt = AutomationTestTask.objects.filter(automationTestCase=case_id)
                     if rt:
                         rt.update(Host=GlobalHost.objects.get(id=host_id),
                                   name=name, type=_type, startTime=start_time, endTime=end_time)
+                        _id = rt[0].pk
                     else:
-                        AutomationTestTask(project=Project.objects.get(id=project_id),
-                                           automationTestCase=AutomationTestCase.objects.get(id=case_id),
-                                           Host=GlobalHost.objects.get(id=host_id),
-                                           name=name, type=_type, startTime=start_time, endTime=end_time).save()
+                        _id = AutomationTestTask(automationTestCase=AutomationTestCase.objects.get(id=case_id),
+                                                 Host=GlobalHost.objects.get(id=host_id),
+                                                 name=name, type=_type, startTime=start_time, endTime=end_time)
+                        _id.save()
                     record_dynamic(project_id, '新增', '任务', '新增定时任务"%s"' % name)
-                data = AutomationTestTask.objects.filter(automationTestCase=case_id)
                 return JsonResponse(data={
-                    'task_id': data.pk
+                    'task_id': _id
                 }, code_msg=GlobalStatusCode.success())
             else:
                 return JsonResponse(code_msg=GlobalStatusCode.host_not_exist())

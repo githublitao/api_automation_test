@@ -138,6 +138,7 @@ def del_group(request):
     if obj:
         obi = ApiGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
         if obi:
+            name = obi[0].name
             # 删除二级分组
             if second_group_id:
                 if not second_group_id.isdecimal():
@@ -149,7 +150,7 @@ def del_group(request):
                     return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
             else:
                 obi.delete()
-            record_dynamic(project_id, '删除', '接口分组', '删除接口分组“%s”' % obi.name)
+            record_dynamic(project_id, '删除', '接口分组', '删除接口分组“%s”' % name)
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
@@ -275,14 +276,14 @@ def add_api(request):
                               name=name, httpType=http_type, requestType=request_type, apiAddress=address,
                               requestHead=head_dict, requestParameterType=request_parameter_type,
                               requestParameter=request_list, response=response_list, mockCode=mock_status,
-                              data=code, description=description)
+                              data=code, userUpdate=request.user.first_name, description=description)
             elif first_group_id and second_group_id is None:
                 oba = ApiInfo(project=Project.objects.get(id=project_id),
                               ApiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=first_group_id),
                               name=name, httpType=http_type, requestType=request_type, apiAddress=address,
                               requestHead=head_dict, requestParameterType=request_parameter_type,
                               requestParameter=request_list, response=response_list, mockCode=mock_status,
-                              data=code, description=description)
+                              data=code, userUpdate=request.user.first_name, description=description)
             else:
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             oba.save()
@@ -453,8 +454,9 @@ def del_api(request):
         for j in id_list:
             obi = ApiInfo.objects.filter(id=j, project=project_id)
             if len(obi) != 0:
+                name = obi[0].name
                 obi.delete()
-                record_dynamic(project_id, '删除', '接口', '删除接口“%s”' % obi.name)
+                record_dynamic(project_id, '删除', '接口', '删除接口“%s”' % name)
         return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
@@ -462,7 +464,7 @@ def del_api(request):
 
 @api_view(['POST'])
 @verify_parameter(['project_id', 'api_ids', 'first_group_id'], 'POST')
-def update_api_group(request):
+def update_group(request):
     """
     修改接口所属分组
     project_id  项目ID
@@ -568,9 +570,9 @@ def add_history(request):
             history = APIRequestHistory(apiInfo=ApiInfo.objects.get(id=api_id, project=project_id),
                                         requestType=request_type, requestAddress=url, httpCode=http_status)
             history.save()
-            record_dynamic(project_id, '测试', '接口', '测试接口“%s”' % obi.name)
+            record_dynamic(project_id, '测试', '接口', '测试接口“%s”' % obi[0].name)
             api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=api_id), user=request.user.first_name,
-                                             description='测试接口"%s"' % obi.name)
+                                             description='测试接口"%s"' % obi[0].name)
             api_record.save()
             return JsonResponse(data={
                 'history_id': history.pk

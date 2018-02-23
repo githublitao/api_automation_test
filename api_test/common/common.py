@@ -1,5 +1,3 @@
-import logging
-
 from django.contrib.auth.models import User
 from rest_framework.views import exception_handler
 
@@ -12,14 +10,18 @@ def custom_exception_handler(exc, context):
     # Call REST framework's default exception handler first,
     # to get the standard error response.
     response = exception_handler(exc, context)
-
     # Now add the HTTP status code to the response.
     if response is not None:
-        response.data['code'] = response.status_code
-        response.data['msg'] = response.data['detail']
-        #   response.data['data'] = None #可以存在
-        # 删除detail字段
-        del response.data['detail']
+        try:
+            response.data['code'] = response.status_code
+            response.data['msg'] = response.data['detail']
+            #   response.data['data'] = None #可以存在
+            # 删除detail字段
+            del response.data['detail']
+        except KeyError:
+            response.data = {}
+            response.data['code'] = '999996'
+            response.data['msg'] = '参数有误'
 
     return response
 
@@ -38,27 +40,20 @@ def verify_parameter(expect_parameter, method):
             :param reality_parameter: 实际参数
             :return:
             """
-            try:
-                if method == 'POST':
-                    parameter = dict(reality_parameter.POST.lists())
-                elif method == 'GET':
-                    parameter = dict(reality_parameter.GET.lists())
-                else:
-                    raise Exception
+            if method == 'POST':
+                parameter = dict(reality_parameter.POST.lists())
+            elif method == 'GET':
+                parameter = dict(reality_parameter.GET.lists())
+            else:
+                raise Exception
+            if set(expect_parameter).issubset(list(parameter)):
+                for i in expect_parameter:
+                    if parameter[i] == ['']:
+                        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            else:
+                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
 
-                if set(expect_parameter).issubset(list(parameter)):
-                    for i in expect_parameter:
-                        if parameter[i] == ['']:
-                            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-                else:
-                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-
-                return func(reality_parameter)
-
-            except Exception as e:
-                logging.exception('ERROR')
-                logging.error(e)
-                return JsonResponse(code_msg=GlobalStatusCode.fail())
+            return func(reality_parameter)
         return verify
     return api
 

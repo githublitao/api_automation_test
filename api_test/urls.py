@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'api/update_api', ApiDoc.update_api),
     url(r'api/select_api', ApiDoc.select_api),
     url(r'api/del_api', ApiDoc.del_api),
-    url(r'api/update_api_group', ApiDoc.update_api_group),
+    url(r'api/update_group', ApiDoc.update_group),
     url(r'api/api_info', ApiDoc.api_info),
     url(r'api/add_history', ApiDoc.add_history),
     url(r'api/history_list', ApiDoc.history_list),

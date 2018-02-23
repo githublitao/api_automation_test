@@ -1,5 +1,6 @@
 import logging
 
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
@@ -19,13 +20,29 @@ def dynamic(request):
     project_id  项目ID
     :return:
     """
+    try:
+        page_size = int(request.GET.get('page_size', 20))
+        page = int(request.GET.get('page', 1))
+    except (TypeError, ValueError):
+        return JsonResponse(code_msg=GlobalStatusCode.page_not_int())
     project_id = request.GET.get('project_id')
     if not project_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obi = Project.objects.filter(id=project_id)
     if obi:
         obj = ProjectDynamic.objects.filter(project=project_id).order_by('-time')
-        serialize = ProjectDynamicSerializer(obj, many=True)
-        return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
+        paginator = Paginator(obj, page_size)  # paginator对象
+        total = paginator.num_pages  # 总页数
+        try:
+            obm = paginator.page(page)
+        except PageNotAnInteger:
+            obm = paginator.page(1)
+        except EmptyPage:
+            obm = paginator.page(paginator.num_pages)
+        serialize = ProjectDynamicSerializer(obm, many=True)
+        return JsonResponse(data={'data': serialize.data,
+                                  'page': page,
+                                  'total': total
+                                  }, code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())

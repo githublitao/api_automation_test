@@ -78,14 +78,14 @@ class HostInProject(admin.TabularInline):
 class ProjectForm(admin.ModelAdmin):
     inlines = [MemberInProject, HostInProject]
     search_fields = ('name', 'type')
-    list_display = ('id', 'name', 'version', 'type', 'status', 'LastUpdateTime', 'createTime')
+    list_display = ('id', 'name', 'version', 'type', 'status', 'LastUpdateTime', 'createTime', 'user')
     list_display_links = ('id', 'name',)
     list_filter = ('status', 'type')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '项目', {
-            'fields': ('name', 'version', 'type', 'description', 'status')
+            'fields': ('name', 'version', 'type', 'description', 'status', 'user')
         }],
     )
 

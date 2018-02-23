@@ -89,7 +89,7 @@ class Project(models.Model):
     status = models.BooleanField(default=True, verbose_name='状态')
     LastUpdateTime = models.DateTimeField(auto_now=True, verbose_name='最近修改时间')
     createTime = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
-    user = models.ManyToManyField(User, through='ProjectMember')
+    user = models.CharField(max_length=1024, verbose_name='创建人')
 
     def __unicode__(self):
         return self.name
@@ -156,7 +156,7 @@ class GlobalHost(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='项目')
     name = models.CharField(max_length=50, verbose_name='名称')
     host = models.CharField(max_length=1024, verbose_name='Host地址')
-    description = models.TextField(blank=True, null=True, verbose_name='描述')
+    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
     status = models.BooleanField(default=True, verbose_name='状态')
 
     def __unicode__(self):

@@ -8,6 +8,8 @@ from django.core import serializers
 
 from api_test.common.common import check_json, record_results
 from api_test.models import GlobalHost, AutomationCaseApi, AutomationParameter, AutomationTestResult, AutomationHead
+from api_test.serializers import AutomationCaseApiSerializer, AutomationParameterSerializer, \
+    AutomationTestResultSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -21,10 +23,8 @@ def test_api(host_id, case_id, _id, project_id):
     :param project_id: 所属项目
     :return:
     """
-    host = json.loads(serializers.serialize(
-        'json', GlobalHost.objects.filter(id=host_id, project=project_id)))[0]['fields']['host']
-    data = json.loads(serializers.serialize(
-        'json', AutomationCaseApi.objects.filter(id=_id, automationTestCase=case_id)))[0]['fields']
+    host = GlobalHost.objects.get(id=host_id, project=project_id).host
+    data = AutomationCaseApiSerializer(AutomationCaseApi.objects.get(id=_id, automationTestCase=case_id)).data
     parameter_list = json.loads(serializers.serialize('json',
                                                       AutomationParameter.objects.filter(automationCaseApi=_id)))
     parameter = {}
@@ -39,7 +39,7 @@ def test_api(host_id, case_id, _id, project_id):
                 a = re.findall('(?<=\[").*?(?="])', value)
                 value = eval(json.loads(serializers.serialize(
                     'json',
-                    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["response_data"])
+                    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
                 for j in a:
                     value = value[j]
         except:
@@ -47,7 +47,7 @@ def test_api(host_id, case_id, _id, project_id):
 
         parameter[key_] = value
 
-    http_type = data['http_type']
+    http_type = data['httpType']
     request_type = data['requestType']
     address = host + data['address']
     head = json.loads(serializers.serialize('json', AutomationHead.objects.filter(automationCaseApi=_id)))
@@ -63,10 +63,12 @@ def test_api(host_id, case_id, _id, project_id):
                 a = re.findall('(?<=\[").*?(?="])', value)
                 value = eval(json.loads(serializers.serialize(
                     'json',
-                    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["response_data"])
+                    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
                 for j in a:
                     value = value[j]
-            except:
+            except Exception as e:
+                logging.exception("ERROR")
+                logging.error(e)
                 return False
 
         header[key_] = value

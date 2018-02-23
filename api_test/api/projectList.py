@@ -1,12 +1,13 @@
 import logging
 
 from django.contrib.auth.models import User
+from django.db import transaction
 from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
 from api_test.common.api_response import JsonResponse
 from api_test.common.common import verify_parameter
-from api_test.models import Project, ProjectDynamic
+from api_test.models import Project, ProjectDynamic, ProjectMember
 from api_test.serializers import ProjectSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
@@ -43,13 +44,16 @@ def add_project(request):
     if _type in ['Web', 'App']:
         obj = Project.objects.filter(name=name)
         if len(obj) == 0:
-
-            project = Project(name=name, version=version, type=_type, description=description)
-            project.save()
-            record = ProjectDynamic(project=Project.objects.get(id=project.pk), type='创建',
-                                    operationObject='项目', user=User.objects.get(id=request.user.pk),
-                                    description='创建项目“%s”' % name)
-            record.save()
+            with transaction.atomic():
+                project = Project(name=name, version=version, type=_type, description=description,
+                                  user=request.user.first_name)
+                project.save()
+                ProjectMember(permissionType='admin', project=Project.objects.get(id=project.pk),
+                              user=User.objects.get(id=request.user.pk))
+                record = ProjectDynamic(project=Project.objects.get(id=project.pk), type='创建',
+                                        operationObject='项目', user=User.objects.get(id=request.user.pk),
+                                        description='创建项目“%s”' % name)
+                record.save()
             return JsonResponse(data={
                 'project_id': project.pk
             }, code_msg=GlobalStatusCode.success())
@@ -84,7 +88,6 @@ def update_project(request):
         if obj:
             obi = Project.objects.filter(name=name).exclude(id=project_id)
             if len(obi) == 0:
-
                 obj.update(name=name, version=version, type=_type, description=description)
                 record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
                                         operationObject='项目', user=User.objects.get(id=request.user.pk),
@@ -135,7 +138,7 @@ def disable_project(request):
         obj.update(status=False)
         record = ProjectDynamic(project=Project.objects.get(id=project_id), type='禁用',
                                 operationObject='项目', user=User.objects.get(id=request.user.pk),
-                                description='禁用项目“%s”' % obj.name)
+                                description='禁用项目“%s”' % obj[0].name)
         record.save()
         return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
@@ -158,7 +161,7 @@ def enable_project(request):
         obj.update(status=True)
         record = ProjectDynamic(project=Project.objects.get(id=project_id), type='启用',
                                 operationObject='项目', user=User.objects.get(id=request.user.pk),
-                                description='禁用项目“%s”' % obj.name)
+                                description='禁用项目“%s”' % obj[0].name)
         record.save()
         return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
