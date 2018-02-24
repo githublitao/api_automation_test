@@ -19,9 +19,19 @@ def custom_exception_handler(exc, context):
             # 删除detail字段
             del response.data['detail']
         except KeyError:
-            response.data = {}
-            response.data['code'] = '999996'
-            response.data['msg'] = '参数有误'
+            for k, v in dict(response.data).items():
+                if v == ['无法使用提供的认证信息登录。']:
+                    if response.status_code == 400:
+                        response.status_code = 200
+                    response.data = {}
+                    response.data['code'] = '999984'
+                    response.data['msg'] = '账号或密码错误'
+                elif v == ['该字段是必填项。']:
+                    if response.status_code == 400:
+                        response.status_code = 200
+                    response.data = {}
+                    response.data['code'] = '999996'
+                    response.data['msg'] = '参数有误'
 
     return response
 
