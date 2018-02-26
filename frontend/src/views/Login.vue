@@ -63,7 +63,7 @@ export default {
           	  success: function(data) {
           	  	_this.logining = false
           	  	if (data.code === '999999') {
-          	  		localStorage.setItem('token', JSON.stringify(data.data.key))
+          	  		sessionStorage.setItem('token', JSON.stringify(data.data.key))
           	  		_this.$router.push('/home');
           	  	}
           	  	else {
