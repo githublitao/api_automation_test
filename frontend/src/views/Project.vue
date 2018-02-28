@@ -430,6 +430,7 @@ methods: {
                                 center: true,
                             })
                         }
+                        self.getProjectList()
                     },
                 })
 			}).catch(() => {
