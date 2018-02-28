@@ -33,6 +33,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     apiCount = serializers.SerializerMethodField()
     dynamicCount = serializers.SerializerMethodField()
     memberCount = serializers.SerializerMethodField()
+    LastUpdateTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
 
     class Meta:
         model = Project
@@ -54,6 +55,7 @@ class ProjectDynamicSerializer(serializers.ModelSerializer):
     项目动态信息序列化
     """
     operationUser = serializers.CharField(source='user.first_name')
+    time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
 
     class Meta:
         model = ProjectDynamic
@@ -108,6 +110,8 @@ class ApiInfoSerializer(serializers.ModelSerializer):
     """
     接口详细信息序列化
     """
+    lastUpdateTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+
     class Meta:
         model = ApiInfo
         fields = ('id', 'name', 'httpType', 'requestType', 'apiAddress', 'requestHead',
@@ -117,8 +121,10 @@ class ApiInfoSerializer(serializers.ModelSerializer):
 
 class ApiInfoListSerializer(serializers.ModelSerializer):
     """
-    接口详细信息序列化
+    接口信息序列化
     """
+    lastUpdateTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+
     class Meta:
         model = ApiInfo
         fields = ('id', 'name', 'requestType', 'apiAddress', 'lastUpdateTime', 'userUpdate')
@@ -128,6 +134,8 @@ class APIRequestHistorySerializer(serializers.ModelSerializer):
     """
     接口请求历史信息序列化
     """
+    requestTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+
     class Meta:
         model = APIRequestHistory
         fields = ('id', 'requestTime', 'requestType', 'requestAddress', 'httpCode')
@@ -137,6 +145,8 @@ class ApiOperationHistorySerializer(serializers.ModelSerializer):
     """
     接口操作历史信息序列化
     """
+    time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+
     class Meta:
         model = ApiOperationHistory
         fields = ('id', 'user', 'time', 'description')
@@ -167,6 +177,8 @@ class AutomationTestCaseSerializer(serializers.ModelSerializer):
     """
     自动化用例一级分组信息序列化
     """
+    updateTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+
     class Meta:
         model = AutomationTestCase
         fields = ('id', 'automationGroupLevelFirst', 'automationGroupLevelSecond', 'caseName', 'description',
@@ -217,6 +229,9 @@ class AutomationTestTaskSerializer(serializers.ModelSerializer):
     """
     定时任务信息序列化
     """
+    startTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    endTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+
     class Meta:
         model = AutomationTestTask
         fields = ('id', 'Host', 'name', 'type', 'frequency', 'unit', 'startTime', 'endTime')
@@ -226,6 +241,8 @@ class AutomationTestResultSerializer(serializers.ModelSerializer):
     """
     测试结果详情序列化
     """
+    testTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+
     class Meta:
         model = AutomationTestResult
         fields = ('id', 'url', 'requestType', 'header', 'parameter', 'statusCode', 'examineType', 'data',

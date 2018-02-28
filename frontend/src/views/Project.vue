@@ -4,7 +4,7 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
 				<el-form-item>
-					<el-input v-model="filters.name" placeholder="名称"></el-input>
+					<el-input v-model="filters.name" placeholder="名称" @keyup.enter.native="getProjectList"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="getProjectList">查询</el-button>
@@ -19,87 +19,83 @@
 		<el-table :data="project" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 			<el-table-column type="selection" width="55">
 			</el-table-column>
-			<el-table-column type="index" label="ID" width="60">
+			<el-table-column prop="name" label="项目名称" width="700" sortable>
 			</el-table-column>
-			<el-table-column prop="name" label="项目名称" width="120" sortable>
-			</el-table-column>
-			<el-table-column prop="version" label="项目版本" width="100" :formatter="formatSex" sortable>
+			<el-table-column prop="version" label="项目版本" width="150" sortable>
 			</el-table-column>
 			<el-table-column prop="type" label="类型" width="100" sortable>
 			</el-table-column>
-			<el-table-column prop="LastUpdateTime" label="最后修改时间" width="120" sortable>
+			<el-table-column prop="LastUpdateTime" label="最后修改时间" width="220" sortable>
 			</el-table-column>
-			<el-table-column prop="status" label="状态" min-width="180" sortable>
+			<el-table-column prop="status" label="状态" width="190" sortable>
+			    <template slot-scope="scope">
+			        {{scope.row.status===true?'启用':'禁用'}}
+                </template>
 			</el-table-column>
-			<el-table-column label="操作" width="150">
-				<template>
-					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-					<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-				</template>
-			</el-table-column>
+            <el-table-column label="操作" width="215">
+                <template slot-scope="scope">
+                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+                    <el-button type="info" size="small" @click="handleChangeStatus(scope.$index, scope.row)">{{scope.row.status===false?'启用':'禁用'}}</el-button>
+                </template>
+            </el-table-column>
 		</el-table>
 
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
 			<el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
-			<el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
+			<el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :page-count="total" style="float:right;">
 			</el-pagination>
 		</el-col>
 
 		<!--编辑界面-->
 		<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
-			<el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-				<el-form-item label="姓名" prop="name">
-					<el-input v-model="editForm.name" auto-complete="off"></el-input>
-				</el-form-item>
-				<el-form-item label="性别">
-					<el-radio-group v-model="editForm.sex">
-						<el-radio class="radio" :label="1">男</el-radio>
-						<el-radio class="radio" :label="0">女</el-radio>
-					</el-radio-group>
-				</el-form-item>
-				<el-form-item label="年龄">
-					<el-input-number v-model="editForm.age" :min="0" :max="200"></el-input-number>
-				</el-form-item>
-				<el-form-item label="生日">
-					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.birth"></el-date-picker>
-				</el-form-item>
-				<el-form-item label="地址">
-					<el-input type="textarea" v-model="editForm.addr"></el-input>
-				</el-form-item>
-			</el-form>
-			<div slot="footer" class="dialog-footer">
-				<el-button @click.native="editFormVisible = false">取消</el-button>
-				<el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
-			</div>
+		    <el-form :model="editForm" label-width="80px"  :rules="editFormRules" ref="editForm">
+                <el-form-item label="项目名称" prop="name">
+                    <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="类型" prop='type'>
+                    <el-radio-group v-model="editForm.type">
+                        <el-radio label="Web">Web</el-radio>
+                        <el-radio label="App">App</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="版本号" prop='version'>
+                    <el-input v-model="editForm.version" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="描述">
+                    <el-input type="textarea" :rows="7" v-model="editForm.description"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click.native="editFormVisible = false">取消</el-button>
+                <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+            </div>
 		</el-dialog>
 
 		<!--新增界面-->
 		<el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
-			<el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
-				<el-form-item label="姓名" prop="name">
-					<el-input v-model="addForm.name" auto-complete="off"></el-input>
-				</el-form-item>
-				<el-form-item label="性别">
-					<el-radio-group v-model="addForm.sex">
-						<el-radio class="radio" :label="1">男</el-radio>
-						<el-radio class="radio" :label="0">女</el-radio>
-					</el-radio-group>
-				</el-form-item>
-				<el-form-item label="年龄">
-					<el-input-number v-model="addForm.age" :min="0" :max="200"></el-input-number>
-				</el-form-item>
-				<el-form-item label="生日">
-					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.birth"></el-date-picker>
-				</el-form-item>
-				<el-form-item label="地址">
-					<el-input type="textarea" v-model="addForm.addr"></el-input>
-				</el-form-item>
-			</el-form>
-			<div slot="footer" class="dialog-footer">
-				<el-button @click.native="addFormVisible = false">取消</el-button>
-				<el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
-			</div>
+		    <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
+                <el-form-item label="项目名称" prop="name">
+                    <el-input v-model="addForm.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="类型" prop='type'>
+                    <el-radio-group v-model="addForm.type">
+                        <el-radio label="Web">Web</el-radio>
+                        <el-radio label="App">App</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="版本号" prop='version'>
+                    <el-input v-model="addForm.version" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="描述">
+                    <el-input type="textarea" :rows="7" v-model="addForm.description"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click.native="addFormVisible = false">取消</el-button>
+                <el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
+            </div>
 		</el-dialog>
 	</section>
 </template>
@@ -114,6 +110,7 @@ export default {
 			filters: {
 				name: ''
 			},
+			radio: '',
 			project: [],
 			total: 0,
 			page: 1,
@@ -125,32 +122,41 @@ export default {
 			editFormRules: {
 				name: [
 					{ required: true, message: '请输入名称', trigger: 'blur' }
-				]
+				],
+				type: [
+                    { required: true, message: '请选择类型', trigger: 'blur' }
+                ],
+				version: [
+                    { required: true, message: '请输入版本号', trigger: 'blur' }
+                ]
 			},
 			//编辑界面数据
 			editForm: {
-				id: 0,
-				name: '',
-				sex: -1,
-				age: 0,
-				birth: '',
-				addr: ''
+			    name: '',
+			    version: '',
+			    type: '',
+			    description: ''
 			},
 
 			addFormVisible: false,//新增界面是否显示
 			addLoading: false,
 			addFormRules: {
 				name: [
-					{ required: true, message: '请输入姓名', trigger: 'blur' }
-				]
+					{ required: true, message: '请输入名称', trigger: 'blur' }
+				],
+				type: [
+                    { required: true, message: '请选择类型', trigger: 'blur' }
+                ],
+				version: [
+                    { required: true, message: '请输入版本号', trigger: 'blur' }
+                ]
 			},
 			//新增界面数据
 			addForm: {
-				name: '',
-				sex: -1,
-				age: 0,
-				birth: '',
-				addr: ''
+			    name: '',
+                version: '',
+                type: '',
+                description: ''
 			}
 
 		}
@@ -158,14 +164,13 @@ export default {
 methods: {
 		// 获取项目列表
 		getProjectList() {
-			let para = {
-				page: this.page, };
 			this.listLoading = true;
 			var self = this
 			$.ajax({
 				type: "get",
 				url: test+"/api/project/project_list",
 				async: true,
+				data: { page: self.page, name: self.filters.name},
 				headers: {
 					Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
 				},
@@ -173,10 +178,8 @@ methods: {
 				success: function(data) {
 					self.listLoading = false
 					if (data.code === '999999') {
-						console.log(data.data),
 						self.total = data.data.total,
-						self.project = data.data.data,
-						console.log(this.project)
+						self.project = data.data.data
 					}
 					else {
 						self.$message.error({
@@ -187,13 +190,6 @@ methods: {
 				},
 			})
 		},
-		//性别显示转换
-		formatSex: function (row, column) {
-			return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
-		},
-		handleCurrentChange(val) {
-			this.page = val;
-		},
 		//删除
 		handleDel: function (index, row) {
 			this.$confirm('确认删除该记录吗?', '提示', {
@@ -201,19 +197,100 @@ methods: {
 			}).then(() => {
 				this.listLoading = true;
 				//NProgress.start();
-				let para = { id: row.id };
-				removeUser(para).then((res) => {
-					this.listLoading = false;
-					//NProgress.done();
-					this.$message({
-						message: '删除成功',
-						type: 'success'
-					});             
-				});
-			}).catch(() => {
+				let self = this
+				$.ajax({
+                type: "post",
+                url: test+"/api/project/del_project",
+                async: true,
+                data: {ids: row.id},
+                headers: {
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                },
+                timeout: 5000,
+                success: function(data) {
+                    if (data.code === '999999') {
+                        self.$message({
+                            message: '删除成功',
+                            center: true,
+                            type: 'success'
+                        })
+                    } else {
+                        self.$message.error({
+                            message: data.msg,
+                            center: true,
+                        })
+                    }
+                    self.getProjectList()
+                },
+            })
 
+			}).catch(() => {
 			});
 		},
+		handleChangeStatus: function(index, row) {
+		    let self = this
+		    this.listLoading = true;
+		    if (row.status) {
+		        $.ajax({
+                    type: "post",
+                    url: test+"/api/project/disable_project",
+                    async: true,
+                    data: { project_id: row.id},
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: function(data) {
+                        self.listLoading = false
+                        if (data.code === '999999') {
+                            self.$message({
+                                message: '禁用成功',
+                                center: true,
+                                type: 'success'
+                            })
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+		    } else {
+		        $.ajax({
+                    type: "post",
+                    url: test+"/api/project/enable_project",
+                    async: true,
+                    data: { project_id: row.id},
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: function(data) {
+                        self.listLoading = false
+                        if (data.code === '999999') {
+                            self.$message({
+                                message: '启用成功',
+                                center: true,
+                                type: 'success'
+                            })
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+		    }
+		    self.getProjectList()
+		},
+	    handleCurrentChange(val) {
+            this.page = val;
+            this.getProjectList()
+        },
 		//显示编辑界面
 		handleEdit: function (index, row) {
 			this.editFormVisible = true;
@@ -222,33 +299,48 @@ methods: {
 		//显示新增界面
 		handleAdd: function () {
 			this.addFormVisible = true;
-			this.addForm = {
-				name: '',
-				sex: -1,
-				age: 0,
-				birth: '',
-				addr: ''
-			};
 		},
 		//编辑
 		editSubmit: function () {
+		    let self = this
 			this.$refs.editForm.validate((valid) => {
 				if (valid) {
 					this.$confirm('确认提交吗？', '提示', {}).then(() => {
-						this.editLoading = true;
+						self.editLoading = true;
 						//NProgress.start();
-						let para = Object.assign({}, this.editForm);
-						para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
-						editUser(para).then((res) => {
-							this.editLoading = false;
-							//NProgress.done();
-							this.$message({
-								message: '提交成功',
-								type: 'success'
-							});
-							this.$refs['editForm'].resetFields();
-							this.editFormVisible = false;              
-						});
+						$.ajax({
+                            type: "post",
+                            url: test+"/api/project/update_project",
+                            async: true,
+                            data: { project_id: self.editForm.id, name: self.editForm.name, type: self.editForm.type, v: self.editForm.version, description: self.editForm.description },
+                            headers: {
+                                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                            },
+                            timeout: 5000,
+                            success: function(data) {
+                                self.editLoading = false;
+                                if (data.code === '999999') {
+                                    self.$message({
+                                        message: '修改成功',
+                                        center: true,
+                                        type: 'success'
+                                    })
+                                    self.$refs['editForm'].resetFields();
+                                    self.editFormVisible = false;  
+                                    self.getProjectList()
+                                } else if (data.code === '999997'){
+                                    self.$message.error({
+                                        message: data.msg,
+                                        center: true,
+                                    })
+                                } else {
+                                    self.$message.error({
+                                        message: data.msg,
+                                        center: true,
+                                    })
+                                }
+                            },
+                        })
 					});
 				}
 			});
@@ -257,21 +349,46 @@ methods: {
 		addSubmit: function () {
 			this.$refs.addForm.validate((valid) => {
 				if (valid) {
+				    let self = this
 					this.$confirm('确认提交吗？', '提示', {}).then(() => {
-						this.addLoading = true;
+						self.addLoading = true;
 						//NProgress.start();
-						let para = Object.assign({}, this.addForm);
-						para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
-						addUser(para).then((res) => {
-							this.addLoading = false;
-							//NProgress.done();
-							this.$message({
-								message: '提交成功',
-								type: 'success'
-							});
-							this.$refs['addForm'].resetFields();
-							this.addFormVisible = false;
-						});
+                        $.ajax({
+                            type: "post",
+                            url: test+"/api/project/add_project",
+                            async: true,
+                            data: { name: self.addForm.name, type: self.addForm.type, v: self.addForm.version, description: self.addForm.description },
+                            headers: {
+                                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                            },
+                            timeout: 5000,
+                            success: function(data) {
+                                self.addLoading = false;
+                                if (data.code === '999999') {
+                                    self.$message({
+                                        message: '添加成功',
+                                        center: true,
+                                        type: 'success'
+                                    })
+                                    self.$refs['addForm'].resetFields();
+                                    self.addFormVisible = false;  
+                                    self.getProjectList()
+                                } else if (data.code === '999997'){
+                                    self.$message.error({
+                                        message: data.msg,
+                                        center: true,
+                                    })
+                                } else {
+                                    self.$message.error({
+                                        message: data.msg,
+                                        center: true,
+                                    })
+                                    self.$refs['addForm'].resetFields();
+                                    self.addFormVisible = false;  
+                                    self.getProjectList()
+                                }
+                            },
+                        })
 					});
 				}
 			});
@@ -282,20 +399,39 @@ methods: {
 		//批量删除
 		batchRemove: function () {
 			var ids = this.sels.map(item => item.id).toString();
+			let self = this
 			this.$confirm('确认删除选中记录吗？', '提示', {
 				type: 'warning'
 			}).then(() => {
-				this.listLoading = true;
+				self.listLoading = true;
 				//NProgress.start();
 				let para = { ids: ids };
-				batchRemoveUser(para).then((res) => {
-					this.listLoading = false;
-					//NProgress.done();
-					this.$message({
-						message: '删除成功',
-						type: 'success'
-					});
-				});
+                $.ajax({
+                    type: "post",
+                    url: test+"/api/project/del_project",
+                    async: true,
+                    data:{ids: ids},
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: function(data) {
+                        self.listLoading = false
+                        if (data.code === '999999') {
+                            self.$message({
+                                message: '删除成功',
+                                center: true,
+                                type: 'success'
+                            })
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
 			}).catch(() => {
 
 			});

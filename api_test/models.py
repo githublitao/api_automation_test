@@ -374,7 +374,7 @@ class AutomationCaseApi(models.Model):
     用例执行接口
     """
     id = models.AutoField(primary_key=True)
-    automationTestCase = models.ForeignKey(AutomationTestCase, on_delete=models.PROTECT, verbose_name='用例')
+    automationTestCase = models.ForeignKey(AutomationTestCase, on_delete=models.CASCADE, verbose_name='用例')
     name = models.CharField(max_length=50, verbose_name='接口名称')
     httpType = models.CharField(max_length=50, default='HTTP', verbose_name='HTTP/HTTPS', choices=HTTP_CHOICE)
     requestType = models.CharField(max_length=50, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)

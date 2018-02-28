@@ -26,8 +26,11 @@ def project_list(request):
         page = int(request.GET.get('page', 1))
     except (TypeError, ValueError):
         return JsonResponse(code_msg=GlobalStatusCode.page_not_int())
-    obi = Project.objects.all().order_by('id')
-    # serialize = ProjectSerializer(pro_list, many=True)
+    name = request.GET.get('name')
+    if name:
+        obi = Project.objects.filter(name__contains=name).order_by('id')
+    else:
+        obi = Project.objects.all().order_by('id')
     paginator = Paginator(obi, page_size)  # paginator对象
     total = paginator.num_pages  # 总页数
     try:
@@ -40,7 +43,7 @@ def project_list(request):
     return JsonResponse(data={'data': serialize.data,
                               'page': page,
                               'total': total
-                             }, code_msg=GlobalStatusCode.success())
+                              }, code_msg=GlobalStatusCode.success())
 
 
 @api_view(['POST'])
@@ -122,22 +125,23 @@ def update_project(request):
 
 
 @api_view(['POST'])
-@verify_parameter(['project_id', ], 'POST')
+@verify_parameter(['ids', ], 'POST')
 def del_project(request):
     """
     删除项目
     project_id 待删除的项目ID
     :return:
     """
-    project_id = request.POST.get('project_id')
-    if not project_id.isdecimal():
-        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    obj = Project.objects.filter(id=project_id)
-    if obj:
-        Project.objects.filter(id=project_id).delete()
-        return JsonResponse(code_msg=GlobalStatusCode.success())
-    else:
-        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+    project_id = request.POST.get('ids')
+    id_list = project_id.split(',')
+    for i in id_list:
+        if not i.isdecimal():
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+    for j in id_list:
+        obj = Project.objects.filter(id=int(j))
+        if obj:
+            obj.delete()
+    return JsonResponse(code_msg=GlobalStatusCode.success())
 
 
 @api_view(['POST'])
