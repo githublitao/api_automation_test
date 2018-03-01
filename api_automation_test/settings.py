@@ -26,52 +26,48 @@ SECRET_KEY = 'w34c9nnr_5dw%e1f7qwgk62*8po^s88lf_r!_0*%d2fr3w6_zk'
 DEBUG = True
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_true': {
-            '()': 'django.utils.log.RequireDebugTrue',
-        },  # 针对 DEBUG = True 的情况
-    },
+    'disable_existing_loggers': True,
     'formatters': {
         'standard': {
-            'format':
-                '%(levelname)s %(asctime)s %(pathname)s %(filename)s %(module)s %(funcName)s %(lineno)d: %(message)s'
-        }, # 对日志信息进行格式化，每个字段对应了日志格式中的一个字段，更多字段参考官网文档，我认为这些字段比较合适，输出类似于下面的内容
-        # INFO 2016-09-03 16:25:20,067 /home/ubuntu/mysite/views.py views.py views get 29: some info...
+            'format': '%(asctime)s,%(process)d,%(name)s,%(levelname)s,%(filename)s:%(lineno)d,%(message)s'
+        },
+    },
+    'filters': {
     },
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler',
-            'formatter': 'standard'
+            'include_html': True,
+            # 'filters': ['special'],
         },
-        'file_handler': {
-             'level': 'DEBUG',
-             'class': 'logging.handlers.TimedRotatingFileHandler',
-             'filename': '',
-             'formatter': 'standard'
-        },  # 用于文件输出
+        'default': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(os.path.curdir, 'all.log'),
+            'maxBytes': 1024 * 1024 * 50,  # 50 MB
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
         'console': {
-            'level': 'INFO',
-            'filters': ['require_debug_true'],
+            'level': 'ERROR',
             'class': 'logging.StreamHandler',
             'formatter': 'standard'
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file_handler', 'console'],
-            'level': 'DEBUG',
-            'propagate': True  # 是否继承父类的log信息
-        },  # handlers 来自于上面的 handlers 定义的内容
-        'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['default', 'console'] if DEBUG else ["default"],
             'level': 'ERROR',
-            'propagate': False,
+            'propagate': False
+        },
+        '': {
+            'handlers': ['default', 'console'] if DEBUG else ["default"],
+            'level': 'ERROR',
+            'propagate': False
         },
     }
 }
-LOGGING['handlers']['file_handler']['filename'] = './log/'+time.strftime('%Y-%m-%d', time.localtime(time.time()))+'.log'
 
 ALLOWED_HOSTS = []
 
@@ -146,27 +142,27 @@ WSGI_APPLICATION = 'api_automation_test.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'api_test',
-#         'USER': 'root',
-#         'PASSWORD': '123456',
-#         'HOST': '192.168.37.131',
-#         'PORT': '3306',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'api_test',
         'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
+        'PASSWORD': '123456',
+        'HOST': '192.168.37.131',
         'PORT': '3306',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'api_test',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#     }
+# }
 
 # DATABASES = {
 #     'default': {

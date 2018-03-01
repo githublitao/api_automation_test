@@ -19,24 +19,24 @@
 		<el-table :data="project" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 			<el-table-column type="selection" min-width="5%">
 			</el-table-column>
-			<el-table-column prop="name" label="项目名称" min-width="25%" sortable>
+			<el-table-column prop="name" label="项目名称" min-width="30%" sortable>
                 <template slot-scope="scope">
                     <el-icon name="name"></el-icon>
-                    <router-link to="/projectInfo" style='text-decoration: none;color: #000000;'>{{ scope.row.name }}</router-link>
+                    <router-link :to="{ name: '项目', params: {project_id: scope.row.id}}" style='text-decoration: none;color: #000000;'>{{ scope.row.name }}</router-link>
                 </template>
 			</el-table-column>
-			<el-table-column prop="version" label="项目版本" min-width="13%" sortable>
+			<el-table-column prop="version" label="项目版本" min-width="12%" sortable>
 			</el-table-column>
-			<el-table-column prop="type" label="类型" min-width="10%" sortable>
+			<el-table-column prop="type" label="类型" min-width="9%" sortable>
 			</el-table-column>
-			<el-table-column prop="LastUpdateTime" label="最后修改时间" min-width="18%" sortable>
+			<el-table-column prop="LastUpdateTime" label="最后修改时间" min-width="17%" sortable>
 			</el-table-column>
-			<el-table-column prop="status" label="状态" min-width="10%" sortable>
+			<el-table-column prop="status" label="状态" min-width="9%" sortable>
 			    <template slot-scope="scope">
 			        {{scope.row.status===true?'启用':'禁用'}}
                 </template>
 			</el-table-column>
-            <el-table-column label="操作" min-width="19%">
+            <el-table-column label="操作" min-width="18%">
                 <template slot-scope="scope">
                     <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
@@ -106,7 +106,7 @@
 
 <script>
 	//import NProgress from 'nprogress'
-import { test } from '../api/api'
+import { test } from '../../api/api'
 import $ from 'jquery'
 export default {
 	data() {
@@ -114,7 +114,6 @@ export default {
 			filters: {
 				name: ''
 			},
-			radio: '',
 			project: [],
 			total: 0,
 			page: 1,
@@ -264,6 +263,7 @@ methods: {
                                 center: true,
                                 type: 'success'
                             })
+                            row.status = !row.status;
                         }
                         else {
                             self.$message.error({
@@ -291,6 +291,7 @@ methods: {
                                 center: true,
                                 type: 'success'
                             })
+                            row.status = !row.status;
                         }
                         else {
                             self.$message.error({
@@ -301,7 +302,6 @@ methods: {
                     },
                 })
 		    }
-		    self.getProjectList()
 		},
 	    handleCurrentChange(val) {
             this.page = val;

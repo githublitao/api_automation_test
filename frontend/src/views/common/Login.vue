@@ -17,7 +17,7 @@
 
 <script>
 /* eslint-disable */
-import { test } from '../api/api'
+import { test } from '../../api/api'
 import $ from 'jquery'
 // import NProgress from 'nprogress'
 export default {
@@ -64,7 +64,7 @@ export default {
           	  	if (data.code === '999999') {
           	  	  sessionStorage.setItem('username', JSON.stringify(data.data.first_name))
           	  		sessionStorage.setItem('token', JSON.stringify(data.data.key))
-          	  		_this.$router.push('/');
+          	  		_this.$router.push('/project');
           	  	}
           	  	else {
           	  		_this.$message.error({

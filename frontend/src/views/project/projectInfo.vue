@@ -2,7 +2,7 @@
 	<el-row class="container">
 		<el-col :span="24" class="header">
 			<el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
-				<router-link to="/" style='text-decoration: none;color: #FFFFFF;'>{{collapsed?'':sysName}}</router-link>
+				<router-link to="/project" style='text-decoration: none;color: #FFFFFF;'>{{collapsed?'':sysName}}</router-link>
 			</el-col>
 			<el-col :span="4" class="userinfo">
 				<el-dropdown trigger="hover">
@@ -16,14 +16,21 @@
 			</el-col>
 		</el-col>
 		<el-col :span="24" class="main">
-            <el-menu :default-active="$route.path" class="el-menu-vertical-demo" mode="horizontal" @open="handleopen" @close="handleclose" @select="handleselect"
-                    unique-opened router v-show="!collapsed">
-                <template v-for="(item,index) in $router.options.routes" v-if="!item.projectHidden">
-                    <el-submenu :index="index+''" v-if="!item.leaf">
-                        <template slot="title">{{item.name}}</template>
-                        <el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
-                    </el-submenu>
-                    <el-menu-item v-if="item.leaf" :index="item.path" :key="item.path">{{item.name}}</el-menu-item>
+		    <template :index='project_id'>
+            <el-menu :default-active="$route.path" class="el-menu-vertical-demo" mode="horizontal" @select="handleselect"
+                    unique-opened v-show="!collapsed">
+                <template v-for="item in $router.options.routes" v-if="!item.projectHidden">
+                    <template v-for="items,index in item.children">
+                      <el-menu-item :index="items.path" v-if="items.leaf" :key="items.path">
+                          <router-link :to="{ name: items.name, params: {id: project_id}}" style='text-decoration: none;color: #000000;'>{{items.name }}</router-link>
+                      </el-menu-item>
+                      <el-submenu :index="index+''" v-if="!items.leaf">
+                          <template slot="title"></i>{{items.name}}</template>
+                          <el-menu-item v-for="child in items.children" :key="child.path" :index="child.path">
+                              {{child.name}}
+                          </el-menu-item>
+                      </el-submenu>
+                    </template> 
                 </template>
             </el-menu>
             <el-col :span="24" class="content-wrapper">
@@ -31,14 +38,20 @@
                     <router-view></router-view>
                 </transition>
             </el-col>
+            </template>
 		</el-col>
 	</el-row>
 </template>
 
 <script>
+import { test } from '../../api/api'
+import $ from 'jquery'
 	export default {
+//	    props: ['projectlist'],
 		data() {
 			return {
+			    msg:"",
+			    project_id:'',
 				sysName:'自动化测试平台',
 				collapsed:false,
 				sysUserName: '',
@@ -56,6 +69,36 @@
 			}
 		},
 		methods: {
+		          // 获取项目列表
+            getProjectInfo() {
+                this.listLoading = true;
+                var self = this
+                $.ajax({
+                    type: "get",
+                    url: test+"/api/project/project_info",
+                    async: true,
+//                  data: { project: self.page, name: self.filters.name},
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: function(data) {
+                        self.listLoading = false
+                        if (data.code === '999999') {
+                            self.total = data.data.total,
+                            self.project = data.data.data
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+            },
+		    handleselect: function (a, b) {
+            },
 			onSubmit() {
 				console.log('submit!');
 			},
@@ -70,12 +113,10 @@
 				}).catch(() => {
 
 				});
-
-
 			},
 			showMenu(i,status){
 				this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-'+i)[0].style.display=status?'block':'none';
-			}
+			},
 		},
 		mounted() {
 			var user = sessionStorage.getItem('username');
@@ -84,7 +125,7 @@
 				this.sysUserName = name || '';
 //				this.sysUserAvatar = '../assets/user.png';
 			}
-
+			this.project_id = this.$route.params.project_id
 		}
 	}
 
