@@ -128,9 +128,9 @@ class ProjectMember(models.Model):
     项目成员
     """
     CHOICES = (
-        ('admin', '超级管理员'),
-        ('developer', '开发人员'),
-        ('tester', '测试人员')
+        ('超级管理员', '超级管理员'),
+        ('开发人员', '开发人员'),
+        ('测试人员', '测试人员')
     )
     id = models.AutoField(primary_key=True)
     permissionType = models.CharField(max_length=50, verbose_name='权限角色', choices=CHOICES)

@@ -22,3 +22,62 @@ django.template.exceptions.TemplateDoesNotExist: index.html
 2018-03-02 17:55:46,662,18936,django.security.DisallowedHost,ERROR,exception.py:74,Invalid HTTP_HOST header: '192.168.89.198:8001'. You may need to add '192.168.89.198' to ALLOWED_HOSTS.
 2018-03-02 18:27:39,202,8244,django.security.DisallowedHost,ERROR,exception.py:74,Invalid HTTP_HOST header: '127.0.0.1:8001'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
 2018-03-02 18:27:39,338,8244,django.security.DisallowedHost,ERROR,exception.py:74,Invalid HTTP_HOST header: '127.0.0.1:8001'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+2018-03-02 20:38:22,716,556,django.security.DisallowedHost,ERROR,exception.py:74,Invalid HTTP_HOST header: '127.0.0.1:8001'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+2018-03-02 20:38:41,721,556,django.security.DisallowedHost,ERROR,exception.py:74,Invalid HTTP_HOST header: '127.0.0.1:8001'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+2018-03-02 20:39:44,384,556,django.security.DisallowedHost,ERROR,exception.py:74,Invalid HTTP_HOST header: '127.0.0.1:8001'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+2018-03-02 20:40:58,749,556,django.security.DisallowedHost,ERROR,exception.py:74,Invalid HTTP_HOST header: '127.0.0.1:8001'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+2018-03-02 20:43:48,237,556,django.security.DisallowedHost,ERROR,exception.py:74,Invalid HTTP_HOST header: '127.0.0.1:8001'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+2018-03-02 20:43:54,363,556,django.security.DisallowedHost,ERROR,exception.py:74,Invalid HTTP_HOST header: '127.0.0.1:8001'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+2018-03-02 20:45:21,702,556,django.security.DisallowedHost,ERROR,exception.py:74,Invalid HTTP_HOST header: '127.0.0.1:8001'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+2018-03-02 20:40:18,497,8100,django.request,ERROR,exception.py:118,Internal Server Error: /api/member/project_member
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "d:\project\api_automation_test\api_test\common\common.py", line 66, in verify
+    return func(reality_parameter)
+  File "d:\project\api_automation_test\api_test\api\member.py", line 33, in project_member
+    paginator = Paginator(obi, page_size)  # paginator对象
+NameError: name 'Paginator' is not defined
+2018-03-02 20:40:18,637,8100,django.server,ERROR,basehttp.py:124,"GET /api/member/project_member?project_id=1 HTTP/1.1" 500 17399
+2018-03-02 20:40:19,520,8100,django.request,ERROR,exception.py:118,Internal Server Error: /api/member/project_member
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "d:\project\api_automation_test\api_test\common\common.py", line 66, in verify
+    return func(reality_parameter)
+  File "d:\project\api_automation_test\api_test\api\member.py", line 33, in project_member
+    paginator = Paginator(obi, page_size)  # paginator对象
+NameError: name 'Paginator' is not defined
+2018-03-02 20:40:19,587,8100,django.server,ERROR,basehttp.py:124,"GET /api/member/project_member?project_id=1 HTTP/1.1" 500 17399

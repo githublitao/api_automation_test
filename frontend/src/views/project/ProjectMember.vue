@@ -1,26 +1,20 @@
 <template>
      <!--列表-->
-    <el-row class="member">
+    <el-row class="member-manage">
         <el-col :span="24">
-            <el-table :data="project" highlight-current-row v-loading="listLoading" style="width: 100%;">
-                <el-table-column prop="name" label="项目名称" min-width="30%" sortable>
-                    <template slot-scope="scope">
-                        <el-icon name="name"></el-icon>
-                        <router-link :to="{ name: '项目概况', params: {project_id: scope.row.id}}" style='text-decoration: none;color: #000000;'>{{ scope.row.name }}</router-link>
-                    </template>
+            <el-table :data="memberData" highlight-current-row v-loading="listLoading" style="width: 100%;">
+                <el-table-column prop="username" label="姓名" min-width="30%" sortable>
                 </el-table-column>
-                <el-table-column prop="version" label="项目版本" min-width="12%" sortable>
+                <el-table-column prop="permissionType" label="权限" min-width="30%" sortable>
                 </el-table-column>
-                <el-table-column prop="type" label="类型" min-width="9%" sortable>
+                <el-table-column prop="userPhone" label="手机号" min-width="20%" sortable>
                 </el-table-column>
-                <el-table-column prop="LastUpdateTime" label="最后修改时间" min-width="16%" sortable>
-                </el-table-column>
-                <el-table-column prop="status" label="状态" min-width="9%" sortable>
-                    <template slot-scope="scope">
-                        {{scope.row.status===true?'启用':'禁用'}}
-                    </template>
+                <el-table-column prop="userEmail" label="邮箱地址" min-width="20%" sortable>
                 </el-table-column>
             </el-table>
+                    <!--工具条-->
+            <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :page-count="total" style="float:right;">
+            </el-pagination>
         </el-col>
     </el-row>
 </template>
@@ -31,25 +25,26 @@ import $ from 'jquery'
 export default {
     data() {
         return {
-            filters: {
-                name: ''
-            },
-            project: [],
+            memberData: [],
             total: 0,
             page: 1,
             listLoading: false,
         }    
     },
 methods: {
+        handleCurrentChange(val) {
+            this.page = val;
+            this.getProjectMember()
+        },
         // 获取HOST列表
-        getGlobalHost() {
+        getProjectMember() {
             this.listLoading = true;
             var self = this
             $.ajax({
                 type: "get",
-                url: test+"/api/global/host_total",
+                url: test+"/api/member/project_member",
                 async: true,
-                data: { project_id: this.$route.params.project_id, page: self.page, name: self.filters.name},
+                data: { project_id: this.$route.params.project_id, page: self.page},
                 headers: {
                     Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                 },
@@ -58,7 +53,7 @@ methods: {
                     self.listLoading = false
                     if (data.code === '999999') {
                         self.total = data.data.total,
-                        self.project = data.data.data
+                        self.memberData = data.data.data
                     }
                     else {
                         self.$message.error({
@@ -71,17 +66,14 @@ methods: {
         },
     },
     mounted() {
-        this.getGlobalHost();
+        this.getProjectMember();
         
     }
 }
 </script>
 
 <style>
-    .member {
-        width: 500px;
-        border: 25px solid green;
-        padding: 25px;
-        margin: 25px;
+    .member-manage {
+        margin: 35px;
     }
 </style>
