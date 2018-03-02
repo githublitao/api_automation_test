@@ -16,3 +16,9 @@ Traceback (most recent call last):
     raise TemplateDoesNotExist(', '.join(template_name_list), chain=chain)
 django.template.exceptions.TemplateDoesNotExist: index.html
 2018-02-18 14:27:20,941,5744,django.server,ERROR,basehttp.py:124,"GET / HTTP/1.1" 500 82910
+2018-03-02 17:54:04,445,18936,django.security.DisallowedHost,ERROR,exception.py:74,Invalid HTTP_HOST header: '192.168.89.198:8001'. You may need to add '192.168.89.198' to ALLOWED_HOSTS.
+2018-03-02 17:55:32,028,18936,django.security.DisallowedHost,ERROR,exception.py:74,Invalid HTTP_HOST header: '192.168.89.198:8001'. You may need to add '192.168.89.198' to ALLOWED_HOSTS.
+2018-03-02 17:55:39,244,18936,django.security.DisallowedHost,ERROR,exception.py:74,Invalid HTTP_HOST header: '192.168.89.198:8001'. You may need to add '192.168.89.198' to ALLOWED_HOSTS.
+2018-03-02 17:55:46,662,18936,django.security.DisallowedHost,ERROR,exception.py:74,Invalid HTTP_HOST header: '192.168.89.198:8001'. You may need to add '192.168.89.198' to ALLOWED_HOSTS.
+2018-03-02 18:27:39,202,8244,django.security.DisallowedHost,ERROR,exception.py:74,Invalid HTTP_HOST header: '127.0.0.1:8001'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+2018-03-02 18:27:39,338,8244,django.security.DisallowedHost,ERROR,exception.py:74,Invalid HTTP_HOST header: '127.0.0.1:8001'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.

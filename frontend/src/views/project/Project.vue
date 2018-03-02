@@ -45,8 +45,6 @@
 </template>
 
 <script>
-import { test } from '../../api/api'
-import $ from 'jquery'
 	export default {
 		data() {
 			return {
@@ -160,6 +158,8 @@ import $ from 'jquery'
 			color: #475669;
 			font-size: 25px;
     		margin: 15px;
+    		margin-left: 35px;
+    		margin-bottom: 0px;
 			font-family: PingFang SC;
 		}
 	}

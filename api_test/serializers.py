@@ -8,6 +8,9 @@ from api_test.models import Project, ProjectDynamic, ProjectMember, GlobalHost, 
 
 
 class TokenSerializer(serializers.ModelSerializer):
+    """
+    用户信息序列化
+    """
     first_name = serializers.CharField(source="user.first_name")
     last_name = serializers.CharField(source="user.last_name")
     phone = serializers.CharField(source="user.phone")
@@ -34,6 +37,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     dynamicCount = serializers.SerializerMethodField()
     memberCount = serializers.SerializerMethodField()
     LastUpdateTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    createTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
 
     class Meta:
         model = Project

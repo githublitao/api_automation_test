@@ -1,6 +1,7 @@
 import logging
 
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
@@ -20,14 +21,34 @@ def host_total(request):
     project_id 项目ID
     :return:
     """
+    try:
+        page_size = int(request.GET.get('page_size', 20))
+        page = int(request.GET.get('page', 1))
+    except (TypeError, ValueError):
+        return JsonResponse(code_msg=GlobalStatusCode.page_not_int())
     project_id = request.GET.get('project_id')
     if not project_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
-        obi = GlobalHost.objects.filter(project=project_id)
-        serialize = GlobalHostSerializer(obi, many=True)
-        return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
+        name = request.GET.get('name')
+        if name:
+            obi = GlobalHost.objects.filter(name__contains=name).order_by('id')
+        else:
+            obi = GlobalHost.objects.all().order_by('id')
+        paginator = Paginator(obi, page_size)  # paginator对象
+        total = paginator.num_pages  # 总页数
+        try:
+            obm = paginator.page(page)
+        except PageNotAnInteger:
+            obm = paginator.page(1)
+        except EmptyPage:
+            obm = paginator.page(paginator.num_pages)
+        serialize = GlobalHostSerializer(obm, many=True)
+        return JsonResponse(data={'data': serialize.data,
+                                  'page': page,
+                                  'total': total
+                                  }, code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
@@ -108,31 +129,29 @@ def update_host(request):
 
 
 @api_view(['POST'])
-@verify_parameter(['project_id', 'host_id'], 'POST')
+@verify_parameter(['project_id', 'ids'], 'POST')
 def del_host(request):
     """
     删除host
     project_id  项目ID
-    host_id 地址ID
+    ids 地址ID
     :return:
     """
     project_id = request.POST.get('project_id')
-    host_id = request.POST.get('host_id')
-    if not project_id.isdecimal() or not host_id.isdecimal():
+    ids = request.POST.get('ids')
+    if not project_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+    id_list = ids.split(',')
+    for i in id_list:
+        if not i.isdecimal():
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
-        obi = GlobalHost.objects.filter(id=host_id, project=project_id)
-        if obi:
-            name = obi[0].name
-            obi.delete()
-            record = ProjectDynamic(project=Project.objects.get(id=project_id), type='删除',
-                                    operationObject='HOST', user=User.objects.get(id=request.user.pk),
-                                    description='删除HOST“%s”' % name)
-            record.save()
-            return JsonResponse(code_msg=GlobalStatusCode.success())
-        else:
-            return JsonResponse(code_msg=GlobalStatusCode.host_not_exist())
+        for j in id_list:
+            obi = GlobalHost.objects.filter(id=int(j), project=project_id)
+            if obi:
+                obi.delete()
+        return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 

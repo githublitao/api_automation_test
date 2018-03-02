@@ -1,0 +1,141 @@
+<template>
+    <div class="main">
+        <el-row>
+            <el-col :span="5" class='inline'>
+                <el-card class="box-card">
+                    <h1>{{type}}</h1>
+                    <div>项目类型</div>
+                </el-card>
+            </el-col>
+            <el-col :span="5" class='inline'>
+                <el-card class="box-card">
+                    <h1>{{version}}</h1>
+                    <div>版本</div>
+                </el-card>
+            </el-col>
+            <el-col :span="5" class='inline'>
+                <el-card class="box-card">
+                    <h1>{{updateDate}}</h1>
+                    <div>最近更新时间</div>
+                </el-card>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="5" class='inline'>
+                <el-card class="box-card">
+                    <router-link :to="{name: 'API接口'}" style='text-decoration: none;color: #000000;'><h1>{{apiCount}}个接口</h1></router-link>
+                    <div>接口数量</div>
+                </el-card>
+            </el-col>
+            <el-col :span="5" class='inline'>
+                <el-card class="box-card">
+                    <h1>{{statusCount}}条状态码</h1>
+                    <div>通用状态码</div>
+                </el-card>
+            </el-col>
+            <el-col :span="5" class='inline'>
+                <el-card class="box-card">
+                    <router-link :to="{name: '项目动态'}" style='text-decoration: none;color: #000000;'><h1>{{dynamicCount}}条动态</h1></router-link>
+                    <div>项目三天内动态</div>
+                </el-card>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="5" class='inline'>
+                <el-card class="box-card">
+                    <router-link :to="{name: '成员管理'}" style='text-decoration: none;color: #000000;'><h1><img src="../../../assets/member.png" class="member">{{memberCount}}人</h1></router-link>
+                    <div>项目组成员</div>
+                </el-card>
+            </el-col>
+            <el-col :span="5" class='inline'>
+                <el-card class="box-card">
+                    <router-link :to="{name: '自动化测试'}" style='text-decoration: none;color: #000000;'><h1>自动化测试</h1></router-link>
+                    <div>自由测试接口并生成测试报告</div>
+                </el-card>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="5" class='inline'>
+                <el-card class="box-card">
+                    <h1>{{createDate}}</h1>
+                    <div>创建时间</div>
+                </el-card>
+            </el-col>
+        </el-row>
+    </div>
+</template>
+
+<script>
+import { test } from '../../../api/api'
+import $ from 'jquery'
+export default {
+    data() {
+        return {
+            type: 'Web',
+            version: 'V1.2.30',
+            updateDate: '2017-12-12 12:17:55',
+            apiCount: 0,
+            statusCount: 0,
+            dynamicCount: 0,
+            memberCount: 0,
+            createDate: '2017-12-12 12:17:55',
+        }
+    },
+    methods: {
+        getProjectInfo() {
+            var self = this
+            $.ajax({
+                type: "get",
+                url: test+"/api/title/project_info",
+                async: true,
+                data: { project_id: this.$route.params.project_id},
+                headers: {
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                },
+                timeout: 5000,
+                success: function(data) {
+                    self.listLoading = false
+                    if (data.code === '999999') {
+                        data = data.data
+                        self.type = data.type
+                        self.version = data.version
+                        self.updateDate = data.LastUpdateTime
+                        self.apiCount = data.apiCount
+                        self.dynamicCount = data.dynamicCount
+                        self.memberCount = data.memberCount
+                        self.createDate = data.createTime
+                    }
+                    else {
+                        self.$message.error({
+                            message: data.msg,
+                            center: true,
+                        })
+                    }
+                },
+            })
+        }
+    },
+    mounted() {
+        this.getProjectInfo()
+    }
+}
+</script>
+
+<style>
+  .box-card {
+    width: 390px;
+    height: 150px;
+  }
+  .member {
+      width: 30px;
+  }
+  .main {
+    margin: 35px;
+    margin-top: 10px;
+  }
+  .inline {
+    margin: 10px;
+    margin-left: 0px;
+    margin-right: 20px;
+  }
+</style>
