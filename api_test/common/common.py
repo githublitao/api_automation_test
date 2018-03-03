@@ -46,7 +46,6 @@ def verify_parameter(expect_parameter, method):
     def api(func):
         def verify(reality_parameter):
             """
-
             :param reality_parameter: 实际参数
             :return:
             """
@@ -61,6 +60,7 @@ def verify_parameter(expect_parameter, method):
                     if parameter[i] == ['']:
                         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             else:
+                print(1)
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
 
             return func(reality_parameter)

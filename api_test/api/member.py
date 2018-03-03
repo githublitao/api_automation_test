@@ -30,7 +30,7 @@ def project_member(request):
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
-        obi = ProjectMember.objects.all().order_by('id')
+        obi = ProjectMember.objects.filter(project=project_id).order_by('id')
         paginator = Paginator(obi, page_size)  # paginator对象
         total = paginator.num_pages  # 总页数
         try:

@@ -35,6 +35,9 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
+  if (to.path == '/') {
+    next({ path: '/projectList'})
+  }
 })
 
 //router.afterEach(transition => {

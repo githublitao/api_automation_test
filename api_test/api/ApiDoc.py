@@ -29,7 +29,7 @@ def group(request):
 
     obj = Project.objects.filter(id=project_id)
     if obj:
-        obi = ApiGroupLevelFirst.objects.filter(project=project_id)
+        obi = ApiGroupLevelFirst.objects.filter(project=project_id).order_by("id")
         serialize = ApiGroupLevelFirstSerializer(obi, many=True)
         return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
     else:
@@ -79,9 +79,9 @@ def add_group(request):
 
 @api_view(['POST'])
 @verify_parameter(['project_id', 'name', 'first_group_id'], 'POST')
-def update_group(request):
+def update_name_group(request):
     """
-    添加接口分组
+    修改接口分组名称
     project_id 项目ID
     name  名称
     first_group_id 一级分组ID

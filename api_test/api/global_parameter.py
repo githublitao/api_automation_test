@@ -33,9 +33,9 @@ def host_total(request):
     if obj:
         name = request.GET.get('name')
         if name:
-            obi = GlobalHost.objects.filter(name__contains=name).order_by('id')
+            obi = GlobalHost.objects.filter(name__contains=name, project=project_id).order_by('id')
         else:
-            obi = GlobalHost.objects.all().order_by('id')
+            obi = GlobalHost.objects.filter(project=project_id).order_by('id')
         paginator = Paginator(obi, page_size)  # paginator对象
         total = paginator.num_pages  # 总页数
         try:

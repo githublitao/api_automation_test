@@ -81,3 +81,362 @@ Traceback (most recent call last):
     paginator = Paginator(obi, page_size)  # paginator对象
 NameError: name 'Paginator' is not defined
 2018-03-02 20:40:19,587,8100,django.server,ERROR,basehttp.py:124,"GET /api/member/project_member?project_id=1 HTTP/1.1" 500 17399
+2018-03-03 09:32:50,490,5088,django.request,ERROR,exception.py:118,Internal Server Error: /api/user/login
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\fields.py", line 441, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\fields.py", line 100, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'User' object has no attribute 'phone'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\authtoken\views.py", line 24, in post
+    data = TokenSerializer(Token.objects.get(user=user)).data
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 537, in data
+    ret = super(Serializer, self).data
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 491, in to_representation
+    attribute = field.get_attribute(instance)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\fields.py", line 462, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `phone` on serializer `TokenSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `Token` instance.
+Original exception text was: 'User' object has no attribute 'phone'.
+2018-03-03 09:32:50,740,5088,django.server,ERROR,basehttp.py:124,"POST /api/user/login HTTP/1.1" 500 18685
+2018-03-03 09:34:32,006,5508,django.request,ERROR,exception.py:118,Internal Server Error: /api/user/login
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\fields.py", line 441, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\fields.py", line 100, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'Token' object has no attribute 'userPhone'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\authtoken\views.py", line 24, in post
+    data = TokenSerializer(Token.objects.get(user=user)).data
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 537, in data
+    ret = super(Serializer, self).data
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 491, in to_representation
+    attribute = field.get_attribute(instance)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\fields.py", line 462, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `phone` on serializer `TokenSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `Token` instance.
+Original exception text was: 'Token' object has no attribute 'userPhone'.
+2018-03-03 09:34:32,093,5508,django.server,ERROR,basehttp.py:124,"POST /api/user/login HTTP/1.1" 500 18700
+2018-03-03 09:36:59,933,5492,django.request,ERROR,exception.py:118,Internal Server Error: /api/user/login
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\fields.py", line 441, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\fields.py", line 100, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'User' object has no attribute 'phone'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\authtoken\views.py", line 24, in post
+    data = TokenSerializer(Token.objects.get(user=user)).data
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 537, in data
+    ret = super(Serializer, self).data
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 491, in to_representation
+    attribute = field.get_attribute(instance)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\fields.py", line 462, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `phone` on serializer `TokenSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `Token` instance.
+Original exception text was: 'User' object has no attribute 'phone'.
+2018-03-03 09:37:00,024,5492,django.server,ERROR,basehttp.py:124,"POST /api/user/login HTTP/1.1" 500 18685
+2018-03-03 09:45:04,775,5576,django.request,ERROR,exception.py:118,Internal Server Error: /api/member/project_member
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\fields.py", line 441, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\fields.py", line 100, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'User' object has no attribute 'phone'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "D:\project\api_automation_test\api_test\common\common.py", line 66, in verify
+    return func(reality_parameter)
+  File "D:\project\api_automation_test\api_test\api\member.py", line 43, in project_member
+    return JsonResponse(data={'data': serialize.data,
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 660, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 491, in to_representation
+    attribute = field.get_attribute(instance)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\fields.py", line 462, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `userPhone` on serializer `ProjectMemberSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `ProjectMember` instance.
+Original exception text was: 'User' object has no attribute 'phone'.
+2018-03-03 09:45:04,961,5576,django.server,ERROR,basehttp.py:124,"GET /api/member/project_member?project_id=1&page=1 HTTP/1.1" 500 19512
+2018-03-03 09:45:12,716,5576,django.request,ERROR,exception.py:118,Internal Server Error: /api/member/project_member
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\fields.py", line 441, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\fields.py", line 100, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'User' object has no attribute 'phone'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "D:\project\api_automation_test\api_test\common\common.py", line 66, in verify
+    return func(reality_parameter)
+  File "D:\project\api_automation_test\api_test\api\member.py", line 43, in project_member
+    return JsonResponse(data={'data': serialize.data,
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 660, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\serializers.py", line 491, in to_representation
+    attribute = field.get_attribute(instance)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\fields.py", line 462, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `userPhone` on serializer `ProjectMemberSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `ProjectMember` instance.
+Original exception text was: 'User' object has no attribute 'phone'.
+2018-03-03 09:45:12,824,5576,django.server,ERROR,basehttp.py:124,"GET /api/member/project_member?project_id=1&page=1 HTTP/1.1" 500 19512
+2018-03-03 09:46:19,248,4284,django.request,ERROR,exception.py:118,Internal Server Error: /admin/auth/user/2/change/
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\contrib\admin\options.py", line 574, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\utils\decorators.py", line 142, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\decorators\cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\contrib\admin\sites.py", line 223, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\contrib\admin\options.py", line 1556, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\utils\decorators.py", line 62, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\utils\decorators.py", line 142, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\utils\decorators.py", line 58, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\contrib\admin\options.py", line 1450, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\contrib\admin\options.py", line 1489, in _changeform_view
+    if all_valid(formsets) and form_validated:
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\forms\formsets.py", line 442, in all_valid
+    if not formset.is_valid():
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\forms\formsets.py", line 301, in is_valid
+    self.errors
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\forms\formsets.py", line 281, in errors
+    self.full_clean()
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\forms\formsets.py", line 322, in full_clean
+    for i in range(0, self.total_form_count()):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\forms\formsets.py", line 110, in total_form_count
+    return min(self.management_form.cleaned_data[TOTAL_FORM_COUNT], self.absolute_max)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\utils\functional.py", line 36, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\forms\formsets.py", line 92, in management_form
+    code='missing_management_form',
+django.core.exceptions.ValidationError: ['管理表单的数据缺失或者已被篡改']
+2018-03-03 09:46:19,738,4284,django.server,ERROR,basehttp.py:124,"POST /admin/auth/user/2/change/ HTTP/1.1" 500 142368
+2018-03-03 09:46:31,709,4284,django.request,ERROR,exception.py:118,Internal Server Error: /admin/auth/user/2/change/
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\contrib\admin\options.py", line 574, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\utils\decorators.py", line 142, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\decorators\cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\contrib\admin\sites.py", line 223, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\contrib\admin\options.py", line 1556, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\utils\decorators.py", line 62, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\utils\decorators.py", line 142, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\utils\decorators.py", line 58, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\contrib\admin\options.py", line 1450, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\contrib\admin\options.py", line 1489, in _changeform_view
+    if all_valid(formsets) and form_validated:
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\forms\formsets.py", line 442, in all_valid
+    if not formset.is_valid():
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\forms\formsets.py", line 301, in is_valid
+    self.errors
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\forms\formsets.py", line 281, in errors
+    self.full_clean()
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\forms\formsets.py", line 322, in full_clean
+    for i in range(0, self.total_form_count()):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\forms\formsets.py", line 110, in total_form_count
+    return min(self.management_form.cleaned_data[TOTAL_FORM_COUNT], self.absolute_max)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\utils\functional.py", line 36, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\forms\formsets.py", line 92, in management_form
+    code='missing_management_form',
+django.core.exceptions.ValidationError: ['管理表单的数据缺失或者已被篡改']
+2018-03-03 09:46:32,060,4284,django.server,ERROR,basehttp.py:124,"POST /admin/auth/user/2/change/ HTTP/1.1" 500 142368
+2018-03-03 09:19:24,857,10104,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "D:\project\api_automation_test\api_test\common\common.py", line 66, in verify
+    return func(reality_parameter)
+  File "D:\project\api_automation_test\api_test\api\ApiDoc.py", line 32, in group
+    obi = ApiGroupLevelFirst.objects.filter(project=project_id).ord_by("id")
+AttributeError: 'QuerySet' object has no attribute 'ord_by'
+2018-03-03 09:19:25,062,10104,django.server,ERROR,basehttp.py:124,"GET /api/api/group?project_id=1 HTTP/1.1" 500 17568
+2018-03-03 09:45:01,165,8904,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "D:\project\api_automation_test\api_test\common\common.py", line 53, in verify
+    print(expect_parameter, parameter)
+UnboundLocalError: local variable 'parameter' referenced before assignment
+2018-03-03 09:45:01,246,8904,django.server,ERROR,basehttp.py:124,"GET /api/api/group?project_id=1 HTTP/1.1" 500 17444

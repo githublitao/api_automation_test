@@ -72,7 +72,7 @@ methods: {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
     .member-manage {
         margin: 35px;
     }

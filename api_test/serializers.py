@@ -13,7 +13,7 @@ class TokenSerializer(serializers.ModelSerializer):
     """
     first_name = serializers.CharField(source="user.first_name")
     last_name = serializers.CharField(source="user.last_name")
-    phone = serializers.CharField(source="user.phone")
+    phone = serializers.CharField(source="user.user.phone")
     email = serializers.CharField(source="user.email")
     date_joined = serializers.CharField(source="user.date_joined")
 
@@ -71,7 +71,7 @@ class ProjectMemberSerializer(serializers.ModelSerializer):
     项目成员信息序列化
     """
     username = serializers.CharField(source='user.first_name')
-    userPhone = serializers.CharField(source='user.phone')
+    userPhone = serializers.CharField(source='user.user.phone')
     userEmail = serializers.CharField(source='user.email')
 
     class Meta:

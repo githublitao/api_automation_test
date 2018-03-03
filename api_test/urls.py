@@ -1,7 +1,6 @@
 from django.conf.urls import url
-from rest_framework.authtoken import views
 
-from api_test.api import ApiDoc, automationCase as Case, member, dynamic
+from api_test.api import ApiDoc, automationCase as Case, member, dynamic, user
 from api_test.api.global_parameter import host_total, add_host, update_host, del_host, enable_host, disable_host
 from api_test.api.projectList import project_list, add_project, update_project, del_project, disable_project, \
      enable_project
@@ -23,7 +22,7 @@ urlpatterns = [
     url(r'global/enable_host', enable_host),
     url(r'api/group', ApiDoc.group),
     url(r'api/add_group', ApiDoc.add_group),
-    url(r'api/update_group', ApiDoc.update_group),
+    url(r'api/update_name_group', ApiDoc.update_name_group),
     url(r'api/del_group', ApiDoc.del_group),
     url(r'api/api_list', ApiDoc.api_list),
     url(r'api/add_api', ApiDoc.add_api),
@@ -57,5 +56,5 @@ urlpatterns = [
     url(r'automation/look_result', Case.look_result),
     url(r'member/project_member', member.project_member),
     url(r'dynamic/dynamic', dynamic.dynamic),
-    url(r'user/login', views.obtain_auth_token),
+    url(r'user/login', user.obtain_auth_token),
 ]

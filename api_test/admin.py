@@ -1,10 +1,12 @@
 
 # Register your models here.
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 
 from api_test.models import Project, GlobalHost, ApiGroupLevelFirst, ApiGroupLevelSecond, ApiInfo, \
     APIRequestHistory, ApiOperationHistory, ProjectDynamic, ProjectMember, \
     AutomationGroupLevelSecond, AutomationGroupLevelFirst, AutomationTestCase, AutomationParameter, AutomationCaseApi, \
-    AutomationTestResult, AutomationTestTask, AutomationHead
+    AutomationTestResult, AutomationTestTask, AutomationHead, UserProfile
 
 from django.contrib import admin
 from django.utils.text import capfirst
@@ -40,6 +42,28 @@ admin.site.site_header = '测试平台后台管理'
 admin.site.siteTitle = '后台管理'
 
 display = ()
+
+
+class ProfileInline(admin.TabularInline):
+    """
+    用户模块扩展
+    """
+    model = UserProfile
+
+
+class PhoneForm(admin.ModelAdmin):
+    fieldsets = ([
+        '手机号', {
+            'fields': ('phone',)
+        }],)
+
+
+class CustomUserAdmin(UserAdmin):
+    inlines = [ProfileInline,]
+
+
+admin.site.unregister(User)
+admin.site.register(User, CustomUserAdmin)
 
 
 class ReadOnlyModelAdmin(admin.ModelAdmin):

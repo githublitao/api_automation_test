@@ -73,6 +73,18 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
         Token.objects.create(user=instance)
 
 
+# ==================扩展用户====================================
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='用户', related_name='user')
+    phone = models.CharField(max_length=11, default='', blank=True, verbose_name='手机号')
+
+    def __unicode__(self):
+        return self.user.username
+
+    def __str__(self):
+        return self.phone
+
+
 class Project(models.Model):
     """
     项目表

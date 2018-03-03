@@ -73,7 +73,7 @@ methods: {
   }
 </script>
 
-<style>
+<style lang="scss" scoped>
     .dynamic-manage {
         margin: 35px;
     }
