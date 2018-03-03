@@ -92,6 +92,70 @@
                         </template>
                     </el-collapse-item>
                      <el-collapse-item title="请求参数" name="2">
+                         <template style="margin-top:6px">
+                            <el-radio v-model="radio" label="1">表单(form-data)</el-radio>
+                            <el-radio v-model="radio" label="2">源数据(raw)</el-radio>
+                            <el-radio v-model="radio" label="3">表单转源数据</el-radio>
+                        </template>
+                        <template>
+                            <el-checkbox-group v-model="checkList">
+                                <div class="head-class">
+                                    <el-row :span="24">
+                                        <el-col :span="2">
+                                        <span>头部</span>
+                                        </el-col>
+                                        <el-col :span="6">
+                                        <span>参数名</span>
+                                        </el-col>
+                                        <el-col :span="13">
+                                        <span>参数值</span>
+                                        </el-col>
+                                        <el-col :span="3">
+                                        </el-col>
+                                    </el-row>
+                                </div>
+                                <el-row :span="24">
+                                    <el-col :span="2" style="margin-top:6px">
+                                    <el-checkbox></el-checkbox>
+                                    </el-col>
+                                    <el-col :span="6">
+                                    <el-form-item>
+                                        <el-select v-model="header4" placeholder="head标签" filterable>
+                                        <el-option v-for="(item,index) in header" :key="index+''" :label="item.label" :value="item.value"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                    </el-col>
+                                    <el-col :span="13">
+                                    <el-form-item>
+                                        <el-input v-model="addr" placeholder="内容" clearable></el-input>
+                                    </el-form-item>
+                                    </el-col>
+                                    <el-col :span="3">
+                                    <i class="el-icon-delete" style="font-size:30px"></i>
+                                    </el-col>
+                                </el-row>
+                                <el-row :span="24">
+                                    <el-col :span="2" style="margin-top:6px">
+                                    <el-checkbox></el-checkbox>
+                                    </el-col>
+                                    <el-col :span="6">
+                                    <el-form-item>
+                                        <el-select v-model="header4" placeholder="head标签" filterable>
+                                        <el-option v-for="(item,index) in header" :key="index+''" :label="item.label" :value="item.value"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                    </el-col>
+                                    <el-col :span="13">
+                                    <el-form-item>
+                                        <el-input v-model="addr" placeholder="内容" clearable></el-input>
+                                    </el-form-item>
+                                    </el-col>
+                                    <el-col :span="3">
+                                    <i class="el-icon-delete" style="font-size:30px"></i>
+                                    </el-col>
+                                </el-row>
+                            </el-checkbox-group>
+                        </template>
                     </el-collapse-item>
                     <el-collapse-item title="响应结果" name="3">
                     </el-collapse-item>
@@ -148,6 +212,7 @@
                     {value: 'Via', label: 'Via'},
                     {value: 'Warning', label: 'Warning'}],
             header4: "",
+            radio: "",
         }
     },
     methods: {
