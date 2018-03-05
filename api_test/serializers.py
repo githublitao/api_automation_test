@@ -38,11 +38,12 @@ class ProjectSerializer(serializers.ModelSerializer):
     memberCount = serializers.SerializerMethodField()
     LastUpdateTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
     createTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    user = serializers.CharField(source='user.first_name')
 
     class Meta:
         model = Project
         fields = ('id', 'name', 'version', 'type', 'status', 'LastUpdateTime', 'createTime', 'apiCount',
-                  'dynamicCount', 'memberCount', 'description')
+                  'dynamicCount', 'memberCount', 'description', 'user')
 
     def get_apiCount(self, obj):
         return obj.api_project.all().count()
@@ -128,6 +129,7 @@ class ApiInfoListSerializer(serializers.ModelSerializer):
     接口信息序列化
     """
     lastUpdateTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    userUpdate = serializers.CharField(source='userUpdate.first_name')
 
     class Meta:
         model = ApiInfo
@@ -150,6 +152,7 @@ class ApiOperationHistorySerializer(serializers.ModelSerializer):
     接口操作历史信息序列化
     """
     time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    user = serializers.CharField(source='user.first_name')
 
     class Meta:
         model = ApiOperationHistory

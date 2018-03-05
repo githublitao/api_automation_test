@@ -67,7 +67,7 @@ def add_project(request):
         if len(obj) == 0:
             with transaction.atomic():
                 project = Project(name=name, version=version, type=_type, description=description,
-                                  user=request.user.first_name)
+                                  user=User.objects.get(id=request.user.pk))
                 project.save()
                 ProjectMember(permissionType='admin', project=Project.objects.get(id=project.pk),
                               user=User.objects.get(id=request.user.pk))
@@ -109,7 +109,8 @@ def update_project(request):
         if obj:
             obi = Project.objects.filter(name=name).exclude(id=project_id)
             if len(obi) == 0:
-                obj.update(name=name, version=version, type=_type, description=description)
+                obj.update(name=name, version=version, type=_type, description=description,
+                           user=User.objects.get(id=request.user.pk))
                 record = ProjectDynamic(project=Project.objects.get(id=project_id), type='修改',
                                         operationObject='项目', user=User.objects.get(id=request.user.pk),
                                         description='修改项目“%s”' % name)

@@ -101,7 +101,7 @@ class Project(models.Model):
     status = models.BooleanField(default=True, verbose_name='状态')
     LastUpdateTime = models.DateTimeField(auto_now=True, verbose_name='最近修改时间')
     createTime = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
-    user = models.CharField(max_length=1024, verbose_name='创建人')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, max_length=1024, verbose_name='创建人')
 
     def __unicode__(self):
         return self.name
@@ -265,7 +265,7 @@ class ApiInfo(models.Model):
     mockCode = models.CharField(max_length=50, blank=True, null=True, verbose_name='HTTP状态', choices=HTTP_CODE_CHOICE)
     data = models.TextField(max_length=1024, blank=True, null=True, verbose_name='mock内容')
     lastUpdateTime = models.DateTimeField(auto_now=True, verbose_name='最近更新')
-    userUpdate = models.CharField(max_length=50, verbose_name='更新人')
+    userUpdate = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, max_length=50, verbose_name='更新人')
     description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
 
     def __unicode__(self):
@@ -304,7 +304,7 @@ class ApiOperationHistory(models.Model):
     """
     id = models.AutoField(primary_key=True)
     apiInfo = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name='接口')
-    user = models.CharField(max_length=50, verbose_name='用户姓名')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, max_length=50, verbose_name='用户姓名')
     time = models.DateTimeField(auto_now_add=True, verbose_name='操作时间')
     description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='操作内容')
 

@@ -178,7 +178,7 @@ class ApiInfoForm(admin.ModelAdmin):
         '接口信息', {
             'fields': ('project', 'apiGroupLevelFirst', 'apiGroupLevelSecond', 'name', 'httpType',
                        'requestType', 'apiAddress', 'requestHead', 'requestParameterType', 'requestParameter',
-                       'status', 'response', 'mockCode', 'data')
+                       'status', 'response', 'mockCode', 'data', 'userUpdate')
         }],)
 
 
