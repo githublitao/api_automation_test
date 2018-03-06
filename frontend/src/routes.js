@@ -14,6 +14,7 @@ import addApi from './views/project/api/Addapi.vue'
 import detail from './views/project/api/updateApi/ApiForm.vue'
 import ApiInfo from './views/project/api/updateApi/ApiInfo.vue'
 import testApi from './views/project/api/updateApi/TestApi.vue'
+import ApiDynamic from './views/project/api/updateApi/ApiDynamic.vue'
 import AutomationTest from './views/project/AutomationTest.vue'
 import ProjectMember from './views/project/ProjectMember.vue'
 import ProjectDynamic from './views/project/ProjectDynamic.vue'
@@ -74,7 +75,8 @@ let routes = [
                             name: '接口',
                             children: [
                                 { path: '/apiInfo/:project_id/:api_id', component: ApiInfo, name: '基础信息'},
-                                { path: '/testApi/:project_id/:api_id', component: testApi, name: '测试'}
+                                { path: '/testApi/:project_id/:api_id', component: testApi, name: '测试'},
+                                { path: '/apiDynamic/:project_id/:api_id', component: ApiDynamic, name: '历史'},
                             ]
                         }
                     ]},

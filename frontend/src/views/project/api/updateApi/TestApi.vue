@@ -1,6 +1,6 @@
 <template>
     <section>
-        <el-form :model="form" ref="form">
+        <el-form :model="form" ref="form" :rules="formRules">
             <el-col :span="3" class="HOST">
                 <el-form-item prop="url">
                     <el-select v-model="form.url"  placeholder="测试环境">
@@ -30,7 +30,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span='2'>
-                        <el-button type="primary" @click="Test">发送</el-button>
+                        <el-button type="primary" @click="Test" :loading="loadingSend">发送</el-button>
                     </el-col>
                 </el-row>
             </div>
@@ -135,6 +135,7 @@ import $ from 'jquery'
                 {value: 'https', label: 'HTTPS'}],
         ParameterTyep: true,
         radio: "form-data",
+        loadingSend: false,
         header: [{value: 'Accept', label: 'Accept'},
                     {value: 'Accept-Charset', label: 'Accept-Charset'},
                     {value: 'Accept-Encoding', label: 'Accept-Encoding'},
@@ -186,6 +187,14 @@ import $ from 'jquery'
             resultData: "",
             resultHead: "",
         },
+        formRules: {
+            url: [
+                { required: true, message: '请选择测试环境', trigger: 'blur'}
+                ],
+            addr: [
+            { required: true, message: '请输入地址', trigger: 'blur' },
+            ]
+        },
         headers: "",
         parameters: "",
         resultShow: true,
@@ -217,7 +226,11 @@ import $ from 'jquery'
                         data.data.requestParameter.forEach((item) => {
                             self.form.parameter.push(item);
                         });
-                        self.form.parameterRaw = data.data.requestParameterRaw[0].data;
+                        try {
+                            self.form.parameterRaw = data.data.requestParameterRaw[0].data;
+                        } catch (e) {
+
+                        }
                         self.form.parameterType = data.data.requestParameterType;
                         self.radio = data.data.requestParameterType;
                         self.toggleHeadSelection(self.form.head);
@@ -246,7 +259,9 @@ import $ from 'jquery'
                 success: (data) => {
                     if (data.code === '999999') {
                         data.data.data.forEach((item) => {
-                            self.Host.push(item)
+                            if (item.status) {
+                                self.Host.push(item)
+                            }
                         })
                     }
                     else {
@@ -275,50 +290,60 @@ import $ from 'jquery'
 			this.parameters = sels
 		},
         Test: function() {
-            let self = this;
-            let _parameter = new Object();
-            let headers = new Object();
-            self.form.statusCode = '';
-            self.form.resultData = '';
-            self.form.resultHead = '';
-            for (let i=0;i<self.headers.length; i++) {
-                var a = self.headers[i]["name"];
-                if (a) {
-                    headers[a] = self.headers[i]["value"]
-                }
-            }
-            let url = self.form.Http4+"://"+self.form.addr;
-            let _type = self.radio;
-            if ( _type === 'form-data') {
-                if ( self.radioType === '3') {
-                    for (let i=0;i<self.parameters.length; i++) {
-                        var a = self.parameters[i]["name"];
+            this.$refs.form.validate((valid) => {
+                if (valid) {
+                    this.loadingSend = true;
+                    let self = this;
+                    let _parameter = new Object();
+                    let headers = new Object();
+                    self.form.statusCode = '';
+                    self.form.resultData = '';
+                    self.form.resultHead = '';
+                    for (let i = 0; i < self.headers.length; i++) {
+                        var a = self.headers[i]["name"];
                         if (a) {
-                            _parameter[a] = self.parameters[i]["value"]
+                            headers[a] = self.headers[i]["value"]
                         }
                     }
-                } else {
-                    _parameter = self.form.parameter
-                }
-            } else {
-                _parameter = self.form.parameterRaw
-            }
-            $.ajax({
-                type: self.form.request4,
-                url: url,
-                async: true,
-                data: _parameter,
-                headers: headers,
-                timeout: 5000,
-                success: function(data, status, jqXHR) {
-                    self.form.statusCode = jqXHR.status;
-                    self.form.resultData = data;
-                    self.form.resultHead = jqXHR.getAllResponseHeaders()
-                },
-                error: function(jqXHR, error, errorThrown) {
-                    self.form.statusCode = jqXHR.status;
-                    self.form.resultData = jqXHR.responseJSON;
-                    self.form.resultHead = jqXHR.getAllResponseHeaders()
+                    let url = self.form.Http4 + "://" + self.form.url + self.form.addr;
+                    let _type = self.radio;
+                    if (_type === 'form-data') {
+                        if (self.radioType) {
+                            for (let i = 0; i < self.parameters.length; i++) {
+                                var a = self.parameters[i]["name"];
+                                if (a) {
+                                    _parameter[a] = self.parameters[i]["value"];
+                                }
+                            }
+                            _parameter = JSON.stringify(_parameter)
+                        } else {
+                            _parameter = self.form.parameter
+                        }
+                    } else {
+                        // POST(url, self.form.parameterRaw, headers)
+                        _parameter = self.form.parameterRaw;
+                    }
+                    console.log(self.form.url)
+                    $.ajax({
+                        type: self.form.request4,
+                        url: url,
+                        async: true,
+                        data: _parameter,
+                        headers: headers,
+                        timeout: 5000,
+                        success: function (data, status, jqXHR) {
+                            self.loadingSend = false;
+                            self.form.statusCode = jqXHR.status;
+                            self.form.resultData = data;
+                            self.form.resultHead = jqXHR.getAllResponseHeaders()
+                        },
+                        error: function (jqXHR, error, errorThrown) {
+                            self.loadingSend = false;
+                            self.form.statusCode = jqXHR.status;
+                            self.form.resultData = jqXHR.responseJSON;
+                            self.form.resultHead = jqXHR.getAllResponseHeaders()
+                        }
+                    })
                 }
             })
         },

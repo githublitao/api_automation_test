@@ -1840,3 +1840,161 @@ django.core.exceptions.ValidationError: ['管理表单的数据缺失或者已被篡改']
 2018-03-14 15:55:22,316,15872,django.server,ERROR,basehttp.py:124,"POST /admin/api_test/apiinfo/1/change/ HTTP/1.1" 500 166737
 2018-03-14 15:58:08,140,1308,django.server,ERROR,basehttp.py:124,"GET /api/api/api_info?project_id=1&api_id=1 HTTP/1.1" 500 59
 2018-03-14 16:16:05,705,7120,django.server,ERROR,basehttp.py:124,"GET /api/api/api_info?project_id=1&api_id=1 HTTP/1.1" 500 59
+2018-03-06 21:44:53,514,5156,root,ERROR,ApiDoc.py:334,error
+Traceback (most recent call last):
+  File "D:\project\api_automation_test\api_test\api\ApiDoc.py", line 314, in add_api
+    description=i['description']).save()
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1280, in execute_sql
+    for sql, params in self.as_sql():
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in as_sql
+    for obj in self.query.objs
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in <listcomp>
+    for obj in self.query.objs
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1232, in <listcomp>
+    [self.prepare_value(field, self.pre_save_val(field, obj)) for field in fields]
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1172, in prepare_value
+    value = field.get_db_prep_save(value, connection=self.connection)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\fields\__init__.py", line 767, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\fields\__init__.py", line 762, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\fields\__init__.py", line 1024, in get_prep_value
+    return self.to_python(value)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\fields\__init__.py", line 1017, in to_python
+    params={'value': value},
+django.core.exceptions.ValidationError: ['’‘ 必须为 True 或者 False。']
+2018-03-06 21:44:53,532,5156,root,ERROR,ApiDoc.py:335,['’‘ 必须为 True 或者 False。']
+2018-03-06 21:49:26,009,5960,root,ERROR,ApiDoc.py:334,error
+Traceback (most recent call last):
+  File "D:\project\api_automation_test\api_test\api\ApiDoc.py", line 314, in add_api
+    description=i['description']).save()
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1280, in execute_sql
+    for sql, params in self.as_sql():
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in as_sql
+    for obj in self.query.objs
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in <listcomp>
+    for obj in self.query.objs
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1232, in <listcomp>
+    [self.prepare_value(field, self.pre_save_val(field, obj)) for field in fields]
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1172, in prepare_value
+    value = field.get_db_prep_save(value, connection=self.connection)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\fields\__init__.py", line 767, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\fields\__init__.py", line 762, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\fields\__init__.py", line 1024, in get_prep_value
+    return self.to_python(value)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\fields\__init__.py", line 1017, in to_python
+    params={'value': value},
+django.core.exceptions.ValidationError: ['’‘ 必须为 True 或者 False。']
+2018-03-06 21:49:26,021,5960,root,ERROR,ApiDoc.py:335,['’‘ 必须为 True 或者 False。']
+2018-03-06 21:51:15,243,2832,root,ERROR,ApiDoc.py:336,error
+Traceback (most recent call last):
+  File "D:\project\api_automation_test\api_test\api\ApiDoc.py", line 316, in add_api
+    description=i['description']).save()
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1280, in execute_sql
+    for sql, params in self.as_sql():
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in as_sql
+    for obj in self.query.objs
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in <listcomp>
+    for obj in self.query.objs
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1232, in <listcomp>
+    [self.prepare_value(field, self.pre_save_val(field, obj)) for field in fields]
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1172, in prepare_value
+    value = field.get_db_prep_save(value, connection=self.connection)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\fields\__init__.py", line 767, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\fields\__init__.py", line 762, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\fields\__init__.py", line 1024, in get_prep_value
+    return self.to_python(value)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\fields\__init__.py", line 1017, in to_python
+    params={'value': value},
+django.core.exceptions.ValidationError: ['’‘ 必须为 True 或者 False。']
+2018-03-06 21:51:15,253,2832,root,ERROR,ApiDoc.py:337,['’‘ 必须为 True 或者 False。']
+2018-03-06 21:57:40,181,4688,root,ERROR,ApiDoc.py:338,error
+Traceback (most recent call last):
+  File "D:\project\api_automation_test\api_test\api\ApiDoc.py", line 329, in add_api
+    description=i['description']).save()
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\base.py", line 495, in __init__
+    raise TypeError("'%s' is an invalid keyword argument for this function" % kwarg)
+TypeError: 'restrict' is an invalid keyword argument for this function
+2018-03-06 21:57:40,185,4688,root,ERROR,ApiDoc.py:339,'restrict' is an invalid keyword argument for this function
+2018-03-06 21:59:34,135,5836,root,ERROR,ApiDoc.py:337,error
+Traceback (most recent call last):
+  File "D:\project\api_automation_test\api_test\api\ApiDoc.py", line 328, in add_api
+    description=i['description']).save()
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1280, in execute_sql
+    for sql, params in self.as_sql():
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in as_sql
+    for obj in self.query.objs
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in <listcomp>
+    for obj in self.query.objs
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1232, in <listcomp>
+    [self.prepare_value(field, self.pre_save_val(field, obj)) for field in fields]
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\sql\compiler.py", line 1172, in prepare_value
+    value = field.get_db_prep_save(value, connection=self.connection)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\fields\__init__.py", line 767, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\fields\__init__.py", line 762, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\fields\__init__.py", line 1024, in get_prep_value
+    return self.to_python(value)
+  File "D:\Program Files (x86)\Python36-32\lib\site-packages\django\db\models\fields\__init__.py", line 1017, in to_python
+    params={'value': value},
+django.core.exceptions.ValidationError: ['’‘ 必须为 True 或者 False。']
+2018-03-06 21:59:34,147,5836,root,ERROR,ApiDoc.py:338,['’‘ 必须为 True 或者 False。']
+2018-03-06 21:07:44,629,2740,root,ERROR,ApiDoc.py:344,error
+Traceback (most recent call last):
+  File "D:\project\api_automation_test\api_test\api\ApiDoc.py", line 334, in add_api
+    value=i['value'], required=a,
+UnboundLocalError: local variable 'a' referenced before assignment
+2018-03-06 21:07:44,632,2740,root,ERROR,ApiDoc.py:345,local variable 'a' referenced before assignment

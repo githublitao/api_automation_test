@@ -207,8 +207,13 @@
                             self.head = data.headers;
                             self.parameterType = data.requestParameterType;
                             self.parameter = data.requestParameter;
-                            self.parameterRaw = data.requestParameterRaw[0].data;
+                            try {
+                                self.parameterRaw = data.requestParameterRaw[0].data;
+                            } catch (e){
+
+                            }
                             self.response = data.response;
+                            console.log(self.response)
                             self.mockCode = data.mockCode;
                             self.mockData = data.data;
                             if (data.data) {

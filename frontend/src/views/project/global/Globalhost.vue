@@ -26,7 +26,8 @@
             </el-table-column>
             <el-table-column prop="status" label="状态" min-width="10%" sortable>
                 <template slot-scope="scope">
-                    {{scope.row.status===true?'启用':'禁用'}}
+                    <img v-show="scope.row.status" src="../../../assets/icon-yes.svg"/>
+                    <img v-show="!scope.row.status" src="../../../assets/icon-no.svg"/>
                 </template>
             </el-table-column>
             <el-table-column label="操作" min-width="15%">

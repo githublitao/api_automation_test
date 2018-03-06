@@ -230,12 +230,12 @@ import $ from 'jquery'
   export default {
     data() {
       return {
-        request: [{value: 'get', label: 'GET'},
-                    {value: 'post', label: 'POST'},
-                    {value: 'put', label: 'PUT'},
-                    {value: 'delete', label: 'DELETE'}],
-        Http: [{value: 'http', label: 'HTTP'},
-                {value: 'https', label: 'HTTPS'}],
+        request: [{value: 'GET', label: 'GET'},
+                    {value: 'POST', label: 'POST'},
+                    {value: 'PUT', label: 'PUT'},
+                    {value: 'DELETE', label: 'DELETE'}],
+        Http: [{value: 'HTTP', label: 'HTTP'},][
+                {value: 'HTTPS', label: 'HTTPS'}],
         checkHeadList: [],
         checkParameterList: [],
         ParameterTyep: true,
@@ -279,8 +279,8 @@ import $ from 'jquery'
         header4: "",
         addParameterFormVisible: false,
         addResponseFormVisible: false,
-        required4:[{value: 'True', label: '是'},
-            {value: 'False', label: '否'}],
+        required4:[{value: '1', label: '是'},
+            {value: '0', label: '否'}],
         httpCode:[{value: '200', label: '200'},
             {value: '404', label: '404'},
             {value: '400', label: '400'},
@@ -302,11 +302,11 @@ import $ from 'jquery'
             head: [{name: "", value: ""},
             {name: "", value: ""}],
             parameterRaw: "",
-            parameter: [{name: "", value: "", required:"", restrict: "", description: ""},
-            {name: "", value: "", required:"", restrict: "", description: ""}],
+            parameter: [{name: "", value: "", required:"1", restrict: "", description: ""},
+            {name: "", value: "", required:"1", restrict: "", description: ""}],
             parameterType: "",
-            response: [{name: "", value: "", required:"", restrict: "", description: ""},
-            {name: "", value: "", required:"", restrict: "", description: ""}],
+            response: [{name: "", value: "", required:"1", restrict: "", description: ""},
+            {name: "", value: "", required:"1", restrict: "", description: ""}],
             mockCode: '',
             mockData: '',
         },
@@ -329,8 +329,6 @@ import $ from 'jquery'
     },
     methods: {
         addApi: function () {
-            console.log(this.form.firstGroup)
-            console.log(this.form.secondGroup)
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     let self = this;
@@ -339,12 +337,12 @@ import $ from 'jquery'
                         let _type = self.form.parameterType;
                         let _parameter;
                         if ( _type === 'form-data') {
-                            if ( self.radioType === '3') {
+                            if ( self.radioType === true) {
                                 _type = 'raw'
                             }
-                             _parameter = self.form.parameter;
+                             _parameter = JSON.stringify(self.form.parameter);
                         } else {
-                             _parameter = self.form.parameterRaw
+                             _parameter = JSON.stringify(self.form.parameterRaw)
                         }
                         $.ajax({
                             type: "post",
@@ -358,10 +356,10 @@ import $ from 'jquery'
                             requestType: self.form.request4,
                             address: self.form.addr,
                             status: self.form.status,
-                            headDict: self.form.head,
+                            headDict: JSON.stringify(self.form.head),
                             requestParameterType: _type,
                             requestList: _parameter,
-                            responseList: self.form.response,
+                            responseList: JSON.stringify(self.form.response),
                             mockStatus: self.form.mockCode,
                             code: self.form.mockData},
                             headers: {

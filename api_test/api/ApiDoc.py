@@ -254,6 +254,9 @@ def add_api(request):
     mock_status = request.POST.get('mockStatus')
     code = request.POST.get('code')
     desc = request.POST.get('description')
+    print(request_parameter_type)
+    print(request_list)
+    print(response_list)
     if status not in ['True', 'False']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if not project_id.isdecimal() or not first_group_id.isdecimal():
@@ -305,8 +308,13 @@ def add_api(request):
                             for i in request_list:
                                 i = eval(i)
                                 if i['name']:
+                                    print(1)
+                                    if i['required']:
+                                        a = True
+                                    else:
+                                        a = False
                                     ApiParameter(api=ApiInfo.objects.get(id=oba.pk), name=i['name'],
-                                                 value=i['value'], required=i['required'],
+                                                 value=i['value'], required=a,
                                                  restrict=i['restrict'],
                                                  description=i['description']).save()
                     else:
@@ -316,10 +324,15 @@ def add_api(request):
                         response_list = re.findall('{.*?}', response_list)
                         for i in response_list:
                             i = eval(i)
-                            ApiResponse(api=ApiInfo.objects.get(id=oba.pk), name=i['name'],
-                                        value=i['value'], required=i['required'],
-                                        restrict=i['restrict'],
-                                        description=i['description']).save()
+                            if i['name']:
+                                print(2)
+                                if i['required']:
+                                    a = True
+                                else:
+                                    a = False
+                                    ApiResponse(api=ApiInfo.objects.get(id=oba.pk), name=i['name'],
+                                                value=i['value'], required=a,
+                                                description=i['description']).save()
                     record_dynamic(project_id, '新增', '接口', '新增接口“%s”' % name)
                     api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=oba.pk), user=User.objects.get(id=request.user.pk),
                                                      description='新增接口"%s"' % name)
@@ -434,7 +447,6 @@ def update_api(request):
                                     else:
                                         ApiParameter(api=ApiInfo.objects.get(id=api_id), name=i['name'],
                                                      value=i['value'], required=i['required'],
-                                                     restrict=i['restrict'],
                                                      description=i['description']).save()
                         else:
                             ApiParameter.objects.filter(api=api_id).delete()
