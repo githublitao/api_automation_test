@@ -3,12 +3,12 @@
     <el-row :span="24" class="row-title">
         <el-col :span="4">
             <el-button class="addGroup" @click="handleAddGroup">新增分组</el-button>
-            <router-link :to="{ name: '快速测试', params: {project_id: project}}" style='text-decoration: none;color: aliceblue;'>
+            <router-link :to="{ name: '快速测试', params: {project_id: this.$route.params.project_id}}" style='text-decoration: none;color: aliceblue;'>
                 <el-button class="addGroup">快速测试</el-button>
             </router-link>
             <div class="api-title"><strong>接口分组</strong></div>
             <div class="api-title" style="cursor:pointer;">
-                <router-link :to="{ name: '接口列表', params: {project_id: project}}" style='text-decoration: none;color: aliceblue;'>
+                <router-link :to="{ name: '接口列表', params: {project_id: this.$route.params.project_id}}" style='text-decoration: none;color: aliceblue;'>
                 所有接口
                 </router-link>
             </div>

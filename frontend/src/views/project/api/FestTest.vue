@@ -275,62 +275,6 @@ import $ from 'jquery'
                 }
             })
         },
-        editParameterSubmit: function () {
-			this.$refs.editForm.validate((valid) => {
-				if (valid) {
-                    this.form.parameter[this.id] = this.editForm;
-                    this.addParameterFormVisible = false
-                }
-            })
-        },
-        handleParameterEdit: function (index, row) {
-			this.addParameterFormVisible = true;
-			this.id = index;
-			this.editForm = Object.assign({}, row);
-		},
-        editResponseSubmit: function () {
-			this.$refs.editForm.validate((valid) => {
-				if (valid) {
-                    this.form.response[this.id] = this.editForm;
-                    this.addResponseFormVisible = false
-                }
-            })
-        },
-        handleResponseEdit: function (index, row) {
-			this.addResponseFormVisible = true;
-			this.id = index;
-			this.editForm = Object.assign({}, row);
-		},
-        back(){
-            this.$router.go(-1); // 返回上一层
-
-        },
-        // 获取api分组
-        getApiGroup() {
-            let self = this;
-            $.ajax({
-                type: "get",
-                url: test+"/api/api/group",
-                async: true,
-                data: { project_id: this.$route.params.project_id},
-                headers: {
-                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                },
-                timeout: 5000,
-                success: function(data) {
-                    if (data.code === '999999') {
-                        self.group = data.data;
-                        self.form.firstGroup = self.group[0].id
-                    }
-                    else {
-                        self.$message.error({
-                            message: data.msg,
-                            center: true,
-                        })
-                    }
-                },
-            })
-        },
         addHead() {
             let headers = {name: "", value: ""};
             this.form.head.push(headers)
@@ -358,28 +302,12 @@ import $ from 'jquery'
                 this.form.response.splice(index, 1)
             }
         },
-        changeSecondGroup(val) {
-            this.secondGroup = [];
-            this.form.secondGroup = "";
-            for (let i=0; i<this.group.length; i++) {
-                let id = this.group[i]['id'];
-                if ( val === id) {
-                    this.secondGroup = this.group[i].secondGroup
-                }
-            }
-        },
         changeParameterType() {
             if (this.radio === 'form-data') {
                 this.ParameterTyep = !this.ParameterTyep
             } else {
                 this.ParameterTyep = !this.ParameterTyep
             }
-        },
-        showData() {
-            this.result = true
-        },
-        showHead(){
-            this.result = false
         },
         handleChange(val) {
       },
@@ -393,7 +321,6 @@ import $ from 'jquery'
         }
     },
     mounted() {
-        this.getApiGroup();
     }
   }
 </script>
