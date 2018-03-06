@@ -6,7 +6,7 @@
         <el-form :model="form" ref="form" :rules="FormRules">
             <div style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px">
             <el-row :gutter="10">
-                <el-col :span="4">
+                <el-col :span="6">
                     <el-form-item label="接口分组:" label-width="83px" prop="firstGroup">
                         <el-select v-model="form.firstGroup" placeholder="父分组" @change="changeSecondGroup">
                             <el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="item.id"></el-option>
@@ -63,19 +63,19 @@
                         <el-table :data="form.head" highlight-current-row>
                             <el-table-column type="selection" min-width="5%" label="头部">
                             </el-table-column>
-                            <el-table-column prop="name" label="标签" min-width="15%" sortable>
+                            <el-table-column prop="name" label="标签" min-width="20%" sortable>
                                 <template slot-scope="scope">
                                    <el-select placeholder="head标签" filterable v-model="scope.row.name">
                                        <el-option v-for="(item,index) in header" :key="index+''" :label="item.label" :value="item.value"></el-option>
                                    </el-select>
                                </template>
                             </el-table-column>
-                            <el-table-column prop="value" label="内容" min-width="50%" sortable>
+                            <el-table-column prop="value" label="内容" min-width="40%" sortable>
                                 <template slot-scope="scope">
                                    <el-input v-model="scope.row.value" :value="scope.row.value" placeholder="请输入内容"></el-input>
                                </template>
                             </el-table-column>
-                            <el-table-column label="操作" min-width="5%">
+                            <el-table-column label="操作" min-width="10%">
                                 <template slot-scope="scope">
                                     <i class="el-icon-delete" style="font-size:30px" @click="delHead(scope.$index)"></i>
                                 </template>
