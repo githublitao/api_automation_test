@@ -1,70 +1,95 @@
 <template>
     <section>
-        <el-button class="fastAddapi">快速新建API</el-button>
+        <el-button class="return-list el-icon-d-arrow-left">接口列表</el-button>
             <el-form :model="form" ref="form" :rules="FormRules">
                 <el-row :gutter="10">
-                    <el-col :span="3">
-                        <el-form-item>
+                    <el-col :span="4">
+                        <el-form-item label="接口分组:" label-width="72px">
                             <el-select v-model="form.request4" prop="request4" placeholder="请求方式">
                                 <el-option v-for="(item,index) in request" :key="index+''" :label="item.label" :value="item.value"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="3" >
+                    <el-col :span="4" >
                         <el-form-item>
                             <el-select v-model="form.Http4" placeholder="HTTP协议">
                             <el-option v-for="(item,index) in Http" :key="index+''" :label="item.label" :value="item.value"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span='16'>
+                </el-row>
+                <el-row :gutter="10">
+                    <el-col :span='8'>
+                        <el-form-item label="接口名称:" label-width="72px">
+                            <el-input v-model="form.addr" placeholder="名称" auto-complete></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="10">
+                        <el-form-item label="状态:" label-width="72px">
+                            <el-select v-model="form.request4" prop="request4" placeholder="请求方式">
+                                <el-option v-for="(item,index) in request" :key="index+''" :label="item.label" :value="item.value"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="10">
+                    <el-col :span="4">
+                        <el-form-item label="URL:" label-width="72px">
+                            <el-select v-model="form.request4" prop="request4" placeholder="请求方式">
+                                <el-option v-for="(item,index) in request" :key="index+''" :label="item.label" :value="item.value"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="2">
+                        <el-form-item>
+                            <el-select v-model="form.Http4" placeholder="HTTP协议">
+                            <el-option v-for="(item,index) in Http" :key="index+''" :label="item.label" :value="item.value"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='18'>
                         <el-form-item>
                             <el-input v-model="form.addr" placeholder="地址" clearable></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span='1'>
-                        <el-form-item>
-                            <el-button type="primary">发送</el-button>
-                        </el-form-item>
-                    </el-col>
                 </el-row>
-                <el-col :span="24">
-                    <el-collapse v-model="activeNames" @change="handleChange" style="width: 97%">
+                <el-row :span="24">
+                    <el-collapse v-model="activeNames" @change="handleChange">
                         <el-collapse-item title="请求头部" name="1">
                             <template>
                                 <el-checkbox-group v-model="checkHeadList">
                                     <div class="head-class">
                                         <el-row :gutter="10">
-                                            <el-col :span="2">
+                                            <el-col :span="1">
                                             <span>头部</span>
                                             </el-col>
-                                            <el-col :span="6">
+                                            <el-col :span="4">
                                             <span>标签</span>
                                             </el-col>
-                                            <el-col :span="13">
+                                            <el-col :span="15">
                                             <span>内容</span>
                                             </el-col>
-                                            <el-col :span="3">
+                                            <el-col :span="4">
                                             </el-col>
                                         </el-row>
                                     </div>
                                     <el-row :gutter="10">
-                                        <el-col :span="2" style="margin-top:6px">
+                                        <el-col :span="1" style="margin-top:6px">
                                         <el-checkbox></el-checkbox>
                                         </el-col>
-                                        <el-col :span="6">
+                                        <el-col :span="4">
                                         <el-form-item>
                                             <el-select v-model="header4" placeholder="head标签" filterable>
                                             <el-option v-for="(item,index) in header" :key="index+''" :label="item.label" :value="item.value"></el-option>
                                             </el-select>
                                         </el-form-item>
                                         </el-col>
-                                        <el-col :span="13">
+                                        <el-col :span="15">
                                         <el-form-item>
                                             <el-input placeholder="内容" clearable></el-input>
                                         </el-form-item>
                                         </el-col>
-                                        <el-col :span="3">
+                                        <el-col :span="4">
                                             <i class="el-icon-delete" style="font-size:30px"></i>
                                         </el-col>
                                     </el-row>
@@ -84,34 +109,45 @@
                                 <el-checkbox-group v-model="checkParameterList">
                                     <div class="head-class">
                                         <el-row :gutter="10">
-                                            <el-col :span="2">
+                                            <el-col :span="1">
                                                 <span>头部</span>
                                             </el-col>
-                                            <el-col :span="6">
+                                            <el-col :span="4">
                                                 <span>参数名</span>
                                             </el-col>
-                                            <el-col :span="13">
+                                            <el-col :span="7">
                                                 <span>参数值</span>
+                                            </el-col>
+                                            <el-col :span="9">
+                                                <span>参数说明</span>
                                             </el-col>
                                             <el-col :span="3">
                                             </el-col>
                                     </el-row>
                                     </div>
                                     <el-row :gutter="10">
-                                        <el-col :span="2" style="margin-top:6px">
+                                        <el-col :span="1" style="margin-top:6px">
                                         <el-checkbox></el-checkbox>
                                         </el-col>
-                                        <el-col :span="6">
+                                        <el-col :span="4">
                                         <el-form-item>
                                             <el-input placeholder="参数名" clearable></el-input>
                                         </el-form-item>
                                         </el-col>
-                                        <el-col :span="13">
+                                        <el-col :span="7">
                                         <el-form-item>
                                             <el-input placeholder="参数值" clearable></el-input>
                                         </el-form-item>
                                         </el-col>
-                                        <el-col :span="3">
+                                         <el-col :span="8">
+                                        <el-form-item>
+                                            <el-input placeholder="参数说明" clearable></el-input>
+                                        </el-form-item>
+                                        </el-col>
+                                        <el-col :span="2">
+                                            <el-button>更多设置</el-button>
+                                        </el-col>
+                                        <el-col :span="2">
                                         <i class="el-icon-delete" style="font-size:30px"></i>
                                         </el-col>
                                     </el-row>
@@ -122,7 +158,62 @@
                              <el-input :class="ParameterTyep? 'parameter-b': 'parameter-a'" type="textarea" :rows="5" placeholder="请输入内容" v-model="textarea"></el-input>
                          </template>
                     </el-collapse-item>
-                    <el-collapse-item title="响应结果" name="3">
+                    <el-collapse-item title="返回参数" name="3">
+                        <template>
+                            <div :class="ParameterTyep? 'parameter-a': 'parameter-b'">
+                            <el-checkbox-group v-model="checkParameterList">
+                                <div class="head-class">
+                                    <el-row :gutter="10">
+                                        <el-col :span="1">
+                                            <span>头部</span>
+                                        </el-col>
+                                        <el-col :span="4">
+                                            <span>参数名</span>
+                                        </el-col>
+                                        <el-col :span="7">
+                                            <span>参数值</span>
+                                        </el-col>
+                                        <el-col :span="9">
+                                            <span>参数说明</span>
+                                        </el-col>
+                                        <el-col :span="3">
+                                        </el-col>
+                                    </el-row>
+                                    </div>
+                                    <el-row :gutter="10">
+                                        <el-col :span="1" style="margin-top:6px">
+                                        <el-checkbox></el-checkbox>
+                                        </el-col>
+                                        <el-col :span="4">
+                                        <el-form-item>
+                                            <el-input placeholder="参数名" clearable></el-input>
+                                        </el-form-item>
+                                        </el-col>
+                                        <el-col :span="7">
+                                        <el-form-item>
+                                            <el-input placeholder="参数值" clearable></el-input>
+                                        </el-form-item>
+                                        </el-col>
+                                         <el-col :span="8">
+                                        <el-form-item>
+                                            <el-input placeholder="参数说明" clearable></el-input>
+                                        </el-form-item>
+                                        </el-col>
+                                        <el-col :span="2">
+                                            <el-button>更多设置</el-button>
+                                        </el-col>
+                                        <el-col :span="2">
+                                        <i class="el-icon-delete" style="font-size:30px"></i>
+                                        </el-col>
+                                    </el-row>
+                                </el-checkbox-group>
+                            </div>
+                        </template>
+                         <template>
+                             <el-input :class="ParameterTyep? 'parameter-b': 'parameter-a'" type="textarea" :rows="5" placeholder="请输入内容" v-model="textarea"></el-input>
+                         </template>
+                    </el-collapse-item>
+                    <el-collapse-item title="响应结果" name="4">
                         <div style="margin-bottom: 10px">
                             <el-button @click="showData">Body</el-button>
                             <el-button @click="showHead">Head</el-button>
@@ -137,7 +228,7 @@
                         </el-card>
                     </el-collapse-item>
                 </el-collapse>
-                </el-col>
+                </el-row>
             </el-form>
     </section>
 </template>
@@ -191,7 +282,7 @@
         radio: "",
         radioType: "",
         result: true,
-        activeNames: ['1', '2', '3'],
+        activeNames: ['1', '2', '3', '4'],
         FormRules: {
             request4: [{required: true, message: '请输入名称', trigger: 'blur'}]
         },
@@ -232,7 +323,7 @@
 </script>
 
 <style lang="scss" scoped>
- .fastAddapi {
+ .return-list {
     margin-top: 0px;
     margin-bottom: 10px;
     border-radius: 25px;

@@ -8,7 +8,7 @@ import ProjectInfo from './views/project/project.vue'
 import Globalhost from './views/project/global/Globalhost.vue'
 import API from './views/project/api/API.vue'
 import FestTest from './views/project/api/FestTest.vue'
-// import ApiList from './views/project/api/ApiList.vue'
+import Addapi from './views/project/api/Addapi.vue'
 import AutomationTest from './views/project/AutomationTest.vue'
 import ProjectMember from './views/project/ProjectMember.vue'
 import ProjectDynamic from './views/project/ProjectDynamic.vue'
@@ -60,7 +60,7 @@ let routes = [
                     leaf: true,
                     children: [
                         {   path: '/fastTest/:project_id', component: FestTest, name: '快速测试'},
-                        // {   path: '/apiList/:project_id', component: ApiList, name: '接口列表'}
+                        {   path: '/addApi/:project_id', component: Addapi, name: '新增接口'}
                     ]},
             {   path: '/automationTest/:project_id', component: AutomationTest, name: '自动化测试', leaf: true},
             {   path: '/projectMember/:project_id', component: ProjectMember, name: '成员管理', leaf: true},

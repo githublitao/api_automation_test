@@ -87,7 +87,9 @@
                             <el-button type="primary" @click="getApiList">查询</el-button>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary">新增</el-button>
+                            <router-link :to="{ name: '新增接口', params: {project_id: this.$route.params.project_id}}" style='text-decoration: none;color: aliceblue;'>
+						        <el-button type="primary" @click="fastTest">新增</el-button>
+					        </router-link>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary">修改分组</el-button>
