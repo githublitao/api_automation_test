@@ -4,12 +4,21 @@
 目前并未开发完成，核心部分API管理和自动化测试前端页面未完成
 
 系统声明：1.本系统采用Django REST framework编写接口，前端页面采用比较容易上手的vue+elementUI
-         2.初步学习web开发，接口统一采用基于方法的方式编写，后续引入权限系统，并修改成基于类的方法
+2.初步学习web开发，接口统一采用基于方法的方式编写，后续引入权限系统，并修改成基于类的方法
          
 使用方法：
 1.安装Python3环境（未在Python2上运行后，不知道有没有问题）
 2.下载代码到本地并解压
 3.cmd到根目录下pip install -r requirements.txt安装相关依赖包
-4.配置数据库连接
+4.安装mysql数据库，配置数据库连接，进入api_automation_test/settings.py
+![数据库配置](https://github.com/githublitao/api_automation_test/blob/master/img/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE.png)
+5.cmd到根目录下python manage.py makemigrations 让 Django 知道我们在我们的模型有一些变更
+6.python manage.py migrate 创造或修改表结构
+7.python manage.py createsuperuser创建超级用户，用于登录后台管理
+8.安装VUE环境，下载node.js并配置环境，下载npm包管理器，安装vue脚手架 npm install --global vue-cli  用于生成vue工程模板
+9.cmd进入frontend目录下，运行npm install安装相关依赖包
+10.npm run build打包
+11.运行python manage.py runserver 0.0.0.0:8001 启动django服务
+12.现在就可以访问http://127.0.0.1:8001/login进行登录， http://127.0.0.1:8001/admin为后台管理平台
 
-![登录页面](https://github.com/githublitao/api_automation_test/blob/master/img/%E7%99%BB%E5%BD%95%E9%A1%B5%E9%9D%A2.png)
+项目讲解
