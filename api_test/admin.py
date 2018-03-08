@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from api_test.models import Project, GlobalHost, ApiGroupLevelFirst, ApiGroupLevelSecond, ApiInfo, \
     APIRequestHistory, ApiOperationHistory, ProjectDynamic, ProjectMember, \
     AutomationGroupLevelSecond, AutomationGroupLevelFirst, AutomationTestCase, AutomationParameter, AutomationCaseApi, \
-    AutomationTestResult, AutomationTestTask, AutomationHead, UserProfile
+    AutomationTestResult, AutomationTestTask, AutomationHead, UserProfile, ApiHead, ApiParameter, ApiResponse
 
 from django.contrib import admin
 from django.utils.text import capfirst
@@ -166,7 +166,20 @@ class ApiGroupLevelFirstForm(admin.ModelAdmin):
 admin.site.register(ApiGroupLevelFirst, ApiGroupLevelFirstForm)
 
 
+class ApiHeadInline(admin.TabularInline):
+    model = ApiHead
+
+
+class ApiParameterInline(admin.TabularInline):
+    model = ApiParameter
+
+
+class ApiResponseInline(admin.TabularInline):
+    model = ApiResponse
+
+
 class ApiInfoForm(admin.ModelAdmin):
+    inlines = [ApiHeadInline, ApiParameterInline, ApiResponseInline]
     search_fields = ('name', 'project', 'httpType', 'requestType', 'apiAddress', 'requestParameterType')
     list_display = ('id', 'project', 'name', 'httpType', 'requestType',
                     'apiAddress', 'status', 'lastUpdateTime', 'userUpdate')
@@ -177,8 +190,7 @@ class ApiInfoForm(admin.ModelAdmin):
     fieldsets = ([
         '接口信息', {
             'fields': ('project', 'apiGroupLevelFirst', 'apiGroupLevelSecond', 'name', 'httpType',
-                       'requestType', 'apiAddress', 'requestHead', 'requestParameterType', 'requestParameter',
-                       'status', 'response', 'mockCode', 'data', 'userUpdate')
+                       'requestType', 'apiAddress', 'status', 'mockCode', 'data', 'userUpdate')
         }],)
 
 

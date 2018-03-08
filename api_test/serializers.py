@@ -4,7 +4,8 @@ from rest_framework.authtoken.models import Token
 
 from api_test.models import Project, ProjectDynamic, ProjectMember, GlobalHost, ApiGroupLevelSecond, ApiGroupLevelFirst, \
     ApiInfo, APIRequestHistory, ApiOperationHistory, AutomationGroupLevelFirst, AutomationGroupLevelSecond, \
-    AutomationTestCase, AutomationCaseApi, AutomationHead, AutomationParameter, AutomationTestTask, AutomationTestResult
+    AutomationTestCase, AutomationCaseApi, AutomationHead, AutomationParameter, AutomationTestTask, \
+    AutomationTestResult, ApiHead, ApiParameter, ApiResponse
 
 
 class TokenSerializer(serializers.ModelSerializer):
@@ -111,15 +112,47 @@ class ApiGroupLevelFirstSerializer(serializers.ModelSerializer):
         fields = ('id', 'project_id', 'name', 'secondGroup')
 
 
+class ApiHeadSerializer(serializers.ModelSerializer):
+    """
+    接口请求头序列化
+    """
+    class Meta:
+        model = ApiHead
+        fields = ('id', 'name', 'value')
+
+
+class ApiParameterSerializer(serializers.ModelSerializer):
+    """
+    接口请求参数序列化
+    """
+
+    class Meta:
+        model = ApiParameter
+        fields = ('id', 'name', 'value', 'required', 'restrict', 'description')
+
+
+class ApiResponseSerializer(serializers.ModelSerializer):
+    """
+    接口返回参数序列化
+    """
+
+    class Meta:
+        model = ApiResponse
+        fields = ('id', 'name', 'value', 'required', 'restrict', 'description')
+
+
 class ApiInfoSerializer(serializers.ModelSerializer):
     """
     接口详细信息序列化
     """
     lastUpdateTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    headers = ApiHeadSerializer(many=True, read_only=True)
+    requestParameter = ApiParameterSerializer(many=True, read_only=True)
+    response = ApiResponseSerializer(many=True, read_only=True)
 
     class Meta:
         model = ApiInfo
-        fields = ('id', 'name', 'httpType', 'requestType', 'apiAddress', 'requestHead',
+        fields = ('id', 'name', 'httpType', 'requestType', 'apiAddress', 'headers',
                   'requestParameterType', 'requestParameter', 'status',
                   'response', 'mockCode', 'data', 'lastUpdateTime', 'userUpdate', 'description')
 

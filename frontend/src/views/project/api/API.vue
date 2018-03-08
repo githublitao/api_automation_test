@@ -76,61 +76,7 @@
             </div>
         </el-dialog>
         <el-col :span="20">
-            <section :class="apiView? 'api-view-a':'api-view-b'">
-                <!--工具条-->
-                <el-col :span="24" style="height: 46px">
-                    <el-form :inline="true" :model="filters">
-                        <el-form-item>
-                            <el-input v-model="filters.name" placeholder="名称" @keyup.enter.native="getApiList"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="getApiList">查询</el-button>
-                        </el-form-item>
-                        <el-form-item>
-                            <router-link :to="{ name: '新增接口', params: {project_id: this.$route.params.project_id}}" style='text-decoration: none;color: aliceblue;'>
-						        <el-button type="primary" @click="fastTest">新增</el-button>
-					        </router-link>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary">修改分组</el-button>
-                        </el-form-item>
-                    </el-form>
-                </el-col>
-
-                <!--列表-->
-                <el-table :data="api" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
-                    <el-table-column type="selection" min-width="5%">
-                    </el-table-column>
-                    <el-table-column prop="name" label="接口名称" min-width="17%" sortable>
-                        <template slot-scope="scope">
-                            <el-icon name="name"></el-icon>
-                            <router-link :to="{ name: '项目概况', params: {project_id: scope.row.id}}" style='text-decoration: none;color: #000000;'>{{ scope.row.name }}</router-link>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="requestType" label="请求方式" min-width="10%" sortable>
-                    </el-table-column>
-                    <el-table-column prop="apiAddress" label="接口地址" min-width="24%" sortable>
-                    </el-table-column>
-                    <el-table-column prop="userUpdate" label="最近更新者" min-width="9%" sortable>
-                    </el-table-column>
-                    <el-table-column prop="lastUpdateTime" label="更新日期" min-width="16%" sortable>
-                    </el-table-column>
-                    <el-table-column label="操作" min-width="19%">
-                        <template slot-scope="scope">
-                            <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-                            <el-button type="info" size="small">修改</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-
-                <!--工具条-->
-                <el-col :span="24" class="toolbar">
-                    <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
-                    <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :page-count="total" style="float:right;">
-                    </el-pagination>
-                </el-col>
-            </section>
-            <div :class="apiView? 'api-view-b':'api-view-a'">
+            <div style="margin-left: 10px;margin-right: 20px">
                 <router-view></router-view>
             </div>
         </el-col>
@@ -572,15 +518,5 @@ methods: {
         margin-top: 0px;
         margin-bottom: 10px;
         border-radius: 25px;
-    }
-    .api-view-a {
-        margin-left: 15px;
-        margin-right: 15px;
-        display: block;
-    }
-    .api-view-b {
-        margin-left: 15px;
-        margin-right: 15px;
-        display: none;
     }
 </style>

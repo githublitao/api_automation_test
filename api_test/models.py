@@ -257,11 +257,8 @@ class ApiInfo(models.Model):
     httpType = models.CharField(max_length=50, default='HTTP', verbose_name='http/https', choices=HTTP_CHOICE)
     requestType = models.CharField(max_length=50, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)
     apiAddress = models.CharField(max_length=1024, verbose_name='接口地址')
-    requestHead = models.TextField(blank=True, null=True, verbose_name='请求头')
     requestParameterType = models.CharField(max_length=50, verbose_name='请求参数格式', choices=REQUEST_PARAMETER_TYPE_CHOICE)
-    requestParameter = models.TextField(blank=True, null=True, verbose_name='请求参数')
     status = models.BooleanField(default=True, verbose_name='状态')
-    response = models.TextField(blank=True, null=True, verbose_name='返回数据')
     mockCode = models.CharField(max_length=50, blank=True, null=True, verbose_name='HTTP状态', choices=HTTP_CODE_CHOICE)
     data = models.TextField(max_length=1024, blank=True, null=True, verbose_name='mock内容')
     lastUpdateTime = models.DateTimeField(auto_now=True, verbose_name='最近更新')
@@ -277,6 +274,60 @@ class ApiInfo(models.Model):
     class Meta:
         verbose_name = '接口'
         verbose_name_plural = '接口管理'
+
+
+class ApiHead(models.Model):
+    api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name="所属接口", related_name='headers')
+    name = models.CharField(max_length=1024, verbose_name="标签")
+    value = models.CharField(max_length=1024, blank=True, null=True, verbose_name='内容')
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = '请求头'
+        verbose_name_plural = '请求头管理'
+
+
+class ApiParameter(models.Model):
+    api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name="所属接口", related_name='requestParameter')
+    name = models.CharField(max_length=1024, verbose_name="参数名")
+    value = models.CharField(max_length=1024, blank=True, null=True, verbose_name='参数值')
+    required = models.BooleanField(default=True, verbose_name="是否必填")
+    restrict = models.CharField(max_length=1024, blank=True, null=True, verbose_name="输入限制")
+    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name="描述")
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = '请求参数'
+        verbose_name_plural = '请求参数管理'
+
+
+class ApiResponse(models.Model):
+    api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name="所属接口", related_name='response')
+    name = models.CharField(max_length=1024, verbose_name="参数名")
+    value = models.CharField(max_length=1024, blank=True, null=True, verbose_name='参数值')
+    required = models.BooleanField(default=True, verbose_name="是否必填")
+    restrict = models.CharField(max_length=1024, blank=True, null=True, verbose_name="输入限制")
+    description = models.CharField(max_length=1024, blank=True, null=True, verbose_name="描述")
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = '返回参数'
+        verbose_name_plural = '返回参数管理'
 
 
 class APIRequestHistory(models.Model):

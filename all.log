@@ -962,3 +962,551 @@ AttributeError: Got AttributeError when attempting to get a value for field `use
 The serializer field might be named incorrectly and not match any attribute or key on the `ApiInfo` instance.
 Original exception text was: 'ApiInfo' object has no attribute 'userUpadte'.
 2018-03-05 17:15:25,919,7312,django.server,ERROR,basehttp.py:124,"GET /api/api/api_list?project_id=1&page=1&page_size=6 HTTP/1.1" 500 20919
+2018-03-08 16:10:28,077,11976,django.server,ERROR,basehttp.py:124,"GET /api/project/project_list?page=1&name= HTTP/1.1" 500 59
+2018-03-08 17:05:33,080,3008,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 66, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 303, in add_api
+    ApiResponse(api=ApiInfo.objects.get(id=oba.id), name=response_list[i]['name'],
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 495, in __init__
+    raise TypeError("'%s' is an invalid keyword argument for this function" % kwarg)
+TypeError: 'ApiGroupLevelFirst' is an invalid keyword argument for this function
+2018-03-08 17:05:33,192,3008,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 19289
+2018-03-08 17:08:51,120,3008,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 66, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 303, in add_api
+    ApiResponse(api=ApiInfo.objects.get(id=oba.id), name=response_list[i]['name'],
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 495, in __init__
+    raise TypeError("'%s' is an invalid keyword argument for this function" % kwarg)
+TypeError: 'ApiGroupLevelFirst' is an invalid keyword argument for this function
+2018-03-08 17:08:51,131,3008,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 19776
+2018-03-08 17:08:58,244,12880,root,ERROR,ApiDoc.py:315,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 290, in add_api
+    data=code, userUpdate=User.objects.get(id=request.user.pk), description=description)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 495, in __init__
+    raise TypeError("'%s' is an invalid keyword argument for this function" % kwarg)
+TypeError: 'ApiGroupLevelFirst' is an invalid keyword argument for this function
+2018-03-08 17:08:58,245,12880,root,ERROR,ApiDoc.py:316,'ApiGroupLevelFirst' is an invalid keyword argument for this function
+2018-03-08 17:10:53,544,17432,root,ERROR,ApiDoc.py:317,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 292, in add_api
+    description=description)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 495, in __init__
+    raise TypeError("'%s' is an invalid keyword argument for this function" % kwarg)
+TypeError: 'ApiGroupLevelFirst' is an invalid keyword argument for this function
+2018-03-08 17:10:53,545,17432,root,ERROR,ApiDoc.py:318,'ApiGroupLevelFirst' is an invalid keyword argument for this function
+2018-03-08 17:11:45,722,12020,root,ERROR,ApiDoc.py:316,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 282, in add_api
+    data=code, userUpdate=User.objects.get(id=request.user.pk), description=description)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 495, in __init__
+    raise TypeError("'%s' is an invalid keyword argument for this function" % kwarg)
+TypeError: 'requestParameterType' is an invalid keyword argument for this function
+2018-03-08 17:11:45,723,12020,root,ERROR,ApiDoc.py:317,'requestParameterType' is an invalid keyword argument for this function
+2018-03-08 17:12:54,171,5144,root,ERROR,ApiDoc.py:316,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 282, in add_api
+    data=code, userUpdate=User.objects.get(id=request.user.pk), description=desc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 495, in __init__
+    raise TypeError("'%s' is an invalid keyword argument for this function" % kwarg)
+TypeError: 'requestParameterType' is an invalid keyword argument for this function
+2018-03-08 17:12:54,172,5144,root,ERROR,ApiDoc.py:317,'requestParameterType' is an invalid keyword argument for this function
+2018-03-08 17:14:53,719,8844,root,ERROR,ApiDoc.py:316,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 296, in add_api
+    ApiHead(api=ApiInfo.objects.get(id=oba.id), name=head_dict[i]['name'],
+TypeError: string indices must be integers
+2018-03-08 17:14:53,720,8844,root,ERROR,ApiDoc.py:317,string indices must be integers
+2018-03-08 17:15:34,626,16516,root,ERROR,ApiDoc.py:316,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 296, in add_api
+    ApiHead(api=ApiInfo.objects.get(id=oba.pk), name=head_dict[i]['name'],
+TypeError: string indices must be integers
+2018-03-08 17:15:34,627,16516,root,ERROR,ApiDoc.py:317,string indices must be integers
+2018-03-08 17:15:41,689,13368,root,ERROR,ApiDoc.py:316,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 296, in add_api
+    ApiHead(api=ApiInfo.objects.get(id=oba.pk), name=head_dict[i]['name'],
+TypeError: string indices must be integers
+2018-03-08 17:15:41,689,13368,root,ERROR,ApiDoc.py:317,string indices must be integers
+2018-03-08 17:18:26,968,18892,root,ERROR,ApiDoc.py:316,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 296, in add_api
+    ApiHead(api=ApiInfo.objects.get(id=oba.pk), name=head_dict[i]['name'],
+TypeError: string indices must be integers
+2018-03-08 17:18:26,969,18892,root,ERROR,ApiDoc.py:317,string indices must be integers
+2018-03-08 17:18:43,834,2068,root,ERROR,ApiDoc.py:317,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 297, in add_api
+    ApiHead(api=ApiInfo.objects.get(id=oba.pk), name=head_dict[i]['name'],
+TypeError: string indices must be integers
+2018-03-08 17:18:43,835,2068,root,ERROR,ApiDoc.py:318,string indices must be integers
+2018-03-08 17:19:04,996,8300,root,ERROR,ApiDoc.py:318,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 298, in add_api
+    ApiHead(api=ApiInfo.objects.get(id=oba.pk), name=head_dict[i]['name'],
+TypeError: string indices must be integers
+2018-03-08 17:19:04,996,8300,root,ERROR,ApiDoc.py:319,string indices must be integers
+2018-03-08 17:19:22,214,11716,root,ERROR,ApiDoc.py:317,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 297, in add_api
+    ApiHead(api=ApiInfo.objects.get(id=oba.pk), name=head_dict[i]['name'],
+TypeError: string indices must be integers
+2018-03-08 17:19:22,215,11716,root,ERROR,ApiDoc.py:318,string indices must be integers
+2018-03-08 17:20:45,218,3440,root,ERROR,ApiDoc.py:317,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 297, in add_api
+    ApiHead(api=ApiInfo.objects.get(id=oba.pk), name=head_dict[i]['name'],
+TypeError: string indices must be integers
+2018-03-08 17:20:45,219,3440,root,ERROR,ApiDoc.py:318,string indices must be integers
+2018-03-08 17:20:58,567,16560,root,ERROR,ApiDoc.py:317,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 297, in add_api
+    ApiHead(api=ApiInfo.objects.get(id=oba.pk), name=head_dict[i]['name'],
+TypeError: string indices must be integers
+2018-03-08 17:20:58,567,16560,root,ERROR,ApiDoc.py:318,string indices must be integers
+2018-03-08 17:23:07,334,8056,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 66, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 244, in add_api
+    head_dict = list(eval(request.POST.get('headDict')))
+  File "<string>", line 1, in <module>
+NameError: name 'value' is not defined
+2018-03-08 17:23:07,348,8056,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 19497
+2018-03-08 17:29:19,540,13328,root,ERROR,ApiDoc.py:320,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 299, in add_api
+    i = eval(i)
+  File "<string>", line 1, in <module>
+NameError: name 'value' is not defined
+2018-03-08 17:29:19,541,13328,root,ERROR,ApiDoc.py:321,name 'value' is not defined
+2018-03-08 17:29:36,126,19108,root,ERROR,ApiDoc.py:321,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 300, in add_api
+    i = eval(i)
+  File "<string>", line 1, in <module>
+NameError: name 'value' is not defined
+2018-03-08 17:29:36,127,19108,root,ERROR,ApiDoc.py:322,name 'value' is not defined
+2018-03-08 17:29:49,579,19108,root,ERROR,ApiDoc.py:321,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 300, in add_api
+    i = eval(i)
+  File "<string>", line 1, in <module>
+NameError: name 'value' is not defined
+2018-03-08 17:29:49,579,19108,root,ERROR,ApiDoc.py:322,name 'value' is not defined
+2018-03-08 17:30:19,275,19108,root,ERROR,ApiDoc.py:321,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 300, in add_api
+    i = eval(i)
+  File "<string>", line 1, in <module>
+NameError: name 'key' is not defined
+2018-03-08 17:30:19,275,19108,root,ERROR,ApiDoc.py:322,name 'key' is not defined
+2018-03-08 17:30:34,113,19108,root,ERROR,ApiDoc.py:321,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 300, in add_api
+    i = eval(i)
+  File "<string>", line 1, in <module>
+NameError: name 'name1' is not defined
+2018-03-08 17:30:34,113,19108,root,ERROR,ApiDoc.py:322,name 'name1' is not defined
+2018-03-08 17:30:47,106,19108,root,ERROR,ApiDoc.py:321,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 300, in add_api
+    i = eval(i)
+  File "<string>", line 1, in <module>
+NameError: name 'vase' is not defined
+2018-03-08 17:30:47,106,19108,root,ERROR,ApiDoc.py:322,name 'vase' is not defined
+2018-03-08 17:31:16,062,19108,root,ERROR,ApiDoc.py:321,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 304, in add_api
+    ApiParameter(api=ApiInfo.objects.get(id=oba.pk), name=request_list[i]['name'],
+TypeError: string indices must be integers
+2018-03-08 17:31:16,062,19108,root,ERROR,ApiDoc.py:322,string indices must be integers
+2018-03-08 17:33:43,553,17428,root,ERROR,ApiDoc.py:326,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 305, in add_api
+    i = eval(i)
+  File "<string>", line 1, in <module>
+NameError: name 'value' is not defined
+2018-03-08 17:33:43,555,17428,root,ERROR,ApiDoc.py:327,name 'value' is not defined
+2018-03-08 17:34:33,408,17428,root,ERROR,ApiDoc.py:326,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 305, in add_api
+    i = eval(i)
+  File "<string>", line 1, in <module>
+NameError: name 'true' is not defined
+2018-03-08 17:34:33,408,17428,root,ERROR,ApiDoc.py:327,name 'true' is not defined
+2018-03-08 17:34:46,456,17428,root,ERROR,ApiDoc.py:326,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 305, in add_api
+    i = eval(i)
+  File "<string>", line 1, in <module>
+NameError: name 'true' is not defined
+2018-03-08 17:34:46,457,17428,root,ERROR,ApiDoc.py:327,name 'true' is not defined
+2018-03-08 17:35:04,163,17428,root,ERROR,ApiDoc.py:326,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 313, in add_api
+    i = eval(i)
+  File "<string>", line 1, in <module>
+NameError: name 'true' is not defined
+2018-03-08 17:35:04,163,17428,root,ERROR,ApiDoc.py:327,name 'true' is not defined
+2018-03-08 17:35:46,301,5584,root,ERROR,ApiDoc.py:326,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 299, in add_api
+    i = eval(i)
+  File "<string>", line 1
+    {"name": "321", value": "测试"}
+                            ^
+SyntaxError: invalid syntax
+2018-03-08 17:35:46,327,5584,root,ERROR,ApiDoc.py:327,invalid syntax (<string>, line 1)
+2018-03-08 17:42:29,202,18944,root,ERROR,ApiDoc.py:328,error
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\MySQLdb\cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\MySQLdb\connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\MySQLdb\cursors.py", line 247, in execute
+    res = self._query(query)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\MySQLdb\cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\MySQLdb\cursors.py", line 374, in _do_query
+    db.query(q)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\MySQLdb\connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+_mysql_exceptions.OperationalError: (1048, "Column 'status' cannot be null")
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 297, in add_api
+    oba.save()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1281, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\backends\mysql\base.py", line 76, in execute
+    raise utils.IntegrityError(*tuple(e.args))
+django.db.utils.IntegrityError: (1048, "Column 'status' cannot be null")
+2018-03-08 17:42:29,272,18944,root,ERROR,ApiDoc.py:329,(1048, "Column 'status' cannot be null")
+2018-03-08 17:43:27,616,8512,root,ERROR,ApiDoc.py:328,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 297, in add_api
+    oba.save()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1280, in execute_sql
+    for sql, params in self.as_sql():
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in as_sql
+    for obj in self.query.objs
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in <listcomp>
+    for obj in self.query.objs
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1232, in <listcomp>
+    [self.prepare_value(field, self.pre_save_val(field, obj)) for field in fields]
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1172, in prepare_value
+    value = field.get_db_prep_save(value, connection=self.connection)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 767, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 762, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 1024, in get_prep_value
+    return self.to_python(value)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 1017, in to_python
+    params={'value': value},
+django.core.exceptions.ValidationError: ['’true‘ 必须为 True 或者 False。']
+2018-03-08 17:43:27,644,8512,root,ERROR,ApiDoc.py:329,['’true‘ 必须为 True 或者 False。']
+2018-03-08 17:43:43,188,6640,root,ERROR,ApiDoc.py:328,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 297, in add_api
+    oba.save()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1280, in execute_sql
+    for sql, params in self.as_sql():
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in as_sql
+    for obj in self.query.objs
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in <listcomp>
+    for obj in self.query.objs
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1232, in <listcomp>
+    [self.prepare_value(field, self.pre_save_val(field, obj)) for field in fields]
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1172, in prepare_value
+    value = field.get_db_prep_save(value, connection=self.connection)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 767, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 762, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 1024, in get_prep_value
+    return self.to_python(value)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 1017, in to_python
+    params={'value': value},
+django.core.exceptions.ValidationError: ['’true‘ 必须为 True 或者 False。']
+2018-03-08 17:43:43,190,6640,root,ERROR,ApiDoc.py:329,['’true‘ 必须为 True 或者 False。']
+2018-03-08 17:44:10,150,10096,root,ERROR,ApiDoc.py:328,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 297, in add_api
+    oba.save()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1280, in execute_sql
+    for sql, params in self.as_sql():
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in as_sql
+    for obj in self.query.objs
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in <listcomp>
+    for obj in self.query.objs
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1232, in <listcomp>
+    [self.prepare_value(field, self.pre_save_val(field, obj)) for field in fields]
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1172, in prepare_value
+    value = field.get_db_prep_save(value, connection=self.connection)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 767, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 762, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 1024, in get_prep_value
+    return self.to_python(value)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 1017, in to_python
+    params={'value': value},
+django.core.exceptions.ValidationError: ["’'True'‘ 必须为 True 或者 False。"]
+2018-03-08 17:44:10,152,10096,root,ERROR,ApiDoc.py:329,["’'True'‘ 必须为 True 或者 False。"]
+2018-03-08 17:49:38,616,16352,root,ERROR,ApiDoc.py:331,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 300, in add_api
+    oba.save()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1280, in execute_sql
+    for sql, params in self.as_sql():
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in as_sql
+    for obj in self.query.objs
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in <listcomp>
+    for obj in self.query.objs
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1232, in <listcomp>
+    [self.prepare_value(field, self.pre_save_val(field, obj)) for field in fields]
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1172, in prepare_value
+    value = field.get_db_prep_save(value, connection=self.connection)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 767, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 762, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 1024, in get_prep_value
+    return self.to_python(value)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 1017, in to_python
+    params={'value': value},
+django.core.exceptions.ValidationError: ['’true‘ 必须为 True 或者 False。']
+2018-03-08 17:49:38,618,16352,root,ERROR,ApiDoc.py:332,['’true‘ 必须为 True 或者 False。']
+2018-03-08 17:49:54,402,12788,root,ERROR,ApiDoc.py:331,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 300, in add_api
+    oba.save()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1280, in execute_sql
+    for sql, params in self.as_sql():
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in as_sql
+    for obj in self.query.objs
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1233, in <listcomp>
+    for obj in self.query.objs
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1232, in <listcomp>
+    [self.prepare_value(field, self.pre_save_val(field, obj)) for field in fields]
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1172, in prepare_value
+    value = field.get_db_prep_save(value, connection=self.connection)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 767, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 762, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 1024, in get_prep_value
+    return self.to_python(value)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\__init__.py", line 1017, in to_python
+    params={'value': value},
+django.core.exceptions.ValidationError: ['’true‘ 必须为 True 或者 False。']
+2018-03-08 17:49:54,405,12788,root,ERROR,ApiDoc.py:332,['’true‘ 必须为 True 或者 False。']
+2018-03-08 18:08:04,928,1812,django.request,ERROR,exception.py:118,Internal Server Error: /admin/api_test/apiinfo/1/change/
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\contrib\admin\options.py", line 668, in get_form
+    return modelform_factory(self.model, **defaults)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\forms\models.py", line 549, in modelform_factory
+    return type(form)(class_name, (form,), form_class_attrs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\forms\models.py", line 266, in __new__
+    raise FieldError(message)
+django.core.exceptions.FieldError: Unknown field(s) (response) specified for ApiInfo
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\contrib\admin\options.py", line 574, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\utils\decorators.py", line 142, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\contrib\admin\sites.py", line 223, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\contrib\admin\options.py", line 1556, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\utils\decorators.py", line 62, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\utils\decorators.py", line 142, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\utils\decorators.py", line 58, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\contrib\admin\options.py", line 1450, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\contrib\admin\options.py", line 1479, in _changeform_view
+    ModelForm = self.get_form(request, obj)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\contrib\admin\options.py", line 672, in get_form
+    % (e, self.__class__.__name__)
+django.core.exceptions.FieldError: Unknown field(s) (response) specified for ApiInfo. Check fields/fieldsets/exclude attributes of class ApiInfoForm.
+2018-03-08 18:08:05,015,1812,django.server,ERROR,basehttp.py:124,"GET /admin/api_test/apiinfo/1/change/ HTTP/1.1" 500 144263
+2018-03-08 18:10:51,776,10736,root,ERROR,ApiDoc.py:464,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 424, in update_api
+    if i['id']:
+KeyError: 'id'
+2018-03-08 18:10:51,777,10736,root,ERROR,ApiDoc.py:465,'id'
+2018-03-08 18:11:19,202,8976,root,ERROR,ApiDoc.py:465,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 425, in update_api
+    if i['id']:
+KeyError: 'id'
+2018-03-08 18:11:19,202,8976,root,ERROR,ApiDoc.py:466,'id'
+2018-03-08 18:12:37,118,8976,root,ERROR,ApiDoc.py:465,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 423, in update_api
+    i = eval(i)
+  File "<string>", line 1
+    {"id":“”, "name": "321", "value": "测试"}
+           ^
+SyntaxError: invalid character in identifier
+2018-03-08 18:12:37,118,8976,root,ERROR,ApiDoc.py:466,invalid character in identifier (<string>, line 1)
