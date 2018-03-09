@@ -108,9 +108,9 @@
                                    <el-input v-model="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
                                </template>
                             </el-table-column>
-                            <el-table-column prop="desc" label="参数说明" min-width="25%" sortable>
+                            <el-table-column prop="description" label="参数说明" min-width="25%" sortable>
                                 <template slot-scope="scope">
-                                   <el-input v-model="scope.row.desc" :value="scope.row.desc" placeholder="请输入参数说明"></el-input>
+                                   <el-input v-model="scope.row.description" :value="scope.row.desc" placeholder="请输入参数说明"></el-input>
                                </template>
                             </el-table-column>
                             <el-table-column label="操作" min-width="8%">
@@ -129,23 +129,33 @@
                          <el-input :class="ParameterTyep? 'parameter-b': 'parameter-a'" type="textarea" :rows="5" placeholder="请输入内容" v-model="textarea"></el-input>
                      </template>
                 </el-collapse-item>
-                    <el-dialog title="编辑" v-model="addFormVisible" :close-on-click-modal="false">
-                        <el-form :model="form" label-width="80px"  :rules="FormRules" ref="form">
-                            <el-form-item label="项目名称" prop="name">
-                                <el-input v-model="form.name" auto-complete="off"></el-input>
-                            </el-form-item>
-                            <el-form-item label="类型" prop='type'>
-                                <el-radio-group v-model="form.type">
-                                    <el-radio label="Web">Web</el-radio>
-                                    <el-radio label="App">App</el-radio>
-                                </el-radio-group>
-                            </el-form-item>
-                            <el-form-item label="版本号" prop='version'>
-                                <el-input v-model="form.version" auto-complete="off"></el-input>
-                            </el-form-item>
-                            <el-form-item label="描述" prop='description'>
-                                <el-input type="textarea" :rows="7" v-model="form.description"></el-input>
-                            </el-form-item>
+                    <el-dialog title="更多设置" v-model="addFormVisible" :close-on-click-modal="false">
+                        <el-form :model="editForm" label-width="60px" :rules="FormRules" ref="form">
+                            <el-row :gutter="5">
+                                <el-col :span="8">
+                                <el-form-item label="参数名" prop="name" label-width="83px">
+                                    <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                                </el-form-item>
+                                    </el-col>
+                                <el-col :span="8">
+                                <el-form-item label="参数值" prop="name" label-width="83px">
+                                    <el-input v-model="editForm.value" auto-complete="off"></el-input>
+                                </el-form-item>
+                                </el-col>
+                                <el-col :span="8">
+                                <el-form-item label="必填？" prop='version'>
+                                    <el-select v-model="form.firstGroup" prop="request4" placeholder="父分组" @change="changeSecondGroup">
+                                        <el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="index"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                                </el-col>
+                                <el-form-item label="输入限制" prop='version' label-width="83px">
+                                    <el-input v-model="editForm.restrict" auto-complete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item label="描述" prop='description' label-width="83px">
+                                    <el-input type="textarea" :rows="7" v-model="editForm.description"></el-input>
+                                </el-form-item>
+                            </el-row>
                         </el-form>
                         <div slot="footer" class="dialog-footer">
                             <el-button @click.native="addFormVisible = false">取消</el-button>
@@ -166,15 +176,15 @@
                                <el-input v-model="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
                            </template>
                         </el-table-column>
-                        <el-table-column prop="desc" label="参数说明" min-width="25%" sortable>
+                        <el-table-column prop="description" label="参数说明" min-width="25%" sortable>
                             <template slot-scope="scope">
-                               <el-input v-model="scope.row.desc" :value="scope.row.desc" placeholder="请输入参数说明"></el-input>
+                               <el-input v-model="scope.row.description" :value="scope.row.desc" placeholder="请输入参数说明"></el-input>
                            </template>
                         </el-table-column>
                         <el-table-column label="操作" min-width="8%">
                             <template slot-scope="scope">
                                 <i class="el-icon-delete" style="font-size:30px" @click="delResponse(scope.$index)"></i>
-                                <el-button type="primary" size="mini" style="margin-bottom: 5px">更多设置</el-button>
+                                <el-button type="primary" size="mini" style="margin-bottom: 5px" @click="handleParameterEdit(scope.$index, scope.row)">更多设置</el-button>
                             </template>
                         </el-table-column>
                         <el-table-column label="" min-width="5%">
@@ -253,7 +263,7 @@ import $ from 'jquery'
                     {value: 'Via', label: 'Via'},
                     {value: 'Warning', label: 'Warning'}],
         header4: "",
-        addFormVisible: true,
+        addFormVisible: false,
         httpCode:[{value: '200', label: '200'},
         {value: '404', label: '404'},
         {value: '400', label: '400'},
@@ -274,20 +284,31 @@ import $ from 'jquery'
             addr: '',
             head: [{name: "", value: ""},
             {name: "", value: ""}],
-            parameter: [{name: "", value: "", desc: ""},
-            {name: "", value: "", desc: ""}],
-            response: [{name: "", value: "", desc: ""},
-            {name: "", value: "", desc: ""}],
+            parameter: [{name: "", value: "", required:"", restrict: "", description: ""},
+           {name: "", value: "", required:"", restrict: "", description: ""}],
+            response: [{name: "", value: "", required:"", restrict: "", description: ""},
+            {name: "", value: "", required:"", restrict: "", description: ""}],
             mockCode: '',
             mockData: '',
         },
         FormRules: {
             name : [{ required: true, message: '请输入名称', trigger: 'blur' }],
-            url : [{ required: true, message: '请输入地址', trigger: 'blur' }],
+            url : [{ required: true, message: '请输入地址', trigger: 'blur' }]
+        },
+        editForm: {
+            name: "",
+            value: "",
+            required: "",
+            restrict: "",
+            description: "",
         }
       }
     },
     methods: {
+        handleParameterEdit: function (index, row) {
+			this.addFormVisible = true;
+			this.editForm = Object.assign({}, row);
+		},
         back(){
             this.$router.go(-1);//返回上一层
 
