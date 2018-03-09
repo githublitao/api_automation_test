@@ -38,7 +38,7 @@
 ![API页面](https://github.com/githublitao/api_automation_test/blob/master/img/API%E5%88%97%E8%A1%A8.png)<br>
 6.自动化测试页面，实现自动化用例的分组，增删改查用例，并添加自动化定时任务定时任务<br>
 ![自动化测试页面]()<br>
-7.项目成员，目前只是一个展示项目组成员，后续引入权限系统，分配权限角色<br>
+7.项目成员，只做一个展示项目组成员页面，成员添加删除由后台管理操作，后续引入权限系统，分配权限角色<br>
 ![项目成员](https://github.com/githublitao/api_automation_test/blob/master/img/%E6%88%90%E5%91%98%E7%AE%A1%E7%90%86.png)<br>
 8.展示项目三天内的动态情况<br>
 ![项目动态](https://github.com/githublitao/api_automation_test/blob/master/img/%E9%A1%B9%E7%9B%AE%E5%8A%A8%E6%80%81.png)<br>
