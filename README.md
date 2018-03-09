@@ -42,4 +42,5 @@
 ![项目成员](https://github.com/githublitao/api_automation_test/blob/master/img/%E6%88%90%E5%91%98%E7%AE%A1%E7%90%86.png)<br>
 8.展示项目三天内的动态情况<br>
 ![项目动态](https://github.com/githublitao/api_automation_test/blob/master/img/%E9%A1%B9%E7%9B%AE%E5%8A%A8%E6%80%81.png)<br>
-
+9.后台管理页面，主要用作数据管理，及项目人员添加删除<br>
+![后台管理](https://github.com/githublitao/api_automation_test/blob/master/img/%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2.png)
