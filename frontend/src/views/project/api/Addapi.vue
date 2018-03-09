@@ -2,34 +2,34 @@
     <section>
         <el-button class="return-list el-icon-d-arrow-left" @click="back">接口列表</el-button>
         <el-button class="return-list" style="float: right" @click="back">取消</el-button>
-        <el-button class="return-list" type="primary" style="float: right">保存</el-button>
+        <el-button class="return-list" type="primary" style="float: right" @click.native="addApi">保存</el-button>
         <el-form :model="form" ref="form" :rules="FormRules">
             <div style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px">
             <el-row :gutter="10">
                 <el-col :span="4">
-                    <el-form-item label="接口分组:" label-width="83px">
-                        <el-select v-model="form.firstGroup" prop="request4" placeholder="父分组" @change="changeSecondGroup">
-                            <el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="index"></el-option>
+                    <el-form-item label="接口分组:" label-width="83px" prop="firstGroup">
+                        <el-select v-model="form.firstGroup" placeholder="父分组" @change="changeSecondGroup">
+                            <el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
-                <el-col :span="4" >
-                    <el-form-item>
+                <el-col :span="4">
+                    <el-form-item prop="secondGroup">
                         <el-select v-model="form.secondGroup" placeholder="子分组">
-                            <el-option v-for="(item,index) in secondGroup" :key="index+''" :label="item.name" :value="item.name"></el-option>
+                            <el-option v-for="(item,index) in secondGroup" :key="index+''" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="10">
                 <el-col :span='8'>
-                    <el-form-item v-model="form.name" label="接口名称:" label-width="83px" prop="name">
-                        <el-input placeholder="名称" auto-complete></el-input>
+                    <el-form-item label="接口名称:" label-width="83px" prop="name">
+                        <el-input v-model="form.name" placeholder="名称" auto-complete></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="10">
                     <el-form-item label="状态:" label-width="72px">
-                        <el-select v-model="form.status" prop="request4" placeholder="接口状态">
+                        <el-select v-model="form.status" placeholder="接口状态">
                             <el-option v-for="(item,index) in status" :key="index+''" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                     </el-form-item>
@@ -37,8 +37,8 @@
             </el-row>
             <el-row :gutter="10">
                 <el-col :span="4">
-                    <el-form-item label="URL:" label-width="83px" prop="url">
-                        <el-select v-model="form.request4" prop="request4" placeholder="请求方式">
+                    <el-form-item label="URL:" label-width="83px">
+                        <el-select v-model="form.request4"  placeholder="请求方式">
                             <el-option v-for="(item,index) in request" :key="index+''" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                     </el-form-item>
@@ -46,13 +46,13 @@
                 <el-col :span="2">
                     <el-form-item>
                         <el-select v-model="form.Http4" placeholder="HTTP协议">
-                        <el-option v-for="(item,index) in Http" :key="index+''" :label="item.label" :value="item.value"></el-option>
+                            <el-option v-for="(item,index) in Http" :key="index+''" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span='18'>
-                    <el-form-item v-model="form.addr" prop="url">
-                        <el-input placeholder="地址" clearable></el-input>
+                    <el-form-item prop="addr">
+                        <el-input v-model="form.addr" placeholder="地址" auto-complete></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -88,10 +88,10 @@
                         </el-table>
                     </el-collapse-item>
                     <el-collapse-item title="请求参数" name="2">
-                        <div>
+                        <div style="margin: 5px">
                             <el-row :span="24">
-                                <el-col :span="4"><el-radio v-model="radio" label="1">表单(form-data)</el-radio></el-col>
-                                <el-col :span="4"><el-radio v-model="radio" label="2">源数据(raw)</el-radio></el-col>
+                                <el-col :span="4"><el-radio v-model="radio" label="form-data">表单(form-data)</el-radio></el-col>
+                                <el-col :span="4"><el-radio v-model="radio" label="raw">源数据(raw)</el-radio></el-col>
                                 <el-col :span="16"><el-checkbox v-model="radioType" label="3" v-show="ParameterTyep">表单转源数据</el-checkbox></el-col>
                             </el-row>
                         </div>
@@ -126,40 +126,32 @@
                             </el-table-column>
                         </el-table>
                      <template>
-                         <el-input :class="ParameterTyep? 'parameter-b': 'parameter-a'" type="textarea" :rows="5" placeholder="请输入内容" v-model="textarea"></el-input>
+                         <el-input :class="ParameterTyep? 'parameter-b': 'parameter-a'" type="textarea" :rows="5" placeholder="请输入内容" v-model="form.parameterRaw"></el-input>
                      </template>
                 </el-collapse-item>
-                    <el-dialog title="更多设置" v-model="addFormVisible" :close-on-click-modal="false">
-                        <el-form :model="editForm" label-width="60px" :rules="FormRules" ref="form">
-                            <el-row :gutter="5">
-                                <el-col :span="8">
-                                <el-form-item label="参数名" prop="name" label-width="83px">
-                                    <el-input v-model="editForm.name" auto-complete="off"></el-input>
-                                </el-form-item>
-                                    </el-col>
-                                <el-col :span="8">
-                                <el-form-item label="参数值" prop="name" label-width="83px">
-                                    <el-input v-model="editForm.value" auto-complete="off"></el-input>
-                                </el-form-item>
-                                </el-col>
-                                <el-col :span="8">
-                                <el-form-item label="必填？" prop='version'>
-                                    <el-select v-model="form.firstGroup" prop="request4" placeholder="父分组" @change="changeSecondGroup">
-                                        <el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="index"></el-option>
-                                    </el-select>
-                                </el-form-item>
-                                </el-col>
-                                <el-form-item label="输入限制" prop='version' label-width="83px">
-                                    <el-input v-model="editForm.restrict" auto-complete="off"></el-input>
-                                </el-form-item>
-                                <el-form-item label="描述" prop='description' label-width="83px">
-                                    <el-input type="textarea" :rows="7" v-model="editForm.description"></el-input>
-                                </el-form-item>
-                            </el-row>
+                    <el-dialog title="更多设置" v-model="addParameterFormVisible" :close-on-click-modal="false">
+                        <el-form :model="editForm" label-width="60px" :rules="FormRules" ref="editForm" >
+                            <el-form-item label="参数名" prop="name" label-width="83px">
+                                <el-input v-model="editForm.name" auto-complete="off" placeholder="请输入参数名称"></el-input>
+                            </el-form-item>
+                            <el-form-item label="参数值" prop="name" label-width="83px">
+                                <el-input v-model="editForm.value" auto-complete="off" placeholder="请输入参数值"></el-input>
+                            </el-form-item>
+                            <el-form-item label="必填?" label-width="83px" prop="required">
+                                <el-select v-model="editForm.required" placeholder="必填？">
+                                    <el-option v-for="(item,index) in required4" :key="index+''" :label="item.label" :value="item.value"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="输入限制" prop='version' label-width="83px">
+                                <el-input v-model="editForm.restrict" auto-complete="off" placeholder="请输入输入限制"></el-input>
+                            </el-form-item>
+                            <el-form-item label="描述" prop='description' label-width="83px">
+                                <el-input type="textarea" :rows="7" v-model="editForm.description" placeholder="请输入描述"></el-input>
+                            </el-form-item>
                         </el-form>
                         <div slot="footer" class="dialog-footer">
-                            <el-button @click.native="addFormVisible = false">取消</el-button>
-                            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+                            <el-button @click.native="addParameterFormVisible = false">取消</el-button>
+                            <el-button type="primary" @click.native="editParameterSubmit">提交</el-button>
                         </div>
                     </el-dialog>
                 <el-collapse-item title="返回参数" name="3">
@@ -184,7 +176,7 @@
                         <el-table-column label="操作" min-width="8%">
                             <template slot-scope="scope">
                                 <i class="el-icon-delete" style="font-size:30px" @click="delResponse(scope.$index)"></i>
-                                <el-button type="primary" size="mini" style="margin-bottom: 5px" @click="handleParameterEdit(scope.$index, scope.row)">更多设置</el-button>
+                                <el-button type="primary" size="mini" style="margin-bottom: 5px" @click="handleResponseEdit(scope.$index, scope.row)">更多设置</el-button>
                             </template>
                         </el-table-column>
                         <el-table-column label="" min-width="5%">
@@ -194,11 +186,36 @@
                         </el-table-column>
                     </el-table>
                 </el-collapse-item>
+                    <el-dialog title="更多设置" v-model="addResponseFormVisible" :close-on-click-modal="false">
+                        <el-form :model="editForm" label-width="60px" :rules="FormRules" ref="editForm" >
+                            <el-form-item label="参数名" prop="name" label-width="83px">
+                                <el-input v-model="editForm.name" auto-complete="off" placeholder="请输入参数名称"></el-input>
+                            </el-form-item>
+                            <el-form-item label="参数值" prop="name" label-width="83px">
+                                <el-input v-model="editForm.value" auto-complete="off" placeholder="请输入参数值"></el-input>
+                            </el-form-item>
+                            <el-form-item label="必填?" label-width="83px" prop="required">
+                                <el-select v-model="editForm.required" placeholder="必填？">
+                                    <el-option v-for="(item,index) in required4" :key="index+''" :label="item.label" :value="item.value"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="输入限制" prop='version' label-width="83px">
+                                <el-input v-model="editForm.restrict" auto-complete="off" placeholder="请输入输入限制"></el-input>
+                            </el-form-item>
+                            <el-form-item label="描述" prop='description' label-width="83px">
+                                <el-input type="textarea" :rows="7" v-model="editForm.description" placeholder="请输入描述"></el-input>
+                            </el-form-item>
+                        </el-form>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button @click.native="addResponseFormVisible = false">取消</el-button>
+                            <el-button type="primary" @click.native="editResponseSubmit">提交</el-button>
+                        </div>
+                    </el-dialog>
                 <el-collapse-item title="普通mock" name="4">
                     <el-card class="box-card">
                       <div slot="header" class="clearfix">
                           <el-select v-model="form.mockCode" placeholder="HTTP状态">
-                            <el-option v-for="(item,index) in httpCode" :key="index+''" :label="item.label" :value="item.value"></el-option>
+                              <el-option v-for="(item,index) in httpCode" :key="index+''" :label="item.label" :value="item.value"></el-option>
                           </el-select>
                       </div >
                         <el-input v-model="form.mockData" type="textarea" :rows="8" placeholder="请输入mock内容"></el-input>
@@ -224,12 +241,11 @@ import $ from 'jquery'
         checkHeadList: [],
         checkParameterList: [],
         ParameterTyep: true,
-        textarea: '',
-        group: [{id:1, name: '分组1', secondGroup:[{id:1, name: '321'}]},
-        {id:2, name: '分组2', secondGroup:[{id:1, name: '321'}]},],
+        group: [],
+        radio: "form-data",
         secondGroup: [],
-        status: [{value: true, label: '启用'},
-                    {value: false, label: '禁用'}],
+        status: [{value: 'True', label: '启用'},
+                    {value: 'False', label: '禁用'}],
         header: [{value: 'Accept', label: 'Accept'},
                     {value: 'Accept-Charset', label: 'Accept-Charset'},
                     {value: 'Accept-Encoding', label: 'Accept-Encoding'},
@@ -263,29 +279,34 @@ import $ from 'jquery'
                     {value: 'Via', label: 'Via'},
                     {value: 'Warning', label: 'Warning'}],
         header4: "",
-        addFormVisible: false,
+        addParameterFormVisible: false,
+        addResponseFormVisible: false,
+        required4:[{value: 'True', label: '是'},
+            {value: 'False', label: '否'}],
         httpCode:[{value: '200', label: '200'},
-        {value: '404', label: '404'},
-        {value: '400', label: '400'},
-        {value: '500', label: '500'},
-        {value: '502', label: '502'},
-        {value: '302', label: '302'},],
-        radio: "",
+            {value: '404', label: '404'},
+            {value: '400', label: '400'},
+            {value: '500', label: '500'},
+            {value: '502', label: '502'},
+            {value: '302', label: '302'}],
         radioType: "",
         result: true,
         activeNames: ['1', '2', '3', '4'],
+        id: "",
         form: {
             firstGroup: '',
             secondGroup: '',
             name: '',
-            status: true,
+            status: 'True',
             request4: 'GET',
             Http4: 'HTTP',
             addr: '',
             head: [{name: "", value: ""},
             {name: "", value: ""}],
+            parameterRaw: "",
             parameter: [{name: "", value: "", required:"", restrict: "", description: ""},
-           {name: "", value: "", required:"", restrict: "", description: ""}],
+            {name: "", value: "", required:"", restrict: "", description: ""}],
+            parameterType: "",
             response: [{name: "", value: "", required:"", restrict: "", description: ""},
             {name: "", value: "", required:"", restrict: "", description: ""}],
             mockCode: '',
@@ -293,7 +314,10 @@ import $ from 'jquery'
         },
         FormRules: {
             name : [{ required: true, message: '请输入名称', trigger: 'blur' }],
-            url : [{ required: true, message: '请输入地址', trigger: 'blur' }]
+            addr : [{ required: true, message: '请输入地址', trigger: 'blur' }],
+            required : [{ required: true, message: '请输入地址', trigger: 'blur' }],
+            firstGroup : [{ required: true, message: '请选择父分组', trigger: 'blur'}],
+            secondGroup : [{ required: true, message: '请选择父分组', trigger: 'blur'}]
         },
         editForm: {
             name: "",
@@ -301,21 +325,103 @@ import $ from 'jquery'
             required: "",
             restrict: "",
             description: "",
-        }
+        },
+        // editLoading: false
       }
     },
     methods: {
+        addApi: function () {
+            this.$refs.form.validate((valid) => {
+                if (valid) {
+                    let self = this;
+                    this.$confirm('确认提交吗？', '提示', {}).then(() => {
+                        self.form.parameterType = self.radio;
+                        let _type = self.form.parameterType;
+                        let _parameter;
+                        if ( _type === 'form-data') {
+                            if ( self.radioType === '3') {
+                                _type = 'raw'
+                            }
+                             _parameter = self.form.parameter;
+                        } else {
+                             _parameter = self.form.parameterRaw
+                        }
+                        $.ajax({
+                            type: "post",
+                            url: test+"/api/api/add_api",
+                            async: true,
+                            data: { project_id: self.$route.params.project_id,
+                            first_group_id: self.form.firstGroup,
+                            second_group_id: self.form.secondGroup,
+                            name: self.form.name,
+                            httpType: self.form.Http4,
+                            requestType: self.form.request4,
+                            address: self.form.addr,
+                            status: self.form.status,
+                            headDict: self.form.head,
+                            requestParameterType: _type,
+                            requestList: _parameter,
+                            responseList: self.form.response,
+                            mockStatus: self.form.mockCode,
+                            code: self.form.mockData},
+                            headers: {
+                                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                            },
+                            timeout: 5000,
+                            success: function(data) {
+                                if (data.code === '999999') {
+                                    self.$router.push({ name: "接口列表"});
+                                    self.$message({
+                                        message: '保存成功',
+                                        center: true,
+                                        type: 'success'
+                                    })
+                                }
+                                else {
+                                    self.$message.error({
+                                        message: data.msg,
+                                        center: true,
+                                    })
+                                }
+                            },
+                        })
+                    })
+                }
+            })
+        },
+        editParameterSubmit: function () {
+			this.$refs.editForm.validate((valid) => {
+				if (valid) {
+                    this.form.parameter[this.id] = this.editForm;
+                    this.addParameterFormVisible = false
+                }
+            })
+        },
         handleParameterEdit: function (index, row) {
-			this.addFormVisible = true;
+			this.addParameterFormVisible = true;
+			this.id = index;
+			this.editForm = Object.assign({}, row);
+		},
+        editResponseSubmit: function () {
+			this.$refs.editForm.validate((valid) => {
+				if (valid) {
+                    this.form.response[this.id] = this.editForm;
+                    this.addResponseFormVisible = false
+                }
+            })
+        },
+        handleResponseEdit: function (index, row) {
+			this.addResponseFormVisible = true;
+			this.id = index;
 			this.editForm = Object.assign({}, row);
 		},
         back(){
-            this.$router.go(-1);//返回上一层
+            this.$router.go(-1); // 返回上一层
 
         },
         // 获取api分组
         getApiGroup() {
-            var self = this
+            let self = this;
             $.ajax({
                 type: "get",
                 url: test+"/api/api/group",
@@ -327,11 +433,8 @@ import $ from 'jquery'
                 timeout: 5000,
                 success: function(data) {
                     if (data.code === '999999') {
-                        self.group = data.data
-                        // for (var i=0; i<self.groupData.length; i++) {
-                        //     var person = { value: self.groupData[i].id, label: self.groupData[i].name}
-                        //     self.options.push(person)
-                        // };
+                        self.group = data.data;
+                        self.form.firstGroup = self.group[0].id
                     }
                     else {
                         self.$message.error({
@@ -343,7 +446,7 @@ import $ from 'jquery'
             })
         },
         addHead() {
-            var headers = {name: "", value: ""}
+            let headers = {name: "", value: ""};
             this.form.head.push(headers)
         },
         delHead(index) {
@@ -352,7 +455,7 @@ import $ from 'jquery'
             }
         },
         addParameter() {
-            var headers = {name: "", value: ""}
+            let headers = {name: "", value: "", required:"True", restrict: "", description: ""};
             this.form.parameter.push(headers)
         },
         delParameter(index) {
@@ -361,7 +464,7 @@ import $ from 'jquery'
             }
         },
         addResponse() {
-            var headers = {name: "", value: ""}
+            let headers = {name: "", value: "", required:"True", restrict: "", description: ""};
             this.form.response.push(headers)
         },
         delResponse(index) {
@@ -370,10 +473,17 @@ import $ from 'jquery'
             }
         },
         changeSecondGroup(val) {
-            this.secondGroup = this.group[val].secondGroup
+            this.secondGroup = [];
+            this.form.secondGroup = "";
+            for (let i=0; i<this.group.length; i++) {
+                let id = this.group[i]['id'];
+                if ( val === id) {
+                    this.secondGroup = this.group[i].secondGroup
+                }
+            }
         },
         changeParameterType() {
-            if (this.radio === '1') {
+            if (this.radio === 'form-data') {
                 this.ParameterTyep = !this.ParameterTyep
             } else {
                 this.ParameterTyep = !this.ParameterTyep

@@ -40,7 +40,7 @@ methods: {
         // 获取项目动态
         getProjectDynamic() {
             this.listLoading = true;
-            var self = this
+            let self = this;
             $.ajax({
                 type: "get",
                 url: test+"/api/dynamic/dynamic",
@@ -51,9 +51,9 @@ methods: {
                 },
                 timeout: 5000,
                 success: function(data) {
-                    self.listLoading = false
+                    self.listLoading = false;
                     if (data.code === '999999') {
-                        self.total = data.data.total,
+                        self.total = data.data.total;
                         self.tableData = data.data.data
                     }
                     else {

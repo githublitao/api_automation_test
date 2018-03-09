@@ -3,16 +3,18 @@
     <el-row :span="24" class="row-title">
         <el-col :span="4">
             <el-button class="addGroup" @click="handleAddGroup">新增分组</el-button>
-                <router-link :to="{ name: '快速测试', params: {project_id: this.$route.params.project_id}}" style='text-decoration: none;color: aliceblue;'>
-                    <el-button class="addGroup" @click="fastTest">快速测试</el-button>
-                </router-link>
+            <router-link :to="{ name: '快速测试', params: {project_id: project}}" style='text-decoration: none;color: aliceblue;'>
+                <el-button class="addGroup">快速测试</el-button>
+            </router-link>
             <div class="api-title"><strong>接口分组</strong></div>
             <div class="api-title" style="cursor:pointer;">
-                <strong @click="group">所有接口</strong>
+                <router-link :to="{ name: '接口列表', params: {project_id: project}}" style='text-decoration: none;color: aliceblue;'>
+                所有接口
+                </router-link>
             </div>
 			<aside>
 				<!--导航菜单-->
-				    <el-menu default-active="2" class="el-menu-vertical-demo" active-text-color="rgb(32, 160, 255)" :unique-opened="true">
+                <el-menu default-active="2" class="el-menu-vertical-demo" active-text-color="rgb(32, 160, 255)" :unique-opened="true">
 					<template v-for="(item,index) in groupData">
 						<el-submenu :index="index+''" :key="item.id" class="group">
 							<template slot="title">{{item.name}}
@@ -24,16 +26,20 @@
                                     </el-dropdown-menu>
                                 </el-dropdown>
                             </template>
-							<el-menu-item v-for="child in item.secondGroup" :index="child.id+''" :key="child.id" class="group" style="padding-right: 10px;">
-                                {{child.name}}
-                                    <el-dropdown trigger="hover" class="editGroup">
-				                        <i class="el-icon-more"></i>
-                                        <el-dropdown-menu slot="dropdown">
-                                            <el-dropdown-item @click.native="handleDelSecond(item.id, child.id)">删除</el-dropdown-item>
-                                            <el-dropdown-item @click.native="handleEditGroup(item.id, child.id, child.name)">修改</el-dropdown-item>
-                                        </el-dropdown-menu>
-                                    </el-dropdown>
-                            </el-menu-item>
+                            <template v-for="child in item.secondGroup">
+                                <router-link :to="{ name: '接口列表', params: {project_id: project, firstGroup: item.id, secondGroup: child.id}}" style='text-decoration: none;color: aliceblue;'>
+                                    <el-menu-item class="group" style="padding-right: 10px;" :index="child.id+''">
+                                            {{child.name }}
+                                            <el-dropdown trigger="hover" class="editGroup">
+                                                <i class="el-icon-more"></i>
+                                                <el-dropdown-menu slot="dropdown">
+                                                    <el-dropdown-item @click.native="handleDelSecond(item.id, child.id)">删除</el-dropdown-item>
+                                                    <el-dropdown-item @click.native="handleEditGroup(item.id, child.id, child.name)">修改</el-dropdown-item>
+                                                </el-dropdown-menu>
+                                            </el-dropdown>
+                                    </el-menu-item>
+                                </router-link>
+                            </template>
 						</el-submenu>
 					</template>
 				</el-menu>
@@ -90,6 +96,7 @@ import $ from 'jquery'
   export default {
     data() {
       return {
+        project: "",
         groupData: [],
         options:[{
             value: '',
@@ -150,7 +157,7 @@ methods: {
         },
         // 获取api分组
         getApiGroup() {
-            var self = this
+            let self = this;
             $.ajax({
                 type: "get",
                 url: test+"/api/api/group",
@@ -162,9 +169,9 @@ methods: {
                 timeout: 5000,
                 success: function(data) {
                     if (data.code === '999999') {
-                        self.groupData = data.data
-                        for (var i=0; i<self.groupData.length; i++) {
-                            var person = { value: self.groupData[i].id, label: self.groupData[i].name}
+                        self.groupData = data.data;
+                        for (let i=0; i<self.groupData.length; i++) {
+                            let person = { value: self.groupData[i].id, label: self.groupData[i].name};
                             self.options.push(person)
                         };
                     }
@@ -183,20 +190,19 @@ methods: {
         handleEditGroup(first_id, second_id, name) {
             this.editGroupFormVisible = true;
             // console.log(index)
-            console.log(first_id, second_id, name)
-            this.editGroupForm.firstgroup = first_id
-            this.editGroupForm.secondGroup = name
-            this.editGroupForm.second_id = second_id
+            this.editGroupForm.firstgroup = first_id;
+            this.editGroupForm.secondGroup = name;
+            this.editGroupForm.second_id = second_id;
         },
         handleEditFirstGroup(first_id, name) {
             this.editGroupFormVisible = true;
-            this.editGroupForm.second_id = first_id
+            this.editGroupForm.second_id = first_id;
             this.editGroupForm.secondGroup = name
         },
         addGroupSubmit() {
             this.$refs.addGroupForm.validate((valid) => {
 				if (valid) {
-				    let self = this
+				    let self = this;
 					this.$confirm('确认提交吗？', '提示', {}).then(() => {
 						self.addGroupLoading = true;
                         //NProgress.start();
@@ -216,10 +222,10 @@ methods: {
                                         message: '添加成功',
                                         center: true,
                                         type: 'success'
-                                    })
+                                    });
                                     self.$refs['addGroupForm'].resetFields();
                                     self.addGroupFormVisible = false;  
-                                    self.getApiGroup()
+                                    self.getApiGroup();
                                     self.init()
                                 } else if (data.code === '999997'){
                                     self.$message.error({
@@ -230,10 +236,10 @@ methods: {
                                     self.$message.error({
                                         message: data.msg,
                                         center: true,
-                                    })
+                                    });
                                     self.$refs['addGroupForm'].resetFields();
                                     self.addGroupFormVisible = false;  
-                                    self.getApiGroup()
+                                    self.getApiGroup();
                                     self.init()
                                 }
                             },
@@ -245,12 +251,12 @@ methods: {
         editGroupSubmit() {
             this.$refs.editGroupForm.validate((valid) => {
 				if (valid) {
-				    let self = this
+				    let self = this;
 					this.$confirm('确认提交吗？', '提示', {}).then(() => {
 						self.editGroupLoading = true;
                         //NProgress.start();
                         if (!self.editGroupForm.firstgroup) {
-                            self.editGroupForm.firstgroup = self.editGroupForm.second_id
+                            self.editGroupForm.firstgroup = self.editGroupForm.second_id;
                             self.editGroupForm.second_id = ''
                         }
                         $.ajax({
@@ -272,10 +278,10 @@ methods: {
                                         message: '添加成功',
                                         center: true,
                                         type: 'success'
-                                    })
+                                    });
                                     self.$refs['editGroupForm'].resetFields();
                                     self.editGroupFormVisible = false;  
-                                    self.getApiGroup()
+                                    self.getApiGroup();
                                     self.init()
                                 } else if (data.code === '999997'){
                                     self.$message.error({
@@ -286,10 +292,10 @@ methods: {
                                     self.$message.error({
                                         message: data.msg,
                                         center: true,
-                                    })
+                                    });
                                     self.$refs['editGroupForm'].resetFields();
                                     self.editGroupFormVisible = false;  
-                                    self.getApiGroup()
+                                    self.getApiGroup();
                                     self.init()
                                 }
                             },
@@ -304,7 +310,7 @@ methods: {
 				type: 'warning'
 			}).then(() => {
 				//NProgress.start();
-				let self = this
+				let self = this;
 				$.ajax({
                 type: "post",
                 url: test+"/api/api/del_group",
@@ -340,7 +346,7 @@ methods: {
 				type: 'warning'
 			}).then(() => {
 				//NProgress.start();
-				let self = this
+				let self = this;
 				$.ajax({
                 type: "post",
                 url: test+"/api/api/del_group",
@@ -373,7 +379,7 @@ methods: {
     // 获取项目列表
 		getApiList() {
 			this.listLoading = true;
-			var self = this
+			let self = this;
 			$.ajax({
 				type: "get",
 				url: test+"/api/api/api_list",
@@ -384,9 +390,9 @@ methods: {
 				},
 				timeout: 5000,
 				success: function(data) {
-					self.listLoading = false
+					self.listLoading = false;
 					if (data.code === '999999') {
-						self.total = data.data.total,
+						self.total = data.data.total;
 						self.api = data.data.data
 					}
 					else {
@@ -405,7 +411,7 @@ methods: {
 			}).then(() => {
 				this.listLoading = true;
 				//NProgress.start();
-				let self = this
+				let self = this;
 				$.ajax({
                 type: "post",
                 url: test+"/api/api/del_api",
@@ -444,8 +450,8 @@ methods: {
 		},
 		//批量删除
 		batchRemove: function () {
-			var ids = this.sels.map(item => item.id).toString();
-			let self = this
+			let ids = this.sels.map(item => item.id).toString();
+			let self = this;
 			this.$confirm('确认删除选中记录吗？', '提示', {
 				type: 'warning'
 			}).then(() => {
@@ -461,7 +467,7 @@ methods: {
                     },
                     timeout: 5000,
                     success: function(data) {
-                        self.listLoading = false
+                        self.listLoading = false;
                         if (data.code === '999999') {
                             self.$message({
                                 message: '删除成功',
@@ -482,16 +488,11 @@ methods: {
 
 			});
 		},
-        fastTest() {
-            this.apiView = false
-        },
-        group() {
-            this.apiView = true
-        }
     },
     mounted() {
         this.getApiGroup();
         this.getApiList();
+        this.project = this.$route.params.project_id
         
     }
   }

@@ -11,7 +11,7 @@ from api_test.common import GlobalStatusCode
 from api_test.common.api_response import JsonResponse
 from api_test.common.common import verify_parameter, record_dynamic
 from api_test.models import Project, ApiGroupLevelFirst, ApiGroupLevelSecond, ApiInfo, \
-    ApiOperationHistory, APIRequestHistory, ApiHead, ApiParameter, ApiResponse
+    ApiOperationHistory, APIRequestHistory, ApiHead, ApiParameter, ApiResponse, ApiParameterRaw
 from api_test.serializers import ApiGroupLevelFirstSerializer, ApiInfoSerializer, APIRequestHistorySerializer, \
     ApiOperationHistorySerializer, ApiInfoListSerializer
 
@@ -185,11 +185,7 @@ def api_list(request):
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
-        if first_group_id and second_group_id is None:
-            if not first_group_id.isdecimal():
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-            obi = ApiInfo.objects.filter(project=project_id, apiGroupLevelFirst=first_group_id).order_by('id')
-        elif first_group_id and second_group_id:
+        if first_group_id and second_group_id:
             if not first_group_id.isdecimal() or not second_group_id.isdecimal():
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             obi = ApiInfo.objects.filter(project=project_id, apiGroupLevelFirst=first_group_id,
@@ -256,7 +252,7 @@ def add_api(request):
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if http_type not in ['HTTP', 'HTTPS']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if request_type not in ['POST', 'GE', 'PUT', 'DELETE']:
+    if request_type not in ['POST', 'GET', 'PUT', 'DELETE']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if request_parameter_type not in ['form-data', 'raw', 'Restful']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
@@ -271,6 +267,7 @@ def add_api(request):
                     first_group = ApiGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
                     if len(first_group) == 0:
                         return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
+                    print(second_group_id)
                     if first_group_id and second_group_id:
                         if not second_group_id.isdecimal():
                             return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
@@ -286,14 +283,14 @@ def add_api(request):
                                       mockCode=mock_status, data=code,
                                       userUpdate=User.objects.get(id=request.user.pk), description=desc)
 
-                    elif first_group_id and second_group_id is None:
-                        with transaction.atomic():
-                            oba = ApiInfo(project=Project.objects.get(id=project_id),
-                                          ApiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=first_group_id),
-                                          name=name, httpType=http_type, requestType=request_type, apiAddress=address,
-                                          requestParameterType=request_parameter_type, mockCode=mock_status,
-                                          status=status, data=code, userUpdate=User.objects.get(id=request.user.pk),
-                                          description=desc)
+                    # elif first_group_id and second_group_id == '':
+                    #     with transaction.atomic():
+                    #         oba = ApiInfo(project=Project.objects.get(id=project_id),
+                    #                       apiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=first_group_id),
+                    #                       name=name, httpType=http_type, requestType=request_type, apiAddress=address,
+                    #                       requestParameterType=request_parameter_type, mockCode=mock_status,
+                    #                       status=status, data=code, userUpdate=User.objects.get(id=request.user.pk),
+                    #                       description=desc)
                     else:
                         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                     oba.save()
@@ -301,16 +298,22 @@ def add_api(request):
                         head = re.findall('{.*?}', head_dict)
                         for i in head:
                             i = eval(i)
-                            ApiHead(api=ApiInfo.objects.get(id=oba.pk), name=i['name'],
-                                    value=i['value']).save()
-                    if request_list:
-                        request_list = re.findall('{.*?}', request_list)
-                        for i in request_list:
-                            i = eval(i)
-                            ApiParameter(api=ApiInfo.objects.get(id=oba.pk), name=i['name'],
-                                         value=i['value'], required=i['required'],
-                                         restrict=i['restrict'],
-                                         description=i['description']).save()
+                            if i['name']:
+                                ApiHead(api=ApiInfo.objects.get(id=oba.pk), name=i['name'],
+                                        value=i['value']).save()
+                    if request_parameter_type == 'form-data':
+                        if request_list:
+                            request_list = re.findall('{.*?}', request_list)
+                            for i in request_list:
+                                i = eval(i)
+                                if i['name']:
+                                    ApiParameter(api=ApiInfo.objects.get(id=oba.pk), name=i['name'],
+                                                 value=i['value'], required=i['required'],
+                                                 restrict=i['restrict'],
+                                                 description=i['description']).save()
+                    else:
+                        if request_list:
+                            ApiParameterRaw(api=ApiInfo.objects.get(id=oba.pk), data=response_list).save()
                     if response_list:
                         response_list = re.findall('{.*?}', response_list)
                         for i in response_list:
@@ -379,7 +382,7 @@ def update_api(request):
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if http_type not in ['HTTP', 'HTTPS']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if request_type not in ['POST', 'GE', 'PUT', 'DELETE']:
+    if request_type not in ['POST', 'GET', 'PUT', 'DELETE']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if request_parameter_type not in ['form-data', 'raw', 'Restful']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
@@ -408,40 +411,46 @@ def update_api(request):
                                        requestParameterType=request_parameter_type, mockCode=mock_status,
                                        data=code, userUpdate=User.objects.get(id=request.user.pk), description=description)
 
-                        elif first_group_id and second_group_id is None:
-
-                            obm.update(project=Project.objects.get(id=project_id),
-                                       apiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=first_group_id),
-                                       name=name, httpType=http_type, requestType=request_type, apiAddress=address,
-                                       requestParameterType=request_parameter_type, mockCode=mock_status,
-                                       data=code, userUpdate=User.objects.get(id=request.user.pk), description=description)
+                        # elif first_group_id and second_group_id == "":
+                        #
+                        #     obm.update(project=Project.objects.get(id=project_id),
+                        #                apiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=first_group_id),
+                        #                name=name, httpType=http_type, requestType=request_type, apiAddress=address,
+                        #                requestParameterType=request_parameter_type, mockCode=mock_status,
+                        #                data=code, userUpdate=User.objects.get(id=request.user.pk), description=description)
                         else:
                             return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                         if head_dict:
                             head = re.findall('{.*?}', head_dict)
                             for i in head:
                                 i = eval(i)
-                                print(i)
                                 if i['id']:
                                     ApiHead.objects.filter(id=i['id'], api=api_id).\
                                         update(name=i['name'], value=i['value'])
                                 else:
                                     ApiHead(api=ApiInfo.objects.get(id=api_id), name=i['name'],
                                             value=i['value']).save()
-                        if request_list:
-                            request_list = re.findall('{.*?}', request_list)
-                            for i in request_list:
-                                i = eval(i)
-                                if i['id']:
-                                    ApiParameter.objects.filter(id=i['id'], api=api_id).\
-                                        update(name=i['name'], value=i['value'], required=i['required'],
-                                               restrict=i['restrict'],
-                                               description=i['description'])
-                                else:
-                                    ApiParameter(api=ApiInfo.objects.get(id=api_id), name=i['name'],
-                                                 value=i['value'], required=i['required'],
-                                                 restrict=i['restrict'],
-                                                 description=i['description']).save()
+                        if request_parameter_type == 'form-data':
+                            ApiParameterRaw.objects.filter(api=api_id).delete()
+                            if request_list:
+                                request_list = re.findall('{.*?}', request_list)
+                                for i in request_list:
+                                    i = eval(i)
+                                    if i['id']:
+                                        ApiParameter.objects.filter(id=i['id'], api=api_id).\
+                                            update(name=i['name'], value=i['value'], required=i['required'],
+                                                   restrict=i['restrict'],
+                                                   description=i['description'])
+                                    else:
+                                        ApiParameter(api=ApiInfo.objects.get(id=api_id), name=i['name'],
+                                                     value=i['value'], required=i['required'],
+                                                     restrict=i['restrict'],
+                                                     description=i['description']).save()
+                        else:
+                            ApiParameter.objects.filter(api=api_id).delete()
+                            ApiParameterRaw.objects.filter(api=api_id).delete()
+                            if request_list:
+                                ApiParameterRaw(api=api_id, data=request_list)
                         if response_list:
                             response_list = re.findall('{.*?}', response_list)
                             for i in response_list:
@@ -579,7 +588,7 @@ def update_group(request):
                             apiGroupLevelSecond=ApiGroupLevelSecond.objects.get(id=second_group_id))
                 else:
                     return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
-            elif first_group_id and second_group_id is None:
+            elif first_group_id and second_group_id == "":
                 for i in id_list:
                     if not i.isdecimal():
                         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
@@ -640,7 +649,7 @@ def add_history(request):
     http_status = request.POST.get('httpStatus')
     if not project_id.isdecimal() or not api_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if request_type not in ['POST', 'GE', 'PUT', 'DELETE']:
+    if request_type not in ['POST', 'GET', 'PUT', 'DELETE']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if http_status not in ['200', '404', '400', '502', '500', '302']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())

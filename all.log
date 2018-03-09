@@ -1510,3 +1510,11 @@ Traceback (most recent call last):
            ^
 SyntaxError: invalid character in identifier
 2018-03-08 18:12:37,118,8976,root,ERROR,ApiDoc.py:466,invalid character in identifier (<string>, line 1)
+2018-03-09 17:15:18,877,504,root,ERROR,ApiDoc.py:337,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 297, in add_api
+    description=desc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 495, in __init__
+    raise TypeError("'%s' is an invalid keyword argument for this function" % kwarg)
+TypeError: 'ApiGroupLevelFirst' is an invalid keyword argument for this function
+2018-03-09 17:15:18,918,504,root,ERROR,ApiDoc.py:338,'ApiGroupLevelFirst' is an invalid keyword argument for this function

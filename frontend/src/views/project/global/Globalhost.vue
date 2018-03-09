@@ -153,7 +153,7 @@ methods: {
         // 获取HOST列表
         getGlobalHost() {
             this.listLoading = true;
-            var self = this
+            let self = this;
             $.ajax({
                 type: "get",
                 url: test+"/api/global/host_total",
@@ -164,9 +164,9 @@ methods: {
                 },
                 timeout: 5000,
                 success: function(data) {
-                    self.listLoading = false
+                    self.listLoading = false;
                     if (data.code === '999999') {
-                        self.total = data.data.total,
+                        self.total = data.data.total;
                         self.project = data.data.data
                     }
                     else {
@@ -185,7 +185,7 @@ methods: {
             }).then(() => {
                 this.listLoading = true;
                 //NProgress.start();
-                let self = this
+                let self = this;
                 $.ajax({
                 type: "post",
                 url: test+"/api/global/del_host",
@@ -216,7 +216,7 @@ methods: {
             });
         },
         handleChangeStatus: function(index, row) {
-            let self = this
+            let self = this;
             this.listLoading = true;
             if (row.status) {
                 $.ajax({
@@ -229,7 +229,7 @@ methods: {
                     },
                     timeout: 5000,
                     success: function(data) {
-                        self.listLoading = false
+                        self.listLoading = false;
                         if (data.code === '999999') {
                             self.$message({
                                 message: '禁用成功',
@@ -257,13 +257,13 @@ methods: {
                     },
                     timeout: 5000,
                     success: function(data) {
-                        self.listLoading = false
+                        self.listLoading = false;
                         if (data.code === '999999') {
                             self.$message({
                                 message: '启用成功',
                                 center: true,
                                 type: 'success'
-                            })
+                            });
                             row.status = !row.status;
                         }
                         else {
@@ -291,7 +291,7 @@ methods: {
         },
         //编辑
         editSubmit: function () {
-            let self = this
+            let self = this;
             this.$refs.editForm.validate((valid) => {
                 if (valid) {
                     this.$confirm('确认提交吗？', '提示', {}).then(() => {
@@ -317,7 +317,7 @@ methods: {
                                         message: '修改成功',
                                         center: true,
                                         type: 'success'
-                                    })
+                                    });
                                     self.$refs['editForm'].resetFields();
                                     self.editFormVisible = false;  
                                     self.getGlobalHost()
@@ -342,7 +342,7 @@ methods: {
         addSubmit: function () {
             this.$refs.addForm.validate((valid) => {
                 if (valid) {
-                    let self = this
+                    let self = this;
                     this.$confirm('确认提交吗？', '提示', {}).then(() => {
                         self.addLoading = true;
                         //NProgress.start();
@@ -365,7 +365,7 @@ methods: {
                                         message: '添加成功',
                                         center: true,
                                         type: 'success'
-                                    })
+                                    });
                                     self.$refs['addForm'].resetFields();
                                     self.addFormVisible = false;  
                                     self.getGlobalHost()
@@ -378,7 +378,7 @@ methods: {
                                     self.$message.error({
                                         message: data.msg,
                                         center: true,
-                                    })
+                                    });
                                     self.$refs['addForm'].resetFields();
                                     self.addFormVisible = false;  
                                     self.getGlobalHost()
@@ -394,8 +394,8 @@ methods: {
         },
         //批量删除
         batchRemove: function () {
-            var ids = this.sels.map(item => item.id).toString();
-            let self = this
+            let ids = this.sels.map(item => item.id).toString();
+            let self = this;
             this.$confirm('确认删除选中记录吗？', '提示', {
                 type: 'warning'
             }).then(() => {
@@ -411,7 +411,7 @@ methods: {
                     },
                     timeout: 5000,
                     success: function(data) {
-                        self.listLoading = false
+                        self.listLoading = false;
                         if (data.code === '999999') {
                             self.$message({
                                 message: '删除成功',

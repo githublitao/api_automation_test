@@ -5,7 +5,7 @@ from rest_framework.authtoken.models import Token
 from api_test.models import Project, ProjectDynamic, ProjectMember, GlobalHost, ApiGroupLevelSecond, ApiGroupLevelFirst, \
     ApiInfo, APIRequestHistory, ApiOperationHistory, AutomationGroupLevelFirst, AutomationGroupLevelSecond, \
     AutomationTestCase, AutomationCaseApi, AutomationHead, AutomationParameter, AutomationTestTask, \
-    AutomationTestResult, ApiHead, ApiParameter, ApiResponse
+    AutomationTestResult, ApiHead, ApiParameter, ApiResponse, ApiParameterRaw
 
 
 class TokenSerializer(serializers.ModelSerializer):
@@ -131,6 +131,16 @@ class ApiParameterSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'value', 'required', 'restrict', 'description')
 
 
+class ApiParameterRawSerializer(serializers.ModelSerializer):
+    """
+    接口请求参数源数据序列化
+    """
+
+    class Meta:
+        model = ApiParameterRaw
+        fields = ('id', 'data')
+
+
 class ApiResponseSerializer(serializers.ModelSerializer):
     """
     接口返回参数序列化
@@ -149,11 +159,12 @@ class ApiInfoSerializer(serializers.ModelSerializer):
     headers = ApiHeadSerializer(many=True, read_only=True)
     requestParameter = ApiParameterSerializer(many=True, read_only=True)
     response = ApiResponseSerializer(many=True, read_only=True)
+    requestParameterRaw = ApiParameterRawSerializer(many=True, read_only=True)
 
     class Meta:
         model = ApiInfo
         fields = ('id', 'name', 'httpType', 'requestType', 'apiAddress', 'headers',
-                  'requestParameterType', 'requestParameter', 'status',
+                  'requestParameterType', 'requestParameter', 'requestParameterRaw', 'status',
                   'response', 'mockCode', 'data', 'lastUpdateTime', 'userUpdate', 'description')
 
 

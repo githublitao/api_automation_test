@@ -75,7 +75,7 @@ methods: {
     // 获取项目列表
 		getApiList() {
 			this.listLoading = true;
-			var self = this
+			let self = this;
 			$.ajax({
 				type: "get",
 				url: test+"/api/api/api_list",
@@ -86,9 +86,9 @@ methods: {
 				},
 				timeout: 5000,
 				success: function(data) {
-					self.listLoading = false
+					self.listLoading = false;
 					if (data.code === '999999') {
-						self.total = data.data.total,
+						self.total = data.data.total;
 						self.api = data.data.data
 					}
 					else {
@@ -107,7 +107,7 @@ methods: {
 			}).then(() => {
 				this.listLoading = true;
 				//NProgress.start();
-				let self = this
+				let self = this;
 				$.ajax({
                 type: "post",
                 url: test+"/api/api/del_api",
@@ -146,8 +146,8 @@ methods: {
 		},
 		//批量删除
 		batchRemove: function () {
-			var ids = this.sels.map(item => item.id).toString();
-			let self = this
+			let ids = this.sels.map(item => item.id).toString();
+			let self = this;
 			this.$confirm('确认删除选中记录吗？', '提示', {
 				type: 'warning'
 			}).then(() => {
@@ -163,7 +163,7 @@ methods: {
                     },
                     timeout: 5000,
                     success: function(data) {
-                        self.listLoading = false
+                        self.listLoading = false;
                         if (data.code === '999999') {
                             self.$message({
                                 message: '删除成功',

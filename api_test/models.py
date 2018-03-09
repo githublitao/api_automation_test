@@ -311,6 +311,14 @@ class ApiParameter(models.Model):
         verbose_name_plural = '请求参数管理'
 
 
+class ApiParameterRaw(models.Model):
+    api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name="所属接口", related_name='raw')
+    data = models.TextField(blank=True, null=True, verbose_name='内容')
+
+    class Meta:
+        verbose_name = '请求参数Raw'
+
+
 class ApiResponse(models.Model):
     api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name="所属接口", related_name='response')
     name = models.CharField(max_length=1024, verbose_name="参数名")

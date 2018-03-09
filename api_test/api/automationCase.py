@@ -200,7 +200,7 @@ def update_case_group(request):
                             automationGroupLevelSecond=AutomationGroupLevelSecond.objects.get(id=second_group_id))
                 else:
                     return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
-            elif first_group_id and second_group_id is None:
+            elif first_group_id and second_group_id == "":
                 for i in id_list:
                     if not i.isdecimal():
                         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
@@ -239,7 +239,7 @@ def case_list(request):
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
-        if first_group_id and second_group_id is None:
+        if first_group_id and second_group_id == "":
             if not first_group_id.isdecimal():
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             obi = AutomationTestCase.objects.filter(project=project_id,
@@ -308,7 +308,7 @@ def add_case(request):
                     automationGroupLevelSecond=AutomationGroupLevelSecond.objects.get(id=second_group_id),
                     caseName=name, description=description)
                 case.save()
-            elif first_group_id and second_group_id is None:
+            elif first_group_id and second_group_id == "":
                 case = AutomationTestCase(
                     project=Project.objects.get(id=project_id),
                     automationGroupLevelFirst=AutomationGroupLevelFirst.objects.get(id=first_group_id),

@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 from api_test.models import Project, GlobalHost, ApiGroupLevelFirst, ApiGroupLevelSecond, ApiInfo, \
     APIRequestHistory, ApiOperationHistory, ProjectDynamic, ProjectMember, \
     AutomationGroupLevelSecond, AutomationGroupLevelFirst, AutomationTestCase, AutomationParameter, AutomationCaseApi, \
-    AutomationTestResult, AutomationTestTask, AutomationHead, UserProfile, ApiHead, ApiParameter, ApiResponse
+    AutomationTestResult, AutomationTestTask, AutomationHead, UserProfile, ApiHead, ApiParameter, ApiResponse, \
+    ApiParameterRaw
 
 from django.contrib import admin
 from django.utils.text import capfirst
@@ -174,12 +175,16 @@ class ApiParameterInline(admin.TabularInline):
     model = ApiParameter
 
 
+class ApiParameterRawInline(admin.TabularInline):
+    model = ApiParameterRaw
+
+
 class ApiResponseInline(admin.TabularInline):
     model = ApiResponse
 
 
 class ApiInfoForm(admin.ModelAdmin):
-    inlines = [ApiHeadInline, ApiParameterInline, ApiResponseInline]
+    inlines = [ApiHeadInline, ApiParameterInline, ApiParameterRawInline, ApiResponseInline]
     search_fields = ('name', 'project', 'httpType', 'requestType', 'apiAddress', 'requestParameterType')
     list_display = ('id', 'project', 'name', 'httpType', 'requestType',
                     'apiAddress', 'status', 'lastUpdateTime', 'userUpdate')

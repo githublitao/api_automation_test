@@ -69,7 +69,7 @@
 			},
 			//退出登录
 			logout: function () {
-				var _this = this;
+				let _this = this;
 				this.$confirm('确认退出吗?', '提示', {
 					//type: 'warning'
 				}).then(() => {
@@ -84,7 +84,7 @@
 			},
 		},
 		mounted() {
-			var user = sessionStorage.getItem('username');
+			let user = sessionStorage.getItem('username');
 			if (user) {
 				name = JSON.parse(user);
 				this.sysUserName = name || '';

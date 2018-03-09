@@ -39,7 +39,7 @@ methods: {
         // 获取HOST列表
         getProjectMember() {
             this.listLoading = true;
-            var self = this
+            let self = this;
             $.ajax({
                 type: "get",
                 url: test+"/api/member/project_member",
@@ -50,9 +50,9 @@ methods: {
                 },
                 timeout: 5000,
                 success: function(data) {
-                    self.listLoading = false
+                    self.listLoading = false;
                     if (data.code === '999999') {
-                        self.total = data.data.total,
+                        self.total = data.data.total;
                         self.memberData = data.data.data
                     }
                     else {
