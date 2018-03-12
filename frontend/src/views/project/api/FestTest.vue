@@ -1,6 +1,9 @@
 <template>
     <section>
-        <el-button class="return-list">快速新建API</el-button>
+        <router-link :to="{ name: '新增接口', params: {project_id: this.$route.params.project_id, formData: this.form, _type: this.radio, _typeData: this.radioType}}" style='text-decoration: none;color: aliceblue;'>
+                <el-button class="return-list">快速新建API</el-button>
+            </router-link>
+        <!--<el-button class="return-list">快速新建API</el-button>-->
         <el-form :model="form" ref="form" :rules="FormRules">
             <div style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px;padding-bottom: 0px">
             <el-row :gutter="10">
@@ -24,14 +27,14 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span='2'>
-                    <el-button type="primary">发送</el-button>
+                    <el-button type="primary" @click="fastTest">发送</el-button>
                 </el-col>
             </el-row>
             </div>
             <el-row :span="24">
                 <el-collapse v-model="activeNames" @change="handleChange">
                     <el-collapse-item title="请求头部" name="1">
-                        <el-table :data="form.head" highlight-current-row>
+                        <el-table :data="form.head" highlight-current-row @selection-change="selsChangeHead">
                             <el-table-column type="selection" min-width="5%" label="头部">
                             </el-table-column>
                             <el-table-column prop="name" label="标签" min-width="20%" sortable>
@@ -39,6 +42,7 @@
                                    <el-select placeholder="head标签" filterable v-model="scope.row.name">
                                        <el-option v-for="(item,index) in header" :key="index+''" :label="item.label" :value="item.value"></el-option>
                                    </el-select>
+                                   <el-input class="selectInput" v-model="scope.row.name" :value="scope.row.name" placeholder="请输入内容"></el-input>
                                </template>
                             </el-table-column>
                             <el-table-column prop="value" label="内容" min-width="40%" sortable>
@@ -66,7 +70,7 @@
                                 <el-col :span="16"><el-checkbox v-model="radioType" label="3" v-show="ParameterTyep">表单转源数据</el-checkbox></el-col>
                             </el-row>
                         </div>
-                        <el-table :data="form.parameter" highlight-current-row :class="ParameterTyep? 'parameter-a': 'parameter-b'">
+                        <el-table :data="form.parameter" highlight-current-row :class="ParameterTyep? 'parameter-a': 'parameter-b'" @selection-change="selsChangeParameter">
                             <el-table-column type="selection" min-width="5%" label="头部">
                             </el-table-column>
                             <el-table-column prop="name" label="参数名" min-width="20%" sortable>
@@ -96,15 +100,17 @@
                 </el-collapse-item>
                 <el-collapse-item title="响应结果" name="4">
                     <div style="margin-bottom: 10px">
-                        <el-button>Body</el-button>
-                        <el-button>Head</el-button>
-                        <el-button type="primary">格式转换</el-button>
+                        <el-button @click="showBody">Body</el-button>
+                        <el-button @click="showHeader">Head</el-button>
+                        <el-button type="primary" @click="neatenFormat">格式转换</el-button>
                     </div>
                     <el-card class="box-card">
                       <div slot="header" class="clearfix">
-                        <span>200</span>
+                        <span v-model="form.statusCode" style="font-size: 25px">{{form.statusCode}}</span>
                       </div>
-                        <div>{"code":"999999","msg":"成功","data":{"first_name":"李涛","last_name":"","phone":"18202886999","email":"daf@qq.com","key":"312b599e490d6d2ac20fbe66353d56f0de856180","date_joined":"2018-03-05 09:49:00"}}</div>
+                        <div v-model="form.resultData" :class="resultShow? 'parameter-a': 'parameter-b'" v-show="!format">{{form.resultData}}</div>
+                        <div v-model="form.resultHead" :class="resultShow? 'parameter-b': 'parameter-a'">{{form.resultHead}}</div>
+                        <pre :class="resultShow? 'parameter-a': 'parameter-b'" v-show="format">{{form.resultData}}</pre>
                     </el-card>
                 </el-collapse-item>
             </el-collapse>
@@ -113,10 +119,13 @@
     </section>
 </template>
 <script>
-import { test } from '../../../api/api'
+// import { POST } from '../../../api/api'
+// import { GET } from '../../../api/api'
 import $ from 'jquery'
+import VuePopper from "element-ui/src/utils/vue-popper";
   export default {
-    data() {
+      components: {VuePopper},
+      data() {
       return {
         request: [{value: 'get', label: 'GET'},
                     {value: 'post', label: 'POST'},
@@ -124,14 +133,8 @@ import $ from 'jquery'
                     {value: 'delete', label: 'DELETE'}],
         Http: [{value: 'http', label: 'HTTP'},
                 {value: 'https', label: 'HTTPS'}],
-        checkHeadList: [],
-        checkParameterList: [],
         ParameterTyep: true,
-        group: [],
         radio: "form-data",
-        secondGroup: [],
-        status: [{value: 'True', label: '启用'},
-                    {value: 'False', label: '禁用'}],
         header: [{value: 'Accept', label: 'Accept'},
                     {value: 'Accept-Charset', label: 'Accept-Charset'},
                     {value: 'Accept-Encoding', label: 'Accept-Encoding'},
@@ -165,115 +168,107 @@ import $ from 'jquery'
                     {value: 'Via', label: 'Via'},
                     {value: 'Warning', label: 'Warning'}],
         header4: "",
-        addParameterFormVisible: false,
-        addResponseFormVisible: false,
-        required4:[{value: 'True', label: '是'},
-            {value: 'False', label: '否'}],
-        httpCode:[{value: '200', label: '200'},
-            {value: '404', label: '404'},
-            {value: '400', label: '400'},
-            {value: '500', label: '500'},
-            {value: '502', label: '502'},
-            {value: '302', label: '302'}],
         radioType: "",
         result: true,
         activeNames: ['1', '2', '3', '4'],
         id: "",
         form: {
-            firstGroup: '',
-            secondGroup: '',
-            name: '',
-            status: 'True',
-            request4: 'GET',
+            request4: 'POST',
             Http4: 'HTTP',
-            addr: '',
-            head: [{name: "", value: ""},
-            {name: "", value: ""}],
-            parameterRaw: "",
+            addr: 'owner.api.60community.com/none/login',
+            head: [{name: "Content-Type", value: "application/json"}],
+            parameterRaw: "{\"phone\":\"18202886913\",\"password\":\"111111\"}",
             parameter: [{name: "", value: "", required:"", restrict: "", description: ""},
             {name: "", value: "", required:"", restrict: "", description: ""}],
             parameterType: "",
-            response: [{name: "", value: "", required:"", restrict: "", description: ""},
-            {name: "", value: "", required:"", restrict: "", description: ""}],
-            mockCode: '',
-            mockData: '',
+            statusCode: "",
+            resultData: "",
+            resultHead: "",
         },
-        FormRules: {
-            name : [{ required: true, message: '请输入名称', trigger: 'blur' }],
-            addr : [{ required: true, message: '请输入地址', trigger: 'blur' }],
-            required : [{ required: true, message: '请输入地址', trigger: 'blur' }],
-            firstGroup : [{ required: true, message: '请选择父分组', trigger: 'blur'}],
-            secondGroup : [{ required: true, message: '请选择父分组', trigger: 'blur'}]
-        },
-        editForm: {
-            name: "",
-            value: "",
-            required: "",
-            restrict: "",
-            description: "",
-        },
-        // editLoading: false
+        headers: "",
+        parameters: "",
+        resultShow: true,
+        format: false,
       }
     },
     methods: {
-        addApi: function () {
-            this.$refs.form.validate((valid) => {
-                if (valid) {
-                    let self = this;
-                    this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                        self.form.parameterType = self.radio;
-                        let _type = self.form.parameterType;
-                        let _parameter;
-                        if ( _type === 'form-data') {
-                            if ( self.radioType === '3') {
-                                _type = 'raw'
-                            }
-                             _parameter = self.form.parameter;
-                        } else {
-                             _parameter = self.form.parameterRaw
+        selsChangeHead: function (sels) {
+			this.headers = sels
+            console.log(this.headers)
+		},
+        selsChangeParameter: function (sels) {
+			this.parameters = sels
+		},
+        fastTest: function() {
+            let self = this;
+            let _parameter = new Object();
+            let headers = new Object();
+            self.form.statusCode = '';
+            self.form.resultData = '';
+            self.form.resultHead = '';
+            for (let i=0;i<self.headers.length; i++) {
+                var a = self.headers[i]["name"];
+                if (a) {
+                    headers[a] = self.headers[i]["value"]
+                }
+            }
+            let url = self.form.Http4+"://"+self.form.addr;
+            let _type = self.radio;
+            if ( _type === 'form-data') {
+                if ( self.radioType === '3') {
+                    for (let i=0;i<self.parameters.length; i++) {
+                        var a = self.parameters[i]["name"];
+                        if (a) {
+                            _parameter[a] = self.parameters[i]["value"]
                         }
                         $.ajax({
-                            type: "post",
-                            url: test+"/api/api/add_api",
+                            type: self.form.request4,
+                            url: url,
                             async: true,
-                            data: { project_id: self.$route.params.project_id,
-                            first_group_id: self.form.firstGroup,
-                            second_group_id: self.form.secondGroup,
-                            name: self.form.name,
-                            httpType: self.form.Http4,
-                            requestType: self.form.request4,
-                            address: self.form.addr,
-                            status: self.form.status,
-                            headDict: self.form.head,
-                            requestParameterType: _type,
-                            requestList: _parameter,
-                            responseList: self.form.response,
-                            mockStatus: self.form.mockCode,
-                            code: self.form.mockData},
-                            headers: {
-                                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                            },
+                            data: _parameter,
+                            headers: headers,
                             timeout: 5000,
-                            success: function(data) {
-                                if (data.code === '999999') {
-                                    self.$router.push({ name: "接口列表"});
-                                    self.$message({
-                                        message: '保存成功',
-                                        center: true,
-                                        type: 'success'
-                                    })
-                                }
-                                else {
-                                    self.$message.error({
-                                        message: data.msg,
-                                        center: true,
-                                    })
-                                }
+                            success: function(data, status, jqXHR) {
+                                self.form.statusCode = jqXHR.status;
+                                self.form.resultData = data;
+                                self.form.resultHead = jqXHR.getAllResponseHeaders()
+                            }
+                        })
+                    }
+                } else {
+                    $.ajax({
+                            type: self.form.request4,
+                            url: url,
+                            async: true,
+                            data: self.form.parameter,
+                            headers: headers,
+                            timeout: 5000,
+                            success: function(data, status, jqXHR) {
+                                self.form.statusCode = jqXHR.status;
+                                self.form.resultData = data;
+                                self.form.resultHead = jqXHR.getAllResponseHeaders()
                             },
                         })
-                    })
                 }
-            })
+            } else {
+                // POST(url, self.form.parameterRaw, headers)
+                $.ajax({
+                    type: self.form.request4,
+                    url: url,
+                    async: true,
+                    data: self.form.parameterRaw,
+                    headers: headers,
+                    timeout: 5000,
+                    success: function(data, status, jqXHR) {
+                        self.form.statusCode = jqXHR.status;
+                        self.form.resultData = data;
+                        self.form.resultHead = jqXHR.getAllResponseHeaders()
+                    }
+                })
+            }
+        },
+        neatenFormat() {
+            this.format = !this.format
         },
         addHead() {
             let headers = {name: "", value: ""};
@@ -309,6 +304,12 @@ import $ from 'jquery'
                 this.ParameterTyep = !this.ParameterTyep
             }
         },
+        showBody() {
+            this.resultShow = true
+        },
+        showHeader() {
+            this.resultShow = false
+        },
         handleChange(val) {
       },
       onSubmit() {
@@ -340,4 +341,18 @@ import $ from 'jquery'
     .parameter-b {
         display: none;
     }
+    .selectInput {
+        position:absolute;
+        margin-left:7px;
+        padding-left:10px;
+        width:52%;
+        height:25px;
+        left:1px;
+        top:1px;
+        border-bottom:0px;
+        border-right:0px;
+        border-left:0px;
+        border-top:0px;
+    }
+
 </style>

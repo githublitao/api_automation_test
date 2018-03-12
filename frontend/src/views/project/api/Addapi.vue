@@ -1,6 +1,9 @@
 <template>
     <section>
-        <el-button class="return-list el-icon-d-arrow-left" @click="back">接口列表</el-button>
+        <router-link :to="{ name: '接口列表', params: {project_id: this.$route.params.project_id}}" style='text-decoration: none;color: aliceblue;'>
+                <el-button class="return-list el-icon-d-arrow-left">接口列表</el-button>
+            </router-link>
+        <!--<el-button class="return-list el-icon-d-arrow-left" @click="back">接口列表</el-button>-->
         <el-button class="return-list" style="float: right" @click="back">取消</el-button>
         <el-button class="return-list" type="primary" style="float: right" @click.native="addApi">保存</el-button>
         <el-form :model="form" ref="form" :rules="FormRules">
@@ -61,13 +64,12 @@
                 <el-collapse v-model="activeNames" @change="handleChange">
                     <el-collapse-item title="请求头部" name="1">
                         <el-table :data="form.head" highlight-current-row>
-                            <el-table-column type="selection" min-width="5%" label="头部">
-                            </el-table-column>
                             <el-table-column prop="name" label="标签" min-width="20%" sortable>
                                 <template slot-scope="scope">
                                    <el-select placeholder="head标签" filterable v-model="scope.row.name">
                                        <el-option v-for="(item,index) in header" :key="index+''" :label="item.label" :value="item.value"></el-option>
                                    </el-select>
+                                    <el-input class="selectInput" v-model="scope.row.name" :value="scope.row.name" placeholder="请输入内容"></el-input>
                                </template>
                             </el-table-column>
                             <el-table-column prop="value" label="内容" min-width="40%" sortable>
@@ -96,8 +98,6 @@
                             </el-row>
                         </div>
                         <el-table :data="form.parameter" highlight-current-row :class="ParameterTyep? 'parameter-a': 'parameter-b'">
-                            <el-table-column type="selection" min-width="5%" label="头部">
-                            </el-table-column>
                             <el-table-column prop="name" label="参数名" min-width="15%" sortable>
                                 <template slot-scope="scope">
                                    <el-input v-model="scope.row.name" :value="scope.row.name" placeholder="请输入参数值"></el-input>
@@ -156,8 +156,6 @@
                     </el-dialog>
                 <el-collapse-item title="返回参数" name="3">
                     <el-table :data="form.response" highlight-current-row :class="ParameterTyep? 'parameter-a': 'parameter-b'">
-                        <el-table-column type="selection" min-width="5%" label="头部">
-                        </el-table-column>
                         <el-table-column prop="name" label="参数名" min-width="15%" sortable>
                             <template slot-scope="scope">
                                     <el-input v-model="scope.row.name" :value="scope.row.name" placeholder="请输入参数值"></el-input>
@@ -499,6 +497,27 @@ import $ from 'jquery'
       },
       onSubmit() {
         console.log('submit!');
+      },
+      fastAdd() {
+        let form = this.$route.params.formData;
+        let _type = this.$route.params._type;
+        let _typeData = this.$route.params._typeData;
+        if (form) {
+            this.form.request4 = form.request4;
+            this.form.Http4 = form.Http4;
+            this.form.addr = form.addr;
+            this.form.head = form.head;
+            this.form.parameterRaw = form.parameterRaw;
+            this.form.parameter = form.parameter;
+            this.form.mockCode = form.statusCode;
+            this.form.mockData = JSON.stringify(form.resultData)
+        }
+        if (_type) {
+            this.radio = _type
+        }
+        if (_typeData) {
+            this.radioType = _typeData
+        }
       }
     },
     watch: {
@@ -508,6 +527,7 @@ import $ from 'jquery'
     },
     mounted() {
         this.getApiGroup();
+        this.fastAdd()
     }
   }
 </script>
@@ -526,5 +546,18 @@ import $ from 'jquery'
     }
     .parameter-b {
         display: none;
+    }
+    .selectInput {
+        position:absolute;
+        margin-left:7px;
+        padding-left:10px;
+        width:52%;
+        height:25px;
+        left:1px;
+        top:1px;
+        border-bottom:0px;
+        border-right:0px;
+        border-left:0px;
+        border-top:0px;
     }
 </style>
