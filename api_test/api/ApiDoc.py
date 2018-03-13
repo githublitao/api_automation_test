@@ -181,6 +181,7 @@ def api_list(request):
     project_id = request.GET.get('project_id')
     first_group_id = request.GET.get('first_group_id')
     second_group_id = request.GET.get('second_group_id')
+    name = request.GET.get('name')
     if not project_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
@@ -188,10 +189,17 @@ def api_list(request):
         if first_group_id and second_group_id:
             if not first_group_id.isdecimal() or not second_group_id.isdecimal():
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-            obi = ApiInfo.objects.filter(project=project_id, apiGroupLevelFirst=first_group_id,
-                                         apiGroupLevelSecond=second_group_id).order_by('id')
+            if name:
+                obi = ApiInfo.objects.filter(project=project_id, name__contains=name, apiGroupLevelFirst=first_group_id,
+                                             apiGroupLevelSecond=second_group_id).order_by('id')
+            else:
+                obi = ApiInfo.objects.filter(project=project_id, apiGroupLevelFirst=first_group_id,
+                                             apiGroupLevelSecond=second_group_id).order_by('id')
         else:
-            obi = ApiInfo.objects.filter(project=project_id).order_by('id')
+            if name:
+                obi = ApiInfo.objects.filter(project=project_id, name__contains=name).order_by('id')
+            else:
+                obi = ApiInfo.objects.filter(project=project_id).order_by('id')
         paginator = Paginator(obi, page_size)  # paginator对象
         total = paginator.num_pages  # 总页数
         try:
@@ -267,7 +275,6 @@ def add_api(request):
                     first_group = ApiGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
                     if len(first_group) == 0:
                         return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
-                    print(second_group_id)
                     if first_group_id and second_group_id:
                         if not second_group_id.isdecimal():
                             return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
@@ -282,15 +289,6 @@ def add_api(request):
                                       apiAddress=address, requestParameterType=request_parameter_type,
                                       mockCode=mock_status, data=code,
                                       userUpdate=User.objects.get(id=request.user.pk), description=desc)
-
-                    # elif first_group_id and second_group_id == '':
-                    #     with transaction.atomic():
-                    #         oba = ApiInfo(project=Project.objects.get(id=project_id),
-                    #                       apiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=first_group_id),
-                    #                       name=name, httpType=http_type, requestType=request_type, apiAddress=address,
-                    #                       requestParameterType=request_parameter_type, mockCode=mock_status,
-                    #                       status=status, data=code, userUpdate=User.objects.get(id=request.user.pk),
-                    #                       description=desc)
                     else:
                         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                     oba.save()
@@ -410,14 +408,6 @@ def update_api(request):
                                        name=name, httpType=http_type, requestType=request_type, apiAddress=address,
                                        requestParameterType=request_parameter_type, mockCode=mock_status,
                                        data=code, userUpdate=User.objects.get(id=request.user.pk), description=description)
-
-                        # elif first_group_id and second_group_id == "":
-                        #
-                        #     obm.update(project=Project.objects.get(id=project_id),
-                        #                apiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=first_group_id),
-                        #                name=name, httpType=http_type, requestType=request_type, apiAddress=address,
-                        #                requestParameterType=request_parameter_type, mockCode=mock_status,
-                        #                data=code, userUpdate=User.objects.get(id=request.user.pk), description=description)
                         else:
                             return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                         if head_dict:
@@ -478,46 +468,6 @@ def update_api(request):
                 return JsonResponse(code_msg=GlobalStatusCode.api_is_exist())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
-    else:
-        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
-
-
-@api_view(['GET'])
-@verify_parameter(['project_id', 'name'], 'GET')
-def select_api(request):
-    """
-    查询接口
-    project_id 项目ID
-    name  查询名称
-    page_size 条数
-    page 页码
-    :return:
-    """
-    try:
-        page_size = int(request.GET.get('page_size', 20))
-        page = int(request.GET.get('page', 1))
-    except (TypeError, ValueError):
-        return JsonResponse(code_msg=GlobalStatusCode.page_not_int())
-    project_id = request.GET.get('project_id')
-    name = request.GET.get('name')
-    if not project_id.isdecimal():
-        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
-    obj = Project.objects.filter(id=project_id)
-    if obj:
-        obi = ApiInfo.objects.filter(name__contains=name, project=project_id).order_by('id')
-        paginator = Paginator(obi, page_size)  # paginator对象
-        total = paginator.num_pages  # 总页数
-        try:
-            obm = paginator.page(page)
-        except PageNotAnInteger:
-            obm = paginator.page(1)
-        except EmptyPage:
-            obm = paginator.page(paginator.num_pages)
-        serialize = ApiInfoListSerializer(obm, many=True)
-        return JsonResponse(data={'data': serialize.data,
-                                  'page': page,
-                                  'total': total
-                                  }, code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 

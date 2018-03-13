@@ -15,35 +15,10 @@
 					</router-link>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" :disabled="update" @click="changeGroup">修改分组</el-button>
+					<el-button type="primary" @click="changeGroup">修改分组</el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
-		<el-dialog title="修改所属分组" v-model="updateGroupFormVisible" :close-on-click-modal="false">
-			<el-form :model="updateGroupForm" label-width="80px"  :rules="updateGroupFormRules" ref="updateGroupForm">
-				<el-row :gutter="10">
-					<el-col :span="12">
-					<el-form-item label="父分组" prop="firstGroup">
-						<el-select v-model="updateGroupForm.firstGroup" placeholder="请选择" @change="changeSecondGroup">
-							<el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="item.id">
-							</el-option>
-						 </el-select>
-					</el-form-item>
-					</el-col>
-					<el-col :span="12">
-					<el-form-item label="子分组" prop='secondGroup'>
-						<el-select v-model="updateGroupForm.secondGroup" placeholder="请选择">
-							<el-option v-for="(item,index) in secondGroup" :key="index+''" :label="item.name" :value="item.id"></el-option>
-						 </el-select>
-					</el-form-item>
-					</el-col>
-				</el-row>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click.native="updateGroupFormVisible = false">取消</el-button>
-                <el-button type="primary" @click.native="updateGroupSubmit" :loading="updateGroupLoading">提交</el-button>
-            </div>
-        </el-dialog>
 
 		<!--列表-->
 		<el-table :data="api" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
@@ -72,7 +47,31 @@
 				</template>
 			</el-table-column>
 		</el-table>
-
+		<el-dialog title="修改所属分组" v-model="updateGroupFormVisible" :close-on-click-modal="false">
+			<el-form :model="updateGroupForm" label-width="80px"  :rules="updateGroupFormRules" ref="updateGroupForm">
+				<el-row :gutter="10">
+					<el-col :span="12">
+					<el-form-item label="父分组" prop="firstGroup">
+						<el-select v-model="updateGroupForm.firstGroup" placeholder="请选择" @change="changeSecondGroup">
+							<el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="item.id">
+							</el-option>
+						 </el-select>
+					</el-form-item>
+					</el-col>
+					<el-col :span="12">
+					<el-form-item label="子分组" prop='secondGroup'>
+						<el-select v-model="updateGroupForm.secondGroup" placeholder="请选择">
+							<el-option v-for="(item,index) in secondGroup" :key="index+''" :label="item.name" :value="item.id"></el-option>
+						 </el-select>
+					</el-form-item>
+					</el-col>
+				</el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click.native="updateGroupFormVisible = false">取消</el-button>
+                <el-button type="primary" @click.native="updateGroupSubmit" :loading="updateGroupLoading">提交</el-button>
+            </div>
+        </el-dialog>
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
 			<el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
@@ -96,7 +95,7 @@ import $ from 'jquery'
         page: 1,
         listLoading: false,
         sels: [],//列表选中列
-		updateGroupFormVisible: false,
+        updateGroupFormVisible: false,
 		updateGroupForm: {
             firstGroup: "",
 			secondGroup: "",
@@ -108,15 +107,14 @@ import $ from 'jquery'
 		group: [],
 		secondGroup: [],
 		updateGroupLoading: false,
-		update: true,
       }
     },
-	methods: {
-    	// 获取项目列表
+methods: {
+    // 获取项目列表
 		getApiList() {
 			this.listLoading = true;
 			let self = this;
-			let param = { project_id: this.$route.params.project_id, page: self.page, name: self.filters.name};
+			let param = { project_id: this.$route.params.project_id, page: self.page};
 			if (this.$route.params.firstGroup) {
 			    param['first_group_id'] = this.$route.params.firstGroup;
 				if (this.$route.params.secondGroup) {
@@ -148,7 +146,7 @@ import $ from 'jquery'
 				},
 			})
 		},
-		// 修改接口所属分组
+    // 修改接口所属分组
 		updateGroupSubmit() {
 			let ids = this.sels.map(item => item.id).toString();
 			let self = this;
@@ -274,12 +272,7 @@ import $ from 'jquery'
             this.getApiList()
         },
 		selsChange: function (sels) {
-		    if (sels.length>0) {
-                this.sels = sels;
-                this.update = false
-            } else {
-		        this.update = true
-			}
+			this.sels = sels;
 		},
 		//批量删除
 		batchRemove: function () {
@@ -325,7 +318,14 @@ import $ from 'jquery'
     mounted() {
         this.getApiList();
 
-    }
+    },
+      watch: {
+        '$route': function (to, from) {
+           if (to !== from) {
+                this.getApiList();
+           }
+    　　}
+　　},
   }
 </script>
 

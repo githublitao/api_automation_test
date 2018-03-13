@@ -4,7 +4,7 @@
                 <el-button class="return-list">快速新建API</el-button>
             </router-link>
         <!--<el-button class="return-list">快速新建API</el-button>-->
-        <el-form :model="form" ref="form" :rules="FormRules">
+        <el-form :model="form" ref="form">
             <div style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px;padding-bottom: 0px">
             <el-row :gutter="10">
                 <el-col :span="3">
@@ -34,7 +34,7 @@
             <el-row :span="24">
                 <el-collapse v-model="activeNames" @change="handleChange">
                     <el-collapse-item title="请求头部" name="1">
-                        <el-table :data="form.head" highlight-current-row @selection-change="selsChangeHead">
+                        <el-table :data="form.head" highlight-current-row @selection-change="selsChangeHead" ref="multipleHeadTable">
                             <el-table-column type="selection" min-width="5%" label="头部">
                             </el-table-column>
                             <el-table-column prop="name" label="标签" min-width="20%" sortable>
@@ -70,7 +70,7 @@
                                 <el-col :span="16"><el-checkbox v-model="radioType" label="3" v-show="ParameterTyep">表单转源数据</el-checkbox></el-col>
                             </el-row>
                         </div>
-                        <el-table :data="form.parameter" highlight-current-row :class="ParameterTyep? 'parameter-a': 'parameter-b'" @selection-change="selsChangeParameter">
+                        <el-table :data="form.parameter" highlight-current-row :class="ParameterTyep? 'parameter-a': 'parameter-b'" @selection-change="selsChangeParameter" ref="multipleParameterTable">
                             <el-table-column type="selection" min-width="5%" label="头部">
                             </el-table-column>
                             <el-table-column prop="name" label="参数名" min-width="20%" sortable>
@@ -175,9 +175,10 @@ import VuePopper from "element-ui/src/utils/vue-popper";
         form: {
             request4: 'POST',
             Http4: 'HTTP',
-            addr: 'owner.api.60community.com/none/login',
-            head: [{name: "Content-Type", value: "application/json"}],
-            parameterRaw: "{\"phone\":\"18202886913\",\"password\":\"111111\"}",
+            addr: '',
+            head: [{name: "", value: ""},
+            {name: "", value: ""}],
+            parameterRaw: "",
             parameter: [{name: "", value: "", required:"", restrict: "", description: ""},
             {name: "", value: "", required:"", restrict: "", description: ""}],
             parameterType: "",
@@ -192,9 +193,18 @@ import VuePopper from "element-ui/src/utils/vue-popper";
       }
     },
     methods: {
+        toggleHeadSelection(rows) {
+              rows.forEach(row => {
+                this.$refs.multipleHeadTable.toggleRowSelection(row, true);
+              });
+          },
+        toggleParameterSelection(rows) {
+              rows.forEach(row => {
+                this.$refs.multipleParameterTable.toggleRowSelection(row, true);
+              });
+          },
         selsChangeHead: function (sels) {
 			this.headers = sels
-            console.log(this.headers)
 		},
         selsChangeParameter: function (sels) {
 			this.parameters = sels
@@ -221,58 +231,41 @@ import VuePopper from "element-ui/src/utils/vue-popper";
                         if (a) {
                             _parameter[a] = self.parameters[i]["value"]
                         }
-                        $.ajax({
-                            type: self.form.request4,
-                            url: url,
-                            async: true,
-                            data: _parameter,
-                            headers: headers,
-                            timeout: 5000,
-                            success: function(data, status, jqXHR) {
-                                self.form.statusCode = jqXHR.status;
-                                self.form.resultData = data;
-                                self.form.resultHead = jqXHR.getAllResponseHeaders()
-                            }
-                        })
                     }
                 } else {
-                    $.ajax({
-                            type: self.form.request4,
-                            url: url,
-                            async: true,
-                            data: self.form.parameter,
-                            headers: headers,
-                            timeout: 5000,
-                            success: function(data, status, jqXHR) {
-                                self.form.statusCode = jqXHR.status;
-                                self.form.resultData = data;
-                                self.form.resultHead = jqXHR.getAllResponseHeaders()
-                            },
-                        })
+                    _parameter = self.form.parameter
                 }
             } else {
                 // POST(url, self.form.parameterRaw, headers)
-                $.ajax({
-                    type: self.form.request4,
-                    url: url,
-                    async: true,
-                    data: self.form.parameterRaw,
-                    headers: headers,
-                    timeout: 5000,
-                    success: function(data, status, jqXHR) {
-                        self.form.statusCode = jqXHR.status;
-                        self.form.resultData = data;
-                        self.form.resultHead = jqXHR.getAllResponseHeaders()
-                    }
-                })
+                _parameter = self.form.parameterRaw
             }
+            $.ajax({
+                type: self.form.request4,
+                url: url,
+                async: true,
+                data: _parameter,
+                headers: headers,
+                timeout: 5000,
+                success: function(data, status, jqXHR) {
+                    self.form.statusCode = jqXHR.status;
+                    self.form.resultData = data;
+                    self.form.resultHead = jqXHR.getAllResponseHeaders()
+                },
+                error: function(jqXHR, error, errorThrown) {
+                    self.form.statusCode = jqXHR.status;
+                    self.form.resultData = jqXHR.responseJSON;
+                    self.form.resultHead = jqXHR.getAllResponseHeaders()
+                }
+            })
         },
         neatenFormat() {
             this.format = !this.format
         },
         addHead() {
             let headers = {name: "", value: ""};
-            this.form.head.push(headers)
+            this.form.head.push(headers);
+            let rows = [this.form.head[this.form.head.length-1]];
+            this.toggleHeadSelection(rows)
         },
         delHead(index) {
             if (this.form.head.length !== 1) {
@@ -281,7 +274,9 @@ import VuePopper from "element-ui/src/utils/vue-popper";
         },
         addParameter() {
             let headers = {name: "", value: "", required:"True", restrict: "", description: ""};
-            this.form.parameter.push(headers)
+            this.form.parameter.push(headers);
+            let rows = [this.form.parameter[this.form.parameter.length-1]];
+            this.toggleParameterSelection(rows)
         },
         delParameter(index) {
             if (this.form.parameter.length !== 1) {
@@ -314,7 +309,7 @@ import VuePopper from "element-ui/src/utils/vue-popper";
       },
       onSubmit() {
         console.log('submit!');
-      }
+      },
     },
     watch: {
         radio() {
@@ -322,6 +317,8 @@ import VuePopper from "element-ui/src/utils/vue-popper";
         }
     },
     mounted() {
+        this.toggleHeadSelection(this.form.head);
+        this.toggleParameterSelection(this.form.parameter)
     }
   }
 </script>

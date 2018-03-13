@@ -9,7 +9,7 @@
             <div class="api-title"><strong>接口分组</strong></div>
             <div class="api-title" style="cursor:pointer;">
                 <router-link :to="{ name: '接口列表', params: {project_id: this.$route.params.project_id}}" style='text-decoration: none;color: aliceblue;'>
-                所有接口
+                    所有接口
                 </router-link>
             </div>
 			<aside>
@@ -27,7 +27,7 @@
                                 </el-dropdown>
                             </template>
                             <template v-for="child in item.secondGroup">
-                                <router-link :to="{ name: '接口列表', params: {project_id: project, firstGroup: item.id, secondGroup: child.id}}" style='text-decoration: none;color: aliceblue;'>
+                                <router-link :to="{ name: '分组接口列表', params: {project_id: project, firstGroup: item.id, secondGroup: child.id}}" style='text-decoration: none;color: aliceblue;'>
                                     <el-menu-item class="group" style="padding-right: 10px;" :index="child.id+''">
                                             {{child.name }}
                                             <el-dropdown trigger="hover" class="editGroup">

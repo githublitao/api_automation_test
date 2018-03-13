@@ -5,7 +5,7 @@
             </router-link>
         <!--<el-button class="return-list el-icon-d-arrow-left" @click="back">接口列表</el-button>-->
         <el-button class="return-list" style="float: right" @click="back">取消</el-button>
-        <el-button class="return-list" type="primary" style="float: right" @click.native="addApi">保存</el-button>
+        <el-button class="return-list" type="primary" style="float: right; margin-right: 15px" @click.native="addApi">保存</el-button>
         <el-form :model="form" ref="form" :rules="FormRules">
             <div style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px">
             <el-row :gutter="10">
@@ -314,8 +314,8 @@ import $ from 'jquery'
             name : [{ required: true, message: '请输入名称', trigger: 'blur' }],
             addr : [{ required: true, message: '请输入地址', trigger: 'blur' }],
             required : [{ required: true, message: '请输入地址', trigger: 'blur' }],
-            firstGroup : [{ required: true, message: '请选择父分组', trigger: 'blur'}],
-            secondGroup : [{ required: true, message: '请选择父分组', trigger: 'blur'}]
+            firstGroup : [{ type: 'number', required: true, message: '请选择父分组', trigger: 'blur'}],
+            secondGroup : [{ type: 'number', required: true, message: '请选择子分组', trigger: 'blur'}]
         },
         editForm: {
             name: "",
@@ -329,6 +329,8 @@ import $ from 'jquery'
     },
     methods: {
         addApi: function () {
+            console.log(this.form.firstGroup)
+            console.log(this.form.secondGroup)
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     let self = this;
@@ -527,7 +529,7 @@ import $ from 'jquery'
     },
     mounted() {
         this.getApiGroup();
-        this.fastAdd()
+        this.fastAdd();
     }
   }
 </script>
@@ -551,7 +553,7 @@ import $ from 'jquery'
         position:absolute;
         margin-left:7px;
         padding-left:10px;
-        width:52%;
+        width:5%;
         height:25px;
         left:1px;
         top:1px;

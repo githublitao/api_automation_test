@@ -27,7 +27,6 @@ urlpatterns = [
     url(r'api/api_list', ApiDoc.api_list),
     url(r'api/add_api', ApiDoc.add_api),
     url(r'api/update_api', ApiDoc.update_api),
-    url(r'api/select_api', ApiDoc.select_api),
     url(r'api/del_api', ApiDoc.del_api),
     url(r'api/update_group', ApiDoc.update_group),
     url(r'api/api_info', ApiDoc.api_info),
