@@ -260,9 +260,10 @@ class ApiInfo(models.Model):
     requestParameterType = models.CharField(max_length=50, verbose_name='请求参数格式', choices=REQUEST_PARAMETER_TYPE_CHOICE)
     status = models.BooleanField(default=True, verbose_name='状态')
     mockCode = models.CharField(max_length=50, blank=True, null=True, verbose_name='HTTP状态', choices=HTTP_CODE_CHOICE)
-    data = models.TextField(max_length=1024, blank=True, null=True, verbose_name='mock内容')
+    data = models.TextField(blank=True, null=True, verbose_name='mock内容')
     lastUpdateTime = models.DateTimeField(auto_now=True, verbose_name='最近更新')
-    userUpdate = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, max_length=50, verbose_name='更新人')
+    userUpdate = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, max_length=50, verbose_name='更新人',
+                                   related_name='ApiUpdateUser')
     description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
 
     def __unicode__(self):
@@ -277,6 +278,7 @@ class ApiInfo(models.Model):
 
 
 class ApiHead(models.Model):
+    id = models.AutoField(primary_key=True)
     api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name="所属接口", related_name='headers')
     name = models.CharField(max_length=1024, verbose_name="标签")
     value = models.CharField(max_length=1024, blank=True, null=True, verbose_name='内容')
@@ -293,6 +295,7 @@ class ApiHead(models.Model):
 
 
 class ApiParameter(models.Model):
+    id = models.AutoField(primary_key=True)
     api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name="所属接口", related_name='requestParameter')
     name = models.CharField(max_length=1024, verbose_name="参数名")
     value = models.CharField(max_length=1024, blank=True, null=True, verbose_name='参数值')
@@ -312,7 +315,8 @@ class ApiParameter(models.Model):
 
 
 class ApiParameterRaw(models.Model):
-    api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name="所属接口", related_name='raw')
+    id = models.AutoField(primary_key=True)
+    api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name="所属接口", related_name='requestParameterRaw')
     data = models.TextField(blank=True, null=True, verbose_name='内容')
 
     class Meta:
@@ -320,11 +324,11 @@ class ApiParameterRaw(models.Model):
 
 
 class ApiResponse(models.Model):
+    id = models.AutoField(primary_key=True)
     api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name="所属接口", related_name='response')
     name = models.CharField(max_length=1024, verbose_name="参数名")
     value = models.CharField(max_length=1024, blank=True, null=True, verbose_name='参数值')
     required = models.BooleanField(default=True, verbose_name="是否必填")
-    restrict = models.CharField(max_length=1024, blank=True, null=True, verbose_name="输入限制")
     description = models.CharField(max_length=1024, blank=True, null=True, verbose_name="描述")
 
     def __unicode__(self):

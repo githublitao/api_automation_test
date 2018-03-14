@@ -27,7 +27,7 @@
 			<el-table-column prop="name" label="接口名称" min-width="17%" sortable>
 				<template slot-scope="scope">
 					<el-icon name="name"></el-icon>
-					<router-link :to="{ name: '接口', params: {api_id: scope.row.id}}" style='text-decoration: none;'>{{ scope.row.name }}</router-link>
+					<router-link :to="{ name: '基础信息', params: {api_id: scope.row.id}}" style='text-decoration: none;'>{{ scope.row.name }}</router-link>
 				</template>
 			</el-table-column>
 			<el-table-column prop="requestType" label="请求方式" min-width="10%" sortable>
@@ -41,7 +41,7 @@
 			<el-table-column label="操作" min-width="19%">
 				<template slot-scope="scope">
 					<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-					<router-link :to="{ name: '接口', params: {api_id: scope.row.id}}" style='text-decoration: none;color: aliceblue;'>
+					<router-link :to="{ name: '基础信息', params: {api_id: scope.row.id}}" style='text-decoration: none;color: aliceblue;'>
                 		<el-button type="info" size="small">修改</el-button>
             		</router-link>
 				</template>

@@ -1,11 +1,7 @@
 <template>
     <section>
-        <router-link :to="{ name: '新增接口', params: {project_id: this.$route.params.project_id, formData: this.form, _type: this.radio, _typeData: this.radioType}}" style='text-decoration: none;color: aliceblue;'>
-                <el-button class="return-list">快速新建API</el-button>
-            </router-link>
-        <!--<el-button class="return-list">快速新建API</el-button>-->
         <el-form :model="form" ref="form">
-            <div style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px;padding-bottom: 0px">
+            <div style="border: 1px solid #e6e6e6;margin-bottom: 10px; padding:15px; padding-bottom: 0px">
             <el-row :gutter="10">
                 <el-col :span="3">
                     <el-form-item >
@@ -119,12 +115,9 @@
     </section>
 </template>
 <script>
-// import { POST } from '../../../api/api'
-// import { GET } from '../../../api/api'
+import { test } from '../../../../api/api'
 import $ from 'jquery'
-import VuePopper from "element-ui/src/utils/vue-popper";
   export default {
-      components: {VuePopper},
       data() {
       return {
         request: [{value: 'get', label: 'GET'},
@@ -193,6 +186,37 @@ import VuePopper from "element-ui/src/utils/vue-popper";
       }
     },
     methods: {
+      getApiInfo() {
+            let self = this;
+            let param = {project_id: self.$route.params.project_id, api_id: self.$route.params.api_id};
+            $.ajax({
+                type: "get",
+                url: test+"/api/api/api_info",
+                async: true,
+                data: param,
+                headers: {
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                },
+                timeout: 5000,
+                success: function(data) {
+                    if (data.code === '999999') {
+                        self.form.request4 = data.data.requestType;
+                        self.form.Http4 = data.data.httpType;
+                        self.form.addr = data.data.apiAddress;
+                        self.form.head = data.data.headers;
+                        self.form.parameter = data.data.requestParameter
+                        self.form.parameterRaw = data.data.requestParameterRaw[0].data;
+                        self.form.parameterType = data.data.requestParameterType;
+                    }
+                    else {
+                        self.$message.error({
+                            message: data.msg,
+                            center: true,
+                        })
+                    }
+                },
+            });
+        },
         toggleHeadSelection(rows) {
               rows.forEach(row => {
                 this.$refs.multipleHeadTable.toggleRowSelection(row, true);
@@ -317,6 +341,7 @@ import VuePopper from "element-ui/src/utils/vue-popper";
         }
     },
     mounted() {
+        this.getApiInfo();
         this.toggleHeadSelection(this.form.head);
         this.toggleParameterSelection(this.form.parameter)
     }

@@ -195,7 +195,7 @@ class ApiInfoForm(admin.ModelAdmin):
     fieldsets = ([
         '接口信息', {
             'fields': ('project', 'apiGroupLevelFirst', 'apiGroupLevelSecond', 'name', 'httpType',
-                       'requestType', 'apiAddress', 'status', 'mockCode', 'data', 'userUpdate')
+                       'requestParameterType', 'requestType', 'apiAddress', 'status', 'mockCode', 'data', 'userUpdate')
         }],)
 
 

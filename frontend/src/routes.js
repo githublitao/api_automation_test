@@ -12,6 +12,8 @@ import ApiListGroup from './views/project/api/ApiListGroup.vue'
 import FestTest from './views/project/api/FestTest.vue'
 import addApi from './views/project/api/Addapi.vue'
 import detail from './views/project/api/updateApi/ApiForm.vue'
+import ApiInfo from './views/project/api/updateApi/ApiInfo.vue'
+import testApi from './views/project/api/updateApi/TestApi.vue'
 import AutomationTest from './views/project/AutomationTest.vue'
 import ProjectMember from './views/project/ProjectMember.vue'
 import ProjectDynamic from './views/project/ProjectDynamic.vue'
@@ -67,7 +69,14 @@ let routes = [
                         {   path: '/apiList/:project_id/:firstGroup/:secondGroup', component: ApiListGroup, name: '分组接口列表'},
                         {   path: '/fastTest/:project_id', component: FestTest, name: '快速测试'},
                         {   path: '/addApi/:project_id', component: addApi, name: '新增接口'},
-                        {   path: '/detail/:project_id', component: detail, name: '接口'}
+                        {   path: '/detail/:project_id/:api_id',
+                            component: detail,
+                            name: '接口',
+                            children: [
+                                { path: '/apiInfo/:project_id/:api_id', component: ApiInfo, name: '基础信息'},
+                                { path: '/testApi/:project_id/:api_id', component: testApi, name: '测试'}
+                            ]
+                        }
                     ]},
             {   path: '/automationTest/:project_id', component: AutomationTest, name: '自动化测试', leaf: true},
             {   path: '/projectMember/:project_id', component: ProjectMember, name: '成员管理', leaf: true},

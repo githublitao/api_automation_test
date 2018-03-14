@@ -148,7 +148,7 @@ class ApiResponseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ApiResponse
-        fields = ('id', 'name', 'value', 'required', 'restrict', 'description')
+        fields = ('id', 'name', 'value', 'required', 'description')
 
 
 class ApiInfoSerializer(serializers.ModelSerializer):
@@ -160,6 +160,7 @@ class ApiInfoSerializer(serializers.ModelSerializer):
     requestParameter = ApiParameterSerializer(many=True, read_only=True)
     response = ApiResponseSerializer(many=True, read_only=True)
     requestParameterRaw = ApiParameterRawSerializer(many=True, read_only=True)
+    userUpdate = serializers.CharField(source='userUpdate.first_name')
 
     class Meta:
         model = ApiInfo
