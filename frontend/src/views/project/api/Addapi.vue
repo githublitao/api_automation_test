@@ -550,16 +550,16 @@ import $ from 'jquery'
         display: none;
     }
     .selectInput {
-        position:absolute;
-        margin-left:7px;
-        padding-left:10px;
-        width:5%;
-        height:25px;
-        left:1px;
-        top:1px;
-        border-bottom:0px;
-        border-right:0px;
-        border-left:0px;
-        border-top:0px;
+        position: absolute;
+        margin-left: 7px;
+        padding-left: 10px;
+        width: 51%;
+        height: 25px;
+        left: 1px;
+        top: 1px;
+        border-bottom: 0px;
+        border-right: 0px;
+        border-left: 0px;
+        border-top: 0px;
     }
 </style>

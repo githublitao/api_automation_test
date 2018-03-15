@@ -4,11 +4,11 @@
                 <el-button class="return-list">快速新建API</el-button>
             </router-link>
         <!--<el-button class="return-list">快速新建API</el-button>-->
-        <el-form :model="form" ref="form">
+        <el-form :model="form" ref="form" :rules="formRules">
             <div style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px;padding-bottom: 0px">
             <el-row :gutter="10">
                 <el-col :span="3">
-                    <el-form-item >
+                    <el-form-item>
                         <el-select v-model="form.request4"  placeholder="请求方式">
                             <el-option v-for="(item,index) in request" :key="index+''" :label="item.label" :value="item.value"></el-option>
                         </el-select>
@@ -27,7 +27,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span='2'>
-                    <el-button type="primary" @click="fastTest">发送</el-button>
+                    <el-button type="primary" @click="fastTest" :loading="loadingSend">发送</el-button>
                 </el-col>
             </el-row>
             </div>
@@ -135,6 +135,7 @@ import VuePopper from "element-ui/src/utils/vue-popper";
                 {value: 'https', label: 'HTTPS'}],
         ParameterTyep: true,
         radio: "form-data",
+        loadingSend: false,
         header: [{value: 'Accept', label: 'Accept'},
                     {value: 'Accept-Charset', label: 'Accept-Charset'},
                     {value: 'Accept-Encoding', label: 'Accept-Encoding'},
@@ -186,6 +187,11 @@ import VuePopper from "element-ui/src/utils/vue-popper";
             resultData: "",
             resultHead: "",
         },
+        formRules: {
+            addr: [
+            { required: true, message: '请输入地址', trigger: 'blur' },
+            ]
+        },
         headers: "",
         parameters: "",
         resultShow: true,
@@ -210,51 +216,60 @@ import VuePopper from "element-ui/src/utils/vue-popper";
 			this.parameters = sels
 		},
         fastTest: function() {
-            let self = this;
-            let _parameter = new Object();
-            let headers = new Object();
-            self.form.statusCode = '';
-            self.form.resultData = '';
-            self.form.resultHead = '';
-            for (let i=0;i<self.headers.length; i++) {
-                var a = self.headers[i]["name"];
-                if (a) {
-                    headers[a] = self.headers[i]["value"]
-                }
-            }
-            let url = self.form.Http4+"://"+self.form.addr;
-            let _type = self.radio;
-            if ( _type === 'form-data') {
-                if ( self.radioType === '3') {
-                    for (let i=0;i<self.parameters.length; i++) {
-                        var a = self.parameters[i]["name"];
+            this.$refs.form.validate((valid) => {
+                if (valid) {
+                    this.loadingSend = true;
+                    let self = this;
+                    let _parameter = new Object();
+                    let headers = new Object();
+                    self.form.statusCode = '';
+                    self.form.resultData = '';
+                    self.form.resultHead = '';
+                    for (let i = 0; i < self.headers.length; i++) {
+                        var a = self.headers[i]["name"];
                         if (a) {
-                            _parameter[a] = self.parameters[i]["value"]
+                            headers[a] = self.headers[i]["value"]
                         }
                     }
-                } else {
-                    _parameter = self.form.parameter
-                }
-            } else {
-                // POST(url, self.form.parameterRaw, headers)
-                _parameter = self.form.parameterRaw
-            }
-            $.ajax({
-                type: self.form.request4,
-                url: url,
-                async: true,
-                data: _parameter,
-                headers: headers,
-                timeout: 5000,
-                success: function(data, status, jqXHR) {
-                    self.form.statusCode = jqXHR.status;
-                    self.form.resultData = data;
-                    self.form.resultHead = jqXHR.getAllResponseHeaders()
-                },
-                error: function(jqXHR, error, errorThrown) {
-                    self.form.statusCode = jqXHR.status;
-                    self.form.resultData = jqXHR.responseJSON;
-                    self.form.resultHead = jqXHR.getAllResponseHeaders()
+                    let url = self.form.Http4 + "://" + self.form.addr;
+                    let _type = self.radio;
+                    if (_type === 'form-data') {
+                        console.log(self.radioType)
+                        if (self.radioType) {
+                            for (let i = 0; i < self.parameters.length; i++) {
+                                var a = self.parameters[i]["name"];
+                                if (a) {
+                                    _parameter[a] = self.parameters[i]["value"];
+                                }
+                            }
+                            _parameter = JSON.stringify(_parameter)
+                        } else {
+                            _parameter = self.form.parameter
+                        }
+                    } else {
+                        // POST(url, self.form.parameterRaw, headers)
+                        _parameter = self.form.parameterRaw;
+                    }
+                    $.ajax({
+                        type: self.form.request4,
+                        url: url,
+                        async: true,
+                        data: _parameter,
+                        headers: headers,
+                        timeout: 5000,
+                        success: function (data, status, jqXHR) {
+                            self.loadingSend = false;
+                            self.form.statusCode = jqXHR.status;
+                            self.form.resultData = data;
+                            self.form.resultHead = jqXHR.getAllResponseHeaders()
+                        },
+                        error: function (jqXHR, error, errorThrown) {
+                            self.loadingSend = false;
+                            self.form.statusCode = jqXHR.status;
+                            self.form.resultData = jqXHR.responseJSON;
+                            self.form.resultHead = jqXHR.getAllResponseHeaders()
+                        }
+                    })
                 }
             })
         },

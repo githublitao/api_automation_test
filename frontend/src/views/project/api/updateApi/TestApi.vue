@@ -1,31 +1,38 @@
 <template>
     <section>
         <el-form :model="form" ref="form">
+            <el-col :span="3" class="HOST">
+                <el-form-item prop="url">
+                    <el-select v-model="form.url"  placeholder="测试环境">
+                        <el-option v-for="(item,index) in Host" :key="index+''" :label="item.name" :value="item.host"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-col>
             <div style="border: 1px solid #e6e6e6;margin-bottom: 10px; padding:15px; padding-bottom: 0px">
-            <el-row :gutter="10">
-                <el-col :span="3">
-                    <el-form-item >
-                        <el-select v-model="form.request4"  placeholder="请求方式">
-                            <el-option v-for="(item,index) in request" :key="index+''" :label="item.label" :value="item.value"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="3">
-                    <el-form-item>
-                        <el-select v-model="form.Http4" placeholder="HTTP协议">
-                            <el-option v-for="(item,index) in Http" :key="index+''" :label="item.label" :value="item.value"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span='16'>
-                    <el-form-item prop="addr">
-                        <el-input v-model="form.addr" placeholder="地址" auto-complete></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span='2'>
-                    <el-button type="primary" @click="fastTest">发送</el-button>
-                </el-col>
-            </el-row>
+                <el-row :gutter="10">
+                    <el-col :span="3">
+                        <el-form-item >
+                            <el-select v-model="form.request4"  placeholder="请求方式">
+                                <el-option v-for="(item,index) in request" :key="index+''" :label="item.label" :value="item.value"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="3">
+                        <el-form-item>
+                            <el-select v-model="form.Http4" placeholder="HTTP协议">
+                                <el-option v-for="(item,index) in Http" :key="index+''" :label="item.label" :value="item.value"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='16'>
+                        <el-form-item prop="addr">
+                            <el-input v-model="form.addr" placeholder="地址" auto-complete></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='2'>
+                        <el-button type="primary" @click="Test">发送</el-button>
+                    </el-col>
+                </el-row>
             </div>
             <el-row :span="24">
                 <el-collapse v-model="activeNames" @change="handleChange">
@@ -165,15 +172,15 @@ import $ from 'jquery'
         result: true,
         activeNames: ['1', '2', '3', '4'],
         id: "",
+        Host: [],
         form: {
+            url: "",
             request4: 'POST',
             Http4: 'HTTP',
             addr: '',
-            head: [{name: "", value: ""},
-            {name: "", value: ""}],
+            head: [],
             parameterRaw: "",
-            parameter: [{name: "", value: "", required:"", restrict: "", description: ""},
-            {name: "", value: "", required:"", restrict: "", description: ""}],
+            parameter: [],
             parameterType: "",
             statusCode: "",
             resultData: "",
@@ -198,15 +205,23 @@ import $ from 'jquery'
                     Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                 },
                 timeout: 5000,
-                success: function(data) {
+                success: (data) => {
+
                     if (data.code === '999999') {
                         self.form.request4 = data.data.requestType;
                         self.form.Http4 = data.data.httpType;
                         self.form.addr = data.data.apiAddress;
-                        self.form.head = data.data.headers;
-                        self.form.parameter = data.data.requestParameter
+                        data.data.headers.forEach((item) => {
+                            self.form.head.push(item);
+                        });
+                        data.data.requestParameter.forEach((item) => {
+                            self.form.parameter.push(item);
+                        });
                         self.form.parameterRaw = data.data.requestParameterRaw[0].data;
                         self.form.parameterType = data.data.requestParameterType;
+                        self.radio = data.data.requestParameterType;
+                        self.toggleHeadSelection(self.form.head);
+                        self.toggleParameterSelection(self.form.parameter);
                     }
                     else {
                         self.$message.error({
@@ -216,6 +231,32 @@ import $ from 'jquery'
                     }
                 },
             });
+        },
+        getHost() {
+          let self = this;
+          $.ajax({
+                type: "get",
+                url: test+"/api/global/host_total",
+                async: true,
+                data: { project_id: this.$route.params.project_id, page: this.page,},
+                headers: {
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                },
+                timeout: 5000,
+                success: (data) => {
+                    if (data.code === '999999') {
+                        data.data.data.forEach((item) => {
+                            self.Host.push(item)
+                        })
+                    }
+                    else {
+                        self.$message.error({
+                            message: data.msg,
+                            center: true,
+                        })
+                    }
+                },
+            })
         },
         toggleHeadSelection(rows) {
               rows.forEach(row => {
@@ -233,7 +274,7 @@ import $ from 'jquery'
         selsChangeParameter: function (sels) {
 			this.parameters = sels
 		},
-        fastTest: function() {
+        Test: function() {
             let self = this;
             let _parameter = new Object();
             let headers = new Object();
@@ -260,7 +301,6 @@ import $ from 'jquery'
                     _parameter = self.form.parameter
                 }
             } else {
-                // POST(url, self.form.parameterRaw, headers)
                 _parameter = self.form.parameterRaw
             }
             $.ajax({
@@ -318,9 +358,9 @@ import $ from 'jquery'
         },
         changeParameterType() {
             if (this.radio === 'form-data') {
-                this.ParameterTyep = !this.ParameterTyep
+                this.ParameterTyep = true
             } else {
-                this.ParameterTyep = !this.ParameterTyep
+                this.ParameterTyep = false
             }
         },
         showBody() {
@@ -342,8 +382,7 @@ import $ from 'jquery'
     },
     mounted() {
         this.getApiInfo();
-        this.toggleHeadSelection(this.form.head);
-        this.toggleParameterSelection(this.form.parameter)
+        this.getHost()
     }
   }
 </script>
@@ -376,5 +415,9 @@ import $ from 'jquery'
         border-left:0px;
         border-top:0px;
     }
-
+    .HOST {
+        position: absolute;
+        right: 30px;
+        top: 0px;
+    }
 </style>
