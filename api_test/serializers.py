@@ -164,7 +164,7 @@ class ApiInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ApiInfo
-        fields = ('id', 'name', 'httpType', 'requestType', 'apiAddress', 'headers',
+        fields = ('id', 'apiGroupLevelFirst', 'apiGroupLevelSecond', 'name', 'httpType', 'requestType', 'apiAddress', 'headers',
                   'requestParameterType', 'requestParameter', 'requestParameterRaw', 'status',
                   'response', 'mockCode', 'data', 'lastUpdateTime', 'userUpdate', 'description')
 

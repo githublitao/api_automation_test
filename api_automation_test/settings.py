@@ -87,6 +87,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_swagger',
 ]
 
 REST_FRAMEWORK = {
@@ -144,27 +145,27 @@ WSGI_APPLICATION = 'api_automation_test.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'api_test',
-#         'USER': 'root',
-#         'PASSWORD': '123456',
-#         'HOST': '192.168.37.131',
-#         'PORT': '3306',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'api_test',
         'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
+        'PASSWORD': '123456',
+        'HOST': '192.168.37.131',
         'PORT': '3306',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'api_test',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#     }
+# }
 
 # DATABASES = {
 #     'default': {

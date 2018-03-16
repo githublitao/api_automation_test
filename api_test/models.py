@@ -66,6 +66,10 @@ TASK_CHOICE = (
     ('timing', '定时'),
 )
 
+STATUS_CHOICE = (
+    ('1', '是'),
+    ('0', '否')
+)
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
@@ -299,7 +303,7 @@ class ApiParameter(models.Model):
     api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name="所属接口", related_name='requestParameter')
     name = models.CharField(max_length=1024, verbose_name="参数名")
     value = models.CharField(max_length=1024, blank=True, null=True, verbose_name='参数值')
-    required = models.BooleanField(default=True, verbose_name="是否必填")
+    required = models.IntegerField(verbose_name="是否必填", choices=STATUS_CHOICE)
     restrict = models.CharField(max_length=1024, blank=True, null=True, verbose_name="输入限制")
     description = models.CharField(max_length=1024, blank=True, null=True, verbose_name="描述")
 
@@ -328,7 +332,7 @@ class ApiResponse(models.Model):
     api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name="所属接口", related_name='response')
     name = models.CharField(max_length=1024, verbose_name="参数名")
     value = models.CharField(max_length=1024, blank=True, null=True, verbose_name='参数值')
-    required = models.BooleanField(default=True, verbose_name="是否必填")
+    required = models.IntegerField(verbose_name="是否必含", choices=STATUS_CHOICE)
     description = models.CharField(max_length=1024, blank=True, null=True, verbose_name="描述")
 
     def __unicode__(self):

@@ -14,6 +14,7 @@ import addApi from './views/project/api/Addapi.vue'
 import detail from './views/project/api/updateApi/ApiForm.vue'
 import ApiInfo from './views/project/api/updateApi/ApiInfo.vue'
 import testApi from './views/project/api/updateApi/TestApi.vue'
+import UpdateApi from './views/project/api/updateApi/UpdateApi.vue'
 import ApiDynamic from './views/project/api/updateApi/ApiDynamic.vue'
 import AutomationTest from './views/project/AutomationTest.vue'
 import ProjectMember from './views/project/ProjectMember.vue'
@@ -78,7 +79,8 @@ let routes = [
                                 { path: '/testApi/:project_id/:api_id', component: testApi, name: '测试'},
                                 { path: '/apiDynamic/:project_id/:api_id', component: ApiDynamic, name: '历史'},
                             ]
-                        }
+                        },
+                        { path: '/updateApi/:project_id/:api_id', component: UpdateApi, name: '修改'},
                     ]},
             {   path: '/automationTest/:project_id', component: AutomationTest, name: '自动化测试', leaf: true},
             {   path: '/projectMember/:project_id', component: ProjectMember, name: '成员管理', leaf: true},

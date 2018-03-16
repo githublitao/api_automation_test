@@ -15,7 +15,7 @@
 					</router-link>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" @click="changeGroup">修改分组</el-button>
+					<el-button type="primary" :disabled="update" @click="changeGroup">修改分组</el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
@@ -107,6 +107,7 @@ import $ from 'jquery'
 		group: [],
 		secondGroup: [],
 		updateGroupLoading: false,
+		update: true,
       }
     },
 methods: {
@@ -272,7 +273,12 @@ methods: {
             this.getApiList()
         },
 		selsChange: function (sels) {
-			this.sels = sels;
+		    if (sels.length>0) {
+                this.sels = sels;
+                this.update = false
+            } else {
+		        this.update = true
+			}
 		},
 		//批量删除
 		batchRemove: function () {

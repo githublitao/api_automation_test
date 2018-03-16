@@ -1,11 +1,8 @@
 <template>
     <section>
-        <router-link :to="{ name: '接口列表', params: {project_id: this.$route.params.project_id}}" style='text-decoration: none;color: aliceblue;'>
-                <el-button class="return-list el-icon-d-arrow-left">接口列表</el-button>
-            </router-link>
-        <!--<el-button class="return-list el-icon-d-arrow-left" @click="back">接口列表</el-button>-->
+        <el-button class="return-list el-icon-d-arrow-left" @click="back">接口详情</el-button>
         <el-button class="return-list" style="float: right" @click="back">取消</el-button>
-        <el-button class="return-list" type="primary" style="float: right; margin-right: 15px" @click.native="addApi">保存</el-button>
+        <el-button class="return-list" type="primary" style="float: right; margin-right: 15px" @click.native="updateApi">保存</el-button>
         <el-form :model="form" ref="form" :rules="FormRules">
             <div style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px">
             <el-row :gutter="10">
@@ -79,7 +76,7 @@
                             </el-table-column>
                             <el-table-column label="操作" min-width="10%">
                                 <template slot-scope="scope">
-                                    <i class="el-icon-delete" style="font-size:30px;cursor:pointer;" @click="delHead(scope.$index)"></i>
+                                    <i class="el-icon-delete" style="font-size:30px" @click="delHead(scope.$index)"></i>
                                 </template>
                             </el-table-column>
                             <el-table-column label="" min-width="10%">
@@ -151,7 +148,7 @@
                         </el-form>
                         <div slot="footer" class="dialog-footer">
                             <el-button @click.native="addParameterFormVisible = false">取消</el-button>
-                            <el-button type="primary" @click.native="editParameterSubmit">保存</el-button>
+                            <el-button type="primary" @click.native="editParameterSubmit">提交</el-button>
                         </div>
                     </el-dialog>
                 <el-collapse-item title="返回参数" name="3">
@@ -206,7 +203,7 @@
                         </el-form>
                         <div slot="footer" class="dialog-footer">
                             <el-button @click.native="addResponseFormVisible = false">取消</el-button>
-                            <el-button type="primary" @click.native="editResponseSubmit">保存</el-button>
+                            <el-button type="primary" @click.native="editResponseSubmit">提交</el-button>
                         </div>
                     </el-dialog>
                 <el-collapse-item title="普通mock" name="4">
@@ -225,7 +222,7 @@
     </section>
 </template>
 <script>
-import { test } from '../../../api/api'
+import { test } from '../../../../api/api'
 import $ from 'jquery'
   export default {
     data() {
@@ -328,7 +325,79 @@ import $ from 'jquery'
       }
     },
     methods: {
-        addApi: function () {
+        getApiInfo() {
+            let self = this;
+            let param = {project_id: self.$route.params.project_id, api_id: self.$route.params.api_id};
+            $.ajax({
+                type: "get",
+                url: test+"/api/api/api_info",
+                async: true,
+                data: param,
+                headers: {
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                },
+                timeout: 5000,
+                success: function(data) {
+                    if (data.code === '999999') {
+                        data = data.data;
+                        self.id = data.id;
+                        self.form.firstGroup = data.apiGroupLevelFirst;
+                        self.form.secondGroup = data.apiGroupLevelSecond;
+                        self.form.name = data.name;
+                        if (data.status) {
+                            self.form.status = 'True';
+                        } else {
+                            self.form.status = 'False'
+                        }
+                        self.form.request4 = data.requestType;
+                        self.form.Http4 = data.httpType;
+                        self.form.addr = data.apiAddress;
+                        if (data.headers.length) {
+                            self.form.head = data.headers;
+                        }
+                        try {
+                                self.form.parameterRaw = JSON.parse(data.requestParameterRaw[0].data);
+                            } catch (e){
+
+                            }
+                        if (data.response.length) {
+                            self.form.response = data.response;
+                        }
+                        self.form.mockCode = data.mockCode;
+                        self.form.mockData = data.data;
+                        if (data.data) {
+                            self.form.mockJsonData = JSON.parse(data.data)
+                        }
+                        if (data.requestParameter.length) {
+                            self.form.parameter = data.requestParameter;
+                        }
+                        self.form.parameterType = data.requestParameterType;
+                        self.radio = self.form.parameterType;
+                    }
+                    else {
+                        self.$message.error({
+                            message: data.msg,
+                            center: true,
+                        })
+                    }
+                },
+            });
+        },
+        updateApi: function () {
+            console.log(this.form.firstGroup);
+            console.log(this.form.secondGroup);
+            console.log(this.form.name);
+            console.log(this.form.status);
+            console.log(this.form.request4);
+            console.log(this.form.Http4);
+            console.log(this.form.addr);
+            console.log(this.form.head);
+            console.log(this.form.parameterRaw);
+            console.log(this.form.parameter);
+            console.log(this.form.parameterType);
+            console.log(this.form.response);
+            console.log(this.form.mockCode);
+            console.log(this.form.mockData);
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     let self = this;
@@ -349,12 +418,15 @@ import $ from 'jquery'
                         } else {
                              _parameter = JSON.stringify(self.form.parameterRaw)
                         }
+                        // console.log(_parameter)
+                        // console.log(typeof _parameter)
                         $.ajax({
                             type: "post",
-                            url: test+"/api/api/add_api",
+                            url: test+"/api/api/update_api",
                             async: true,
                             data: {
                                 project_id: self.$route.params.project_id,
+                                api_id: self.$route.params.api_id,
                                 first_group_id: self.form.firstGroup,
                                 second_group_id: self.form.secondGroup,
                                 name: self.form.name,
@@ -375,9 +447,12 @@ import $ from 'jquery'
                             timeout: 5000,
                             success: function(data) {
                                 if (data.code === '999999') {
-                                    self.$router.push({ name: "接口列表"});
+                                    self.$router.push({ name: '基础信息', params: {
+                                        project_id: self.$route.params.project_id,
+                                            api_id: self.$route.params.api_id
+                                    }});
                                     self.$message({
-                                        message: '保存成功',
+                                        message: '修改成功',
                                         center: true,
                                         type: 'success'
                                     })
@@ -505,27 +580,6 @@ import $ from 'jquery'
       onSubmit() {
         console.log('submit!');
       },
-      fastAdd() {
-        let form = this.$route.params.formData;
-        let _type = this.$route.params._type;
-        let _typeData = this.$route.params._typeData;
-        if (form) {
-            this.form.request4 = form.request4;
-            this.form.Http4 = form.Http4;
-            this.form.addr = form.addr;
-            this.form.head = form.head;
-            this.form.parameterRaw = form.parameterRaw;
-            this.form.parameter = form.parameter;
-            this.form.mockCode = form.statusCode;
-            this.form.mockData = JSON.stringify(form.resultData)
-        }
-        if (_type) {
-            this.radio = _type
-        }
-        if (_typeData) {
-            this.radioType = _typeData
-        }
-      }
     },
     watch: {
         radio() {
@@ -534,7 +588,7 @@ import $ from 'jquery'
     },
     mounted() {
         this.getApiGroup();
-        this.fastAdd();
+        this.getApiInfo()
     }
   }
 </script>

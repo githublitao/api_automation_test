@@ -32,8 +32,10 @@
             </el-collapse-item>
             <el-collapse-item title="请求参数" name="2">
                 <template>
-                    <el-input :class="ParameterTyep? 'parameter-b': 'parameter-a'" type="textarea" :rows="5" placeholder="请输入内容" v-model="parameterRaw"></el-input>
+                    <div v-show="parameterRaw" :class="ParameterTyep? 'parameter-b': 'parameter-a'"
+                         style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px" v-model="parameterRaw">{{parameterRaw}}</div>
                 </template>
+                <div v-show="!parameter.length&&!parameterRaw" class="raw">暂无数据</div>
                 <el-table :data="parameter" highlight-current-row style="width: 100%;" v-loading="listLoadingParameter"
                     :class="ParameterTyep? 'parameter-a': 'parameter-b'">
                     <el-table-column type="index" label="#" min-width="10%" sortable>
@@ -128,8 +130,12 @@
                       </el-select>
                       <el-button type="primary" @click="changFormat">格式转换</el-button>
                   </div >
-                    <el-input v-model="mockData" type="textarea" :rows="8" placeholder="请输入mock内容" :class="!resultShow? 'parameter-a': 'parameter-b'"></el-input>
-                    <pre :class="resultShow? 'parameter-a': 'parameter-b'">{{mockJsonData}}</pre>
+                    <div v-show="mockData" v-model="mockData" :class="resultShow? 'parameter-a': 'parameter-b'"
+                        style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px">{{mockData}}</div>
+                    <div v-show="!mockData&&!mockJsonData" class="raw">暂无数据</div>
+                    <div v-show="mockJsonData" :class="!resultShow? 'parameter-a': 'parameter-b'" style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px">
+                        <pre>{{mockJsonData}}</pre>
+                    </div>
                 </el-card>
             </el-collapse-item>
         </el-collapse>
@@ -208,12 +214,11 @@
                             self.parameterType = data.requestParameterType;
                             self.parameter = data.requestParameter;
                             try {
-                                self.parameterRaw = data.requestParameterRaw[0].data;
+                                self.parameterRaw = JSON.parse(data.requestParameterRaw[0].data);
                             } catch (e){
 
                             }
                             self.response = data.response;
-                            console.log(self.response)
                             self.mockCode = data.mockCode;
                             self.mockData = data.data;
                             if (data.data) {
@@ -297,5 +302,12 @@
     }
     .parameter-b {
         display: none;
+    }
+    .raw {
+        border: 1px solid #e6e6e6;
+        margin-bottom: 10px;
+        padding:15px;
+        text-align: center;
+        z-index: 10000;
     }
 </style>

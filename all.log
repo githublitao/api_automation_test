@@ -1998,3 +1998,307 @@ Traceback (most recent call last):
     value=i['value'], required=a,
 UnboundLocalError: local variable 'a' referenced before assignment
 2018-03-06 21:07:44,632,2740,root,ERROR,ApiDoc.py:345,local variable 'a' referenced before assignment
+2018-03-16 11:51:03,926,12248,root,ERROR,ApiDoc.py:339,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 306, in add_api
+    i = eval(i)
+  File "<string>", line 1, in <module>
+NameError: name 'true' is not defined
+2018-03-16 11:51:04,019,12248,root,ERROR,ApiDoc.py:340,name 'true' is not defined
+2018-03-16 11:51:44,877,14796,root,ERROR,ApiDoc.py:340,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 307, in add_api
+    i = eval(i)
+  File "<string>", line 1, in <module>
+NameError: name 'true' is not defined
+2018-03-16 11:51:44,878,14796,root,ERROR,ApiDoc.py:341,name 'true' is not defined
+2018-03-16 13:52:58,325,14264,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/history_list
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 66, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 644, in history_list
+    data = APIRequestHistorySerializer(history, many=True).data
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\serializers.py", line 740, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\serializers.py", line 260, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\serializers.py", line 658, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\query.py", line 272, in __iter__
+    self._fetch_all()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\query.py", line 1179, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1051, in execute_sql
+    sql, params = self.as_sql()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 446, in as_sql
+    extra_select, order_by, group_by = self.pre_sql_setup()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 51, in pre_sql_setup
+    order_by = self.get_order_by()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 316, in get_order_by
+    field, self.query.get_meta(), default_order=asc))
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 661, in find_ordering_name
+    field, targets, alias, joins, path, opts = self._setup_joins(pieces, opts, alias)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 694, in _setup_joins
+    pieces, opts, alias)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\query.py", line 1448, in setup_joins
+    names, opts, allow_many, fail_on_missing=True)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\query.py", line 1379, in names_to_path
+    "Choices are: %s" % (name, ", ".join(available)))
+django.core.exceptions.FieldError: Cannot resolve keyword 'time' into field. Choices are: apiInfo, apiInfo_id, httpCode, id, requestAddress, requestTime, requestType
+2018-03-16 13:52:58,502,14264,django.server,ERROR,basehttp.py:124,"GET /api/api/history_list?project_id=2&api_id=2 HTTP/1.1" 500 21489
+2018-03-16 13:53:56,428,10420,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/history_list
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 66, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 644, in history_list
+    data = APIRequestHistorySerializer(history, many=True).data
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\serializers.py", line 740, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\serializers.py", line 260, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\serializers.py", line 658, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\query.py", line 272, in __iter__
+    self._fetch_all()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\query.py", line 1179, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 1051, in execute_sql
+    sql, params = self.as_sql()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 446, in as_sql
+    extra_select, order_by, group_by = self.pre_sql_setup()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 51, in pre_sql_setup
+    order_by = self.get_order_by()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 316, in get_order_by
+    field, self.query.get_meta(), default_order=asc))
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 661, in find_ordering_name
+    field, targets, alias, joins, path, opts = self._setup_joins(pieces, opts, alias)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\compiler.py", line 694, in _setup_joins
+    pieces, opts, alias)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\query.py", line 1448, in setup_joins
+    names, opts, allow_many, fail_on_missing=True)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\sql\query.py", line 1379, in names_to_path
+    "Choices are: %s" % (name, ", ".join(available)))
+django.core.exceptions.FieldError: Cannot resolve keyword 'time' into field. Choices are: apiInfo, apiInfo_id, httpCode, id, requestAddress, requestTime, requestType
+2018-03-16 13:53:56,465,10420,django.server,ERROR,basehttp.py:124,"GET /api/api/history_list?project_id=2&api_id=2 HTTP/1.1" 500 21489
+2018-03-16 14:44:22,996,1460,root,ERROR,ApiDoc.py:464,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 443, in update_api
+    ApiParameterRaw(api=api_id, data=request_list)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 477, in __init__
+    _setattr(self, field.name, rel_obj)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\related_descriptors.py", line 197, in __set__
+    self.field.remote_field.model._meta.object_name,
+ValueError: Cannot assign "'5'": "ApiParameterRaw.api" must be a "ApiInfo" instance.
+2018-03-16 14:44:23,112,1460,root,ERROR,ApiDoc.py:465,Cannot assign "'5'": "ApiParameterRaw.api" must be a "ApiInfo" instance.
+2018-03-16 14:45:17,488,1460,root,ERROR,ApiDoc.py:464,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 443, in update_api
+    ApiParameterRaw(api=api_id, data=request_list)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 477, in __init__
+    _setattr(self, field.name, rel_obj)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\related_descriptors.py", line 197, in __set__
+    self.field.remote_field.model._meta.object_name,
+ValueError: Cannot assign "'5'": "ApiParameterRaw.api" must be a "ApiInfo" instance.
+2018-03-16 14:45:17,489,1460,root,ERROR,ApiDoc.py:465,Cannot assign "'5'": "ApiParameterRaw.api" must be a "ApiInfo" instance.
+2018-03-16 14:46:37,663,6832,root,ERROR,ApiDoc.py:464,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 451, in update_api
+    restrict=i['restrict'],
+KeyError: 'restrict'
+2018-03-16 14:46:37,664,6832,root,ERROR,ApiDoc.py:465,'restrict'
+2018-03-16 14:47:12,657,16240,root,ERROR,ApiDoc.py:462,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 448, in update_api
+    if i['id']:
+KeyError: 'id'
+2018-03-16 14:47:12,658,16240,root,ERROR,ApiDoc.py:463,'id'
+2018-03-16 14:47:34,496,16240,root,ERROR,ApiDoc.py:462,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 448, in update_api
+    if i['id']:
+KeyError: 'id'
+2018-03-16 14:47:34,497,16240,root,ERROR,ApiDoc.py:463,'id'
+2018-03-16 14:47:47,490,15768,root,ERROR,ApiDoc.py:463,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 449, in update_api
+    if i['id']:
+KeyError: 'id'
+2018-03-16 14:47:47,491,15768,root,ERROR,ApiDoc.py:464,'id'
+2018-03-16 14:49:18,177,11088,root,ERROR,ApiDoc.py:462,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 418, in update_api
+    if i['id']:
+KeyError: 'id'
+2018-03-16 14:49:18,178,11088,root,ERROR,ApiDoc.py:463,'id'
+2018-03-16 16:18:08,138,15796,root,ERROR,ApiDoc.py:469,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 444, in update_api
+    i = eval(i)
+  File "<string>", line 1
+    {"id":5,"data":"{\"phone\":\"18202886913\",\"paswword\":\"11111111111\"}
+                                                                           ^
+SyntaxError: EOL while scanning string literal
+2018-03-16 16:18:08,197,15796,root,ERROR,ApiDoc.py:470,EOL while scanning string literal (<string>, line 1)
+2018-03-16 16:18:31,259,12036,root,ERROR,ApiDoc.py:470,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 445, in update_api
+    i = eval(i)
+  File "<string>", line 1
+    {"id":5,"data":"{\"phone\":\"18202886913\",\"paswword\":\"11111111111\"}
+                                                                           ^
+SyntaxError: EOL while scanning string literal
+2018-03-16 16:18:31,260,12036,root,ERROR,ApiDoc.py:471,EOL while scanning string literal (<string>, line 1)
+2018-03-16 16:23:35,153,17360,root,ERROR,ApiDoc.py:464,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 443, in update_api
+    ApiParameterRaw(api=api_id, data=request_list).save()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 477, in __init__
+    _setattr(self, field.name, rel_obj)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\related_descriptors.py", line 197, in __set__
+    self.field.remote_field.model._meta.object_name,
+ValueError: Cannot assign "'2'": "ApiParameterRaw.api" must be a "ApiInfo" instance.
+2018-03-16 16:23:35,188,17360,root,ERROR,ApiDoc.py:465,Cannot assign "'2'": "ApiParameterRaw.api" must be a "ApiInfo" instance.
+2018-03-16 16:23:44,728,17360,root,ERROR,ApiDoc.py:464,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 443, in update_api
+    ApiParameterRaw(api=api_id, data=request_list).save()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\base.py", line 477, in __init__
+    _setattr(self, field.name, rel_obj)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\db\models\fields\related_descriptors.py", line 197, in __set__
+    self.field.remote_field.model._meta.object_name,
+ValueError: Cannot assign "'2'": "ApiParameterRaw.api" must be a "ApiInfo" instance.
+2018-03-16 16:23:44,729,17360,root,ERROR,ApiDoc.py:465,Cannot assign "'2'": "ApiParameterRaw.api" must be a "ApiInfo" instance.
+2018-03-16 17:37:33,504,17148,django.request,ERROR,exception.py:118,Internal Server Error: /api/ api/Download
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 736, in download_doc
+    fn = open('123.docx', 'rb')
+FileNotFoundError: [Errno 2] No such file or directory: '123.docx'
+2018-03-16 17:37:33,708,17148,django.server,ERROR,basehttp.py:124,"GET /api/%20api/Download HTTP/1.1" 500 70713
+2018-03-16 17:37:54,869,5296,django.request,ERROR,exception.py:118,Internal Server Error: /api/ api/Download
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 736, in download_doc
+    fn = open('./123.docx', 'rb')
+FileNotFoundError: [Errno 2] No such file or directory: './123.docx'
+2018-03-16 17:37:54,942,5296,django.server,ERROR,basehttp.py:124,"GET /api/%20api/Download HTTP/1.1" 500 70858
+2018-03-16 18:24:19,761,15116,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/Download
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 158, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 156, in _get_response
+    response = response.render()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\template\response.py", line 106, in render
+    self.content = self.rendered_content
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\response.py", line 57, in rendered_content
+    assert renderer, ".accepted_renderer not set on Response"
+AssertionError: .accepted_renderer not set on Response
+2018-03-16 18:24:19,996,15116,django.server,ERROR,basehttp.py:124,"GET /api/api/Download HTTP/1.1" 500 75529
+2018-03-16 18:24:28,297,15116,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/Download
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 158, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 156, in _get_response
+    response = response.render()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\template\response.py", line 106, in render
+    self.content = self.rendered_content
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\response.py", line 57, in rendered_content
+    assert renderer, ".accepted_renderer not set on Response"
+AssertionError: .accepted_renderer not set on Response
+2018-03-16 18:24:28,367,15116,django.server,ERROR,basehttp.py:124,"GET /api/api/Download HTTP/1.1" 500 75522
+2018-03-16 18:25:02,451,15116,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/Download
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 158, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 156, in _get_response
+    response = response.render()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\template\response.py", line 106, in render
+    self.content = self.rendered_content
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\response.py", line 57, in rendered_content
+    assert renderer, ".accepted_renderer not set on Response"
+AssertionError: .accepted_renderer not set on Response
+2018-03-16 18:25:02,521,15116,django.server,ERROR,basehttp.py:124,"GET /api/api/Download HTTP/1.1" 500 75522
+2018-03-16 18:25:06,807,15116,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/Download
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 158, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 156, in _get_response
+    response = response.render()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\template\response.py", line 106, in render
+    self.content = self.rendered_content
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\response.py", line 57, in rendered_content
+    assert renderer, ".accepted_renderer not set on Response"
+AssertionError: .accepted_renderer not set on Response
+2018-03-16 18:25:06,889,15116,django.server,ERROR,basehttp.py:124,"GET /api/api/Download HTTP/1.1" 500 75530
+2018-03-16 18:25:24,337,17328,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/Download
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 158, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 156, in _get_response
+    response = response.render()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\template\response.py", line 106, in render
+    self.content = self.rendered_content
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\response.py", line 57, in rendered_content
+    assert renderer, ".accepted_renderer not set on Response"
+AssertionError: .accepted_renderer not set on Response
+2018-03-16 18:25:24,412,17328,django.server,ERROR,basehttp.py:124,"GET /api/api/Download HTTP/1.1" 500 75529

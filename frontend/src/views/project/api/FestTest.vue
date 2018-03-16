@@ -3,8 +3,14 @@
         <router-link :to="{ name: '新增接口', params: {project_id: this.$route.params.project_id, formData: this.form, _type: this.radio, _typeData: this.radioType}}" style='text-decoration: none;color: aliceblue;'>
                 <el-button class="return-list">快速新建API</el-button>
             </router-link>
-        <!--<el-button class="return-list">快速新建API</el-button>-->
         <el-form :model="form" ref="form" :rules="formRules">
+            <el-col :span="3" class="HOST">
+                <el-form-item prop="url">
+                    <el-select v-model="form.url"  placeholder="测试环境">
+                        <el-option v-for="(item,index) in Host" :key="index+''" :label="item.name" :value="item.host"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-col>
             <div style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px;padding-bottom: 0px">
             <el-row :gutter="10">
                 <el-col :span="3">
@@ -111,6 +117,7 @@
                         <div v-model="form.resultData" :class="resultShow? 'parameter-a': 'parameter-b'" v-show="!format">{{form.resultData}}</div>
                         <div v-model="form.resultHead" :class="resultShow? 'parameter-b': 'parameter-a'">{{form.resultHead}}</div>
                         <div :class="resultShow? 'parameter-a': 'parameter-b'" v-show="format"><pre>{{form.resultData}}</pre></div>
+                        <div v-show="!form.resultData&&!form.resultHead" class="raw">暂无数据</div>
                     </el-card>
                 </el-collapse-item>
             </el-collapse>
@@ -123,6 +130,7 @@
 // import { GET } from '../../../api/api'
 import $ from 'jquery'
 import VuePopper from "element-ui/src/utils/vue-popper";
+import { test } from '../../../api/api'
   export default {
       components: {VuePopper},
       data() {
@@ -172,8 +180,10 @@ import VuePopper from "element-ui/src/utils/vue-popper";
         radioType: "",
         result: true,
         activeNames: ['1', '2', '3', '4'],
+        Host: [{name: "", host: ""}],
         id: "",
         form: {
+            url:"",
             request4: 'POST',
             Http4: 'HTTP',
             addr: '',
@@ -199,6 +209,34 @@ import VuePopper from "element-ui/src/utils/vue-popper";
       }
     },
     methods: {
+        getHost() {
+          let self = this;
+          $.ajax({
+                type: "get",
+                url: test+"/api/global/host_total",
+                async: true,
+                data: { project_id: this.$route.params.project_id, page: this.page,},
+                headers: {
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                },
+                timeout: 5000,
+                success: (data) => {
+                    if (data.code === '999999') {
+                        data.data.data.forEach((item) => {
+                            if (item.status) {
+                                self.Host.push(item)
+                            }
+                        })
+                    }
+                    else {
+                        self.$message.error({
+                            message: data.msg,
+                            center: true,
+                        })
+                    }
+                },
+            })
+        },
         toggleHeadSelection(rows) {
               rows.forEach(row => {
                 this.$refs.multipleHeadTable.toggleRowSelection(row, true);
@@ -231,7 +269,7 @@ import VuePopper from "element-ui/src/utils/vue-popper";
                             headers[a] = self.headers[i]["value"]
                         }
                     }
-                    let url = self.form.Http4 + "://" + self.form.addr;
+                    let url = self.form.Http4 + "://" +self.form.url+ self.form.addr;
                     let _type = self.radio;
                     if (_type === 'form-data') {
                         console.log(self.radioType)
@@ -333,7 +371,8 @@ import VuePopper from "element-ui/src/utils/vue-popper";
     },
     mounted() {
         this.toggleHeadSelection(this.form.head);
-        this.toggleParameterSelection(this.form.parameter)
+        this.toggleParameterSelection(this.form.parameter);
+        this.getHost()
     }
   }
 </script>
@@ -366,5 +405,15 @@ import VuePopper from "element-ui/src/utils/vue-popper";
         border-left:0px;
         border-top:0px;
     }
-
+    .raw {
+        border: 1px solid #e6e6e6;
+        margin-bottom: 10px;
+        padding:15px;
+        text-align: center
+    }
+    .HOST {
+        position: absolute;
+        right: 10px;
+        top: 0px;
+    }
 </style>

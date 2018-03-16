@@ -17,6 +17,9 @@
 				<el-form-item>
 					<el-button type="primary" :disabled="update" @click="changeGroup">修改分组</el-button>
 				</el-form-item>
+				<el-form-item>
+					<el-button type="primary" @click.native="DownloadApi">下载接口文档</el-button>
+				</el-form-item>
 			</el-form>
 		</el-col>
 		<el-dialog title="修改所属分组" v-model="updateGroupFormVisible" :close-on-click-modal="false">
@@ -158,7 +161,7 @@ import $ from 'jquery'
 				self.updateGroupLoading = true;
 				//NProgress.start();
 				let params = { project_id:this.$route.params.project_id, first_group_id: self.updateGroupForm.firstGroup, second_group_id: self.updateGroupForm.secondGroup};
-				params['api_ids'] = ids
+				params['api_ids'] = ids;
                 $.ajax({
                     type: "post",
                     url: test+"/api/api/update_group",
@@ -183,8 +186,8 @@ import $ from 'jquery'
                                 center: true,
                             })
                         }
-                        self.updateGroupFormVisible = false
-                        self.getApiList()
+                        self.updateGroupFormVisible = false;
+                        self.getApiList();
                     },
                 })
 			}).catch(() => {
@@ -241,33 +244,47 @@ import $ from 'jquery'
 				//NProgress.start();
 				let self = this;
 				$.ajax({
-                type: "post",
-                url: test+"/api/api/del_api",
+					type: "post",
+					url: test+"/api/api/del_api",
+					async: true,
+					data: { project_id: this.$route.params.project_id, api_ids: row.id },
+					headers: {
+						Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+					},
+					timeout: 5000,
+					success: function(data) {
+						if (data.code === '999999') {
+							self.$message({
+								message: '删除成功',
+								center: true,
+								type: 'success'
+							})
+						} else {
+							self.$message.error({
+								message: data.msg,
+								center: true,
+							})
+						}
+						self.getApiList();
+					},
+				})
+
+			}).catch(() => {
+			});
+		},
+		DownloadApi() {
+            $.ajax({
+                type: "get",
+                url: test+"/api/api/Download",
                 async: true,
-                data: { project_id: this.$route.params.project_id, api_ids: row.id },
+                data: { project_id: this.$route.params.project_id},
                 headers: {
                     Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                 },
                 timeout: 5000,
                 success: function(data) {
-                    if (data.code === '999999') {
-                        self.$message({
-                            message: '删除成功',
-                            center: true,
-                            type: 'success'
-                        })
-                    } else {
-                        self.$message.error({
-                            message: data.msg,
-                            center: true,
-                        })
-                    }
-                    self.getApiList()
                 },
             })
-
-			}).catch(() => {
-			});
 		},
 	    handleCurrentChange(val) {
             this.page = val;
@@ -314,7 +331,7 @@ import $ from 'jquery'
                                 center: true,
                             })
                         }
-                        self.getApiList()
+                        self.getApiList();
                     },
                 })
 			}).catch(() => {

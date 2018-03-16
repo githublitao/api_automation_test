@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'api/history_list', ApiDoc.history_list),
     url(r'api/del_history', ApiDoc.del_history),
     url(r'api/operation_history', ApiDoc.operation_history),
+    url(r'api/Download', ApiDoc.download_doc),
     url(r'automation/group', Case.group),
     url(r'automation/add_group', Case.add_group),
     url(r'automation/del_group', Case.del_group),

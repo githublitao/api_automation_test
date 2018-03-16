@@ -141,7 +141,7 @@ def record_dynamic(project_id, _type, _object, desc):
     :param desc:  描述
     :return:
     """
-    record = ProjectDynamic(project=Project.objects.get(id=project_id), type='测试',
+    record = ProjectDynamic(project=Project.objects.get(id=project_id), type=_type,
                             operationObject=_object, user=User.objects.get(id=1),
                             description=desc)
     record.save()

@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
+from django.http import StreamingHttpResponse
 from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
@@ -254,9 +255,6 @@ def add_api(request):
     mock_status = request.POST.get('mockStatus')
     code = request.POST.get('code')
     desc = request.POST.get('description')
-    print(request_parameter_type)
-    print(request_list)
-    print(response_list)
     if status not in ['True', 'False']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if not project_id.isdecimal() or not first_group_id.isdecimal():
@@ -306,33 +304,24 @@ def add_api(request):
                         if request_list:
                             request_list = re.findall('{.*?}', request_list)
                             for i in request_list:
+                                print(i)
                                 i = eval(i)
                                 if i['name']:
-                                    print(1)
-                                    if i['required']:
-                                        a = True
-                                    else:
-                                        a = False
                                     ApiParameter(api=ApiInfo.objects.get(id=oba.pk), name=i['name'],
-                                                 value=i['value'], required=a,
+                                                 value=i['value'], required=i['required'],
                                                  restrict=i['restrict'],
                                                  description=i['description']).save()
                     else:
                         if request_list:
-                            ApiParameterRaw(api=ApiInfo.objects.get(id=oba.pk), data=response_list).save()
+                            ApiParameterRaw(api=ApiInfo.objects.get(id=oba.pk), data=request_list).save()
                     if response_list:
                         response_list = re.findall('{.*?}', response_list)
                         for i in response_list:
                             i = eval(i)
                             if i['name']:
-                                print(2)
-                                if i['required']:
-                                    a = True
-                                else:
-                                    a = False
-                                    ApiResponse(api=ApiInfo.objects.get(id=oba.pk), name=i['name'],
-                                                value=i['value'], required=a,
-                                                description=i['description']).save()
+                                ApiResponse(api=ApiInfo.objects.get(id=oba.pk), name=i['name'],
+                                            value=i['value'], required=i['required'],
+                                            description=i['description']).save()
                     record_dynamic(project_id, '新增', '接口', '新增接口“%s”' % name)
                     api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=oba.pk), user=User.objects.get(id=request.user.pk),
                                                      description='新增接口"%s"' % name)
@@ -427,46 +416,46 @@ def update_api(request):
                             head = re.findall('{.*?}', head_dict)
                             for i in head:
                                 i = eval(i)
-                                if i['id']:
-                                    ApiHead.objects.filter(id=i['id'], api=api_id).\
-                                        update(name=i['name'], value=i['value'])
-                                else:
-                                    ApiHead(api=ApiInfo.objects.get(id=api_id), name=i['name'],
-                                            value=i['value']).save()
+                                if i['name']:
+                                    try:
+                                        ApiHead.objects.filter(id=i['id'], api=api_id).\
+                                            update(name=i['name'], value=i['value'])
+                                    except KeyError:
+                                        ApiHead(api=ApiInfo.objects.get(id=api_id), name=i['name'],
+                                                value=i['value']).save()
                         if request_parameter_type == 'form-data':
-                            ApiParameterRaw.objects.filter(api=api_id).delete()
                             if request_list:
                                 request_list = re.findall('{.*?}', request_list)
                                 for i in request_list:
                                     i = eval(i)
-                                    if i['id']:
-                                        ApiParameter.objects.filter(id=i['id'], api=api_id).\
-                                            update(name=i['name'], value=i['value'], required=i['required'],
-                                                   restrict=i['restrict'],
-                                                   description=i['description'])
-                                    else:
-                                        ApiParameter(api=ApiInfo.objects.get(id=api_id), name=i['name'],
-                                                     value=i['value'], required=i['required'],
-                                                     description=i['description']).save()
+                                    if i['name']:
+                                        try:
+                                            ApiParameter.objects.filter(id=i['id'], api=api_id).\
+                                                update(name=i['name'], value=i['value'], required=i['required'],
+                                                       restrict=i['restrict'],
+                                                       description=i['description'])
+                                        except KeyError:
+                                            ApiParameter(api=ApiInfo.objects.get(id=api_id), name=i['name'],
+                                                         value=i['value'], required=i['required'],
+                                                         description=i['description']).save()
                         else:
-                            ApiParameter.objects.filter(api=api_id).delete()
                             ApiParameterRaw.objects.filter(api=api_id).delete()
                             if request_list:
-                                ApiParameterRaw(api=api_id, data=request_list)
+                                ApiParameterRaw(api=ApiInfo.objects.get(id=api_id), data=request_list).save()
+
                         if response_list:
                             response_list = re.findall('{.*?}', response_list)
                             for i in response_list:
                                 i = eval(i)
-                                if i['id']:
-                                    ApiResponse.objects.filter(id=i['id'], api=api_id).\
-                                        update(name=i['name'], value=i['value'], required=i['required'],
-                                               restrict=i['restrict'],
-                                               description=i['description'])
-                                else:
-                                    ApiResponse(api=ApiInfo.objects.get(id=api_id), name=i['name'],
-                                                value=i['value'], required=i['required'],
-                                                restrict=i['restrict'],
-                                                description=i['description']).save()
+                                if i['name']:
+                                    try:
+                                        ApiResponse.objects.filter(id=i['id'], api=api_id).\
+                                            update(name=i['name'], value=i['value'], required=i['required'],
+                                                   description=i['description'])
+                                    except KeyError:
+                                        ApiResponse(api=ApiInfo.objects.get(id=api_id), name=i['name'],
+                                                    value=i['value'], required=i['required'],
+                                                    description=i['description']).save()
                             record_dynamic(project_id, '修改', '接口', '修改接口“%s”' % name)
                         api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=api_id), user=User.objects.get(id=request.user.pk),
                                                          description='修改接口"%s"' % name)
@@ -622,10 +611,6 @@ def add_history(request):
             history = APIRequestHistory(apiInfo=ApiInfo.objects.get(id=api_id, project=project_id),
                                         requestType=request_type, requestAddress=url, httpCode=http_status)
             history.save()
-            record_dynamic(project_id, '测试', '接口', '测试接口“%s”' % obi[0].name)
-            api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=api_id), user=User.objects.get(id=request.user.pk),
-                                             description='测试接口"%s"' % obi[0].name)
-            api_record.save()
             return JsonResponse(data={
                 'history_id': history.pk
             }, code_msg=GlobalStatusCode.success())
@@ -652,7 +637,8 @@ def history_list(request):
     if obj:
         obi = ApiInfo.objects.filter(id=api_id, project=project_id)
         if obi:
-            history = APIRequestHistory.objects.filter(apiInfo=ApiInfo.objects.get(id=api_id, project=project_id))
+            history = APIRequestHistory.objects.filter(apiInfo=ApiInfo.objects.get(id=api_id, project=project_id))\
+                .order_by('-requestTime')[:10]
             data = APIRequestHistorySerializer(history, many=True).data
             return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
         else:
@@ -737,3 +723,21 @@ def operation_history(request):
             return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+
+
+# @api_view(['GET'])
+@verify_parameter(['project_id'], 'GET')
+def download_doc(request):
+    def file_iterator(fn, chunk_size=512):
+        while True:
+            c = fn.read(chunk_size)
+            if c:
+                yield c
+            else:
+                break
+    fn = open(r'H:\project\api_automation_test\api_test\api\123.docx', 'rb')
+    response = StreamingHttpResponse(file_iterator(fn))
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment;filename="123.docx"'
+
+    return response

@@ -55,7 +55,7 @@
                             </el-table-column>
                             <el-table-column label="操作" min-width="10%">
                                 <template slot-scope="scope">
-                                    <i class="el-icon-delete" style="font-size:30px" @click="delHead(scope.$index)"></i>
+                                    <i class="el-icon-delete" style="font-size:30px;cursor:pointer;" @click="delHead(scope.$index)"></i>
                                 </template>
                             </el-table-column>
                             <el-table-column label="" min-width="10%">
@@ -88,7 +88,7 @@
                             </el-table-column>
                             <el-table-column label="操作" min-width="10%">
                                 <template slot-scope="scope">
-                                    <i class="el-icon-delete" style="font-size:30px" @click="delParameter(scope.$index)"></i>
+                                    <i class="el-icon-delete" style="font-size:30px;cursor:pointer;" @click="delParameter(scope.$index)"></i>
                                 </template>
                             </el-table-column>
                             <el-table-column label="" min-width="10%">
@@ -114,7 +114,25 @@
                         <div v-model="form.resultData" :class="resultShow? 'parameter-a': 'parameter-b'" v-show="!format">{{form.resultData}}</div>
                         <div v-model="form.resultHead" :class="resultShow? 'parameter-b': 'parameter-a'">{{form.resultHead}}</div>
                         <div :class="resultShow? 'parameter-a': 'parameter-b'" v-show="format"><pre>{{form.resultData}}</pre></div>
+                        <div v-show="!form.resultData&&!form.resultHead" class="raw">暂无数据</div>
                     </el-card>
+                </el-collapse-item>
+                <el-collapse-item title="请求历史" name="5">
+                    <el-table :data="requestHistory" stripe style="width: 100%" v-loading="listLoading">
+                        <el-table-column prop="requestTime" label="操作时间" min-width="20%">
+                        </el-table-column>
+                        <el-table-column prop="requestType" label="请求方式" min-width="10%">
+                        </el-table-column>
+                        <el-table-column prop="requestAddress" label="请求地址" min-width="50%">
+                        </el-table-column>
+                        <el-table-column prop="httpCode" label="HTTP状态" min-width="10%">
+                        </el-table-column>
+                        <el-table-column min-width="10%" label="操作">
+                            <template slot-scope="scope">
+                                <i class="el-icon-delete" style="font-size:30px;cursor:pointer;" @click="delHistory(scope.row)"></i>
+                            </template>
+                        </el-table-column>
+                    </el-table>
                 </el-collapse-item>
             </el-collapse>
             </el-row>
@@ -127,10 +145,10 @@ import $ from 'jquery'
   export default {
       data() {
       return {
-        request: [{value: 'get', label: 'GET'},
-                    {value: 'post', label: 'POST'},
-                    {value: 'put', label: 'PUT'},
-                    {value: 'delete', label: 'DELETE'}],
+        request: [{value: 'GET', label: 'GET'},
+                    {value: 'POST', label: 'POST'},
+                    {value: 'PUT', label: 'PUT'},
+                    {value: 'DELETE', label: 'DELETE'}],
         Http: [{value: 'http', label: 'HTTP'},
                 {value: 'https', label: 'HTTPS'}],
         ParameterTyep: true,
@@ -171,13 +189,13 @@ import $ from 'jquery'
         header4: "",
         radioType: "",
         result: true,
-        activeNames: ['1', '2', '3', '4'],
+        activeNames: ['1', '2', '3', '4', '5'],
         id: "",
         Host: [],
         form: {
             url: "",
             request4: 'POST',
-            Http4: 'HTTP',
+            Http4: 'http',
             addr: '',
             head: [],
             parameterRaw: "",
@@ -195,6 +213,8 @@ import $ from 'jquery'
             { required: true, message: '请输入地址', trigger: 'blur' },
             ]
         },
+        requestHistory: [],
+        listLoading: false,
         headers: "",
         parameters: "",
         resultShow: true,
@@ -218,16 +238,31 @@ import $ from 'jquery'
 
                     if (data.code === '999999') {
                         self.form.request4 = data.data.requestType;
-                        self.form.Http4 = data.data.httpType;
+                        self.form.Http4 = data.data.httpType.toLowerCase();
                         self.form.addr = data.data.apiAddress;
-                        data.data.headers.forEach((item) => {
-                            self.form.head.push(item);
-                        });
-                        data.data.requestParameter.forEach((item) => {
-                            self.form.parameter.push(item);
-                        });
+                        if (data.data.headers.length) {
+                            data.data.headers.forEach((item) => {
+                                self.form.head.push(item);
+                            });
+                        } else {
+                            var param = [{name: "", value: ""}, {name: "", value: ""}];
+                            param.forEach((item) => {
+                                self.form.head.push(item);
+                            });
+                        }
+                        if (data.data.requestParameter.length) {
+                            data.data.requestParameter.forEach((item) => {
+                                self.form.parameter.push(item);
+                            });
+                        } else {
+                            var param = [{name: "", value: "", required:"1", restrict: "", description: ""},
+                                    {name: "", value: "", required:"1", restrict: "", description: ""}];
+                            param.forEach((item) => {
+                                self.form.parameter.push(item);
+                            });
+                        }
                         try {
-                            self.form.parameterRaw = data.data.requestParameterRaw[0].data;
+                            self.form.parameterRaw = JSON.parse(data.data.requestParameterRaw[0].data);
                         } catch (e) {
 
                         }
@@ -244,6 +279,96 @@ import $ from 'jquery'
                     }
                 },
             });
+        },
+        getHistory() {
+          let self = this;
+          this.listLoading = true;
+          $.ajax({
+                type: "get",
+                url: test+"/api/api/history_list",
+                async: true,
+                data: { project_id: this.$route.params.project_id, api_id: self.$route.params.api_id,},
+                headers: {
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                },
+                timeout: 5000,
+                success: (data) => {
+                    self.listLoading = false;
+                    if (data.code === '999999') {
+                        self.requestHistory = data.data
+                        // data.data.data.forEach((item) => {
+                        //     self.requestHistory.push(item)
+                        // })
+                    }
+                    else {
+                        self.$message.error({
+                            message: data.msg,
+                            center: true,
+                        })
+                    }
+                },
+            })
+        },
+        AddHistroy() {
+          let self = this;
+          this.listLoading = true;
+          let param = { project_id: this.$route.params.project_id,
+              api_id: self.$route.params.api_id,
+              requestType :self.form.request4,
+              url: self.form.Http4 + "://" + self.form.url + self.form.addr,
+              httpStatus: 200
+          };
+          $.ajax({
+                type: "POST",
+                url: test+"/api/api/add_history",
+                async: true,
+                data: param,
+                headers: {
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                },
+                timeout: 5000,
+                success: (data) => {
+                    self.listLoading = false;
+                    if (data.code === '999999') {
+                        self.getHistory()
+                    }
+                    else {
+                        self.$message.error({
+                            message: data.msg,
+                            center: true,
+                        })
+                    }
+                },
+            })
+        },
+        delHistory(row) {
+          let self = this;
+          let param = {
+              project_id: self.$route.params.project_id,
+              api_id: self.$route.params.api_id,
+              history_id: row.id
+          };
+          $.ajax({
+                type: "POST",
+                url: test+"/api/api/del_history",
+                async: true,
+                data: param,
+                headers: {
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                },
+                timeout: 5000,
+                success: (data) => {
+                    if (data.code === '999999') {
+                        this.getHistory()
+                    }
+                    else {
+                        self.$message.error({
+                            message: data.msg,
+                            center: true,
+                        })
+                    }
+                },
+            })
         },
         getHost() {
           let self = this;
@@ -335,13 +460,15 @@ import $ from 'jquery'
                             self.loadingSend = false;
                             self.form.statusCode = jqXHR.status;
                             self.form.resultData = data;
-                            self.form.resultHead = jqXHR.getAllResponseHeaders()
+                            self.form.resultHead = jqXHR.getAllResponseHeaders();
+                            self.AddHistroy()
                         },
                         error: function (jqXHR, error, errorThrown) {
                             self.loadingSend = false;
                             self.form.statusCode = jqXHR.status;
                             self.form.resultData = jqXHR.responseJSON;
-                            self.form.resultHead = jqXHR.getAllResponseHeaders()
+                            self.form.resultHead = jqXHR.getAllResponseHeaders();
+                            self.AddHistroy()
                         }
                     })
                 }
@@ -407,7 +534,8 @@ import $ from 'jquery'
     },
     mounted() {
         this.getApiInfo();
-        this.getHost()
+        this.getHost();
+        this.getHistory()
     }
   }
 </script>
@@ -444,5 +572,11 @@ import $ from 'jquery'
         position: absolute;
         right: 30px;
         top: 0px;
+    }
+    .raw {
+        border: 1px solid #e6e6e6;
+        margin-bottom: 10px;
+        padding:15px;
+        text-align: center
     }
 </style>

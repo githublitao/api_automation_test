@@ -70,7 +70,7 @@ def add_project(request):
                                   user=User.objects.get(id=request.user.pk))
                 project.save()
                 ProjectMember(permissionType='admin', project=Project.objects.get(id=project.pk),
-                              user=User.objects.get(id=request.user.pk))
+                              user=User.objects.get(id=request.user.pk)).save()
                 record = ProjectDynamic(project=Project.objects.get(id=project.pk), type='创建',
                                         operationObject='项目', user=User.objects.get(id=request.user.pk),
                                         description='创建项目“%s”' % name)
