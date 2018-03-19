@@ -384,20 +384,20 @@ import $ from 'jquery'
             });
         },
         updateApi: function () {
-            console.log(this.form.firstGroup);
-            console.log(this.form.secondGroup);
-            console.log(this.form.name);
-            console.log(this.form.status);
-            console.log(this.form.request4);
-            console.log(this.form.Http4);
-            console.log(this.form.addr);
-            console.log(this.form.head);
-            console.log(this.form.parameterRaw);
-            console.log(this.form.parameter);
-            console.log(this.form.parameterType);
-            console.log(this.form.response);
-            console.log(this.form.mockCode);
-            console.log(this.form.mockData);
+            // console.log(this.form.firstGroup);
+            // console.log(this.form.secondGroup);
+            // console.log(this.form.name);
+            // console.log(this.form.status);
+            // console.log(this.form.request4);
+            // console.log(this.form.Http4);
+            // console.log(this.form.addr);
+            // console.log(this.form.head);
+            // console.log(this.form.parameterRaw);
+            // console.log(this.form.parameter);
+            // console.log(this.form.parameterType);
+            // console.log(this.form.response);
+            // console.log(this.form.mockCode);
+            // console.log(this.form.mockData);
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     let self = this;

@@ -1,0 +1,376 @@
+<template>
+    <section>
+        <el-button class="return-list" @click="back"><i class="el-icon-d-arrow-left" style="margin-right: 5px"></i>用例列表</el-button>
+        <el-button type="primary" @click.native="addOldApi"><i class="el-icon-plus" style="margin-right: 5px"></i>已有接口</el-button>
+        <el-button type="primary"><i class="el-icon-plus" style="margin-right: 5px"></i>新建接口</el-button>
+        <el-button type="primary" @click.native="TestAll">测试全部</el-button>
+        <el-button type="primary">下载报告</el-button>
+        <el-button type="primary">设置定时任务</el-button>
+        <el-select v-model="url"  placeholder="测试环境" style="float: right">
+            <el-option v-for="(item,index) in Host" :key="index+''" :label="item.name" :value="item.id"></el-option>
+        </el-select>
+        <el-dialog title="选择创建的API" v-model="searchApiListVisible" :close-on-click-modal="false" >
+            <el-row :gutter="10">
+                <el-col :span="6">
+                    <div style="height:400px;line-height:100px;overflow:auto;overflow-x:hidden;">
+                        <el-menu default-active="2" class="el-menu-vertical-demo" active-text-color="rgb(32, 160, 255)" :unique-opened="true">
+                            <el-menu-item index="-1" @click.native="getApiList([])"><i class="el-icon-menu"></i>所有接口</el-menu-item>
+                            <template v-for="(item,index) in groupData">
+                                <el-submenu :index="index+''" :key="item.id" class="group">
+                                    <template slot="title">{{item.name}}
+                                    </template>
+                                    <template v-for="child in item.secondGroup">
+                                        <el-menu-item class="group" style="padding-right: 10px;" :index="child.id+''" @click.native="getApiList([item.id, child.id])">
+                                                {{child.name }}
+                                        </el-menu-item>
+                                    </template>
+                                </el-submenu>
+                            </template>
+                        </el-menu>
+                    </div>
+                </el-col>
+                <el-col :span="18">
+                    <el-table :data="searchApiList" highlight-current-row v-loading="apiListLoading" style="width: 100%;" :show-header="false" max-height="300">
+                        <el-table-column prop="name" label="名称" min-width="30%" sortable>
+                        </el-table-column>
+                        <el-table-column prop="requestType" label="HTTP方式" min-width="15%" sortable>
+                        </el-table-column>
+                        <el-table-column prop="apiAddress" label="地址" min-width="55%" sortable>
+                        </el-table-column>
+                    </el-table>
+                </el-col>
+            </el-row>
+            <el-col :span="24" class="toolbar">
+                <el-pagination layout="prev, pager, next" @current-change="handleCurrentChangeApi" :page-size="20" :page-count="total" style="float:right;">
+			    </el-pagination>
+            </el-col>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click.native="searchApiListVisible = false">取消</el-button>
+                <el-button type="primary" @click.native="updateGroupSubmit" :loading="searchApi">提交</el-button>
+            </div>
+        </el-dialog>
+        <el-table :data="ApiList" highlight-current-row v-loading="listLoading" style="width: 100%;">
+            <el-table-column type="index" min-width="5%">
+            </el-table-column>
+            <el-table-column prop="name" label="接口名称" min-width="20%" sortable>
+            </el-table-column>
+            <el-table-column prop="address" label="接口地址" min-width="45%" sortable>
+                <template slot-scope="scope">
+                    <span class="HttpStatus">{{scope.row.requestType}}</span><span style="font-size: 16px">{{scope.row.address}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="result" label="测试结果" min-width="10%" sortable>
+                <template slot-scope="scope">
+                    <span v-show="!scope.row.result">尚无测试结果</span>
+                    <span v-show="scope.row.result==='success'" style="color: #11b95c">成功,查看详情</span>
+                    <span v-show="scope.row.result==='fail'" style="color: #cc0000">失败,查看详情</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" min-width="20%">
+                <template slot-scope="scope">
+                    <el-button type="primary" size="small" @click="Test(scope.$index, scope.row)">测试</el-button>
+                    <el-button size="small" @click="handleDel(scope.$index, scope.row)">修改</el-button>
+                    <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-col :span="24" class="toolbar">
+            <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :page-count="total" style="float:right;">
+            </el-pagination>
+        </el-col>
+    </section>
+</template>
+
+<script>
+    import { test } from '../../../api/api'
+    import $ from 'jquery'
+    export default {
+        data() {
+            return{
+                ApiList: [],
+                listLoading: false,
+                searchName: "",
+                total: 0,
+                url: '',
+                Host: [],
+                searchApiListVisible: false,
+                searchApi: false,
+                searchApiList: [],
+                groupData: [],
+                apiListLoading: false,
+                apiTotal: 0,
+                pageApi: 1,
+            }
+        },
+        methods: {
+            getHost() {
+              let self = this;
+              $.ajax({
+                    type: "get",
+                    url: test+"/api/global/host_total",
+                    async: true,
+                    data: { project_id: this.$route.params.project_id, page: this.page,},
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: (data) => {
+                        if (data.code === '999999') {
+                            data.data.data.forEach((item) => {
+                                if (item.status) {
+                                    self.Host.push(item)
+                                }
+                            })
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+            },
+            back(){
+                this.$router.go(-1); // 返回上一层
+            },
+            getCaseApiList() {
+                this.listLoading = true;
+                let self = this;
+                $.ajax({
+                    type: "get",
+                    url: test+"/api/automation/api_list",
+                    async: true,
+                    data: { project_id: this.$route.params.project_id,
+                        page: self.page,
+                        name: self.searchName,
+                        case_id: this.$route.params.case_id
+                    },
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: function(data) {
+                        self.listLoading = false;
+                        if (data.code === '999999') {
+                            self.ApiList = [];
+                            self.total = data.data.total;
+                            data.data.data.forEach((item) =>{
+                                item.result = false;
+                                self.ApiList.push(item)
+                            });
+                            // self.ApiList = data.data.data
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+            },
+            Test(index, row) {
+                if (this.url) {
+                    let self = this;
+                    $.ajax({
+                        type: "post",
+                        url: test+"/api/automation/start_test",
+                        async: true,
+                        data: { project_id: this.$route.params.project_id,
+                            case_id: this.$route.params.case_id,
+                            host_id: this.url,
+                            id: row.id
+                        },
+                        headers: {
+                            Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                        },
+                        timeout: 5000,
+                        success: function(data) {
+                            if (data.code === '999999') {
+                                row.result = data.data.result
+                            }
+                            else {
+                                self.$message.error({
+                                    message: data.msg,
+                                    center: true,
+                                })
+                            }
+                        },
+                    })
+                } else {
+                    this.$message({
+                        message: '请选择测试环境',
+                        center: true,
+                        type: 'warning'
+                    })
+                }
+            },
+            TestAll() {
+                this.ApiList.forEach((item,index) =>{
+                    console.log(item,index);
+                        if (this.url) {
+                        let self = this;
+                        $.ajax({
+                            type: "post",
+                            url: test+"/api/automation/start_test",
+                            async: true,
+                            data: { project_id: this.$route.params.project_id,
+                                case_id: this.$route.params.case_id,
+                                host_id: this.url,
+                                id: item.id
+                            },
+                            headers: {
+                                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                            },
+                            timeout: 5000,
+                            success: function(data) {
+                                if (data.code === '999999') {
+                                    self.ApiList[index].result = data.data.result
+                                }
+                                else {
+                                    self.$message.error({
+                                        message: data.msg,
+                                        center: true,
+                                    })
+                                }
+                            },
+                        })
+                    } else {
+                        this.$message({
+                            message: '请选择测试环境',
+                            center: true,
+                            type: 'warning'
+                        })
+                    }
+                })
+            },
+            handleDel(index, row){
+                this.$confirm('确认删除该记录吗?', '提示', {
+                    type: 'warning'
+                }).then(() => {
+                    this.listLoading = true;
+                    //NProgress.start();
+                    let self = this;
+                    $.ajax({
+                        type: "post",
+                        url: test+"/api/automation/del_api",
+                        async: true,
+                        data: { project_id: this.$route.params.project_id, case_id: this.$route.params.case_id, ids: row.id },
+                        headers: {
+                            Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                        },
+                        timeout: 5000,
+                        success: function(data) {
+                            if (data.code === '999999') {
+                                self.$message({
+                                    message: '删除成功',
+                                    center: true,
+                                    type: 'success'
+                                })
+                            } else {
+                                self.$message.error({
+                                    message: data.msg,
+                                    center: true,
+                                })
+                            }
+                            self.getCaseApiList();
+                        },
+                    })
+
+                }).catch(() => {
+                });
+            },
+            // 获取api分组
+            getApiGroup() {
+                let self = this;
+                $.ajax({
+                    type: "get",
+                    url: test+"/api/api/group",
+                    async: true,
+                    data: { project_id: this.$route.params.project_id},
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: function(data) {
+                        if (data.code === '999999') {
+                            self.groupData = data.data;
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+            },
+            getApiList(_list) {
+                this.apiListLoading = true;
+                let self = this;
+                let param = { project_id: this.$route.params.project_id, page: self.page};
+                if (_list) {
+                    param['first_group_id'] = _list[0];
+                    param['second_group_id'] = _list[1];
+                }
+                $.ajax({
+                    type: "get",
+                    url: test+"/api/api/api_list",
+                    async: true,
+                    data: param,
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: function(data) {
+                        self.apiListLoading = false;
+                        if (data.code === '999999') {
+                            self.searchApiList = data.data.data
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+            },
+            addOldApi() {
+                this.searchApiListVisible = true;
+                this.getApiGroup();
+                this.getApiList()
+            },
+            handleCurrentChange(val) {
+                this.page = val;
+                this.getCaseApiList()
+            },
+            handleCurrentChangeApi(val) {
+                this.page = val;
+            }
+        },
+        mounted() {
+            this.getCaseApiList();
+            this.getHost();
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+     .return-list {
+        margin-top: 0px;
+        margin-bottom: 10px;
+        border-radius: 25px;
+     }
+    .HttpStatus {
+        border-radius: 25px;
+        padding: 10px;
+        box-sizing: border-box;
+        color: #fff;
+        font-size: 15px;
+        background-color: #409eff;
+        text-align: center;
+        margin-right: 10px;
+    }
+</style>

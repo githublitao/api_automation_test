@@ -1,7 +1,7 @@
 <template>
     <section>
         <router-link :to="{ name: '接口列表', params: {project_id: this.$route.params.project_id}}" style='text-decoration: none;color: aliceblue;'>
-                <el-button class="return-list el-icon-d-arrow-left">接口列表</el-button>
+                <el-button class="return-list"><i class="el-icon-d-arrow-left" style="margin-right: 5px"></i>接口列表</el-button>
             </router-link>
         <!--<el-button class="return-list el-icon-d-arrow-left" @click="back">接口列表</el-button>-->
         <el-button class="return-list" style="float: right" @click="back">取消</el-button>
@@ -230,10 +230,10 @@ import $ from 'jquery'
   export default {
     data() {
       return {
-        request: [{value: 'GET', label: 'GET'},
-                    {value: 'POST', label: 'POST'},
-                    {value: 'PUT', label: 'PUT'},
-                    {value: 'DELETE', label: 'DELETE'}],
+        request: [{value: 'get', label: 'GET'},
+                    {value: 'post', label: 'POST'},
+                    {value: 'put', label: 'PUT'},
+                    {value: 'delete', label: 'DELETE'}],
         Http: [{value: 'HTTP', label: 'HTTP'},
                 {value: 'HTTPS', label: 'HTTPS'}],
         checkHeadList: [],
@@ -305,8 +305,8 @@ import $ from 'jquery'
             parameter: [{name: "", value: "", required:"1", restrict: "", description: ""},
             {name: "", value: "", required:"1", restrict: "", description: ""}],
             parameterType: "",
-            response: [{name: "", value: "", required:"1", restrict: "", description: ""},
-            {name: "", value: "", required:"1", restrict: "", description: ""}],
+            response: [{name: "", value: "", required:"1", description: ""},
+            {name: "", value: "", required:"1", description: ""}],
             mockCode: '',
             mockData: '',
         },
@@ -460,7 +460,7 @@ import $ from 'jquery'
             }
         },
         addParameter() {
-            let headers = {name: "", value: "", required:"True", restrict: "", description: ""};
+            let headers = {name: "", value: "", required:"1", restrict: "", description: ""};
             this.form.parameter.push(headers)
         },
         delParameter(index) {
@@ -469,7 +469,7 @@ import $ from 'jquery'
             }
         },
         addResponse() {
-            let headers = {name: "", value: "", required:"True", restrict: "", description: ""};
+            let headers = {name: "", value: "", required:"1", description: ""};
             this.form.response.push(headers)
         },
         delResponse(index) {
@@ -510,12 +510,19 @@ import $ from 'jquery'
         let _type = this.$route.params._type;
         let _typeData = this.$route.params._typeData;
         if (form) {
+            this.form.parameter = [];
             this.form.request4 = form.request4;
             this.form.Http4 = form.Http4;
             this.form.addr = form.addr;
             this.form.head = form.head;
             this.form.parameterRaw = form.parameterRaw;
-            this.form.parameter = form.parameter;
+            form.parameter.forEach((item) => {
+                item['required'] = '1';
+                item['restrict'] = '';
+                item['description'] = '';
+                this.form.parameter.push(item)
+            });
+            // this.form.parameter = form.parameter;
             this.form.mockCode = form.statusCode;
             this.form.mockData = JSON.stringify(form.resultData)
         }

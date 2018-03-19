@@ -38,7 +38,7 @@ urlpatterns = [
     url(r'automation/group', Case.group),
     url(r'automation/add_group', Case.add_group),
     url(r'automation/del_group', Case.del_group),
-    url(r'automation/update_group', Case.update_group),
+    url(r'automation/update_name_group', Case.update_name_group),
     url(r'automation/update_case_group', Case.update_case_group),
     url(r'automation/case_list', Case.case_list),
     url(r'automation/add_case', Case.add_case),

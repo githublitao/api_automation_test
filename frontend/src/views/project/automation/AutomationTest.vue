@@ -3,13 +3,10 @@
     <el-row :span="24" class="row-title">
         <el-col :span="4">
             <el-button class="addGroup" @click="handleAddGroup">新增分组</el-button>
-            <router-link :to="{ name: '快速测试', params: {project_id: this.$route.params.project_id}}" style='text-decoration: none;color: aliceblue;'>
-                <el-button class="addGroup">快速测试</el-button>
-            </router-link>
             <div class="api-title"><strong>接口分组</strong></div>
             <div class="api-title" style="cursor:pointer;">
-                <router-link :to="{ name: '接口列表', params: {project_id: this.$route.params.project_id}}" style='text-decoration: none;color: aliceblue;'>
-                    所有接口
+                <router-link :to="{ name: '用例列表', params: {project_id: this.$route.params.project_id}}" style='text-decoration: none;color: aliceblue;'>
+                    所有用例
                 </router-link>
             </div>
 			<aside>
@@ -27,7 +24,7 @@
                                 </el-dropdown>
                             </template>
                             <template v-for="child in item.secondGroup">
-                                <router-link :to="{ name: '分组接口列表', params: {project_id: project, firstGroup: item.id, secondGroup: child.id}}" style='text-decoration: none;color: aliceblue;'>
+                                <router-link :to="{ name: '分组用例列表', params: {project_id: project, firstGroup: item.id, secondGroup: child.id}}" style='text-decoration: none;color: aliceblue;'>
                                     <el-menu-item class="group" style="padding-right: 10px;" :index="child.id+''">
                                             {{child.name }}
                                             <el-dropdown trigger="hover" class="editGroup">
@@ -156,11 +153,11 @@ methods: {
             this.editGroupForm.firstgroup = ''
         },
         // 获取api分组
-        getApiGroup() {
+        getCaseGroup() {
             let self = this;
             $.ajax({
                 type: "get",
-                url: test+"/api/api/group",
+                url: test+"/api/automation/group",
                 async: true,
                 data: { project_id: this.$route.params.project_id},
                 headers: {
@@ -209,7 +206,7 @@ methods: {
                         //NProgress.start();
                         $.ajax({
                             type: "post",
-                            url: test+"/api/api/add_group",
+                            url: test+"/api/automation/add_group",
                             async: true,
                             data: { project_id: this.$route.params.project_id, name: self.addGroupForm.secondGroup, first_group_id: self.addGroupForm.firstgroup},
                             headers: {
@@ -225,8 +222,8 @@ methods: {
                                         type: 'success'
                                     });
                                     self.$refs['addGroupForm'].resetFields();
-                                    self.addGroupFormVisible = false;  
-                                    self.getApiGroup();
+                                    self.addGroupFormVisible = false;
+                                    self.getCaseGroup();
                                     self.init()
                                 } else if (data.code === '999997'){
                                     self.$message.error({
@@ -239,8 +236,8 @@ methods: {
                                         center: true,
                                     });
                                     self.$refs['addGroupForm'].resetFields();
-                                    self.addGroupFormVisible = false;  
-                                    self.getApiGroup();
+                                    self.addGroupFormVisible = false;
+                                    self.getCaseGroup();
                                     self.init()
                                 }
                             },
@@ -262,10 +259,10 @@ methods: {
                         }
                         $.ajax({
                             type: "post",
-                            url: test+"/api/api/update_name_group",
+                            url: test+"/api/automation/update_name_group",
                             async: true,
-                            data: { project_id: this.$route.params.project_id, 
-                            name: self.editGroupForm.secondGroup, 
+                            data: { project_id: this.$route.params.project_id,
+                            name: self.editGroupForm.secondGroup,
                             first_group_id: self.editGroupForm.firstgroup,
                             second_group_id: self.editGroupForm.second_id},
                             headers: {
@@ -281,8 +278,8 @@ methods: {
                                         type: 'success'
                                     });
                                     self.$refs['editGroupForm'].resetFields();
-                                    self.editGroupFormVisible = false;  
-                                    self.getApiGroup();
+                                    self.editGroupFormVisible = false;
+                                    self.getCaseGroup();
                                     self.init()
                                 } else if (data.code === '999997'){
                                     self.$message.error({
@@ -295,8 +292,8 @@ methods: {
                                         center: true,
                                     });
                                     self.$refs['editGroupForm'].resetFields();
-                                    self.editGroupFormVisible = false;  
-                                    self.getApiGroup();
+                                    self.editGroupFormVisible = false;
+                                    self.getCaseGroup();
                                     self.init()
                                 }
                             },
@@ -314,7 +311,7 @@ methods: {
 				let self = this;
 				$.ajax({
                 type: "post",
-                url: test+"/api/api/del_group",
+                url: test+"/api/automation/del_group",
                 async: true,
                 data: {first_group_id: id, project_id: this.$route.params.project_id},
                 headers: {
@@ -334,7 +331,7 @@ methods: {
                             center: true,
                         })
                     }
-                    self.getApiGroup()
+                    self.getCaseGroup()
                 },
             })
 
@@ -350,7 +347,7 @@ methods: {
 				let self = this;
 				$.ajax({
                 type: "post",
-                url: test+"/api/api/del_group",
+                url: test+"/api/automation/del_group",
                 async: true,
                 data: {first_group_id: first_id, second_group_id: second_id, project_id: this.$route.params.project_id},
                 headers: {
@@ -370,7 +367,7 @@ methods: {
                             center: true,
                         })
                     }
-                    self.getApiGroup()
+                    self.getCaseGroup()
                 },
             })
 
@@ -379,9 +376,9 @@ methods: {
 		},
     },
     mounted() {
-        this.getApiGroup();
+        this.getCaseGroup();
         this.project = this.$route.params.project_id
-        
+
     }
   }
 </script>

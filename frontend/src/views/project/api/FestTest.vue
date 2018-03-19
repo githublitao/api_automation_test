@@ -272,7 +272,6 @@ import { test } from '../../../api/api'
                     let url = self.form.Http4 + "://" +self.form.url+ self.form.addr;
                     let _type = self.radio;
                     if (_type === 'form-data') {
-                        console.log(self.radioType)
                         if (self.radioType) {
                             for (let i = 0; i < self.parameters.length; i++) {
                                 var a = self.parameters[i]["name"];

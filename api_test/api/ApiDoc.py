@@ -172,6 +172,7 @@ def api_list(request):
     second_group_id 二级分组ID
     page_size  每一页条数
     page 页码
+    name 接口名称
     :return:
     """
     try:
@@ -304,7 +305,6 @@ def add_api(request):
                         if request_list:
                             request_list = re.findall('{.*?}', request_list)
                             for i in request_list:
-                                print(i)
                                 i = eval(i)
                                 if i['name']:
                                     ApiParameter(api=ApiInfo.objects.get(id=oba.pk), name=i['name'],

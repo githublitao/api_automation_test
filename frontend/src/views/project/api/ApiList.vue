@@ -115,7 +115,7 @@ import $ from 'jquery'
       }
     },
 	methods: {
-    	// 获取项目列表
+    	// 获取接口列表
 		getApiList() {
 			this.listLoading = true;
 			let self = this;

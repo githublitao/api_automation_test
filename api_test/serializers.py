@@ -5,7 +5,7 @@ from rest_framework.authtoken.models import Token
 from api_test.models import Project, ProjectDynamic, ProjectMember, GlobalHost, ApiGroupLevelSecond, ApiGroupLevelFirst, \
     ApiInfo, APIRequestHistory, ApiOperationHistory, AutomationGroupLevelFirst, AutomationGroupLevelSecond, \
     AutomationTestCase, AutomationCaseApi, AutomationHead, AutomationParameter, AutomationTestTask, \
-    AutomationTestResult, ApiHead, ApiParameter, ApiResponse, ApiParameterRaw
+    AutomationTestResult, ApiHead, ApiParameter, ApiResponse, ApiParameterRaw, AutomationParameterRaw
 
 
 class TokenSerializer(serializers.ModelSerializer):
@@ -227,14 +227,15 @@ class AutomationGroupLevelFirstSerializer(serializers.ModelSerializer):
 
 class AutomationTestCaseSerializer(serializers.ModelSerializer):
     """
-    自动化用例一级分组信息序列化
+    自动化用例信息序列化
     """
     updateTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    createUser = serializers.CharField(source='user.first_name')
 
     class Meta:
         model = AutomationTestCase
-        fields = ('id', 'automationGroupLevelFirst', 'automationGroupLevelSecond', 'caseName', 'description',
-                  'updateTime')
+        fields = ('id', 'automationGroupLevelFirst', 'automationGroupLevelSecond', 'caseName', 'createUser',
+                  'description', 'updateTime')
 
 
 class AutomationHeadSerializer(serializers.ModelSerializer):
@@ -255,17 +256,28 @@ class AutomationParameterSerializer(serializers.ModelSerializer):
         fields = ('id', 'key', 'value', 'interrelate')
 
 
+class AutomationParameterRawSerializer(serializers.ModelSerializer):
+    """
+    接口请求参数源数据序列化
+    """
+
+    class Meta:
+        model = AutomationParameterRaw
+        fields = ('id', 'data')
+
+
 class AutomationCaseApiSerializer(serializers.ModelSerializer):
     """
     自动化用例接口详细信息序列化
     """
     header = AutomationHeadSerializer(many=True, read_only=True)
     parameterList = AutomationParameterSerializer(many=True, read_only=True)
+    parameterRaw = AutomationParameterRawSerializer(many=True, read_only=True)
 
     class Meta:
         model = AutomationCaseApi
         fields = ('id', 'name', 'httpType', 'requestType', 'address', 'header', 'requestParameterType',
-                  'parameterList', 'examineType', 'httpCode', 'responseData')
+                  'parameterList', 'parameterRaw', 'examineType', 'httpCode', 'responseData')
 
 
 class AutomationCaseApiListSerializer(serializers.ModelSerializer):

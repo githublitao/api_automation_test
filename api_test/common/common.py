@@ -60,7 +60,6 @@ def verify_parameter(expect_parameter, method):
                     if parameter[i] == ['']:
                         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             else:
-                print(1)
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
 
             return func(reality_parameter)
@@ -68,7 +67,7 @@ def verify_parameter(expect_parameter, method):
     return api
 
 
-result = True
+result = 'success'
 
 
 def check_json(src_data, dst_data):
@@ -87,7 +86,7 @@ def check_json(src_data, dst_data):
 
             for key in data:
                 if key not in dst_data:
-                    result = False
+                    result = 'fail'
                 else:
                     # if src_data[key] != dst_data[key]:
                     #     result = False
@@ -96,10 +95,10 @@ def check_json(src_data, dst_data):
                     check_json(src_data[this_key], dst_data[this_key])
 
             return result
-        return False
+        return 'fail'
 
     except:
-        return False
+        return 'fail'
 
 
 def record_results(_id, url, request_type, header, parameter,

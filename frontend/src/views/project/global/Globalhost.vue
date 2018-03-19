@@ -48,7 +48,7 @@
 
         <!--编辑界面-->
         <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
-            <el-form :model="editForm"  :rules="editFormRules" ref="editForm">
+            <el-form :model="editForm"  :rules="editFormRules" ref="editForm" label-width="80px">
                 <el-form-item label="名称" prop="name">
                     <el-input v-model="editForm.name" auto-complete="off"></el-input>
                 </el-form-item>

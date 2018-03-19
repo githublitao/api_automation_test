@@ -448,7 +448,6 @@ import $ from 'jquery'
                         // POST(url, self.form.parameterRaw, headers)
                         _parameter = self.form.parameterRaw;
                     }
-                    console.log(self.form.url)
                     $.ajax({
                         type: self.form.request4,
                         url: url,

@@ -7,7 +7,7 @@ from api_test.models import Project, GlobalHost, ApiGroupLevelFirst, ApiGroupLev
     APIRequestHistory, ApiOperationHistory, ProjectDynamic, ProjectMember, \
     AutomationGroupLevelSecond, AutomationGroupLevelFirst, AutomationTestCase, AutomationParameter, AutomationCaseApi, \
     AutomationTestResult, AutomationTestTask, AutomationHead, UserProfile, ApiHead, ApiParameter, ApiResponse, \
-    ApiParameterRaw
+    ApiParameterRaw, AutomationParameterRaw
 
 from django.contrib import admin
 from django.utils.text import capfirst
@@ -265,7 +265,7 @@ class AutomationTestCaseForm(admin.ModelAdmin):
     fieldsets = ([
         '用例接口列表', {
             'fields': ('project', 'automationGroupLevelFirst', 'automationGroupLevelSecond',
-                       'caseName', 'description')
+                       'caseName', 'user', 'description')
         }],)
 
 
@@ -280,8 +280,12 @@ class AutomationHeadInCase(admin.TabularInline):
     model = AutomationHead
 
 
+class AutomationRawInCase(admin.TabularInline):
+    model = AutomationParameterRaw
+
+
 class AutomationCaseApiForm(admin.ModelAdmin):
-    inlines = [AutomationHeadInCase, AutomationParameterInCase]
+    inlines = [AutomationHeadInCase, AutomationParameterInCase, AutomationRawInCase]
     search_fields = ('automationTestCase', 'name', 'address')
     list_display = ('id', 'automationTestCase', 'name', 'httpType', 'requestType', 'address', 'examineType')
     list_display_links = ('id', 'automationTestCase', 'name', 'httpType')

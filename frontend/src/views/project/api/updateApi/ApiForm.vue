@@ -1,7 +1,7 @@
 <template>
     <section>
         <router-link :to="{ name: '接口列表', params: {project_id: this.$route.params.project_id}}" style='text-decoration: none;color: aliceblue;'>
-                <el-button class="return-list el-icon-d-arrow-left">接口列表</el-button>
+                <el-button class="return-list"><i class="el-icon-d-arrow-left" style="margin-right: 5px"></i>接口列表</el-button>
         </router-link>
         <el-radio-group v-model="radio" style="margin-left: 50px">
             <router-link @click.native="showNavi('基础信息')" :to="{ name: '基础信息', params: { project_id: this.$route.params.project_id, api_id: this.$route.params.api_id}}" style='text-decoration:none;'>

@@ -7,9 +7,10 @@ import requests
 from django.core import serializers
 
 from api_test.common.common import check_json, record_results
-from api_test.models import GlobalHost, AutomationCaseApi, AutomationParameter, AutomationTestResult, AutomationHead
+from api_test.models import GlobalHost, AutomationCaseApi, AutomationParameter, AutomationTestResult, AutomationHead, \
+    AutomationParameterRaw
 from api_test.serializers import AutomationCaseApiSerializer, AutomationParameterSerializer, \
-    AutomationTestResultSerializer
+    AutomationTestResultSerializer, AutomationParameterRawSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -25,28 +26,32 @@ def test_api(host_id, case_id, _id, project_id):
     """
     host = GlobalHost.objects.get(id=host_id, project=project_id).host
     data = AutomationCaseApiSerializer(AutomationCaseApi.objects.get(id=_id, automationTestCase=case_id)).data
-    parameter_list = json.loads(serializers.serialize('json',
-                                                      AutomationParameter.objects.filter(automationCaseApi=_id)))
-    parameter = {}
+    if data['requestParameterType'] == 'form-data':
+        parameter_list = json.loads(serializers.serialize('json',
+                                                          AutomationParameter.objects.filter(automationCaseApi=_id)))
+        parameter = {}
 
-    for i in parameter_list:
-        key_ = i['fields']['key']
-        value = i['fields']['value']
+        for i in parameter_list:
+            key_ = i['fields']['key']
+            value = i['fields']['value']
 
-        try:
-            if i['fields']['interrelate']:
-                api_id = re.findall('(?<=<response\[).*?(?=\])', value)
-                a = re.findall('(?<=\[").*?(?="])', value)
-                value = eval(json.loads(serializers.serialize(
-                    'json',
-                    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
-                for j in a:
-                    value = value[j]
-        except:
-            return False
+            try:
+                if i['fields']['interrelate']:
+                    api_id = re.findall('(?<=<response\[).*?(?=\])', value)
+                    a = re.findall('(?<=\[").*?(?="])', value)
+                    value = eval(json.loads(serializers.serialize(
+                        'json',
+                        AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
+                    for j in a:
+                        value = value[j]
+            except KeyError:
+                return 'fail'
 
-        parameter[key_] = value
-
+            parameter[key_] = value
+    else:
+        parameter = AutomationParameterRawSerializer(AutomationParameterRaw.objects.filter(automationCaseApi=_id),
+                                                     many=True).data[0]["data"]
+        parameter = json.loads(parameter)
     http_type = data['httpType']
     request_type = data['requestType']
     address = host + data['address']
@@ -69,7 +74,7 @@ def test_api(host_id, case_id, _id, project_id):
             except Exception as e:
                 logging.exception("ERROR")
                 logging.error(e)
-                return False
+                return 'fail'
 
         header[key_] = value
 
@@ -89,7 +94,7 @@ def test_api(host_id, case_id, _id, project_id):
     elif request_type == 'DELETE':
         code, response_data = post(header, url, request_parameter_type, parameter)
     else:
-        return False
+        return 'fail'
 
     http_code = data['httpCode']
     response_parameter_list = data['responseData']
@@ -98,7 +103,7 @@ def test_api(host_id, case_id, _id, project_id):
         record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                        status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                        _result='PASS', code=code, response_data=response_data)
-        return True
+        return 'success'
 
     elif examine_type == 'json':
         if int(http_code) == code:
@@ -116,40 +121,41 @@ def test_api(host_id, case_id, _id, project_id):
             record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                            status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                            _result='FAIL', code=code, response_data=response_data)
-            return False
+            return 'fail'
 
     elif examine_type == 'only_check_status':
         if int(http_code) == code:
             record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                            status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                            _result='PASS', code=code, response_data=response_data)
-            return True
+            return 'success'
         else:
             record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                            status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                            _result='FAIL', code=code, response_data=response_data)
-            return False
+            return 'fail'
 
     elif examine_type == 'entirely_check':
         if int(http_code) == code:
             try:
                 result = operator.eq(eval(response_parameter_list), response_data)
             except:
-                return False
+                return 'fail'
             if result:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                                _result='PASS', code=code, response_data=response_data)
+                return 'success'
             else:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                                _result='FAIL', code=code, response_data=response_data)
-            return result
+                return 'fail'
         else:
             record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                            status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                            _result='FAIL', code=code, response_data=response_data)
-            return False
+            return 'fail'
 
     elif examine_type == 'Regular_check':
         if int(http_code) == code:
@@ -158,23 +164,23 @@ def test_api(host_id, case_id, _id, project_id):
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                                _result='PASS', code=code, response_data=response_data)
-                return True
+                return 'success'
             else:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                                _result='FAIL', code=code, response_data=response_data)
-                return False
+                return 'fail'
         else:
             record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                            status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                            _result='FAIL', code=code, response_data=response_data)
-            return False
+            return 'fail'
 
     else:
         record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                        status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                        _result='FAIL', code=code, response_data=response_data)
-        return False
+        return 'fail'
 
 
 def post(header, address, request_parameter_type, data):

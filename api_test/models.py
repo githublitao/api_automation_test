@@ -434,6 +434,8 @@ class AutomationTestCase(models.Model):
     automationGroupLevelSecond = models.ForeignKey(AutomationGroupLevelSecond, blank=True, null=True,
                                                    on_delete=models.SET_NULL, verbose_name='所属用例二级分组')
     caseName = models.CharField(max_length=50, verbose_name='用例名称')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, verbose_name="创建人",
+                             related_name="createUser")
     description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='描述')
     updateTime = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 
@@ -510,6 +512,20 @@ class AutomationParameter(models.Model):
     class Meta:
         verbose_name = '接口参数'
         verbose_name_plural = '接口参数管理'
+
+
+class AutomationParameterRaw(models.Model):
+    """
+    请求的源数据参数
+    """
+    id = models.AutoField(primary_key=True)
+    automationCaseApi = models.ForeignKey(AutomationCaseApi, related_name='parameterRaw',
+                                          on_delete=models.CASCADE, verbose_name='接口')
+    data = models.TextField(verbose_name='源数据请求参数')
+
+    class Meta:
+        verbose_name = '源数据参数'
+        verbose_name_plural = '源数据参数参数管理'
 
 
 class AutomationTestResult(models.Model):

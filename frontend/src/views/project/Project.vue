@@ -30,7 +30,7 @@
 								</template>
 							</el-menu-item>
 							<el-submenu :index="index+''" v-if="!items.leaf">
-								<template slot="title"></i>{{items.name}}</template>
+								<template slot="title">{{items.name}}</template>
 								<el-menu-item v-for="child in items.children" :key="child.path" :index="child.path">
 									{{child.name}}
 								</el-menu-item>

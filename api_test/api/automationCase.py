@@ -124,9 +124,9 @@ def del_group(request):
 
 @api_view(['POST'])
 @verify_parameter(['project_id', 'name', 'first_group_id'], 'POST')
-def update_group(request):
+def update_name_group(request):
     """
-    修改用例分组
+    修改用例分组名称
     project_id 项目ID
     name  名称
     first_group_id 一级分组ID
@@ -225,6 +225,7 @@ def case_list(request):
     project_id 项目ID
     first_group_id 一级分组ID
     second_group_id 二级分组ID
+    name 用例名称
     :return:
     """
     try:
@@ -235,23 +236,27 @@ def case_list(request):
     project_id = request.GET.get('project_id')
     first_group_id = request.GET.get('first_group_id')
     second_group_id = request.GET.get('second_group_id')
+    name = request.GET.get('name')
     if not project_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
-        if first_group_id and second_group_id == "":
-            if not first_group_id.isdecimal():
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-            obi = AutomationTestCase.objects.filter(project=project_id,
-                                                    automationGroupLevelFirsta=first_group_id).order_by('id')
-        elif first_group_id and second_group_id:
+        if first_group_id and second_group_id:
             if not first_group_id.isdecimal() or not second_group_id.isdecimal():
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-            obi = AutomationTestCase.objects.filter(project=project_id,
-                                                    automationGroupLevelFirst=first_group_id,
-                                                    automationGroupLevelSecond=second_group_id).order_by('id')
+            if name:
+                obi = AutomationTestCase.objects.filter(project=project_id, caseName__contains=name,
+                                                        automationGroupLevelFirst=first_group_id,
+                                                        automationGroupLevelSecond=second_group_id).order_by('id')
+            else:
+                obi = AutomationTestCase.objects.filter(project=project_id,
+                                                        automationGroupLevelFirst=first_group_id,
+                                                        automationGroupLevelSecond=second_group_id).order_by('id')
         else:
-            obi = AutomationTestCase.objects.filter(project=project_id).order_by('id')
+            if name:
+                obi = AutomationTestCase.objects.filter(project=project_id, caseName__contains=name,).order_by('id')
+            else:
+                obi = AutomationTestCase.objects.filter(project=project_id).order_by('id')
         paginator = Paginator(obi, page_size)  # paginator对象
         total = paginator.num_pages  # 总页数
         try:

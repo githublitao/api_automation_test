@@ -235,7 +235,6 @@
                 });
             },
             formatChange() {
-                console.log(this.mockJsonData)
             },
             changFormat() {
                 this.resultShow = !this.resultShow
