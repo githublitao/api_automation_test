@@ -3,7 +3,7 @@ from rest_framework.views import exception_handler
 
 from api_test.common import GlobalStatusCode
 from api_test.common.api_response import JsonResponse
-from api_test.models import AutomationTestResult, AutomationCaseApi, ProjectDynamic, Project
+from api_test.models import AutomationTestResult, AutomationCaseApi, ProjectDynamic, Project, AutomationResponseJson
 
 
 def custom_exception_handler(exc, context):
@@ -79,12 +79,9 @@ def check_json(src_data, dst_data):
     """
     global result
     try:
-
-        data = eval(src_data)
-        if isinstance(data, dict):
+        if isinstance(src_data, dict):
             """若为dict格式"""
-
-            for key in data:
+            for key in src_data:
                 if key not in dst_data:
                     result = 'fail'
                 else:
@@ -92,12 +89,17 @@ def check_json(src_data, dst_data):
                     #     result = False
                     this_key = key
                     """递归"""
-                    check_json(src_data[this_key], dst_data[this_key])
-
+                    if isinstance(src_data[this_key], dict) and isinstance(dst_data[this_key], dict):
+                        check_json(src_data[this_key], dst_data[this_key])
+                    elif isinstance(type(src_data[this_key]), type(dst_data[this_key])):
+                        result = 'fail'
+                    else:
+                        pass
             return result
         return 'fail'
 
-    except:
+    except Exception as e:
+        print(e)
         return 'fail'
 
 
@@ -144,3 +146,19 @@ def record_dynamic(project_id, _type, _object, desc):
                             operationObject=_object, user=User.objects.get(id=1),
                             description=desc)
     record.save()
+
+
+def create_json(api_id, api, data):
+    """
+    根据json数据生成关联数据接口
+    :param api_id: 接口ID
+    :param data: Json数据
+    :param api: 格式化api数据
+    :return:
+    """
+    if isinstance(data, dict):
+        for i in data:
+            m = (api+"[\"%s\"]" % i)
+            AutomationResponseJson(automationCaseApi=api_id, name=i, tier=m).save()
+            create_json(api_id, m, data[i])
+

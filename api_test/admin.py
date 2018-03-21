@@ -7,7 +7,7 @@ from api_test.models import Project, GlobalHost, ApiGroupLevelFirst, ApiGroupLev
     APIRequestHistory, ApiOperationHistory, ProjectDynamic, ProjectMember, \
     AutomationGroupLevelSecond, AutomationGroupLevelFirst, AutomationTestCase, AutomationParameter, AutomationCaseApi, \
     AutomationTestResult, AutomationTestTask, AutomationHead, UserProfile, ApiHead, ApiParameter, ApiResponse, \
-    ApiParameterRaw, AutomationParameterRaw
+    ApiParameterRaw, AutomationParameterRaw, AutomationResponseJson
 
 from django.contrib import admin
 from django.utils.text import capfirst
@@ -284,8 +284,12 @@ class AutomationRawInCase(admin.TabularInline):
     model = AutomationParameterRaw
 
 
+class AutomationResponseJsonInCase(admin.TabularInline):
+    model = AutomationResponseJson
+
+
 class AutomationCaseApiForm(admin.ModelAdmin):
-    inlines = [AutomationHeadInCase, AutomationParameterInCase, AutomationRawInCase]
+    inlines = [AutomationHeadInCase, AutomationParameterInCase, AutomationRawInCase, AutomationResponseJsonInCase]
     search_fields = ('automationTestCase', 'name', 'address')
     list_display = ('id', 'automationTestCase', 'name', 'httpType', 'requestType', 'address', 'examineType')
     list_display_links = ('id', 'automationTestCase', 'name', 'httpType')

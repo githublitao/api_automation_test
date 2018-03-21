@@ -47,6 +47,8 @@ urlpatterns = [
     url(r'automation/api_list', Case.api_list),
     url(r'automation/api_info', Case.api_info),
     url(r'automation/add_new_api', Case.add_new_api),
+    url(r'automation/get_correlation_response', Case.get_correlation_response),
+    url(r'automation/add_old_api', Case.add_old_api),
     url(r'automation/update_api', Case.update_api),
     url(r'automation/del_api', Case.del_api),
     url(r'automation/start_test', Case.start_test),

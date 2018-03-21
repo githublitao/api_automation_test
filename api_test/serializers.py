@@ -5,7 +5,8 @@ from rest_framework.authtoken.models import Token
 from api_test.models import Project, ProjectDynamic, ProjectMember, GlobalHost, ApiGroupLevelSecond, ApiGroupLevelFirst, \
     ApiInfo, APIRequestHistory, ApiOperationHistory, AutomationGroupLevelFirst, AutomationGroupLevelSecond, \
     AutomationTestCase, AutomationCaseApi, AutomationHead, AutomationParameter, AutomationTestTask, \
-    AutomationTestResult, ApiHead, ApiParameter, ApiResponse, ApiParameterRaw, AutomationParameterRaw
+    AutomationTestResult, ApiHead, ApiParameter, ApiResponse, ApiParameterRaw, AutomationParameterRaw, \
+    AutomationResponseJson
 
 
 class TokenSerializer(serializers.ModelSerializer):
@@ -244,7 +245,7 @@ class AutomationHeadSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = AutomationHead
-        fields = ('id', 'key', 'value', 'interrelate')
+        fields = ('id', 'name', 'value', 'interrelate')
 
 
 class AutomationParameterSerializer(serializers.ModelSerializer):
@@ -253,7 +254,7 @@ class AutomationParameterSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = AutomationParameter
-        fields = ('id', 'key', 'value', 'interrelate')
+        fields = ('id', 'name', 'value', 'interrelate')
 
 
 class AutomationParameterRawSerializer(serializers.ModelSerializer):
@@ -264,6 +265,27 @@ class AutomationParameterRawSerializer(serializers.ModelSerializer):
     class Meta:
         model = AutomationParameterRaw
         fields = ('id', 'data')
+
+
+class AutomationResponseJsonSerializer(serializers.ModelSerializer):
+    """
+    接口请求参数源数据序列化
+    """
+
+    class Meta:
+        model = AutomationResponseJson
+        fields = ('id', 'name', 'tier')
+
+
+class CorrelationDataSerializer(serializers.ModelSerializer):
+    """
+    关联数据序列化
+    """
+    response = AutomationResponseJsonSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = AutomationCaseApi
+        fields = ("id", "name", "response")
 
 
 class AutomationCaseApiSerializer(serializers.ModelSerializer):

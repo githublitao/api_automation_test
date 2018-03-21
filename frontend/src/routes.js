@@ -20,6 +20,8 @@ import AutomationTest from './views/project/automation/AutomationTest.vue'
 import CaseList from './views/project/automation/CaseList.vue'
 import CaseListGroup from './views/project/automation/CaseListGroup.vue'
 import CaseApiList from './views/project/automation/CaseApiList.vue'
+import AddCaseApi from './views/project/automation/AddCaseApi.vue'
+import UpdateCaseApi from './views/project/automation/UpdateCaseApi.vue'
 import ProjectMember from './views/project/ProjectMember.vue'
 import ProjectDynamic from './views/project/ProjectDynamic.vue'
 import ProjectTitle from './views/project/projectTitle/ProjectTitle.vue'
@@ -63,7 +65,7 @@ let routes = [
         hidden: true,
         children: [
             {   path: '/ProjectTitle/project=:project_id', component: ProjectTitle, name: '项目概况', leaf: true},
-            {   path: '/Globalhost/project=:project_id', component: globalHost, name: 'Host配置', leaf: true},
+            {   path: '/GlobalHost/project=:project_id', component: globalHost, name: 'Host配置', leaf: true},
             {   path: '/api/project=:project_id',
                     component: API,
                     name: 'API接口', 
@@ -93,7 +95,9 @@ let routes = [
                     children: [
                         {   path: '/caseList/project=:project_id', component: CaseList, name: '用例列表'},
                         {   path: '/caseList/project=:project_id/first=:firstGroup/second=:secondGroup', component: CaseListGroup, name: '分组用例列表'},
-                        {   path: '/caseApiList/project=:project_id/case=:case_id', component: CaseApiList, name: '用例接口列表'}
+                        {   path: '/caseApiList/project=:project_id/case=:case_id', component: CaseApiList, name: '用例接口列表'},
+                        {   path: '/addCaseApi/project=:project_id/case=:case_id', component: AddCaseApi, name: '添加新接口'},
+                        {   path: '/updateCaseApi/project=:project_id/case=:case_id/api=:api_id', component: UpdateCaseApi, name: '修改接口'}
                     ]
             },
             {   path: '/projectMember/project=:project_id', component: ProjectMember, name: '成员管理', leaf: true},

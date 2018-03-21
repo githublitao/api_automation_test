@@ -215,7 +215,7 @@
                           <el-select v-model="form.mockCode" placeholder="HTTP状态">
                               <el-option v-for="(item,index) in httpCode" :key="index+''" :label="item.label" :value="item.value"></el-option>
                           </el-select>
-                      </div >
+                      </div>
                         <el-input v-model="form.mockData" type="textarea" :rows="8" placeholder="请输入mock内容"></el-input>
                     </el-card>
                 </el-collapse-item>

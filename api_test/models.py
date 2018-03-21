@@ -461,7 +461,7 @@ class AutomationCaseApi(models.Model):
     requestType = models.CharField(max_length=50, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)
     address = models.CharField(max_length=1024, verbose_name='接口地址')
     requestParameterType = models.CharField(max_length=50, verbose_name='参数请求格式', choices=REQUEST_PARAMETER_TYPE_CHOICE)
-    examineType = models.CharField(max_length=50, verbose_name='校验方式', choices=EXAMINE_TYPE_CHOICE)
+    examineType = models.CharField(default='no_check', max_length=50, verbose_name='校验方式', choices=EXAMINE_TYPE_CHOICE)
     httpCode = models.CharField(max_length=50, blank=True, null=True, verbose_name='HTTP状态', choices=HTTP_CODE_CHOICE)
     responseData = models.TextField(blank=True, null=True, verbose_name='返回内容')
 
@@ -483,7 +483,7 @@ class AutomationHead(models.Model):
     id = models.AutoField(primary_key=True)
     automationCaseApi = models.ForeignKey(AutomationCaseApi, related_name='header',
                                           on_delete=models.CASCADE, verbose_name='接口')
-    key = models.CharField(max_length=1024, verbose_name='参数名')
+    name = models.CharField(max_length=1024, verbose_name='参数名')
     value = models.CharField(max_length=1024, verbose_name='内容')
     interrelate = models.BooleanField(default=False, verbose_name='是否关联')
 
@@ -502,9 +502,9 @@ class AutomationParameter(models.Model):
     id = models.AutoField(primary_key=True)
     automationCaseApi = models.ForeignKey(AutomationCaseApi, related_name='parameterList',
                                           on_delete=models.CASCADE, verbose_name='接口')
-    key = models.CharField(max_length=1024, verbose_name='参数名')
+    name = models.CharField(max_length=1024, verbose_name='参数名')
     value = models.CharField(max_length=1024, verbose_name='内容')
-    interrelate = models.BooleanField(default=False, verbose_name='是否关联')
+    interrelate = models.IntegerField(default=0, verbose_name='是否关联', choices=((0, '否'), (1, '是')))
 
     def __unicode__(self):
         return self.value
@@ -521,11 +521,26 @@ class AutomationParameterRaw(models.Model):
     id = models.AutoField(primary_key=True)
     automationCaseApi = models.ForeignKey(AutomationCaseApi, related_name='parameterRaw',
                                           on_delete=models.CASCADE, verbose_name='接口')
-    data = models.TextField(verbose_name='源数据请求参数')
+    data = models.TextField(verbose_name='源数据请求参数', blank=True, null=True)
 
     class Meta:
         verbose_name = '源数据参数'
-        verbose_name_plural = '源数据参数参数管理'
+        verbose_name_plural = '源数据参数管理'
+
+
+class AutomationResponseJson(models.Model):
+    """
+    返回JSON参数
+    """
+    id = models.AutoField(primary_key=True)
+    automationCaseApi = models.ForeignKey(AutomationCaseApi, related_name='response',
+                                          on_delete=models.CASCADE, verbose_name='接口')
+    name = models.CharField(max_length=1024, verbose_name='JSON参数', blank=True, null=True)
+    tier = models.CharField(max_length=1024, verbose_name='层级关系', blank=True, null=True)
+
+    class Meta:
+        verbose_name = '结果JSON参数'
+        verbose_name_plural = '结果JSON参数管理'
 
 
 class AutomationTestResult(models.Model):

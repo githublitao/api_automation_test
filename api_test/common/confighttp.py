@@ -39,19 +39,26 @@ def test_api(host_id, case_id, _id, project_id):
                 if i['fields']['interrelate']:
                     api_id = re.findall('(?<=<response\[).*?(?=\])', value)
                     a = re.findall('(?<=\[").*?(?="])', value)
-                    value = eval(json.loads(serializers.serialize(
-                        'json',
-                        AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
-                    for j in a:
-                        value = value[j]
+                    try:
+                        value = eval(json.loads(serializers.serialize(
+                            'json',
+                            AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))
+                                     [0]['fields']["responseData"])
+                        for j in a:
+                            value = value[j]
+                    except:
+                        return 'fail'
             except KeyError:
                 return 'fail'
 
             parameter[key_] = value
     else:
         parameter = AutomationParameterRawSerializer(AutomationParameterRaw.objects.filter(automationCaseApi=_id),
-                                                     many=True).data[0]["data"]
-        parameter = json.loads(parameter)
+                                                     many=True).data
+        if len(parameter[0]["data"]):
+            parameter = json.loads(parameter[0]["data"])
+        else:
+            parameter = []
     http_type = data['httpType']
     request_type = data['requestType']
     address = host + data['address']
@@ -107,7 +114,7 @@ def test_api(host_id, case_id, _id, project_id):
 
     elif examine_type == 'json':
         if int(http_code) == code:
-            result = check_json(response_parameter_list, response_data)
+            result = check_json(eval(response_parameter_list), response_data)
             if result:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
