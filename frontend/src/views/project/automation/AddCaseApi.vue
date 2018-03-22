@@ -327,24 +327,10 @@ import $ from 'jquery'
                                 });
                                 _parameter = JSON.stringify(JSON.stringify(_parameter))
                             } else {
-                                for (var i=0; i<self.form.parameter.length; i++) {
-                                    if (self.form.parameter[i]['interrelate'] === false) {
-                                        self.form.parameter[i]['interrelate'] = 0
-                                    } else {
-                                        self.form.parameter[i]['interrelate'] = 1
-                                    }
-                                }
                                 _parameter = JSON.stringify(self.form.parameter);
                             }
                         } else {
                              _parameter = JSON.stringify(self.form.parameterRaw)
-                        }
-                        for (var j=0; j<self.form.head.length; j++) {
-                            if (self.form.head[j]['interrelate'] === false) {
-                                self.form.head[j]['interrelate'] = 0
-                            } else {
-                                self.form.head[j]['interrelate'] = 1
-                            }
                         }
                         let param = {
                                 project_id: self.$route.params.project_id,
@@ -395,8 +381,9 @@ import $ from 'jquery'
             this.form.head.push(headers)
         },
         delHead(index) {
-            if (this.form.head.length !== 1) {
-                this.form.head.splice(index, 1)
+            this.form.head.splice(index, 1);
+            if (this.form.head.length === 0) {
+                this.form.head.push({name: "", value: "", interrelate:0,})
             }
         },
         addParameter() {
@@ -404,8 +391,9 @@ import $ from 'jquery'
             this.form.parameter.push(headers)
         },
         delParameter(index) {
-            if (this.form.parameter.length !== 1) {
-                this.form.parameter.splice(index, 1)
+            this.form.parameter.splice(index, 1);
+            if (this.form.parameter.length === 0) {
+                this.form.parameter.push({name: "", value: "", interrelate:0,})
             }
         },
         changeParameterType() {

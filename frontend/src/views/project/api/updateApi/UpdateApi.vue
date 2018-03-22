@@ -308,10 +308,11 @@ import $ from 'jquery'
             mockData: '',
         },
         FormRules: {
-            name : [{ required: true, message: '请输入名称', trigger: 'blur' }],
+            name : [{ required: true, message: '请输入名称', trigger: 'blur' },
+                    { max: 5, message: '不能超过50个字', trigger: 'blur' }],
             addr : [{ required: true, message: '请输入地址', trigger: 'blur' }],
-            required : [{ required: true, message: '请输入地址', trigger: 'blur' }],
-            firstGroup : [{ type: 'number', required: true, message: '请选择父分组', trigger: 'blur'}],
+            required : [{ required: true, message: '是否必须', trigger: 'blur' }],
+            firstGroup : [{ type: 'number', required: true, message: '请选择父分组', trigger: 'blur'},],
             secondGroup : [{ type: 'number', required: true, message: '请选择子分组', trigger: 'blur'}]
         },
         editForm: {
@@ -356,7 +357,7 @@ import $ from 'jquery'
                             self.form.head = data.headers;
                         }
                         try {
-                                self.form.parameterRaw = JSON.parse(data.requestParameterRaw[0].data);
+                                self.form.parameterRaw = data.requestParameterRaw[0].data;
                             } catch (e){
 
                             }
@@ -384,20 +385,6 @@ import $ from 'jquery'
             });
         },
         updateApi: function () {
-            // console.log(this.form.firstGroup);
-            // console.log(this.form.secondGroup);
-            // console.log(this.form.name);
-            // console.log(this.form.status);
-            // console.log(this.form.request4);
-            // console.log(this.form.Http4);
-            // console.log(this.form.addr);
-            // console.log(this.form.head);
-            // console.log(this.form.parameterRaw);
-            // console.log(this.form.parameter);
-            // console.log(this.form.parameterType);
-            // console.log(this.form.response);
-            // console.log(this.form.mockCode);
-            // console.log(this.form.mockData);
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     let self = this;
@@ -411,12 +398,12 @@ import $ from 'jquery'
                                 self.form.parameter.forEach((item) => {
                                     _parameter[item.name] = item.value
                                 })
-                                _parameter = JSON.stringify(JSON.stringify(_parameter))
+                                _parameter = JSON.stringify(_parameter)
                             } else {
                                 _parameter = JSON.stringify(self.form.parameter);
                             }
                         } else {
-                             _parameter = JSON.stringify(self.form.parameterRaw)
+                             _parameter = self.form.parameterRaw
                         }
                         // console.log(_parameter)
                         // console.log(typeof _parameter)
@@ -530,26 +517,29 @@ import $ from 'jquery'
             this.form.head.push(headers)
         },
         delHead(index) {
-            if (this.form.head.length !== 1) {
-                this.form.head.splice(index, 1)
+            this.form.head.splice(index, 1);
+            if (this.form.head.length === 0) {
+                this.form.head.push({name: "", value: ""})
             }
         },
         addParameter() {
-            let headers = {name: "", value: "", required:"True", restrict: "", description: ""};
+            let headers = {name: "", value: "", required:"1", restrict: "", description: ""};
             this.form.parameter.push(headers)
         },
         delParameter(index) {
-            if (this.form.parameter.length !== 1) {
-                this.form.parameter.splice(index, 1)
+            this.form.parameter.splice(index, 1);
+            if (this.form.parameter.length === 0) {
+                this.form.parameter.push({name: "", value: "", required:"1", restrict: "", description: ""})
             }
         },
         addResponse() {
-            let headers = {name: "", value: "", required:"True", restrict: "", description: ""};
+            let headers = {name: "", value: "", required:"1", description: ""};
             this.form.response.push(headers)
         },
         delResponse(index) {
-            if (this.form.response.length !== 1) {
-                this.form.response.splice(index, 1)
+            this.form.response.splice(index, 1);
+            if (this.form.response.length === 0) {
+                this.form.response.push({name: "", value: "", required:"1", description: ""})
             }
         },
         changeSecondGroup(val) {

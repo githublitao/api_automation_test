@@ -4,6 +4,7 @@ import re
 import operator
 
 import requests
+import simplejson
 from django.core import serializers
 
 from api_test.common.common import check_json, record_results
@@ -32,7 +33,7 @@ def test_api(host_id, case_id, _id, project_id):
         parameter = {}
 
         for i in parameter_list:
-            key_ = i['fields']['key']
+            key_ = i['fields']['name']
             value = i['fields']['value']
 
             try:
@@ -56,7 +57,10 @@ def test_api(host_id, case_id, _id, project_id):
         parameter = AutomationParameterRawSerializer(AutomationParameterRaw.objects.filter(automationCaseApi=_id),
                                                      many=True).data
         if len(parameter[0]["data"]):
-            parameter = json.loads(parameter[0]["data"])
+            try:
+                parameter = eval(parameter[0]["data"])
+            except:
+                parameter = []
         else:
             parameter = []
     http_type = data['httpType']
@@ -66,7 +70,7 @@ def test_api(host_id, case_id, _id, project_id):
     header = {}
 
     for i in head:
-        key_ = i['fields']['key']
+        key_ = i['fields']['name']
         value = i['fields']['value']
         if i['fields']['interrelate']:
 
@@ -114,7 +118,10 @@ def test_api(host_id, case_id, _id, project_id):
 
     elif examine_type == 'json':
         if int(http_code) == code:
-            result = check_json(eval(response_parameter_list), response_data)
+            try:
+                result = check_json(eval(response_parameter_list), response_data)
+            except:
+                return 'fail'
             if result:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
@@ -166,7 +173,10 @@ def test_api(host_id, case_id, _id, project_id):
 
     elif examine_type == 'Regular_check':
         if int(http_code) == code:
-            result = re.findall(response_parameter_list, str(response_data))
+            try:
+                result = re.findall(response_parameter_list, str(response_data))
+            except:
+                return "fail"
             if result:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
@@ -206,6 +216,8 @@ def post(header, address, request_parameter_type, data):
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:
         return response.status_code, ''
+    except simplejson.errors.JSONDecodeError:
+        return response.status_code, ''
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
@@ -227,6 +239,8 @@ def get(header, address, request_parameter_type, data):
     try:
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:
+        return response.status_code, ''
+    except simplejson.errors.JSONDecodeError:
         return response.status_code, ''
     except Exception as e:
         logging.exception('ERROR')
@@ -250,6 +264,8 @@ def put(header, address, request_parameter_type, data):
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:
         return response.status_code, ''
+    except simplejson.errors.JSONDecodeError:
+        return response.status_code, ''
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
@@ -271,6 +287,8 @@ def delete(header, address, request_parameter_type, data):
     try:
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:
+        return response.status_code, ''
+    except simplejson.errors.JSONDecodeError:
         return response.status_code, ''
     except Exception as e:
         logging.exception('ERROR')

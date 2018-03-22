@@ -19,7 +19,7 @@
 		<el-table :data="project" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 			<el-table-column type="selection" min-width="5%">
 			</el-table-column>
-			<el-table-column prop="name" label="项目名称" min-width="30%" sortable>
+			<el-table-column prop="name" label="项目名称" min-width="30%" sortable show-overflow-tooltip>
                 <template slot-scope="scope">
                     <el-icon name="name"></el-icon>
                     <router-link :to="{ name: '项目概况', params: {project_id: scope.row.id}}" style='text-decoration: none;color: #000000;'>{{ scope.row.name }}</router-link>

@@ -109,17 +109,17 @@
 		<el-table :data="Case" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 			<el-table-column type="selection" min-width="5%">
 			</el-table-column>
-			<el-table-column prop="caseName" label="用例名称" min-width="20%" sortable>
+			<el-table-column prop="caseName" label="用例名称" min-width="20%" sortable show-overflow-tooltip>
 				<template slot-scope="scope">
 					<el-icon name="caseName"></el-icon>
 					<router-link :to="{ name: '用例接口列表', params: {case_id: scope.row.id}}" style='text-decoration: none;'>{{ scope.row.caseName }}</router-link>
 				</template>
 			</el-table-column>
-			<el-table-column prop="description" label="描述" min-width="40%" sortable>
+			<el-table-column prop="description" label="描述" min-width="40%" sortable show-overflow-tooltip>
 			</el-table-column>
-            <el-table-column prop="createUser" label="创建人" min-width="10%" sortable>
+            <el-table-column prop="createUser" label="创建人" min-width="10%" sortable show-overflow-tooltip>
 			</el-table-column>
-			<el-table-column prop="updateTime" label="更新日期" min-width="15%" sortable>
+			<el-table-column prop="updateTime" label="更新日期" min-width="15%" sortable show-overflow-tooltip>
 			</el-table-column>
 			<el-table-column label="操作" min-width="10%">
 				<template slot-scope="scope">

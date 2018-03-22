@@ -26,7 +26,7 @@
                     </el-table-column>
                     <el-table-column prop="name" label="标签" min-width="22%" sortable>
                     </el-table-column>
-                    <el-table-column prop="value" label="内容" min-width="68%" sortable>
+                    <el-table-column prop="value" label="内容" min-width="68%" sortable show-overflow-tooltip>
                     </el-table-column>
                 </el-table>
             </el-collapse-item>
@@ -40,9 +40,9 @@
                     :class="ParameterTyep? 'parameter-a': 'parameter-b'">
                     <el-table-column type="index" label="#" min-width="10%" sortable>
                     </el-table-column>
-                    <el-table-column prop="name" label="参数名" min-width="22%" sortable>
+                    <el-table-column prop="name" label="参数名" min-width="22%" sortable show-overflow-tooltip>
                     </el-table-column>
-                    <el-table-column prop="value" label="参数值" min-width="48%" sortable>
+                    <el-table-column prop="value" label="参数值" min-width="48%" sortable show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column label="必填?" min-width="10%" sortable>
                         <template slot-scope="scope">

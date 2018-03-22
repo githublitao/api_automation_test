@@ -262,7 +262,7 @@ import $ from 'jquery'
                             });
                         }
                         try {
-                            self.form.parameterRaw = JSON.parse(data.data.requestParameterRaw[0].data);
+                            self.form.parameterRaw = data.data.requestParameterRaw[0].data;
                         } catch (e) {
 
                         }

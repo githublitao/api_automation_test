@@ -18,11 +18,11 @@
         <el-table :data="project" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
             <el-table-column type="selection" min-width="5%">
             </el-table-column>
-            <el-table-column prop="name" label="名称" min-width="15%" sortable>
+            <el-table-column prop="name" label="名称" min-width="15%" sortable show-overflow-tooltip>
             </el-table-column>
-            <el-table-column prop="host" label="HOST" min-width="28%" sortable>
+            <el-table-column prop="host" label="HOST" min-width="28%" sortable show-overflow-tooltip>
             </el-table-column>
-            <el-table-column prop="description" label="描述" min-width="27%" sortable>
+            <el-table-column prop="description" label="描述" min-width="27%" sortable show-overflow-tooltip>
             </el-table-column>
             <el-table-column prop="status" label="状态" min-width="10%" sortable>
                 <template slot-scope="scope">

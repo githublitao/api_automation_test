@@ -504,7 +504,7 @@ class AutomationParameter(models.Model):
                                           on_delete=models.CASCADE, verbose_name='接口')
     name = models.CharField(max_length=1024, verbose_name='参数名')
     value = models.CharField(max_length=1024, verbose_name='内容')
-    interrelate = models.IntegerField(default=0, verbose_name='是否关联', choices=((0, '否'), (1, '是')))
+    interrelate = models.BooleanField(default=False, verbose_name='是否关联')
 
     def __unicode__(self):
         return self.value

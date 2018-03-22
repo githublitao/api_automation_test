@@ -2,7 +2,7 @@
     <section>
         <el-button class="return-list" @click.native="back"><i class="el-icon-d-arrow-left" style="margin-right: 5px"></i>返回列表</el-button>
         <el-button class="return-list" style="float: right" @click="back">取消</el-button>
-        <el-button class="return-list" type="primary" style="float: right; margin-right: 15px" @click.native="addApi">保存</el-button>
+        <el-button class="return-list" type="primary" style="float: right; margin-right: 15px" @click.native="updateApi">保存</el-button>
         <el-form :model="form" ref="form" :rules="FormRules">
             <div style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px">
                 <el-form-item label="接口名称:" label-width="83px" prop="name">
@@ -55,7 +55,7 @@
                             </el-table-column>
                             <el-table-column min-width="5%">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" size="mini" style="margin-bottom: 5px" v-if="scope.row.interrelate" @click="handleCorrelation(scope.$index, scope.row)">关联</el-button>
+                                    <el-button type="primary" size="mini" style="margin-bottom: 5px" v-show="scope.row.interrelate" @click="handleCorrelation(scope.$index, scope.row)">关联</el-button>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" min-width="15%">
@@ -97,12 +97,12 @@
                             </el-table-column>
                             <el-table-column min-width="5%">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" size="mini" style="margin-bottom: 5px" v-if="scope.row.interrelate" @click="handleCorrelation(scope.$index, scope.row)">关联</el-button>
+                                    <el-button type="primary" size="mini" style="margin-bottom: 5px" v-show="scope.row.interrelate" @click="handleCorrelation(scope.$index, scope.row)">关联</el-button>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" min-width="15%">
                                 <template slot-scope="scope">
-                                    <i class="el-icon-delete" style="font-size:30px;cursor:pointer;" @click="delHead(scope.$index)"></i>
+                                    <i class="el-icon-delete" style="font-size:30px;cursor:pointer;" @click="delParameter(scope.$index)"></i>
                                 </template>
                             </el-table-column>
                             <el-table-column label="" min-width="5%">
@@ -311,7 +311,8 @@ import $ from 'jquery'
             this.saveCorrelation = false;
             this.searchApiVisible = false;
         },
-        addApi: function () {
+        updateApi: function () {
+            console.log(this.form);
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     let self = this;
@@ -327,28 +328,19 @@ import $ from 'jquery'
                                 });
                                 _parameter = JSON.stringify(JSON.stringify(_parameter))
                             } else {
-                                for (var i=0; i<self.form.parameter.length; i++) {
-                                    if (self.form.parameter[i]['interrelate'] === false) {
-                                        self.form.parameter[i]['interrelate'] = 0
-                                    } else {
-                                        self.form.parameter[i]['interrelate'] = 1
-                                    }
-                                }
                                 _parameter = JSON.stringify(self.form.parameter);
                             }
                         } else {
                              _parameter = JSON.stringify(self.form.parameterRaw)
                         }
                         for (var j=0; j<self.form.head.length; j++) {
-                            if (self.form.head[j]['interrelate'] === false) {
-                                self.form.head[j]['interrelate'] = 0
-                            } else {
-                                self.form.head[j]['interrelate'] = 1
-                            }
                         }
+                        console.log(self.form.head)
+                        console.log(self.form.parameter)
                         let param = {
                                 project_id: self.$route.params.project_id,
                                 case_id: self.$route.params.case_id,
+                                api_id: self.$route.params.api_id,
                                 name: self.form.name,
                                 httpType: self.form.Http4,
                                 requestType: self.form.request4,
@@ -362,7 +354,7 @@ import $ from 'jquery'
                             };
                         $.ajax({
                             type: "post",
-                            url: test+"/api/automation/add_new_api",
+                            url: test+"/api/automation/update_api",
                             async: true,
                             data: param,
                             headers: {
@@ -373,7 +365,7 @@ import $ from 'jquery'
                                 if (data.code === '999999') {
                                     self.back();
                                     self.$message({
-                                        message: '保存成功',
+                                        message: '修改成功',
                                         center: true,
                                         type: 'success'
                                     })
@@ -395,8 +387,9 @@ import $ from 'jquery'
             this.form.head.push(headers)
         },
         delHead(index) {
-            if (this.form.head.length !== 1) {
-                this.form.head.splice(index, 1)
+            this.form.head.splice(index, 1);
+            if (this.form.head.length === 0) {
+                this.form.head.push({name: "", value: "", interrelate:0,})
             }
         },
         addParameter() {
@@ -404,8 +397,9 @@ import $ from 'jquery'
             this.form.parameter.push(headers)
         },
         delParameter(index) {
-            if (this.form.parameter.length !== 1) {
-                this.form.parameter.splice(index, 1)
+            this.form.parameter.splice(index, 1);
+            if (this.form.parameter.length === 0) {
+                this.form.parameter.push({name: "", value: "", interrelate:0,})
             }
         },
         changeParameterType() {
@@ -451,7 +445,7 @@ import $ from 'jquery'
                             })
                         }
                         try {
-                            self.form.parameterRaw = JSON.parse(data.parameterRaw[0].data);
+                            self.form.parameterRaw = data.parameterRaw[0].data;
                         } catch (e){
 
                         }

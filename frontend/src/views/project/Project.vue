@@ -20,7 +20,7 @@
 				<el-menu :default-active="$route.path" class="el-menu-vertical-demo" mode="horizontal" @select="handleselect"
 						unique-opened v-show="!collapsed">
 					<template v-for="item in $router.options.routes" v-if="!item.projectHidden">
-						<template v-for="items,index in item.children">
+						<template v-for="(items,index) in item.children">
 							<el-menu-item :index="items.path" v-if="items.leaf" :key="items.path">
 								<template v-if="!items.child">
 									<router-link :to="{ name: items.name, params: {id: project_id}}" style='text-decoration: none;color: #000000;'>{{items.name }}</router-link>

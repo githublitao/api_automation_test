@@ -23,7 +23,7 @@
         <el-row :span="24">
             <el-col :span="6" class='inline'>
                 <el-card class="box-card">
-                    <router-link :to="{name: 'API接口'}" style='text-decoration: none;color: #000000;'><h1>{{apiCount}}个接口</h1></router-link>
+                    <router-link :to="{name: '接口列表'}" style='text-decoration: none;color: #000000;'><h1>{{apiCount}}个接口</h1></router-link>
                     <div>接口数量</div>
                 </el-card>
             </el-col>
@@ -49,7 +49,7 @@
             </el-col>
             <el-col :span="6" class='inline'>
                 <el-card class="box-card">
-                    <router-link :to="{name: '自动化测试'}" style='text-decoration: none;color: #000000;'><h1>自动化测试</h1></router-link>
+                    <router-link :to="{name: '用例列表'}" style='text-decoration: none;color: #000000;'><h1>自动化测试</h1></router-link>
                     <div>自由测试接口并生成测试报告</div>
                 </el-card>
             </el-col>

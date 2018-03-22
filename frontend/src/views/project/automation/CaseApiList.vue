@@ -57,19 +57,19 @@
         <el-table :data="ApiList" highlight-current-row v-loading="listLoading" style="width: 100%;">
             <el-table-column type="index" width="55">
             </el-table-column>
-            <el-table-column prop="name" label="接口名称" min-width="20%" sortable>
+            <el-table-column prop="name" label="接口名称" min-width="20%" sortable show-overflow-tooltip>
                 <template slot-scope="scope">
                     <el-icon name="name"></el-icon>
                     <router-link :to="{ name: '修改接口', params: {api_id: scope.row.id}}" style='text-decoration: none;color: #000000;'>{{ scope.row.name }}
                     </router-link>
                 </template>
             </el-table-column>
-            <el-table-column prop="address" label="接口地址" min-width="50%" sortable>
+            <el-table-column prop="address" label="接口地址" min-width="50%" sortable show-overflow-tooltip>
                 <template slot-scope="scope">
                     <span class="HttpStatus">{{scope.row.requestType}}</span><span style="font-size: 16px">{{scope.row.address}}</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="result" label="测试结果" min-width="10%" sortable>
+            <el-table-column prop="result" label="测试结果" min-width="10%" sortable show-overflow-tooltip>
                 <template slot-scope="scope">
                     <span v-show="!scope.row.result">尚无测试结果</span>
                     <span v-show="scope.row.result==='success'" style="color: #11b95c">成功,查看详情</span>

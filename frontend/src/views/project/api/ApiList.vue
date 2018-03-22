@@ -52,19 +52,19 @@
 		<el-table :data="api" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 			<el-table-column type="selection" min-width="5%">
 			</el-table-column>
-			<el-table-column prop="name" label="接口名称" min-width="17%" sortable>
+			<el-table-column prop="name" label="接口名称" min-width="17%" sortable show-overflow-tooltip>
 				<template slot-scope="scope">
 					<el-icon name="name"></el-icon>
 					<router-link :to="{ name: '基础信息', params: {api_id: scope.row.id}}" style='text-decoration: none;'>{{ scope.row.name }}</router-link>
 				</template>
 			</el-table-column>
-			<el-table-column prop="requestType" label="请求方式" min-width="10%" sortable>
+			<el-table-column prop="requestType" label="请求方式" min-width="10%" sortable show-overflow-tooltip>
 			</el-table-column>
-			<el-table-column prop="apiAddress" label="接口地址" min-width="24%" sortable>
+			<el-table-column prop="apiAddress" label="接口地址" min-width="24%" sortable show-overflow-tooltip>
 			</el-table-column>
-			<el-table-column prop="userUpdate" label="最近更新者" min-width="9%" sortable>
+			<el-table-column prop="userUpdate" label="最近更新者" min-width="9%" sortable show-overflow-tooltip>
 			</el-table-column>
-			<el-table-column prop="lastUpdateTime" label="更新日期" min-width="16%" sortable>
+			<el-table-column prop="lastUpdateTime" label="更新日期" min-width="16%" sortable show-overflow-tooltip>
 			</el-table-column>
 			<el-table-column label="操作" min-width="19%">
 				<template slot-scope="scope">

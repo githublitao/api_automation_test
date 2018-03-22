@@ -131,10 +131,10 @@
                 </el-collapse-item>
                     <el-dialog title="更多设置" v-model="addParameterFormVisible" :close-on-click-modal="false">
                         <el-form :model="editForm" label-width="60px" :rules="FormRules" ref="editForm" >
-                            <el-form-item label="参数名" prop="name" label-width="83px">
+                            <el-form-item label="参数名" label-width="83px">
                                 <el-input v-model="editForm.name" auto-complete="off" placeholder="请输入参数名称"></el-input>
                             </el-form-item>
-                            <el-form-item label="参数值" prop="name" label-width="83px">
+                            <el-form-item label="参数值" label-width="83px">
                                 <el-input v-model="editForm.value" auto-complete="off" placeholder="请输入参数值"></el-input>
                             </el-form-item>
                             <el-form-item label="必填?" label-width="83px" prop="required">
@@ -230,10 +230,10 @@ import $ from 'jquery'
   export default {
     data() {
       return {
-        request: [{value: 'get', label: 'GET'},
-                    {value: 'post', label: 'POST'},
-                    {value: 'put', label: 'PUT'},
-                    {value: 'delete', label: 'DELETE'}],
+        request: [{value: 'GET', label: 'GET'},
+                    {value: 'POST', label: 'POST'},
+                    {value: 'PUT', label: 'PUT'},
+                    {value: 'DELETE', label: 'DELETE'}],
         Http: [{value: 'HTTP', label: 'HTTP'},
                 {value: 'HTTPS', label: 'HTTPS'}],
         checkHeadList: [],
@@ -311,7 +311,8 @@ import $ from 'jquery'
             mockData: '',
         },
         FormRules: {
-            name : [{ required: true, message: '请输入名称', trigger: 'blur' }],
+            name : [{ required: true, message: '请输入名称', trigger: 'blur' },
+                    { max: 5, message: '不能超过50个字', trigger: 'blur' }],
             addr : [{ required: true, message: '请输入地址', trigger: 'blur' }],
             required : [{ required: true, message: '请输入地址', trigger: 'blur' }],
             firstGroup : [{ type: 'number', required: true, message: '请选择父分组', trigger: 'blur'}],
@@ -341,13 +342,13 @@ import $ from 'jquery'
                                 _type = 'raw';
                                 self.form.parameter.forEach((item) => {
                                     _parameter[item.name] = item.value
-                                })
-                                _parameter = JSON.stringify(JSON.stringify(_parameter))
+                                });
+                                _parameter = JSON.stringify(_parameter)
                             } else {
                                 _parameter = JSON.stringify(self.form.parameter);
                             }
                         } else {
-                             _parameter = JSON.stringify(self.form.parameterRaw)
+                             _parameter = self.form.parameterRaw
                         }
                         $.ajax({
                             type: "post",
@@ -455,8 +456,9 @@ import $ from 'jquery'
             this.form.head.push(headers)
         },
         delHead(index) {
-            if (this.form.head.length !== 1) {
-                this.form.head.splice(index, 1)
+            this.form.head.splice(index, 1);
+            if (this.form.head.length === 0) {
+                this.form.head.push({name: "", value: ""})
             }
         },
         addParameter() {
@@ -464,8 +466,9 @@ import $ from 'jquery'
             this.form.parameter.push(headers)
         },
         delParameter(index) {
-            if (this.form.parameter.length !== 1) {
-                this.form.parameter.splice(index, 1)
+            this.form.parameter.splice(index, 1);
+            if (this.form.parameter.length === 0) {
+                this.form.parameter.push({name: "", value: "", required:"1", restrict: "", description: ""})
             }
         },
         addResponse() {
@@ -473,8 +476,9 @@ import $ from 'jquery'
             this.form.response.push(headers)
         },
         delResponse(index) {
-            if (this.form.response.length !== 1) {
-                this.form.response.splice(index, 1)
+            this.form.response.splice(index, 1);
+            if (this.form.response.length === 0) {
+                this.form.response.push({name: "", value: "", required:"1", description: ""})
             }
         },
         changeSecondGroup(val) {
@@ -511,7 +515,7 @@ import $ from 'jquery'
         let _typeData = this.$route.params._typeData;
         if (form) {
             this.form.parameter = [];
-            this.form.request4 = form.request4;
+            this.form.request4 = form.request4.toUpperCase();
             this.form.Http4 = form.Http4;
             this.form.addr = form.addr;
             this.form.head = form.head;
