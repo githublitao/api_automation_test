@@ -252,7 +252,7 @@ class ApiInfo(models.Model):
     id = models.AutoField(primary_key=True)
     project = models.ForeignKey(Project, related_name='api_project', on_delete=models.CASCADE, verbose_name='所属项目')
     apiGroupLevelFirst = models.ForeignKey(ApiGroupLevelFirst, blank=True, null=True,
-                                           related_name='ApiGroupLevelFirst_id',
+                                           related_name='First',
                                            on_delete=models.SET_NULL, verbose_name='所属一级分组')
     apiGroupLevelSecond = models.ForeignKey(ApiGroupLevelSecond, blank=True, null=True,
                                             related_name='ApiGroupLevelSecond_id',
@@ -302,6 +302,7 @@ class ApiParameter(models.Model):
     id = models.AutoField(primary_key=True)
     api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name="所属接口", related_name='requestParameter')
     name = models.CharField(max_length=1024, verbose_name="参数名")
+    _type = models.CharField( default="String",max_length=1024, verbose_name='参数类型', choices=(('Int', 'Int'), ('String', 'String')))
     value = models.CharField(max_length=1024, blank=True, null=True, verbose_name='参数值')
     required = models.IntegerField(verbose_name="是否必填", choices=STATUS_CHOICE)
     restrict = models.CharField(max_length=1024, blank=True, null=True, verbose_name="输入限制")
@@ -331,6 +332,7 @@ class ApiResponse(models.Model):
     id = models.AutoField(primary_key=True)
     api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name="所属接口", related_name='response')
     name = models.CharField(max_length=1024, verbose_name="参数名")
+    _type = models.CharField(default="String", max_length=1024, verbose_name='参数类型', choices=(('Int', 'Int'), ('String', 'String')))
     value = models.CharField(max_length=1024, blank=True, null=True, verbose_name='参数值')
     required = models.IntegerField(verbose_name="是否必含", choices=STATUS_CHOICE)
     description = models.CharField(max_length=1024, blank=True, null=True, verbose_name="描述")

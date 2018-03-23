@@ -129,7 +129,7 @@ class ApiParameterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ApiParameter
-        fields = ('id', 'name', 'value', 'required', 'restrict', 'description')
+        fields = ('id', 'name', 'value', '_type', 'required', 'restrict', 'description')
 
 
 class ApiParameterRawSerializer(serializers.ModelSerializer):
@@ -149,7 +149,7 @@ class ApiResponseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ApiResponse
-        fields = ('id', 'name', 'value', 'required', 'description')
+        fields = ('id', 'name', 'value', '_type', 'required', 'description')
 
 
 class ApiInfoSerializer(serializers.ModelSerializer):
@@ -168,6 +168,17 @@ class ApiInfoSerializer(serializers.ModelSerializer):
         fields = ('id', 'apiGroupLevelFirst', 'apiGroupLevelSecond', 'name', 'httpType', 'requestType', 'apiAddress', 'headers',
                   'requestParameterType', 'requestParameter', 'requestParameterRaw', 'status',
                   'response', 'mockCode', 'data', 'lastUpdateTime', 'userUpdate', 'description')
+
+
+class ApiInfoDocSerializer(serializers.ModelSerializer):
+    """
+    接口详细信息序列化
+    """
+    First = ApiInfoSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = ApiGroupLevelFirst
+        fields = ('id', 'name', 'First')
 
 
 class ApiInfoListSerializer(serializers.ModelSerializer):

@@ -9,12 +9,13 @@ from django.http import StreamingHttpResponse
 from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
+from api_test.common.WriteDocx import Write
 from api_test.common.api_response import JsonResponse
 from api_test.common.common import verify_parameter, record_dynamic
 from api_test.models import Project, ApiGroupLevelFirst, ApiGroupLevelSecond, ApiInfo, \
     ApiOperationHistory, APIRequestHistory, ApiHead, ApiParameter, ApiResponse, ApiParameterRaw
 from api_test.serializers import ApiGroupLevelFirstSerializer, ApiInfoSerializer, APIRequestHistorySerializer, \
-    ApiOperationHistorySerializer, ApiInfoListSerializer
+    ApiOperationHistorySerializer, ApiInfoListSerializer, ApiInfoDocSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -314,6 +315,7 @@ def add_api(request):
                                     if i['name']:
                                         ApiParameter(api=ApiInfo.objects.get(id=oba.pk), name=i['name'],
                                                      value=i['value'], required=i['required'],
+                                                     _type=i['_type'],
                                                      restrict=i['restrict'],
                                                      description=i['description']).save()
                                 except Exception as e:
@@ -329,7 +331,7 @@ def add_api(request):
                                 i = eval(i)
                                 if i['name']:
                                     ApiResponse(api=ApiInfo.objects.get(id=oba.pk), name=i['name'],
-                                                value=i['value'], required=i['required'],
+                                                value=i['value'], required=i['required'], _type=i['_type'],
                                                 description=i['description']).save()
                             except Exception as e:
                                 logging.exception("Error")
@@ -478,11 +480,11 @@ def update_api(request):
                                             try:
                                                 ApiParameter.objects.filter(id=i['id'], api=api_id).\
                                                     update(name=i['name'], value=i['value'], required=i['required'],
-                                                           restrict=i['restrict'],
+                                                           restrict=i['restrict'], _type=i['_type'],
                                                            description=i['description'])
                                             except KeyError:
                                                 ApiParameter(api=ApiInfo.objects.get(id=api_id), name=i['name'],
-                                                             value=i['value'], required=i['required'],
+                                                             value=i['value'], required=i['required'], _type=i['_type'],
                                                              description=i['description']).save()
                                     except Exception as e:
                                         logging.exception("Error")
@@ -517,10 +519,11 @@ def update_api(request):
                                         try:
                                             ApiResponse.objects.filter(id=i['id'], api=api_id).\
                                                 update(name=i['name'], value=i['value'], required=i['required'],
+                                                       _type=i['_type'],
                                                        description=i['description'])
                                         except KeyError:
                                             ApiResponse(api=ApiInfo.objects.get(id=api_id), name=i['name'],
-                                                        value=i['value'], required=i['required'],
+                                                        value=i['value'], required=i['required'], _type=i['_type'],
                                                         description=i['description']).save()
                                 except Exception as e:
                                     logging.exception("error")
@@ -794,19 +797,38 @@ def operation_history(request):
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
-# @api_view(['GET'])
+@api_view(['GET'])
 @verify_parameter(['project_id'], 'GET')
-def download_doc(request):
-    def file_iterator(fn, chunk_size=512):
-        while True:
-            c = fn.read(chunk_size)
-            if c:
-                yield c
-            else:
-                break
-    fn = open(r'H:\project\api_automation_test\api_test\api\123.docx', 'rb')
-    response = StreamingHttpResponse(file_iterator(fn))
-    response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename="123.docx"'
+def download(request):
+    """
+    获取Api下载文档路径
+    project_id  项目ID
+    :param request:
+    :return:
+    """
+    project_id = request.GET.get('project_id')
+    if not project_id.isdecimal():
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+    obj = Project.objects.filter(id=project_id)
+    if obj:
+        data = ApiInfoDocSerializer(ApiGroupLevelFirst.objects.filter(project=project_id), many=True).data
+        Write().write_api(str(obj[0]), data)
+        return JsonResponse(code_msg=GlobalStatusCode.success())
+    else:
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
-    return response
+
+# def download_doc(request):
+#     def file_iterator(fn, chunk_size=512):
+#         while True:
+#             c = fn.read(chunk_size)
+#             if c:
+#                 yield c
+#             else:
+#                 break
+#     fn = open(r'H:\project\api_automation_test\api_test\api\123.docx', 'rb')
+#     response = StreamingHttpResponse(file_iterator(fn))
+#     response['Content-Type'] = 'application/octet-stream'
+#     response['Content-Disposition'] = 'attachment;filename="123.docx"'
+#
+#     return response

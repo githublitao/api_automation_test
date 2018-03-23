@@ -105,7 +105,14 @@
                                    <el-input v-model="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
                                </template>
                             </el-table-column>
-                            <el-table-column prop="description" label="参数说明" min-width="25%" sortable>
+                            <el-table-column prop="_type" label="参数类型" min-width="10%" sortable>
+                                <template slot-scope="scope">
+                                    <el-select v-model="scope.row._type"  placeholder="请求方式">
+                                        <el-option v-for="(item,index) in paramTyep" :key="index+''" :label="item.label" :value="item.value"></el-option>
+                                    </el-select>
+                               </template>
+                            </el-table-column>
+                            <el-table-column prop="description" label="参数说明" min-width="15%" sortable>
                                 <template slot-scope="scope">
                                    <el-input v-model="scope.row.description" :value="scope.row.desc" placeholder="请输入参数说明"></el-input>
                                </template>
@@ -163,7 +170,14 @@
                                <el-input v-model="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
                            </template>
                         </el-table-column>
-                        <el-table-column prop="description" label="参数说明" min-width="25%" sortable>
+                        <el-table-column prop="_type" label="参数类型" min-width="10%" sortable>
+                                <template slot-scope="scope">
+                                    <el-select v-model="scope.row._type"  placeholder="请求方式">
+                                        <el-option v-for="(item,index) in paramTyep" :key="index+''" :label="item.label" :value="item.value"></el-option>
+                                    </el-select>
+                               </template>
+                            </el-table-column>
+                        <el-table-column prop="description" label="参数说明" min-width="15%" sortable>
                             <template slot-scope="scope">
                                <el-input v-model="scope.row.description" :value="scope.row.desc" placeholder="请输入参数说明"></el-input>
                            </template>
@@ -233,6 +247,8 @@ import $ from 'jquery'
                     {value: 'DELETE', label: 'DELETE'}],
         Http: [{value: 'HTTP', label: 'HTTP'},
                 {value: 'HTTPS', label: 'HTTPS'}],
+        paramTyep: [{value: 'Int', label: 'Int'},
+                {value: 'String', label: 'String'}],
         checkHeadList: [],
         checkParameterList: [],
         ParameterTyep: true,
@@ -299,17 +315,17 @@ import $ from 'jquery'
             head: [{name: "", value: ""},
             {name: "", value: ""}],
             parameterRaw: "",
-            parameter: [{name: "", value: "", required:"1", restrict: "", description: ""},
-            {name: "", value: "", required:"1", restrict: "", description: ""}],
+            parameter: [{name: "", value: "", _type:"String", required:"1", restrict: "", description: ""},
+                        {name: "", value: "", _type:"String", required:"1", restrict: "", description: ""}],
             parameterType: "",
-            response: [{name: "", value: "", required:"1", restrict: "", description: ""},
-            {name: "", value: "", required:"1", restrict: "", description: ""}],
+            response: [{name: "", value: "", _type:"String", required:"1", description: ""},
+                        {name: "", value: "", _type:"String",required:"1", description: ""}],
             mockCode: '',
             mockData: '',
         },
         FormRules: {
             name : [{ required: true, message: '请输入名称', trigger: 'blur' },
-                    { max: 5, message: '不能超过50个字', trigger: 'blur' }],
+                    { max: 50, message: '不能超过50个字', trigger: 'blur' }],
             addr : [{ required: true, message: '请输入地址', trigger: 'blur' }],
             required : [{ required: true, message: '是否必须', trigger: 'blur' }],
             firstGroup : [{ type: 'number', required: true, message: '请选择父分组', trigger: 'blur'},],
@@ -397,7 +413,7 @@ import $ from 'jquery'
                                 _type = 'raw';
                                 self.form.parameter.forEach((item) => {
                                     _parameter[item.name] = item.value
-                                })
+                                });
                                 _parameter = JSON.stringify(_parameter)
                             } else {
                                 _parameter = JSON.stringify(self.form.parameter);
@@ -523,23 +539,23 @@ import $ from 'jquery'
             }
         },
         addParameter() {
-            let headers = {name: "", value: "", required:"1", restrict: "", description: ""};
+            let headers = {name: "", value: "", _type:"String", required:"1", restrict: "", description: ""};
             this.form.parameter.push(headers)
         },
         delParameter(index) {
             this.form.parameter.splice(index, 1);
             if (this.form.parameter.length === 0) {
-                this.form.parameter.push({name: "", value: "", required:"1", restrict: "", description: ""})
+                this.form.parameter.push({name: "", value: "", _type:"String", required:"1", restrict: "", description: ""})
             }
         },
         addResponse() {
-            let headers = {name: "", value: "", required:"1", description: ""};
+            let headers = {name: "", value: "", _type:"String", required:"1", description: ""};
             this.form.response.push(headers)
         },
         delResponse(index) {
             this.form.response.splice(index, 1);
             if (this.form.response.length === 0) {
-                this.form.response.push({name: "", value: "", required:"1", description: ""})
+                this.form.response.push({name: "", value: "", _type:"String", required:"1", description: ""})
             }
         },
         changeSecondGroup(val) {

@@ -42,7 +42,9 @@
                     </el-table-column>
                     <el-table-column prop="name" label="参数名" min-width="22%" sortable show-overflow-tooltip>
                     </el-table-column>
-                    <el-table-column prop="value" label="参数值" min-width="48%" sortable show-overflow-tooltip>
+                    <el-table-column prop="value" label="参数值" min-width="38%" sortable show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column prop="_type" label="参数类型" min-width="10%" sortable show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column label="必填?" min-width="10%" sortable>
                         <template slot-scope="scope">
@@ -61,22 +63,29 @@
                 <div v-model="parameterInfo" style="font-size: 15px">
                     <el-row :gutter="20" style="margin: 10px">
                         <div>
-                            <el-col :span="10">参数名</el-col>
-                            <el-col :span="10">参数值</el-col>
-                            <el-col :span="4">必填?</el-col>
+                            <el-col :span="7">参数名</el-col>
+                            <el-col :span="7">参数值</el-col>
+                            <el-col :span="7">参数类型</el-col>
+                            <el-col :span="3">必填?</el-col>
                         </div>
                         <div style="margin-top: 30px">
-                            <el-col :span="10">{{parameterInfo.name}}</el-col>
-                            <el-col :span="10">{{parameterInfo.value}}</el-col>
-                            <el-col :span="4">
+                            <el-col :span="7">{{parameterInfo.name}}</el-col>
+                            <el-col :span="7">{{parameterInfo.value}}</el-col>
+                            <el-col :span="7">{{parameterInfo._type}}</el-col>
+                            <el-col :span="3">
                                 <img v-show="parameterInfo.required" src="../../../../assets/icon-yes.svg"/>
                                 <img v-show="!parameterInfo.required" src="../../../../assets/icon-no.svg"/>
                             </el-col>
                         </div>
                         <div style="margin-top: 70px"><el-col>输入限制:</el-col></div>
-                        <div style="margin-top: 100px"><el-col>{{parameterInfo.restrict}}</el-col></div>
+                        <div style="margin-top: 100px">
+                            <el-col v-show="parameterInfo.restrict">{{parameterInfo.restrict}}</el-col>
+                            <el-col v-show="!parameterInfo.restrict">无限制要求</el-col>
+                        </div>
                         <div style="margin-top: 140px"><el-col>说明:</el-col></div>
-                        <div style="margin-top: 170px"><el-col>{{parameterInfo.description}}</el-col></div>
+                        <div style="margin-top: 170px"><el-col v-show="parameterInfo.description">{{parameterInfo.description}}</el-col>
+                            <el-col v-show="!parameterInfo.description">无详细说明</el-col>
+                        </div>
                     </el-row>
                 </div>
             </el-dialog>
@@ -86,7 +95,9 @@
                     </el-table-column>
                     <el-table-column prop="name" label="参数名" min-width="22%" sortable>
                     </el-table-column>
-                    <el-table-column prop="value" label="参数值" min-width="48%" sortable>
+                    <el-table-column prop="value" label="参数值" min-width="38%" sortable>
+                    </el-table-column>
+                    <el-table-column prop="_type" label="参数类型" min-width="10%" sortable show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column label="必含?" min-width="10%" sortable>
                         <template slot-scope="scope">
@@ -105,20 +116,24 @@
                 <div v-model="responseInfo" style="font-size: 15px">
                     <el-row :gutter="20" style="margin: 10px">
                         <div>
-                            <el-col :span="10">参数名</el-col>
-                            <el-col :span="10">参数值</el-col>
-                            <el-col :span="4">必含?</el-col>
+                            <el-col :span="7">参数名</el-col>
+                            <el-col :span="7">参数值</el-col>
+                            <el-col :span="7">参数类型</el-col>
+                            <el-col :span="3">必含?</el-col>
                         </div>
                         <div style="margin-top: 30px">
-                            <el-col :span="10">{{responseInfo.name}}</el-col>
-                            <el-col :span="10">{{responseInfo.value}}</el-col>
-                            <el-col :span="4">
+                            <el-col :span="7">{{responseInfo.name}}</el-col>
+                            <el-col :span="7">{{responseInfo.value}}</el-col>
+                            <el-col :span="7">{{responseInfo._type}}</el-col>
+                            <el-col :span="3">
                                 <img v-show="responseInfo.required" src="../../../../assets/icon-yes.svg"/>
                                 <img v-show="!responseInfo.required" src="../../../../assets/icon-no.svg"/>
                             </el-col>
                         </div>
                         <div style="margin-top: 70px"><el-col>说明:</el-col></div>
-                        <div style="margin-top: 100px"><el-col>{{responseInfo.description}}</el-col></div>
+                        <div style="margin-top: 100px"><el-col v-show="responseInfo.description">{{responseInfo.description}}</el-col>
+                            <el-col v-show="!responseInfo.description">无详细说明</el-col>
+                        </div>
                     </el-row>
                 </div>
             </el-dialog>
