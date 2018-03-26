@@ -255,8 +255,8 @@ import $ from 'jquery'
                                 self.form.parameter.push(item);
                             });
                         } else {
-                            var param = [{name: "", value: "", required:"1", restrict: "", description: ""},
-                                    {name: "", value: "", required:"1", restrict: "", description: ""}];
+                            var param = [{name: "", value: "", required:true, restrict: "", description: ""},
+                                    {name: "", value: "", required:true, restrict: "", description: ""}];
                             param.forEach((item) => {
                                 self.form.parameter.push(item);
                             });

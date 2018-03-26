@@ -283,6 +283,9 @@ import $ from 'jquery'
                 },
                 timeout: 5000,
                 success: function(data) {
+                    if (data.code === "999999") {
+                        window.open(test+"/api/api/download_doc?url="+data.data)
+					}
                 },
             })
 		},

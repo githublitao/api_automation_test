@@ -7,6 +7,7 @@ from docx.shared import Pt, Inches, RGBColor
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
+
 class Write:
     def __init__(self):     
         self.doc = docx.Document()
@@ -46,18 +47,45 @@ class Write:
                     for row in table.rows[1:]:
                         row.cells[0].text = items['requestParameter'][j]['name']
                         row.cells[1].text = items['requestParameter'][j]['_type']
-                        row.cells[2].text = items['requestParameter'][j]['required']
-                        row.cells[3].text = items['requestParameter'][j]['restrict']
+                        if items['requestParameter'][j]['required']:
+                            row.cells[2].text = "是"
+                        else:
+                            row.cells[2].text = "否"
+                        try:
+                            row.cells[3].text = items['requestParameter'][j]['restrict']
+                        except TypeError:
+                            pass
                         j = j+1
                 else:
                     try:
                         data = eval(items['requestParameterRaw'][0]["data"].replace("true", "True").replace("false", "False"))
-                        # data = items['requestParameterRaw'][0]
                         self.doc.add_paragraph(style="Normal").add_run('{')
                         write_json(self.doc, data, 0.3)
                         self.doc.add_paragraph(style="Normal").add_run('}')
                     except:
                         logging.exception("Error")
+                self.doc.add_paragraph("返回参数：", style="Body Text")
+                table = self.doc.add_table(rows=len(items['response']) + 1,
+                                           cols=4, style="Medium Shading 1 Accent 1")
+                hdr_cells = table.rows[0].cells  # 表格第一行的所含有的所有列数
+                hdr_cells[0].text = '参数名'  # 第一行的第一列,给这行里面添加文字
+                hdr_cells[1].text = '参数类型'
+                hdr_cells[2].text = '必含?'
+                hdr_cells[3].text = '说明'
+                j = 0
+                for row in table.rows[1:]:
+                    row.cells[0].text = items['response'][j]['name']
+                    row.cells[1].text = items['response'][j]['_type']
+                    if items['response'][j]['required']:
+                        row.cells[2].text = "是"
+                    else:
+                        row.cells[2].text = "否"
+                    try:
+                        row.cells[3].text = items['response'][j]['description']
+                    except TypeError:
+                        pass
+                    j = j + 1
+                self.doc.add_paragraph()
                 self.doc.add_paragraph("返回示例：", style="Body Text")
                 try:
                     data = eval(items['data'].replace("true", "True").replace("false", "False"))
@@ -66,22 +94,10 @@ class Write:
                     self.doc.add_paragraph(style="Normal").add_run('}')
                 except:
                     logging.exception("Error")
-                table = self.doc.add_table(rows=len(items['response']) + 1,
-                                           cols=4, style="Medium Shading 1 Accent 1")
-                hdr_cells = table.rows[0].cells  # 表格第一行的所含有的所有列数
-                hdr_cells[0].text = '参数名'  # 第一行的第一列,给这行里面添加文字
-                hdr_cells[1].text = '参数类型'
-                hdr_cells[2].text = '必填?'
-                hdr_cells[3].text = '说明'
-                j = 0
-                for row in table.rows[1:]:
-                    row.cells[0].text = items['requestParameter'][j]['name']
-                    row.cells[1].text = items['requestParameter'][j]['_type']
-                    row.cells[2].text = items['requestParameter'][j]['required']
-                    row.cells[3].text = items['requestParameter'][j]['description']
-                    j = j + 1
             index = index + 1
-        self.doc.save("%s.docx" % api_name)
+        path = "./api_test/ApiDoc/%s.docx" % api_name
+        self.doc.save(path)
+        return path
 
 
 def write_json(doc, data, num):

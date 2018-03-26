@@ -7367,3 +7367,426 @@ Traceback (most recent call last):
   File "H:\project\api_automation_test\api_test\common\WriteDocx.py", line 92, in write_json
     run.font.color.rgb = RGBColor("#FF4040")
 TypeError: __new__() missing 2 required positional arguments: 'g' and 'b'
+2018-03-26 13:53:28,334,14796,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/Download
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 65, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 814, in download
+    Write().write_api(str(obj[0]), data)
+  File "H:\project\api_automation_test\api_test\common\WriteDocx.py", line 85, in write_api
+    self.doc.save("%s.docx" % api_name)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\document.py", line 142, in save
+    self._part.save(path_or_stream)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\parts\document.py", line 129, in save
+    self.package.save(path_or_stream)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\opc\package.py", line 160, in save
+    PackageWriter.write(pkg_file, self.rels, self.parts)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\opc\pkgwriter.py", line 32, in write
+    phys_writer = PhysPkgWriter(pkg_file)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\opc\phys_pkg.py", line 141, in __init__
+    self._zipf = ZipFile(pkg_file, 'w', compression=ZIP_DEFLATED)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\zipfile.py", line 1090, in __init__
+    self.fp = io.open(file, filemode)
+PermissionError: [Errno 13] Permission denied: 'Í«Œ—App≤‚ ‘.docx'
+2018-03-26 13:53:28,574,14796,django.server,ERROR,basehttp.py:124,"GET /api/api/Download?project_id=4 HTTP/1.1" 500 19776
+2018-03-26 13:55:33,774,1188,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/Download
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 65, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 814, in download
+    Write().write_api(str(obj[0]), data)
+  File "H:\project\api_automation_test\api_test\common\WriteDocx.py", line 71, in write_api
+    row.cells[0].text = items['requestParameter'][j]['name']
+IndexError: list index out of range
+2018-03-26 13:55:33,787,1188,django.server,ERROR,basehttp.py:124,"GET /api/api/Download?project_id=4 HTTP/1.1" 500 18756
+2018-03-26 13:55:47,872,3900,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/Download
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 65, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 814, in download
+    Write().write_api(str(obj[0]), data)
+  File "H:\project\api_automation_test\api_test\common\WriteDocx.py", line 71, in write_api
+    row.cells[0].text = items['requestParameter'][j]['name']
+IndexError: list index out of range
+2018-03-26 13:55:47,888,3900,django.server,ERROR,basehttp.py:124,"GET /api/api/Download?project_id=4 HTTP/1.1" 500 18755
+2018-03-26 13:56:15,754,11548,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/Download
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 65, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 814, in download
+    Write().write_api(str(obj[0]), data)
+  File "H:\project\api_automation_test\api_test\common\WriteDocx.py", line 73, in write_api
+    row.cells[2].text = items['response'][j]['required']
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\table.py", line 271, in text
+    r.text = text
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\oxml\text\run.py", line 104, in text
+    _RunContentAppender.append_to_run_from_text(self, text)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\oxml\text\run.py", line 134, in append_to_run_from_text
+    appender.add_text(text)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\oxml\text\run.py", line 141, in add_text
+    for char in text:
+TypeError: 'int' object is not iterable
+2018-03-26 13:56:15,792,11548,django.server,ERROR,basehttp.py:124,"GET /api/api/Download?project_id=4 HTTP/1.1" 500 19382
+2018-03-26 13:57:39,218,16104,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/Download
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 65, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 814, in download
+    Write().write_api(str(obj[0]), data)
+  File "H:\project\api_automation_test\api_test\common\WriteDocx.py", line 74, in write_api
+    row.cells[2].text = items['response'][j]['required']
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\table.py", line 271, in text
+    r.text = text
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\oxml\text\run.py", line 104, in text
+    _RunContentAppender.append_to_run_from_text(self, text)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\oxml\text\run.py", line 134, in append_to_run_from_text
+    appender.add_text(text)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\oxml\text\run.py", line 141, in add_text
+    for char in text:
+TypeError: 'int' object is not iterable
+2018-03-26 13:57:39,233,16104,django.server,ERROR,basehttp.py:124,"GET /api/api/Download?project_id=4 HTTP/1.1" 500 19383
+2018-03-26 14:11:00,011,7196,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/Download
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 65, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 814, in download
+    Write().write_api(str(obj[0]), data)
+  File "H:\project\api_automation_test\api_test\common\WriteDocx.py", line 74, in write_api
+    row.cells[2].text = items['response'][j]['required']
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\table.py", line 271, in text
+    r.text = text
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\oxml\text\run.py", line 104, in text
+    _RunContentAppender.append_to_run_from_text(self, text)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\oxml\text\run.py", line 134, in append_to_run_from_text
+    appender.add_text(text)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\oxml\text\run.py", line 141, in add_text
+    for char in text:
+TypeError: 'bool' object is not iterable
+2018-03-26 14:11:00,026,7196,django.server,ERROR,basehttp.py:124,"GET /api/api/Download?project_id=4 HTTP/1.1" 500 19385
+2018-03-26 14:12:22,293,9532,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/Download
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 65, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 814, in download
+    Write().write_api(str(obj[0]), data)
+  File "H:\project\api_automation_test\api_test\common\WriteDocx.py", line 75, in write_api
+    row.cells[3].text = items['response'][j]['description']
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\table.py", line 271, in text
+    r.text = text
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\oxml\text\run.py", line 104, in text
+    _RunContentAppender.append_to_run_from_text(self, text)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\oxml\text\run.py", line 134, in append_to_run_from_text
+    appender.add_text(text)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\oxml\text\run.py", line 141, in add_text
+    for char in text:
+TypeError: 'NoneType' object is not iterable
+2018-03-26 14:12:22,311,9532,django.server,ERROR,basehttp.py:124,"GET /api/api/Download?project_id=4 HTTP/1.1" 500 19395
+2018-03-26 14:22:23,667,7084,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/Download
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 65, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 814, in download
+    Write().write_api(str(obj[0]), data)
+  File "H:\project\api_automation_test\api_test\common\WriteDocx.py", line 98, in write_api
+    self.doc.save("..../%s.docx" % api_name)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\document.py", line 142, in save
+    self._part.save(path_or_stream)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\parts\document.py", line 129, in save
+    self.package.save(path_or_stream)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\opc\package.py", line 160, in save
+    PackageWriter.write(pkg_file, self.rels, self.parts)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\opc\pkgwriter.py", line 32, in write
+    phys_writer = PhysPkgWriter(pkg_file)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\opc\phys_pkg.py", line 141, in __init__
+    self._zipf = ZipFile(pkg_file, 'w', compression=ZIP_DEFLATED)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\zipfile.py", line 1090, in __init__
+    self.fp = io.open(file, filemode)
+FileNotFoundError: [Errno 2] No such file or directory: '..../Í«Œ—App≤‚ ‘.docx'
+2018-03-26 14:22:23,686,7084,django.server,ERROR,basehttp.py:124,"GET /api/api/Download?project_id=4 HTTP/1.1" 500 19809
+2018-03-26 14:22:38,870,6584,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/Download
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 65, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 814, in download
+    Write().write_api(str(obj[0]), data)
+  File "H:\project\api_automation_test\api_test\common\WriteDocx.py", line 98, in write_api
+    self.doc.save(".../%s.docx" % api_name)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\document.py", line 142, in save
+    self._part.save(path_or_stream)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\parts\document.py", line 129, in save
+    self.package.save(path_or_stream)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\opc\package.py", line 160, in save
+    PackageWriter.write(pkg_file, self.rels, self.parts)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\opc\pkgwriter.py", line 32, in write
+    phys_writer = PhysPkgWriter(pkg_file)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\opc\phys_pkg.py", line 141, in __init__
+    self._zipf = ZipFile(pkg_file, 'w', compression=ZIP_DEFLATED)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\zipfile.py", line 1090, in __init__
+    self.fp = io.open(file, filemode)
+FileNotFoundError: [Errno 2] No such file or directory: '.../Í«Œ—App≤‚ ‘.docx'
+2018-03-26 14:22:38,891,6584,django.server,ERROR,basehttp.py:124,"GET /api/api/Download?project_id=4 HTTP/1.1" 500 19806
+2018-03-26 14:27:52,184,16324,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/Download
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 65, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 814, in download
+    Write().write_api(str(obj[0]), data)
+  File "H:\project\api_automation_test\api_test\common\WriteDocx.py", line 98, in write_api
+    self.doc.save(path)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\document.py", line 142, in save
+    self._part.save(path_or_stream)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\parts\document.py", line 129, in save
+    self.package.save(path_or_stream)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\opc\package.py", line 160, in save
+    PackageWriter.write(pkg_file, self.rels, self.parts)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\opc\pkgwriter.py", line 32, in write
+    phys_writer = PhysPkgWriter(pkg_file)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\docx\opc\phys_pkg.py", line 141, in __init__
+    self._zipf = ZipFile(pkg_file, 'w', compression=ZIP_DEFLATED)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\zipfile.py", line 1090, in __init__
+    self.fp = io.open(file, filemode)
+FileNotFoundError: [Errno 2] No such file or directory: '/api_test/ApiDoc/Í«Œ—App≤‚ ‘.docx'
+2018-03-26 14:27:52,201,16324,django.server,ERROR,basehttp.py:124,"GET /api/api/Download?project_id=4 HTTP/1.1" 500 19812
+2018-03-26 14:31:00,892,12988,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/download_doc
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 829, in download_doc
+    fn = open(r'H:\project\api_automation_test\api_test\api\123.docx', 'rb')
+FileNotFoundError: [Errno 2] No such file or directory: 'H:\\project\\api_automation_test\\api_test\\api\\123.docx'
+2018-03-26 14:31:00,942,12988,django.server,ERROR,basehttp.py:124,"GET /api/api/download_doc?project_id=4 HTTP/1.1" 500 70870
+2018-03-26 14:35:10,196,6032,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/download_doc
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 831, in download_doc
+    fn = open(r'H:\project\api_automation_test\api_test\api\123.docx', 'rb')
+FileNotFoundError: [Errno 2] No such file or directory: 'H:\\project\\api_automation_test\\api_test\\api\\123.docx'
+2018-03-26 14:35:10,222,6032,django.server,ERROR,basehttp.py:124,"GET /api/api/download_doc?url=/api_test/ApiDoc/%E6%98%B5%E7%AA%9DApp%E6%B5%8B%E8%AF%95.docx HTTP/1.1" 500 71270
+2018-03-26 14:36:13,997,15332,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/download_doc
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 831, in download_doc
+    fn = open(url, 'rb')
+FileNotFoundError: [Errno 2] No such file or directory: '/api_test/ApiDoc/Í«Œ—App≤‚ ‘.docx'
+2018-03-26 14:36:14,057,15332,django.server,ERROR,basehttp.py:124,"GET /api/api/download_doc?url=/api_test/ApiDoc/%E6%98%B5%E7%AA%9DApp%E6%B5%8B%E8%AF%95.docx HTTP/1.1" 500 71769
+2018-03-26 14:36:29,409,15332,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/download_doc
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 831, in download_doc
+    fn = open(url, 'rb')
+FileNotFoundError: [Errno 2] No such file or directory: '/api_test/ApiDoc/Í«Œ—App≤‚ ‘.docx'
+2018-03-26 14:36:29,461,15332,django.server,ERROR,basehttp.py:124,"GET /api/api/download_doc?url=/api_test/ApiDoc/%E6%98%B5%E7%AA%9DApp%E6%B5%8B%E8%AF%95.docx HTTP/1.1" 500 71905
+2018-03-26 14:36:55,004,14616,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/download_doc
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 831, in download_doc
+    fn = open(url, 'rb')
+FileNotFoundError: [Errno 2] No such file or directory: '/api_test/ApiDoc/Í«Œ—App≤‚ ‘.docx'
+2018-03-26 14:36:55,058,14616,django.server,ERROR,basehttp.py:124,"GET /api/api/download_doc?url=/api_test/ApiDoc/%E6%98%B5%E7%AA%9DApp%E6%B5%8B%E8%AF%95.docx HTTP/1.1" 500 71904
+2018-03-26 15:07:06,261,11892,django.server,ERROR,basehttp.py:124,"GET /api/api/download_doc?url=./api_test/ApiDoc/%E6%98%B5%E7%AA%9DApp%E6%B5%8B%E8%AF%95.docx HTTP/1.1" 500 59
+2018-03-26 15:07:21,760,9132,django.server,ERROR,basehttp.py:124,"GET /api/api/download_doc?url=./api_test/ApiDoc/%E6%98%B5%E7%AA%9DApp%E6%B5%8B%E8%AF%95.docx HTTP/1.1" 500 59
+2018-03-26 15:07:45,242,9132,django.server,ERROR,basehttp.py:124,"GET /api/api/download_doc?url=./api_test/ApiDoc/%E6%98%B5%E7%AA%9DApp%E6%B5%8B%E8%AF%95.docx HTTP/1.1" 500 59

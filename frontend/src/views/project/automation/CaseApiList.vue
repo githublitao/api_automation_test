@@ -72,8 +72,8 @@
             <el-table-column prop="result" label="测试结果" min-width="10%" sortable show-overflow-tooltip>
                 <template slot-scope="scope">
                     <span v-show="!scope.row.result">尚无测试结果</span>
-                    <span v-show="scope.row.result==='success'" style="color: #11b95c">成功,查看详情</span>
-                    <span v-show="scope.row.result==='fail'" style="color: #cc0000">失败,查看详情</span>
+                    <span v-show="scope.row.result==='success'" style="color: #11b95c;cursor:pointer;">成功,查看详情</span>
+                    <span v-show="scope.row.result==='fail'" style="color: #cc0000;cursor:pointer;">失败,查看详情</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" min-width="20%">

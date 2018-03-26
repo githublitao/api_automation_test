@@ -292,8 +292,8 @@ import $ from 'jquery'
         header4: "",
         addParameterFormVisible: false,
         addResponseFormVisible: false,
-        required4:[{value: "1", label: '是'},
-            {value: "0", label: '否'}],
+        required4:[{value: true, label: '是'},
+            {value: false, label: '否'}],
         httpCode:[{value: '200', label: '200'},
             {value: '404', label: '404'},
             {value: '400', label: '400'},
@@ -315,11 +315,11 @@ import $ from 'jquery'
             head: [{name: "", value: ""},
             {name: "", value: ""}],
             parameterRaw: "",
-            parameter: [{name: "", value: "", _type:"String", required:"1", restrict: "", description: ""},
-                        {name: "", value: "", _type:"String", required:"1", restrict: "", description: ""}],
+            parameter: [{name: "", value: "", _type:"String", required:true, restrict: "", description: ""},
+                        {name: "", value: "", _type:"String", required:true, restrict: "", description: ""}],
             parameterType: "",
-            response: [{name: "", value: "", _type:"String", required:"1", description: ""},
-                        {name: "", value: "", _type:"String",required:"1", description: ""}],
+            response: [{name: "", value: "", _type:"String", required:true, description: ""},
+                        {name: "", value: "", _type:"String",required:true, description: ""}],
             mockCode: '',
             mockData: '',
         },
@@ -539,23 +539,23 @@ import $ from 'jquery'
             }
         },
         addParameter() {
-            let headers = {name: "", value: "", _type:"String", required:"1", restrict: "", description: ""};
+            let headers = {name: "", value: "", _type:"String", required:true, restrict: "", description: ""};
             this.form.parameter.push(headers)
         },
         delParameter(index) {
             this.form.parameter.splice(index, 1);
             if (this.form.parameter.length === 0) {
-                this.form.parameter.push({name: "", value: "", _type:"String", required:"1", restrict: "", description: ""})
+                this.form.parameter.push({name: "", value: "", _type:"String", required:true, restrict: "", description: ""})
             }
         },
         addResponse() {
-            let headers = {name: "", value: "", _type:"String", required:"1", description: ""};
+            let headers = {name: "", value: "", _type:"String", required:true, description: ""};
             this.form.response.push(headers)
         },
         delResponse(index) {
             this.form.response.splice(index, 1);
             if (this.form.response.length === 0) {
-                this.form.response.push({name: "", value: "", _type:"String", required:"1", description: ""})
+                this.form.response.push({name: "", value: "", _type:"String", required:true, description: ""})
             }
         },
         changeSecondGroup(val) {
