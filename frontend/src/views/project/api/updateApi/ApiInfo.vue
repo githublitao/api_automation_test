@@ -33,7 +33,7 @@
             <el-collapse-item title="请求参数" name="2">
                 <template>
                     <div v-show="parameterRaw" :class="ParameterTyep? 'parameter-b': 'parameter-a'"
-                         style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px" v-model="parameterRaw">{{parameterRaw}}</div>
+                         style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px;word-break: break-all" v-model="parameterRaw">{{parameterRaw}}</div>
                 </template>
                 <div v-show="!parameter.length&&!parameterRaw" class="raw">暂无数据</div>
                 <el-table :data="parameter" highlight-current-row style="width: 100%;" v-loading="listLoadingParameter"
@@ -146,9 +146,10 @@
                       <el-button type="primary" @click="changFormat">格式转换</el-button>
                   </div >
                     <div v-show="mockData" v-model="mockData" :class="resultShow? 'parameter-a': 'parameter-b'"
-                        style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px">{{mockData}}</div>
+                        style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px;word-break: break-all;line-height:25px">{{mockData}}</div>
                     <div v-show="!mockData&&!mockJsonData" class="raw">暂无数据</div>
-                    <div v-show="mockJsonData" :class="!resultShow? 'parameter-a': 'parameter-b'" style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px">
+                    <div v-show="mockJsonData" :class="!resultShow? 'parameter-a': 'parameter-b'"
+                         style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px;word-break: break-all;height:300px;overflow:auto;overflow-x:hidden">
                         <pre>{{mockJsonData}}</pre>
                     </div>
                 </el-card>

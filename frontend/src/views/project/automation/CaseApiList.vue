@@ -72,8 +72,8 @@
             <el-table-column prop="result" label="测试结果" min-width="10%" sortable show-overflow-tooltip>
                 <template slot-scope="scope">
                     <span v-show="!scope.row.result">尚无测试结果</span>
-                    <span v-show="scope.row.result==='success'" style="color: #11b95c;cursor:pointer;">成功,查看详情</span>
-                    <span v-show="scope.row.result==='fail'" style="color: #cc0000;cursor:pointer;">失败,查看详情</span>
+                    <span v-show="scope.row.result==='success'" style="color: #11b95c;cursor:pointer;" @click="resultShow(scope.row)">成功,查看详情</span>
+                    <span v-show="scope.row.result==='fail'" style="color: #cc0000;cursor:pointer;" @click="resultShow(scope.row)">失败,查看详情</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" min-width="20%">
@@ -90,6 +90,32 @@
             <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :page-count="total" style="float:right;">
             </el-pagination>
         </el-col>
+        <el-dialog title="测试结果" v-model="TestResult" :close-on-click-modal="false">
+            <div style="height:700px;overflow:auto;overflow-x:hidden;border: 1px solid #e6e6e6">
+                <div style="font-size: 25px;" class="resultStyle">{{result.name}}</div>
+                <div class="lin"></div>
+                <div class="resultStyle">请求地址:&nbsp&nbsp{{result.url}}</div>
+                <div class="resultStyle">请求方式:&nbsp&nbsp{{result.requestType}}</div>
+                <div class="resultStyle">状态码:&nbsp&nbsp{{result.statusCode}}</div>
+                <div class="resultStyle" style="padding-bottom: 10px">请求时间:&nbsp&nbsp{{result.testTime}}</div>
+                <div class="lin"></div>
+                <div style="font-size: 25px;" class="resultStyle">请求头部</div>
+                <div class="resultStyle">{{result.header}}</div>
+                <div class="lin"></div>
+                <div style="font-size: 25px;" class="resultStyle">请求参数</div>
+                <div class="resultStyle" style="padding-bottom: 10px">{{result.parameter}}</div>
+                <div class="lin"></div>
+                <div style="font-size: 25px;" class="resultStyle">返回结果</div>
+                <div class="resultStyle">HTTP状态码:&nbsp&nbsp{{result.statusCode}}</div>
+                <div class="resultStyle">匹配规则:&nbsp&nbsp{{result.examineType}}</div>
+                <div class="resultStyle">规则内容</div>
+                <div class="resultStyle" style="overflow:auto;overflow-x:hidden;border: 1px solid #e6e6e6;padding: 10px;width: 90%;word-break: break-all;line-height:25px"><span>{{result.data}}</span></div>
+                <div style="font-size: 25px;" class="resultStyle">实际结果</div>
+                <div class="resultStyle">HTTP状态码:&nbsp&nbsp{{result.httpStatus}}</div>
+                <div class="resultStyle">实际返回内容</div>
+                <div class="resultStyle" style="overflow:auto;overflow-x:hidden;border: 1px solid #e6e6e6;padding: 10px;width: 90%;word-break: break-all;line-height:25px">{{result.responseData}}</div>
+            </div>
+        </el-dialog>
     </section>
 </template>
 
@@ -115,6 +141,8 @@
                 apiTotal: 0,
                 pageApi: 1,
 			    sels: [],//列表选中列
+                TestResult: false,
+                result: {},
             }
         },
         methods: {
@@ -145,7 +173,7 @@
                         }
                     },
                 })
-            },
+              },
             back(){
                 this.$router.go(-1); // 返回上一层
             },
@@ -352,6 +380,55 @@
                     },
                 })
             },
+            resultShow(row) {
+                this.result["name"] = row.name;
+                this.getResult(row.id);
+            },
+            getResult(_id){
+                let self = this;
+                 $.ajax({
+                    type: "get",
+                    url: test+"/api/automation/look_result",
+                    async: true,
+                    data: {
+                        project_id: this.$route.params.project_id,
+                        case_id: this.$route.params.case_id,
+                        api_id: _id
+                    },
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: (data) => {
+                        if (data.code === '999999') {
+                            self.result["url"] = data.data.url;
+                            self.result["requestType"] = data.data.requestType;
+                            self.result["header"] = data.data.header;
+                            self.result["parameter"] = data.data.parameter;
+                            self.result["statusCode"] = data.data.statusCode;
+                            self.result["examineType"] = data.data.examineType;
+                            self.result["data"] = data.data.data;
+                            self.result["result"] = data.data.result;
+                            self.result["httpStatus"] = data.data.httpStatus;
+                            self.result["responseData"] = data.data.responseData;
+                            self.result["testTime"] = data.data.testTime;
+                            self.TestResult = true;
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                    error: function () {
+                        self.$message.error({
+                            message: "失败",
+                            center: true,
+                        })
+                    }
+                 })
+            },
             // 添加已有接口弹出
             addOldApi() {
                 this.searchApiListVisible = true;
@@ -411,6 +488,7 @@
             selsChange(sels){
                 this.sels = sels;
             },
+
         },
         mounted() {
             this.getCaseApiList();
@@ -436,5 +514,15 @@
         background-color: #409eff;
         text-align: center;
         margin-right: 10px;
+    }
+    .resultStyle{
+        margin-left: 2%;
+        margin-top: 10px;
+    }
+    .lin{
+        left: 2%;
+        border: 1px solid #e6e6e6;
+        width: 90%;
+        position: relative
     }
 </style>

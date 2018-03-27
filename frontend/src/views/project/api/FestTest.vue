@@ -114,9 +114,13 @@
                       <div slot="header" class="clearfix">
                         <span v-model="form.statusCode" style="font-size: 25px">{{form.statusCode}}</span>
                       </div>
-                        <div v-model="form.resultData" :class="resultShow? 'parameter-a': 'parameter-b'" v-show="!format">{{form.resultData}}</div>
+                        <div v-model="form.resultData" :class="resultShow? 'parameter-a': 'parameter-b'" v-show="!format">
+                            <div style="word-break: break-all;overflow:auto;overflow-x:hidden">{{form.resultData}}</div>
+                        </div>
                         <div v-model="form.resultHead" :class="resultShow? 'parameter-b': 'parameter-a'">{{form.resultHead}}</div>
-                        <div :class="resultShow? 'parameter-a': 'parameter-b'" v-show="format"><pre>{{form.resultData}}</pre></div>
+                        <div :class="resultShow? 'parameter-a': 'parameter-b'" v-show="format">
+                            <pre style="border: 1px solid #e6e6e6;word-break: break-all;height:300px;overflow:auto;overflow-x:hidden">{{form.resultData}}</pre>
+                        </div>
                         <div v-show="!form.resultData&&!form.resultHead" class="raw">暂无数据</div>
                     </el-card>
                 </el-collapse-item>

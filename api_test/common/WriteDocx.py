@@ -1,5 +1,4 @@
 import logging
-from random import randint
 
 import docx
 from docx.oxml.ns import qn
@@ -110,10 +109,10 @@ def write_json(doc, data, num):
             if isinstance(data[n], dict):
                 write_json(doc, data[n], num+0.3)
             else:
-                if isinstance(data[n], int):
+                if isinstance(data[n], bool):
                     run = p.add_run(' %s,' % data[n])
                     run.font.color.rgb = RGBColor(255, 0, 0)
-                elif isinstance(data[n], bool):
+                elif isinstance(data[n], int):
                     run = p.add_run(' %s,' % data[n])
                     run.font.color.rgb = RGBColor(255, 0, 0)
                 else:
