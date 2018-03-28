@@ -905,35 +905,6 @@ def start_test(request):
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
-@api_view(['GET'])
-@verify_parameter(['project_id', 'case_id'], 'GET')
-def time_task(request):
-    """
-    获取定时任务
-    project_id 项目ID
-    case_id  用例ID
-    :return:
-    """
-    project_id = request.GET.get('project_id')
-    case_id = request.GET.get('case_id')
-    if not project_id.isdecimal() or not case_id.isdecimal():
-        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    obj = Project.objects.filter(id=project_id)
-    if obj:
-        obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
-        if obi:
-            try:
-                obm = AutomationTestTask.objects.get(automationTestCase=case_id)
-                serialize = AutomationTestTaskSerializer(obm)
-                return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
-            except ObjectDoesNotExist:
-                return JsonResponse(code_msg=GlobalStatusCode.success())
-        else:
-            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
-    else:
-        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
-
-
 @api_view(['POST'])
 @verify_parameter(['project_id', 'case_id', 'host_id', 'name', 'type', 'startTime', 'endTime'], 'POST')
 def add_time_task(request):
@@ -986,7 +957,7 @@ def add_time_task(request):
                         rt.update(Host=GlobalHost.objects.get(id=host_id),
                                   name=name, type=_type, frequency=frequency, unit=unit,
                                   startTime=start_time, endTime=end_time)
-                        _id = rt[0].pk
+                        _id = rt[0]
                     else:
                         _id = AutomationTestTask(automationTestCase=AutomationTestCase.objects.get(id=case_id),
                                                  Host=GlobalHost.objects.get(id=host_id),
@@ -999,7 +970,7 @@ def add_time_task(request):
                     if rt:
                         rt.update(Host=GlobalHost.objects.get(id=host_id),
                                   name=name, type=_type, startTime=start_time, endTime=end_time)
-                        _id = rt[0].pk
+                        _id = rt[0]
                     else:
                         _id = AutomationTestTask(automationTestCase=AutomationTestCase.objects.get(id=case_id),
                                                  Host=GlobalHost.objects.get(id=host_id),
@@ -1007,7 +978,7 @@ def add_time_task(request):
                         _id.save()
                     record_dynamic(project_id, '新增', '任务', '新增定时任务"%s"' % name)
                 return JsonResponse(data={
-                    'task_id': _id
+                    'task_id': _id.pk
                 }, code_msg=GlobalStatusCode.success())
             else:
                 return JsonResponse(code_msg=GlobalStatusCode.host_not_exist())
@@ -1017,11 +988,34 @@ def add_time_task(request):
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
+@api_view(['GET'])
+@verify_parameter(['project_id', 'case_id'], 'GET')
+def get_task(request):
+    """
+    获取测试用例执行任务
+    :param request:
+    :return:
+    """
+    project_id = request.GET.get('project_id')
+    case_id = request.GET.get('case_id')
+    if not project_id.isdecimal() or not case_id.isdecimal():
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+    obi = Project.objects.filter(id=project_id)
+    if obi:
+        try:
+            obj = AutomationTestTaskSerializer(AutomationTestTask.objects.get(automationTestCase=case_id)).data
+            return JsonResponse(code_msg=GlobalStatusCode.success(), data=obj)
+        except:
+            return JsonResponse(code_msg=GlobalStatusCode.success())
+    else:
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+
+
 @api_view(['POST'])
-@verify_parameter(['project_id', 'case_id', 'task_id'], 'POST')
+@verify_parameter(['project_id', 'case_id'], 'POST')
 def del_task(request):
     """
-    添加定时任务
+    删除任务
     project_id： 项目ID
     case_id 用例ID
     task_id 任务ID
@@ -1029,14 +1023,13 @@ def del_task(request):
     """
     project_id = request.POST.get('project_id')
     case_id = request.POST.get('case_id')
-    task_id = request.POST.get('task_id')
-    if not project_id.isdecimal() or not case_id.isdecimal() or not task_id.isdecimal():
+    if not project_id.isdecimal() or not case_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
         obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
         if obi:
-            obm = AutomationTestTask.objects.filter(id=task_id, automationTestCase=case_id)
+            obm = AutomationTestTask.objects.filter(automationTestCase=case_id)
             if obm:
                 obm.delete()
                 record_dynamic(project_id, '删除', '任务', '删除任务')

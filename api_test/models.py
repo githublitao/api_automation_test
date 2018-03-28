@@ -551,7 +551,7 @@ class AutomationTestResult(models.Model):
     header = models.CharField(max_length=1024, blank=True, null=True, verbose_name='请求头')
     parameter = models.TextField(blank=True, null=True, verbose_name='请求参数')
     statusCode = models.CharField(max_length=1024, verbose_name='期望HTTP状态', choices=HTTP_CODE_CHOICE)
-    examineType = models.CharField(max_length=1024, verbose_name='匹配规则', choices=EXAMINE_TYPE_CHOICE)
+    examineType = models.CharField(max_length=1024, verbose_name='匹配规则')
     data = models.TextField(blank=True, null=True, verbose_name='规则内容')
     result = models.CharField(max_length=50, verbose_name='测试结果', choices=RESULT_CHOICE)
     httpStatus = models.CharField(max_length=50, blank=True, null=True, verbose_name='http状态', choices=HTTP_CODE_CHOICE)

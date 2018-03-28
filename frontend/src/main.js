@@ -14,31 +14,31 @@ import Mock from './mock'
 Mock.bootstrap();
 import 'font-awesome/css/font-awesome.min.css'
 
-Vue.use(ElementUI)
-Vue.use(VueRouter)
-Vue.use(Vuex)
+Vue.use(ElementUI);
+Vue.use(VueRouter);
+Vue.use(Vuex);
 
 //NProgress.configure({ showSpinner: false });
 
 const router = new VueRouter({
   routes
-})
+});
 
 router.beforeEach((to, from, next) => {
   //NProgress.start();
-  if (to.path == '/login') {
+  if (to.path === '/login') {
     sessionStorage.removeItem('token');
   }
   let token = JSON.parse(sessionStorage.getItem('token'));
-  if (!token && to.path != '/login') {
+  if (!token && to.path !== '/login') {
     next({ path: '/login' })
   } else {
     next()
   }
-  if (to.path == '/') {
+  if (to.path === '/') {
     next({ path: '/projectList'})
   }
-})
+});
 
 //router.afterEach(transition => {
 //NProgress.done();

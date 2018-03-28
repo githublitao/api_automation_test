@@ -22,6 +22,7 @@ import CaseListGroup from './views/project/automation/CaseListGroup.vue'
 import CaseApiList from './views/project/automation/CaseApiList.vue'
 import AddCaseApi from './views/project/automation/AddCaseApi.vue'
 import UpdateCaseApi from './views/project/automation/UpdateCaseApi.vue'
+import TestReport from './views/project/automation/TestReport.vue'
 import ProjectMember from './views/project/ProjectMember.vue'
 import ProjectDynamic from './views/project/ProjectDynamic.vue'
 import ProjectTitle from './views/project/projectTitle/ProjectTitle.vue'
@@ -103,6 +104,13 @@ let routes = [
             {   path: '/projectMember/project=:project_id', component: ProjectMember, name: '成员管理', leaf: true},
             {   path: '/projectDynamic/project=:project_id', component: ProjectDynamic, name: '项目动态', leaf: true},
             ]
+    },
+    {
+        path: '/testReport/project=:project_id/case=:case_id',
+        component: TestReport,
+        name: '测试报告',
+        hidden: true,
+        projectHidden: true
     },
 ];
 
