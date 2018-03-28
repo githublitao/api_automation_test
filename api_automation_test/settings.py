@@ -69,7 +69,7 @@ LOGGING = {
     }
 }
 
-ALLOWED_HOSTS = ['192.168.89.198', '127.0.0.1', '192.168.89.117', 'localhost']
+ALLOWED_HOSTS = ['192.168.89.198', '127.0.0.1', '192.168.89.117', '192.168.1.10','localhost']
 
 AUTH_PROFILE_MODULE = 'djangoadmin.api_test.UserProfile'
 
@@ -152,7 +152,8 @@ DATABASES = {
         'NAME': 'api_test',
         'USER': 'root',
         'PASSWORD': '123456',
-        'HOST': '192.168.89.117',
+        # 'HOST': '192.168.89.117',
+        'HOST': '192.168.1.10',
         'PORT': '3306',
     }
 }
