@@ -74,8 +74,8 @@ def add(data):
 
         #  创建任务
         job = my_user_cron.new(command='python3 /var/lib/jenkins/workspace/master-build/'
-                                       'api_test/common/auto_test.py %s %s >> /var/lib/jenkins/tast/%s.log'
-                                       % (i["name"], i['automationTestCase'], i['Host']))
+                                       'api_test/common/auto_test.py %s %s >> /var/lib/jenkins/task/%s.log'
+                                       % (i['automationTestCase'], i['Host'], i["name"]))
         print(_time)
         # 设置任务执行周期
         job.setall(_time)
