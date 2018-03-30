@@ -69,7 +69,7 @@ LOGGING = {
     }
 }
 
-ALLOWED_HOSTS = ['192.168.89.198', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['192.168.89.198', '127.0.0.1', '192.168.89.117', 'localhost']
 
 AUTH_PROFILE_MODULE = 'djangoadmin.api_test.UserProfile'
 
