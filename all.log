@@ -8801,3 +8801,21 @@ Traceback (most recent call last):
     'task_id': _id.pk
 AttributeError: 'int' object has no attribute 'pk'
 2018-03-28 16:49:17,660,12680,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 18805
+2018-03-30 11:22:42,275,15488,django.request,ERROR,exception.py:118,Internal Server Error: /
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 158, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 156, in _get_response
+    response = response.render()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\template\response.py", line 106, in render
+    self.content = self.rendered_content
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\template\response.py", line 81, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\template\response.py", line 63, in resolve_template
+    return select_template(template, using=self.using)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(', '.join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: index.html
+2018-03-30 11:22:42,395,15488,django.server,ERROR,basehttp.py:124,"GET / HTTP/1.1" 500 85661
