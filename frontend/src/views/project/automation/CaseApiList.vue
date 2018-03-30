@@ -226,7 +226,6 @@
                   }]
                 },
                 unit: [
-                    {value: "s", label: "秒"},
                     {value: "m", label: "分"},
                     {value: "h", label: "时"},
                     {value: "d", label: "天"},
@@ -642,6 +641,11 @@
                                 if (data.code === '999999') {
                                     self.editLoading = false;
                                     self.taskVShow = false;
+                                    self.$message({
+                                        message: '添加成功',
+                                        center: true,
+                                        type: "success",
+                                    })
                                 }
                                 else {
                                     self.editLoading = false;

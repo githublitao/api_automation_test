@@ -48,7 +48,6 @@ EXAMINE_TYPE_CHOICE = (
 )
 
 UNIT_CHOICE = (
-    ('s', '秒'),
     ('m', '分'),
     ('h', '时'),
     ('d', '天'),

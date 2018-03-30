@@ -12,6 +12,7 @@ from django.db import transaction
 from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
+from api_test.common.addTask import add
 from api_test.common.api_response import JsonResponse
 from api_test.common.common import verify_parameter, record_dynamic, create_json
 from api_test.common.confighttp import test_api
@@ -977,6 +978,8 @@ def add_time_task(request):
                                                  name=name, type=_type, startTime=start_time, endTime=end_time)
                         _id.save()
                     record_dynamic(project_id, '新增', '任务', '新增定时任务"%s"' % name)
+                data = AutomationTestTaskSerializer(AutomationTestTask.objects.all(), many=True).data
+                add(data)
                 return JsonResponse(data={
                     'task_id': _id.pk
                 }, code_msg=GlobalStatusCode.success())
