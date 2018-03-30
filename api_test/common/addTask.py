@@ -13,9 +13,9 @@ def add(data):
     cmd = 'crontab -r'
     os.system(cmd)
     for i in data:
-        start_time = re.split('-|:| ', data[i]['startTime'])
-        end_time = re.split('-|:| ', data[i]['endTime'])
-        if data[i]['type'] == 'timing':
+        start_time = re.split('-|:| ', i['startTime'])
+        end_time = re.split('-|:| ', i['endTime'])
+        if i['type'] == 'timing':
             _time = '%s %s %s %s *' % (
                 start_time[4],
                 start_time[3],
@@ -39,25 +39,25 @@ def add(data):
                 w = '*'
             else:
                 w = str(int(end_time[1])) + "-" + str(int(start_time[1]))
-            if data[i]['unit'] == 'm':
+            if i['unit'] == 'm':
                 _time = '%s %s %s %s *' % (
-                    m+"/" + str(int(data[i]['frequency'])),
+                    m+"/" + str(int(i['frequency'])),
                     h,
                     d,
                     w,
                 )
-            elif data[i]['unit'] == 'h':
+            elif i['unit'] == 'h':
                 _time = '%s %s %s %s *' % (
                     m,
-                    h+"/" + str(int(data[i]['frequency'])),
+                    h+"/" + str(int(i['frequency'])),
                     d,
                     w,
                 )
-            elif data[i]['unit'] == 'd':
+            elif i['unit'] == 'd':
                 _time = '%s %s %s %s *' % (
                     m,
                     h,
-                    d+"/" + str(int(data[i]['frequency'])),
+                    d+"/" + str(int(i['frequency'])),
                     w,
                 )
             else:
@@ -66,7 +66,7 @@ def add(data):
                     h,
                     d,
                     w,
-                    str(int(data[i]['frequency'])),
+                    str(int(i['frequency'])),
                 )
         
         # 创建当前用户的crontab，当然也可以创建其他用户的，但得有足够权限
@@ -75,7 +75,7 @@ def add(data):
         #  创建任务
         job = my_user_cron.new(command='python3 /var/lib/jenkins/workspace/master-build/'
                                        'api_test/common/auto_test.py %s %s >> /var/lib/jenkins/tast/%s.log'
-                                       % (data[i]["name"], data[i]['automationTestCase'], data[i]['Host']))
+                                       % (i["name"], i['automationTestCase'], i['Host']))
         print(_time)
         # 设置任务执行周期
         job.setall(_time)
