@@ -35,6 +35,7 @@ def add(name, case_id, host_id, _type, start_time, end_time, frequency=None, uni
                                        'api_test/common/auto_test.py %s %s >> /var/lib/jenkins/task/%s.log'
                                        % (case_id, host_id, name))
     else:
+        print(start_time)
         _time = '%s %s %s %s *' % (
             start_time[4],
             start_time[3],
