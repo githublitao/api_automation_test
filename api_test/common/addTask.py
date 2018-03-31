@@ -20,9 +20,9 @@ def add(name, case_id, host_id, _type, start_time, end_time, frequency=None, uni
     end_time = re.split('-|:| ', end_time)
     # 创建当前用户的crontab，当然也可以创建其他用户的，但得有足够权限
     my_user_cron = CronTab(user=True)
-    my_user_cron.remove_all(comment=name)
-    my_user_cron.remove_all(comment=name+"_开始")
-    my_user_cron.remove_all(comment=name+"_结束")
+    my_user_cron.remove_all(comment=case_id)
+    my_user_cron.remove_all(comment=case_id+"_开始")
+    my_user_cron.remove_all(comment=case_id+"_结束")
     # for j in my_user_cron.crons:
     if type == 'timing':
         _time = '%s %s %s %s *' % (
@@ -33,7 +33,7 @@ def add(name, case_id, host_id, _type, start_time, end_time, frequency=None, uni
         )
         job = my_user_cron.new(command='python3 /var/lib/jenkins/workspace/master-build/'
                                        'api_test/common/auto_test.py %s %s >> /var/lib/jenkins/task/%s.log'
-                                       % (case_id, host_id, name))
+                                       % (case_id, host_id, case_id))
     else:
         print(start_time)
         _time = '%s %s %s %s *' % (
@@ -48,8 +48,8 @@ def add(name, case_id, host_id, _type, start_time, end_time, frequency=None, uni
                                        'api_test/common/auto_start.py %s %s %s %s %s %s>> '
                                        '/var/lib/jenkins/task/%s.log'
                                        % (frequency, unit, case_id,
-                                          host_id, name, end_time, name))
-    job.set_comment(name+"_开始")
+                                          host_id, case_id, end_time, case_id))
+    job.set_comment(case_id+"_开始")
     # 设置任务执行周期
     job.setall(_time)
     # 最后将crontab写入配置文件
