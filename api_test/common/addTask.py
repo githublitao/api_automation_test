@@ -31,7 +31,7 @@ def add(name, case_id, host_id, _type, start_time, end_time, frequency=None, uni
             start_time[2],
             start_time[1],
         )
-        job = my_user_cron.new(command='python3 /var/lib/jenkins/workspace/master-build/'
+        job = my_user_cron.new(command='/usr/local/python3/bin/python3 /var/lib/jenkins/workspace/master-build/'
                                        'api_test/common/auto_test.py %s %s >> /var/lib/jenkins/task/%s.log'
                                        % (case_id, host_id, case_id))
     else:
@@ -44,11 +44,11 @@ def add(name, case_id, host_id, _type, start_time, end_time, frequency=None, uni
         )
 
         #  创建任务
-        job = my_user_cron.new(command='python3 /var/lib/jenkins/workspace/master-build/'
-                                       'api_test/common/auto_start.py %s %s %s %s %s %s>> '
+        job = my_user_cron.new(command='/usr/local/python3/bin/python3 /var/lib/jenkins/workspace/master-build/'
+                                       'api_test/common/auto_start.py %s %s %s %s %s %s %s %s %s>> '
                                        '/var/lib/jenkins/task/%s.log'
                                        % (frequency, unit, case_id,
-                                          host_id, case_id, end_time, case_id))
+                                          host_id, case_id, end_time[4], end_time[3], end_time[2], end_time[1], case_id))
     job.set_comment(case_id+"_开始")
     # 设置任务执行周期
     job.setall(_time)

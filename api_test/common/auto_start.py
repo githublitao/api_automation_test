@@ -4,7 +4,7 @@ import sys
 
 def task_start_timing():
     my_user_cron = CronTab(user=True)
-    job = my_user_cron.new(command='python3 /var/lib/jenkins/workspace/master-build/'
+    job = my_user_cron.new(command='/usr/local/python3/bin/python3 /var/lib/jenkins/workspace/master-build/'
                                    'api_test/common/auto_test.py %s %s >> /var/lib/jenkins/task/%s.log'
                                    % (sys.argv[3], sys.argv[4], sys.argv[5]))
     job.set_comment(sys.argv[5])
@@ -20,15 +20,15 @@ def task_start_timing():
     my_user_cron.write()
 
     end_task = CronTab(user=True)
-    jobs = end_task.new(command='python3 /var/lib/jenkins/workspace/master-build/'
+    jobs = end_task.new(command='/usr/local/python3/bin/python3 /var/lib/jenkins/workspace/master-build/'
                                 'api_test/common/end_task.py %s >> /var/lib/jenkins/task/%s.log'
                                % (sys.argv[5], sys.argv[5]))
     jobs.set_comment(sys.argv[5]+"_结束")
     _time = '%s %s %s %s *' % (
-        sys.argv[6][4],
-        sys.argv[6][3],
-        sys.argv[6][2],
-        sys.argv[6][1],
+        sys.argv[6],
+        sys.argv[7],
+        sys.argv[8],
+        sys.argv[9],
     )
     jobs.setall(_time)
     end_task.write()
