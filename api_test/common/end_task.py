@@ -1,6 +1,13 @@
 from crontab import CronTab
 import sys
 
-my_user_cron = CronTab(user=True)
-_iter = my_user_cron.find_comment(sys.argv[1])
-print(_iter)
+
+def task_end_timing():
+    my_user_cron = CronTab(user=True)
+    my_user_cron.remove_all(comment=sys.argv[1])
+    my_user_cron.remove_all(comment=sys.argv[1]+"_开始")
+    my_user_cron.remove_all(comment=sys.argv[1]+"_结束")
+
+
+if __name__ == '__main__':
+    task_end_timing()
