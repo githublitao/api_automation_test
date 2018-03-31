@@ -948,7 +948,7 @@ def add_time_task(request):
         if obi:
             obm = GlobalHost.objects.filter(id=host_id, project=project_id)
             if obm:
-                obs = AutomationTestTask.objects.filter(name__contains=name)
+                obs = AutomationTestTask.objects.filter(name=name)
                 if len(obs):
                     if _type == 'circulation':
                         if not frequency.isdecimal():
