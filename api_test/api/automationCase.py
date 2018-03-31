@@ -949,7 +949,7 @@ def add_time_task(request):
             obm = GlobalHost.objects.filter(id=host_id, project=project_id)
             if obm:
                 obs = AutomationTestTask.objects.filter(name=name)
-                if len(obs):
+                if len(obs) == 0:
                     if _type == 'circulation':
                         if not frequency.isdecimal():
                             return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
