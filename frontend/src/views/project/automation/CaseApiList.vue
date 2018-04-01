@@ -78,7 +78,7 @@
             </el-table-column>
             <el-table-column label="操作" min-width="20%">
                 <template slot-scope="scope">
-                    <el-button type="primary" size="small" @click="Test(scope.$index, scope.row)">测试</el-button>
+                    <el-button type="primary" size="small" @click="Test(scope.$index, scope.row)" :loading='TestStatus'>测试</el-button>
                     <router-link :to="{ name: '修改接口', params: {api_id: scope.row.id}}" style='text-decoration: none;color: #000000;'>
                     <el-button size="small">修改</el-button>
                         </router-link>
@@ -190,6 +190,7 @@
                 editLoading: false,
                 delLoading: false,
                 disDel: true,
+                TestStatus: false,
                 pickerOptions1: {
                   disabledDate(time) {
                     return time.getTime() < Date.now() - 8.64e7;
@@ -335,6 +336,7 @@
             },
             Test(index, row) {
                 if (this.url) {
+                    this.TestStatus = true;
                     let self = this;
                     $.ajax({
                         type: "post",
@@ -359,7 +361,11 @@
                                     center: true,
                                 })
                             }
+                            self.TestStatus = false
                         },
+                        error: function () {
+                            self.TestStatus = false
+                        }
                     })
                 } else {
                     this.$message({
