@@ -891,7 +891,7 @@ def start_test(request):
             if obm:
                 obn = AutomationCaseApi.objects.filter(id=_id, automationTestCase=case_id)
                 if obn:
-                    result = test_api(host_id, case_id, _id, project_id)
+                    result = test_api(host_id=host_id, case_id=case_id, _id=_id, project_id=project_id)
                     record_dynamic(project_id, '测试', '用例接口', '测试用例“%s”接口"%s"' % (obi[0].caseName, obn[0].name))
                     return JsonResponse(data={
                         'result': result
@@ -975,7 +975,8 @@ def add_time_task(request):
                             return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
                     record_dynamic(project_id, '新增', '任务', '新增循环任务"%s"' % name)
                     add(case_id=case_id, host_id=host_id, _type=_type,
-                        start_time=request.POST.get('startTime'), end_time=request.POST.get('endTime'), frequency=frequency, unit=unit)
+                        start_time=request.POST.get('startTime'), end_time=request.POST.get('endTime'),
+                        frequency=frequency, unit=unit, project=project_id)
                 else:
                     rt = AutomationTestTask.objects.filter(automationTestCase=case_id)
                     if rt:
@@ -996,7 +997,7 @@ def add_time_task(request):
                         else:
                             return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
                     record_dynamic(project_id, '新增', '任务', '新增定时任务"%s"' % name)
-                    add(case_id=case_id, host_id=host_id, _type=_type,
+                    add(case_id=case_id, host_id=host_id, _type=_type, project=project_id,
                         start_time=request.POST.get('startTime'), end_time=request.POST.get('endTime'))
                 return JsonResponse(data={
                     'task_id': _id.pk

@@ -5,8 +5,8 @@ import sys
 def task_start_timing():
     my_user_cron = CronTab(user=True)
     job = my_user_cron.new(command='/usr/local/python3/bin/python3 /var/lib/jenkins/workspace/master-build/'
-                                   'api_test/common/auto_test.py %s %s >> /var/lib/jenkins/task/%s.log'
-                                   % (sys.argv[3], sys.argv[4], sys.argv[5]))
+                                   'api_test/common/auto_test.py %s %s %s>> /var/lib/jenkins/task/%s.log'
+                                   % (sys.argv[3], sys.argv[4], sys.argv[10], sys.argv[5]))
     job.set_comment(sys.argv[5])
     if sys.argv[2] == 'm':
         _time = '*/%s * * * *' % sys.argv[1]

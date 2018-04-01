@@ -10,13 +10,12 @@ from django.core import serializers
 from api_test.common.common import check_json, record_results
 from api_test.models import GlobalHost, AutomationCaseApi, AutomationParameter, AutomationTestResult, AutomationHead, \
     AutomationParameterRaw
-from api_test.serializers import AutomationCaseApiSerializer, AutomationParameterSerializer, \
-    AutomationTestResultSerializer, AutomationParameterRawSerializer
+from api_test.serializers import AutomationCaseApiSerializer, AutomationParameterRawSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
 
-def test_api(host_id, case_id, _id, project_id):
+def test_api(host_id, case_id, project_id, _id):
     """
     执行接口测试
     :param host_id: 测试的host域名

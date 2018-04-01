@@ -3,7 +3,7 @@ import re
 from crontab import CronTab
 
 
-def add(case_id, host_id, _type, start_time, end_time, frequency=None, unit=None):
+def add(case_id, host_id, _type, start_time, end_time, project, frequency=None, unit=None):
     """
     添加测试任务到crontab
     :param case_id:  测试用例ID
@@ -13,6 +13,7 @@ def add(case_id, host_id, _type, start_time, end_time, frequency=None, unit=None
     :param end_time:  结束时间
     :param frequency:  时间间隔
     :param unit:  时间单位
+    :param project:  项目ID
     :return:
     """
     start_time = re.split('-|:| ', start_time)
@@ -43,10 +44,11 @@ def add(case_id, host_id, _type, start_time, end_time, frequency=None, unit=None
 
         #  创建任务
         job = my_user_cron.new(command='/usr/local/python3/bin/python3 /var/lib/jenkins/workspace/master-build/'
-                                       'api_test/common/auto_start.py %s %s %s %s %s %s %s %s %s >> '
+                                       'api_test/common/auto_start.py %s %s %s %s %s %s %s %s %s %s >> '
                                        '/var/lib/jenkins/task/%s.log'
                                        % (frequency, unit, case_id,
-                                          host_id, case_id, end_time[4], end_time[3], end_time[2], end_time[1], case_id))
+                                          host_id, case_id, end_time[4], end_time[3],
+                                          end_time[2], end_time[1], project, case_id))
     job.set_comment(case_id+"_开始")
     # 设置任务执行周期
     job.setall(_time)
