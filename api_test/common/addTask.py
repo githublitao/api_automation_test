@@ -3,10 +3,9 @@ import re
 from crontab import CronTab
 
 
-def add(name, case_id, host_id, _type, start_time, end_time, frequency=None, unit=None):
+def add(case_id, host_id, _type, start_time, end_time, frequency=None, unit=None):
     """
     添加测试任务到crontab
-    :param name:  测试任务名称
     :param case_id:  测试用例ID
     :param host_id:  测试域名
     :param _type:  执行类型
@@ -35,7 +34,6 @@ def add(name, case_id, host_id, _type, start_time, end_time, frequency=None, uni
                                        'api_test/common/auto_test.py %s %s >> /var/lib/jenkins/task/%s.log'
                                        % (case_id, host_id, case_id))
     else:
-        print(start_time)
         _time = '%s %s %s %s *' % (
             start_time[4],
             start_time[3],
@@ -45,7 +43,7 @@ def add(name, case_id, host_id, _type, start_time, end_time, frequency=None, uni
 
         #  创建任务
         job = my_user_cron.new(command='/usr/local/python3/bin/python3 /var/lib/jenkins/workspace/master-build/'
-                                       'api_test/common/auto_start.py %s %s %s %s %s %s %s %s %s>> '
+                                       'api_test/common/auto_start.py %s %s %s %s %s %s %s %s %s >> '
                                        '/var/lib/jenkins/task/%s.log'
                                        % (frequency, unit, case_id,
                                           host_id, case_id, end_time[4], end_time[3], end_time[2], end_time[1], case_id))

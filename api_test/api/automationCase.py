@@ -974,7 +974,7 @@ def add_time_task(request):
                         else:
                             return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
                     record_dynamic(project_id, '新增', '任务', '新增循环任务"%s"' % name)
-                    add(name=name, case_id=case_id, host_id=host_id, _type=_type,
+                    add(case_id=case_id, host_id=host_id, _type=_type,
                         start_time=request.POST.get('startTime'), end_time=request.POST.get('endTime'), frequency=frequency, unit=unit)
                 else:
                     rt = AutomationTestTask.objects.filter(automationTestCase=case_id)
@@ -996,7 +996,7 @@ def add_time_task(request):
                         else:
                             return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
                     record_dynamic(project_id, '新增', '任务', '新增定时任务"%s"' % name)
-                    add(name=name, case_id=case_id, host_id=host_id, _type=_type,
+                    add(case_id=case_id, host_id=host_id, _type=_type,
                         start_time=request.POST.get('startTime'), end_time=request.POST.get('endTime'))
                 return JsonResponse(data={
                     'task_id': _id.pk
