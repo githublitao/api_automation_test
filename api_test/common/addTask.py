@@ -18,7 +18,7 @@ def add(case_id, host_id, _type, start_time, end_time, frequency=None, unit=None
     start_time = re.split('-|:| ', start_time)
     end_time = re.split('-|:| ', end_time)
     # 创建当前用户的crontab，当然也可以创建其他用户的，但得有足够权限
-    my_user_cron = CronTab(user='root')
+    my_user_cron = CronTab(user='admin')
     my_user_cron.remove_all(comment=case_id)
     my_user_cron.remove_all(comment=case_id+"_开始")
     my_user_cron.remove_all(comment=case_id+"_结束")
