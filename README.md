@@ -13,9 +13,23 @@
 1.安装Python3环境（未在Python2上运行后，不知道有没有问题）<br>
 2.下载代码到本地并解压<br>
 3.cmd到根目录下安装相关依赖包<br>
+```python
+DATABASES = {
+    'default': {
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE':'django.db.backends.mysql',
+        'NAME':'autoplat',
+        'USER':'root',
+        'PASSWORD':'123456',
+        'HOST':'127.0.0.1',
+        'PORT':'3306'
+    }
+}
+```
 ```bash
 pip install -r requirements.txt
-```<br>
+```
 4.安装mysql数据库，配置数据库连接，进入api_automation_test/settings.py<br>
 ![数据库配置](https://github.com/githublitao/api_automation_test/blob/master/img/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE.png)<br>
 5.cmd到根目录下python manage.py makemigrations 让 Django 知道我们在我们的模型有一些变更<br>
