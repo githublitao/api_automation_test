@@ -17,7 +17,20 @@
 pip install -r requirements.txt
 ```
 4.安装mysql数据库，配置数据库连接，进入api_automation_test/settings.py<br>
-![数据库配置](https://github.com/githublitao/api_automation_test/blob/master/img/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE.png)<br>
+```python
+DATABASES = {
+    'default': {
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE':'django.db.backends.mysql',     # 数据库类型，mysql
+        'NAME':'api_test',            #  database名
+        'USER':'root',               # 登录用户
+        'PASSWORD':'123456',        #  登录用户名
+        'HOST':'127.0.0.1',        # 数据库地址
+        'PORT':'3306'              # 数据库端口
+    }
+}
+```
 5.cmd到根目录下，让 Django 知道我们在我们的模型有一些变更<br>
 ```bash
 python manage.py makemigrations
