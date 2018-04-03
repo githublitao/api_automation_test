@@ -18,10 +18,11 @@ from api_test.common.common import verify_parameter, record_dynamic, create_json
 from api_test.common.confighttp import test_api
 from api_test.models import Project, AutomationGroupLevelFirst, AutomationGroupLevelSecond, \
     AutomationTestCase, AutomationCaseApi, AutomationParameter, GlobalHost, AutomationHead, AutomationTestTask, \
-    AutomationTestResult, ApiInfo, AutomationParameterRaw, AutomationResponseJson
+    AutomationTestResult, ApiInfo, AutomationParameterRaw, AutomationResponseJson, AutomationTaskRunTime
 from api_test.serializers import AutomationGroupLevelFirstSerializer, AutomationTestCaseSerializer, \
     AutomationCaseApiSerializer, AutomationCaseApiListSerializer, AutomationTestTaskSerializer, \
-    AutomationTestResultSerializer, ApiInfoSerializer, CorrelationDataSerializer
+    AutomationTestResultSerializer, ApiInfoSerializer, CorrelationDataSerializer, AutomationTestReportSerializer, \
+    AutomationTaskRunTimeSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -974,7 +975,7 @@ def add_time_task(request):
                         else:
                             return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
                     record_dynamic(project_id, '新增', '任务', '新增循环任务"%s"' % name)
-                    add(case_id=case_id, host_id=host_id, _type=_type,
+                    add(case_id=case_id, host_id=host_id, _type=_type, task_id=_id,
                         start_time=request.POST.get('startTime'), end_time=request.POST.get('endTime'),
                         frequency=frequency, unit=unit, project=project_id)
                 else:
@@ -997,7 +998,7 @@ def add_time_task(request):
                         else:
                             return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
                     record_dynamic(project_id, '新增', '任务', '新增定时任务"%s"' % name)
-                    add(case_id=case_id, host_id=host_id, _type=_type, project=project_id,
+                    add(case_id=case_id, host_id=host_id, _type=_type, project=project_id, task_id=_id,
                         start_time=request.POST.get('startTime'), end_time=request.POST.get('endTime'))
                 return JsonResponse(data={
                     'task_id': _id.pk
@@ -1097,3 +1098,44 @@ def look_result(request):
             return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+
+
+@api_view(['GET'])
+@verify_parameter(['case_id', ], 'GET')
+def test_report(request):
+    """
+    测试结果报告
+    case_id  用例ID
+    :param request:
+    :return:
+    """
+    case_id = request.GET.get('case_id')
+    obj = AutomationTestCase.objects.filter(id=case_id)
+    if obj:
+        data = AutomationTestReportSerializer(
+            AutomationCaseApi.objects.filter(automationTestCase=case_id), many=True).data
+        return JsonResponse(code_msg=GlobalStatusCode.success(), data=data)
+    else:
+        return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
+
+
+@api_view(['GET'])
+@verify_parameter(['case_id', ], 'GET')
+def test_time(request):
+    """
+    执行测试用例时间
+    case_id  用例ID
+    :param request:
+    :return:
+    """
+    case_id = request.GET.get('case_id')
+    obj = AutomationTestCase.objects.filter(id=case_id)
+    if obj:
+        try:
+            data = AutomationTaskRunTimeSerializer(
+                AutomationTaskRunTime.objects.filter(automationTestTask=case_id).order_by('-startTime'), many=True).data
+            return JsonResponse(code_msg=GlobalStatusCode.success(), data={'data': data, 'caseName': obj[0].caseName, })
+        except:
+            return JsonResponse(code_msg=GlobalStatusCode.success())
+    else:
+        return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())

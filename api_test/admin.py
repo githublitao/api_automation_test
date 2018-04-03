@@ -7,7 +7,7 @@ from api_test.models import Project, GlobalHost, ApiGroupLevelFirst, ApiGroupLev
     APIRequestHistory, ApiOperationHistory, ProjectDynamic, ProjectMember, \
     AutomationGroupLevelSecond, AutomationGroupLevelFirst, AutomationTestCase, AutomationParameter, AutomationCaseApi, \
     AutomationTestResult, AutomationTestTask, AutomationHead, UserProfile, ApiHead, ApiParameter, ApiResponse, \
-    ApiParameterRaw, AutomationParameterRaw, AutomationResponseJson
+    ApiParameterRaw, AutomationParameterRaw, AutomationResponseJson, AutomationTaskRunTime
 
 from django.contrib import admin
 from django.utils.text import capfirst
@@ -345,6 +345,20 @@ class AutomationTestTaskForm(admin.ModelAdmin):
 
 
 admin.site.register(AutomationTestTask, AutomationTestTaskForm)
+
+
+class AutomationTaskRunTimeForm(admin.ModelAdmin):
+    list_display = ('id', 'automationTestTask', 'startTime', 'endTime')
+    list_display_links = ('id', 'automationTestTask')
+    list_per_page = 20
+    ordering = ('id',)
+    fieldsets = ([
+        '接口请求历史', {
+            'fields': ('automationTestTask', 'startTime', 'endTime')
+        }],)
+
+
+admin.site.register(AutomationTaskRunTime, AutomationTaskRunTimeForm)
 
 
 class ProjectMemberForm(admin.ModelAdmin):

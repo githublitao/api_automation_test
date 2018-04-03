@@ -6,7 +6,7 @@ from api_test.models import Project, ProjectDynamic, ProjectMember, GlobalHost, 
     ApiInfo, APIRequestHistory, ApiOperationHistory, AutomationGroupLevelFirst, AutomationGroupLevelSecond, \
     AutomationTestCase, AutomationCaseApi, AutomationHead, AutomationParameter, AutomationTestTask, \
     AutomationTestResult, ApiHead, ApiParameter, ApiResponse, ApiParameterRaw, AutomationParameterRaw, \
-    AutomationResponseJson
+    AutomationResponseJson, AutomationTaskRunTime
 
 
 class TokenSerializer(serializers.ModelSerializer):
@@ -332,6 +332,29 @@ class AutomationTestTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = AutomationTestTask
         fields = ('id', 'automationTestCase', 'Host', 'name', 'type', 'frequency', 'unit', 'startTime', 'endTime')
+
+
+class AutomationTestReportSerializer(serializers.ModelSerializer):
+    """
+    定时任务信息序列化
+    """
+    result = serializers.CharField(source='test_result.result')
+
+    class Meta:
+        model = AutomationCaseApi
+        fields = ('id', 'automationTestCase', 'name', 'httpType', 'requestType', 'address', 'examineType', 'result')
+
+
+class AutomationTaskRunTimeSerializer(serializers.ModelSerializer):
+    """
+    任务执行时间
+    """
+    startTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    endTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+
+    class Meta:
+        model = AutomationTaskRunTime
+        fields = ('id', 'automationTestTask', 'startTime', 'endTime')
 
 
 class AutomationTestResultSerializer(serializers.ModelSerializer):

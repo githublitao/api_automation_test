@@ -451,7 +451,8 @@ class AutomationCaseApi(models.Model):
     用例执行接口
     """
     id = models.AutoField(primary_key=True)
-    automationTestCase = models.ForeignKey(AutomationTestCase, on_delete=models.CASCADE, verbose_name='用例')
+    automationTestCase = models.ForeignKey(AutomationTestCase, on_delete=models.CASCADE,
+                                           verbose_name='用例', related_name="case_ame")
     name = models.CharField(max_length=50, verbose_name='接口名称')
     httpType = models.CharField(max_length=50, default='HTTP', verbose_name='HTTP/HTTPS', choices=HTTP_CHOICE)
     requestType = models.CharField(max_length=50, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)
@@ -544,7 +545,8 @@ class AutomationTestResult(models.Model):
     用例执行结果
     """
     id = models.AutoField(primary_key=True)
-    automationCaseApi = models.OneToOneField(AutomationCaseApi, on_delete=models.CASCADE, verbose_name='接口')
+    automationCaseApi = models.OneToOneField(AutomationCaseApi, on_delete=models.CASCADE, verbose_name='接口'
+                                             , related_name="test_result")
     url = models.CharField(max_length=1024, verbose_name='请求地址')
     requestType = models.CharField(max_length=1024, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)
     header = models.CharField(max_length=1024, blank=True, null=True, verbose_name='请求头')
@@ -584,6 +586,20 @@ class AutomationTestTask(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = '用例定时任务'
+        verbose_name_plural = '用例定时任务管理'
+
+
+class AutomationTaskRunTime(models.Model):
+    """
+    用例执行开始和结束时间
+    """
+    id = models.AutoField(primary_key=True)
+    automationTestTask = models.ForeignKey(AutomationTestTask, on_delete=models.CASCADE, verbose_name='测试任务')
+    startTime = models.DateTimeField(max_length=50, verbose_name='开始时间')
+    endTime = models.DateTimeField(max_length=50, verbose_name='结束时间')
 
     class Meta:
         verbose_name = '用例定时任务'
