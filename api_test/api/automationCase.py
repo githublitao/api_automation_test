@@ -908,12 +908,11 @@ def start_test(request):
 
 
 @api_view(['POST'])
-@verify_parameter(['project_id', 'case_id', 'host_id', 'name', 'type', 'startTime', 'endTime'], 'POST')
+@verify_parameter(['project_id', 'host_id', 'name', 'type', 'startTime', 'endTime'], 'POST')
 def add_time_task(request):
     """
     添加定时任务
     project_id： 项目ID
-    case_id 用例ID
     host_id HOST_ID
     name 任务名称
     type 任务类型
@@ -924,13 +923,12 @@ def add_time_task(request):
     :return:
     """
     project_id = request.POST.get('project_id')
-    case_id = request.POST.get('case_id')
     host_id = request.POST.get('host_id')
     name = request.POST.get('name')
     _type = request.POST.get('type')
     frequency = request.POST.get('frequency')
     unit = request.POST.get('unit')
-    if not project_id.isdecimal() or not case_id.isdecimal() or not host_id.isdecimal():
+    if not project_id.isdecimal() or not host_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if _type not in ['circulation', 'timing']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
@@ -945,74 +943,70 @@ def add_time_task(request):
     end_time = datetime.strftime(end_time, '%Y-%m-%dT%H:%M:%S')
     obj = Project.objects.filter(id=project_id)
     if obj:
-        obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
-        if obi:
-            obm = GlobalHost.objects.filter(id=host_id, project=project_id)
-            if obm:
-                if _type == 'circulation':
-                    if not frequency.isdecimal():
-                        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-                    if unit not in ['m', 'h', 'd', 'w']:
-                        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-                    rt = AutomationTestTask.objects.filter(automationTestCase=case_id)
-                    if rt:
-                        obs = AutomationTestTask.objects.filter(name=name).exclude(id=case_id)
-                        if len(obs) == 0:
-                            rt.update(Host=GlobalHost.objects.get(id=host_id),
-                                      name=name, type=_type, frequency=frequency, unit=unit,
-                                      startTime=start_time, endTime=end_time)
-                            _id = rt[0]
-                        else:
-                            return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
+        obm = GlobalHost.objects.filter(id=host_id, project=project_id)
+        if obm:
+            if _type == 'circulation':
+                if not frequency.isdecimal():
+                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                if unit not in ['m', 'h', 'd', 'w']:
+                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                rt = AutomationTestTask.objects.filter(project=project_id)
+                if rt:
+                    obs = AutomationTestTask.objects.filter(name=name).exclude(project=project_id)
+                    if len(obs) == 0:
+                        rt.update(Host=GlobalHost.objects.get(id=host_id),
+                                  name=name, type=_type, frequency=frequency, unit=unit,
+                                  startTime=start_time, endTime=end_time)
+                        _id = rt[0]
                     else:
-                        obs = AutomationTestTask.objects.filter(name=name)
-                        if len(obs) == 0:
-                            _id = AutomationTestTask(automationTestCase=AutomationTestCase.objects.get(id=case_id),
-                                                     Host=GlobalHost.objects.get(id=host_id),
-                                                     name=name, type=_type, frequency=frequency, unit=unit,
-                                                     startTime=start_time, endTime=end_time)
-                            _id.save()
-                        else:
-                            return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
-                    record_dynamic(project_id, '新增', '任务', '新增循环任务"%s"' % name)
-                    add(case_id=case_id, host_id=host_id, _type=_type, task_id=_id,
-                        start_time=request.POST.get('startTime'), end_time=request.POST.get('endTime'),
-                        frequency=frequency, unit=unit, project=project_id)
+                        return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
                 else:
-                    rt = AutomationTestTask.objects.filter(automationTestCase=case_id)
-                    if rt:
-                        obs = AutomationTestTask.objects.filter(name=name).exclude(id=case_id)
-                        if len(obs) == 0:
-                            rt.update(Host=GlobalHost.objects.get(id=host_id),
-                                      name=name, type=_type, startTime=start_time, endTime=end_time)
-                            _id = rt[0]
-                        else:
-                            return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
+                    obs = AutomationTestTask.objects.filter(name=name)
+                    if len(obs) == 0:
+                        _id = AutomationTestTask(project=Project.objects.get(id=project_id),
+                                                 Host=GlobalHost.objects.get(id=host_id),
+                                                 name=name, type=_type, frequency=frequency, unit=unit,
+                                                 startTime=start_time, endTime=end_time)
+                        _id.save()
                     else:
-                        obs = AutomationTestTask.objects.filter(name=name)
-                        if len(obs) == 0:
-                            _id = AutomationTestTask(automationTestCase=AutomationTestCase.objects.get(id=case_id),
-                                                     Host=GlobalHost.objects.get(id=host_id),
-                                                     name=name, type=_type, startTime=start_time, endTime=end_time)
-                            _id.save()
-                        else:
-                            return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
-                    record_dynamic(project_id, '新增', '任务', '新增定时任务"%s"' % name)
-                    add(case_id=case_id, host_id=host_id, _type=_type, project=project_id, task_id=_id,
-                        start_time=request.POST.get('startTime'), end_time=request.POST.get('endTime'))
-                return JsonResponse(data={
-                    'task_id': _id.pk
-                }, code_msg=GlobalStatusCode.success())
+                        return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
+                record_dynamic(project_id, '新增', '任务', '新增循环任务"%s"' % name)
+                add(host_id=host_id, _type=_type, task_id=_id,
+                    start_time=request.POST.get('startTime'), end_time=request.POST.get('endTime'),
+                    frequency=frequency, unit=unit, project=project_id)
             else:
-                return JsonResponse(code_msg=GlobalStatusCode.host_not_exist())
+                rt = AutomationTestTask.objects.filter(project=project_id)
+                if rt:
+                    obs = AutomationTestTask.objects.filter(name=name).exclude(project=project_id)
+                    if len(obs) == 0:
+                        rt.update(Host=GlobalHost.objects.get(id=host_id),
+                                  name=name, type=_type, startTime=start_time, endTime=end_time)
+                        _id = rt[0]
+                    else:
+                        return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
+                else:
+                    obs = AutomationTestTask.objects.filter(name=name)
+                    if len(obs) == 0:
+                        _id = AutomationTestTask(project=Project.objects.get(id=project_id),
+                                                 Host=GlobalHost.objects.get(id=host_id),
+                                                 name=name, type=_type, startTime=start_time, endTime=end_time)
+                        _id.save()
+                    else:
+                        return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
+                record_dynamic(project_id, '新增', '任务', '新增定时任务"%s"' % name)
+                add(host_id=host_id, _type=_type, project=project_id, task_id=_id,
+                    start_time=request.POST.get('startTime'), end_time=request.POST.get('endTime'))
+            return JsonResponse(data={
+                'task_id': _id.pk
+            }, code_msg=GlobalStatusCode.success())
         else:
-            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
+            return JsonResponse(code_msg=GlobalStatusCode.host_not_exist())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['GET'])
-@verify_parameter(['project_id', 'case_id'], 'GET')
+@verify_parameter(['project_id'], 'GET')
 def get_task(request):
     """
     获取测试用例执行任务
@@ -1020,13 +1014,12 @@ def get_task(request):
     :return:
     """
     project_id = request.GET.get('project_id')
-    case_id = request.GET.get('case_id')
-    if not project_id.isdecimal() or not case_id.isdecimal():
+    if not project_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obi = Project.objects.filter(id=project_id)
     if obi:
         try:
-            obj = AutomationTestTaskSerializer(AutomationTestTask.objects.get(automationTestCase=case_id)).data
+            obj = AutomationTestTaskSerializer(AutomationTestTask.objects.get(project=project_id)).data
             return JsonResponse(code_msg=GlobalStatusCode.success(), data=obj)
         except:
             return JsonResponse(code_msg=GlobalStatusCode.success())

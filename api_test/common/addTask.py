@@ -3,10 +3,9 @@ import re
 from crontab import CronTab
 
 
-def add(case_id, host_id, _type, task_id, start_time, end_time, project, frequency=None, unit=None):
+def add(host_id, _type, task_id, start_time, end_time, project, frequency=None, unit=None):
     """
     添加测试任务到crontab
-    :param case_id:  测试用例ID
     :param host_id:  测试域名
     :param _type:  执行类型
     :param task_id:  任务id
@@ -21,9 +20,9 @@ def add(case_id, host_id, _type, task_id, start_time, end_time, project, frequen
     end_time = re.split('-|:| ', end_time)
     # 创建当前用户的crontab，当然也可以创建其他用户的，但得有足够权限
     my_user_cron = CronTab(user=True)
-    my_user_cron.remove_all(comment=case_id)
-    my_user_cron.remove_all(comment=case_id+"_开始")
-    my_user_cron.remove_all(comment=case_id+"_结束")
+    my_user_cron.remove_all(comment=project)
+    my_user_cron.remove_all(comment=project+"_开始")
+    my_user_cron.remove_all(comment=project+"_结束")
     # for j in my_user_cron.crons:
     if type == 'timing':
         _time = '%s %s %s %s *' % (
@@ -33,8 +32,8 @@ def add(case_id, host_id, _type, task_id, start_time, end_time, project, frequen
             start_time[1],
         )
         job = my_user_cron.new(command='/usr/local/python3/bin/python3 /var/lib/jenkins/workspace/master-build/'
-                                       'api_test/common/auto_test.py %s %s %s %s >> /var/lib/jenkins/task/%s.log'
-                                       % (case_id, host_id, project, task_id, case_id))
+                                       'api_test/common/auto_test.py %s %s %s >> /var/lib/jenkins/task/%s.log'
+                                       % (host_id, project, task_id, project))
     else:
         _time = '%s %s %s %s *' % (
             start_time[4],
@@ -45,12 +44,11 @@ def add(case_id, host_id, _type, task_id, start_time, end_time, project, frequen
 
         #  创建任务
         job = my_user_cron.new(command='/usr/local/python3/bin/python3 /var/lib/jenkins/workspace/master-build/'
-                                       'api_test/common/auto_start.py %s %s %s %s %s %s %s %s %s %s %s >> '
+                                       'api_test/common/auto_start.py %s %s %s %s %s %s %s %s %s >> '
                                        '/var/lib/jenkins/task/%s.log'
-                                       % (frequency, unit, case_id,
-                                          host_id, case_id, end_time[4], end_time[3],
-                                          end_time[2], end_time[1], project, task_id, case_id))
-    job.set_comment(case_id+"_开始")
+                                       % (frequency, unit, host_id, end_time[4], end_time[3],
+                                          end_time[2], end_time[1], project, task_id, project))
+    job.set_comment(project+"_开始")
     # 设置任务执行周期
     job.setall(_time)
     # 最后将crontab写入配置文件

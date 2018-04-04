@@ -331,15 +331,15 @@ admin.site.register(AutomationTestResult, AutomationTestResultForm)
 
 
 class AutomationTestTaskForm(admin.ModelAdmin):
-    search_fields = ('automationTestCase', 'name')
-    list_display = ('id', 'automationTestCase', 'Host', 'name', 'type', 'startTime', 'endTime')
-    list_display_links = ('id', 'automationTestCase', 'Host', 'name')
+    search_fields = ('project', 'name')
+    list_display = ('id', 'project', 'Host', 'name', 'type', 'startTime', 'endTime')
+    list_display_links = ('id', 'project', 'Host', 'name')
     list_filter = ('type',)
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
           '测试任务', {
-                'fields': ('automationTestCase', 'Host', 'name', 'type', 'frequency',
+                'fields': ('project', 'Host', 'name', 'type', 'frequency',
                            'unit', 'startTime', 'endTime')
             }],)
 

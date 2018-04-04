@@ -15,8 +15,49 @@
 				<el-form-item>
 					<el-button type="primary" :disabled="update" @click="changeGroup">修改分组</el-button>
 				</el-form-item>
+                <el-button type="primary" @click.native="getTask"><div>设置定时任务</div></el-button>
 			</el-form>
 		</el-col>
+        <el-dialog title="定时任务" v-model="taskVShow"  :close-on-click-modal="false" style="width: 50%; left: 20%">
+            <el-form ref="form" :model="form" label-width="100px" :rules="formRules">
+                <el-form-item label="任务名称：" prop="name">
+                    <el-input v-model="form.name" placeholder="请输入任务名称"></el-input>
+                </el-form-item>
+                <el-form-item label="类型：" prop="type">
+                    <el-select v-model="form.type" placeholder="请选择">
+                        <el-option v-for="item in type" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="间隔：" prop="frequency" v-if="form.type === 'circulation'">
+                    <el-row :span="24">
+                        <el-col :span="14">
+                            <el-input v-model.number="form.frequency" placeholder="间隔"></el-input>
+                        </el-col>
+                        <el-col :span="5">
+                        <el-select v-model="form.unit" placeholder="请选择">
+                            <el-option v-for="item in unit" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                        </el-col>
+                    </el-row>
+                </el-form-item>
+                <el-form-item label="执行时间：" prop="timeArray" v-if="form.type === 'circulation'">
+                    <el-date-picker  v-model="form.timeArray" type="datetimerange" :picker-options="pickerOptions2"
+                                     range-separator="   至   " start-placeholder="开始日期" end-placeholder="结束日期" align="right" ></el-date-picker>
+                </el-form-item>
+                <el-form-item label="执行时间：" prop="time" v-if="form.type === 'timing'">
+                    <el-date-picker v-model="form.time" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions1"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="HOST：" prop="Host">
+                    <el-select v-model="form.Host"  placeholder="测试环境">
+                        <el-option v-for="(item,index) in Host" :key="index+''" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" :loading="editLoading" @click.native="addTask">创建</el-button>
+                    <el-button type="danger" :loading="delLoading" @click.native="delTask" :disabled="disDel">删除</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
         <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
             <el-form :model="editForm"  :rules="editFormRules" ref="editForm" label-width="80px">
                 <el-form-item label="名称" prop="caseName">
@@ -143,6 +184,7 @@
 <script>
 import { test } from '../../../api/api'
 import $ from 'jquery'
+import moment from "moment"
   export default {
     data() {
       return {
@@ -154,6 +196,84 @@ import $ from 'jquery'
         page: 1,
         listLoading: false,
         sels: [],//列表选中列
+        taskVShow: false,
+        delLoading: false,
+        disDel: true,
+        TestStatus: false,
+        form: {
+            name: "",
+            type: "circulation",
+            frequency: "",
+            unit: "m",
+            time: "",
+            timeArray: [],
+            Host: "",
+        },
+        formRules: {
+            name: [
+                { required: true, message: '请输入任务名称', trigger: 'blur' },
+                { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
+              ],
+            frequency: [
+                { type: "number", required: true, message: '请输入时间间隔' },
+              ],
+            timeArray: [
+                { type: "array", required: true, message: '请选择执行时间' },
+              ],
+            time: [
+                { required: true, message: '请选择执行时间'},
+              ],
+            Host: [
+                { required: true, message: '请选择测试域名'},
+              ],
+            type: [
+                { required: true, message: '请选择任务类型', trigger: 'blur' },
+              ],
+        },
+        Host: [],
+        unit: [
+            {value: "m", label: "分"},
+            {value: "h", label: "时"},
+            {value: "d", label: "天"},
+            {value: "w", label: "周"},
+        ],
+        type: [ {value: "circulation", label: "循环"},
+                {value: "timing", label: "定时"},],
+        pickerOptions1: {
+          disabledDate(time) {
+            return time.getTime() < Date.now() - 8.64e7;
+          }
+        },
+        pickerOptions2: {
+           disabledDate(time) {
+               return time.getTime() < Date.now() - 8.64e7;
+          },
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              end.setTime(end.getTime() + 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              end.setTime(end.getTime() + 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              end.setTime(end.getTime() + 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
 		updateGroupFormVisible: false,
 		updateGroupForm: {
             firstGroup: "",
@@ -221,6 +341,193 @@ import $ from 'jquery'
       }
     },
 	methods: {
+        getHost() {
+              let self = this;
+              $.ajax({
+                    type: "get",
+                    url: test+"/api/global/host_total",
+                    async: true,
+                    data: { project_id: this.$route.params.project_id, page: this.page,},
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: (data) => {
+                        if (data.code === '999999') {
+                            data.data.data.forEach((item) => {
+                                if (item.status) {
+                                    self.Host.push(item)
+                                }
+                            })
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+              },
+        getTask(){
+            let self = this;
+            $.ajax({
+                type: "get",
+                url: test+"/api/automation/get_time_task",
+                async: true,
+                data: {
+                    project_id: self.$route.params.project_id,
+                },
+                headers: {
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                },
+                timeout: 5000,
+                success: (data) => {
+                    if (data.code === '999999') {
+                        try {
+                            self.form.name = data.data.name;
+                            self.form.type = data.data.type;
+                            self.form.frequency = data.data.frequency;
+                            if (self.form.type === 'timing') {
+                                self.form.unit = 's'
+                            } else {
+                                self.form.unit = data.data.unit;
+                            }
+                            self.form.time = data.data.startTime;
+                            self.form.timeArray = [data.data.startTime, data.data.endTime];
+                            self.form.Host = data.data.Host;
+                            self.disDel = false
+                        } catch (e){
+                            self.form.name = "";
+                            self.form.type = "circulation";
+                            self.form.frequency = "";
+                            self.form.unit = "s";
+                            self.form.time = "";
+                            self.form.timeArray = [];
+                            self.form.Host = "";
+                            self.disDel = true
+                        }
+                        self.taskVShow = true
+                    }
+                    else {
+                        self.$message.error({
+                            message: data.msg,
+                            center: true,
+                        })
+                    }
+                },
+                error: function () {
+                    self.editLoading = false;
+                    self.$message.error({
+                        message: "失败",
+                        center: true,
+                    })
+                }
+             })
+        },
+        addTask(){
+            let self = this;
+            this.$refs.form.validate((valid) => {if (valid) {
+                this.$confirm('确认提交吗？', '提示', {}).then(() => {
+                    console.log(self.form);
+                    self.editLoading = true;
+                    let param = {
+                        project_id: self.$route.params.project_id,
+                        case_id: self.$route.params.case_id,
+                        host_id: self.form.Host,
+                        name: self.form.name,
+                        type: self.form.type,
+                        frequency: self.form.frequency,
+                        unit: self.form.unit,
+                    };
+                    if (self.form.type === 'circulation') {
+                        param['startTime'] = moment(self.form.timeArray[0]).format("YYYY-MM-DD HH:mm:ss");
+                        param['endTime'] = moment(self.form.timeArray[1]).format("YYYY-MM-DD HH:mm:ss")
+                    } else {
+                        param['startTime'] = moment(self.form.time).format("YYYY-MM-DD HH:mm:ss");
+                        param['endTime'] = moment(self.form.time).format("YYYY-MM-DD HH:mm:ss")
+                    }
+                    $.ajax({
+                        type: "post",
+                        url: test+"/api/automation/add_time_task",
+                        async: true,
+                        data: param,
+                        headers: {
+                            Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                        },
+                        timeout: 5000,
+                        success: (data) => {
+                            if (data.code === '999999') {
+                                self.editLoading = false;
+                                self.taskVShow = false;
+                                self.$message({
+                                    message: '添加成功',
+                                    center: true,
+                                    type: "success",
+                                })
+                            }
+                            else {
+                                self.editLoading = false;
+                                self.$message.error({
+                                    message: data.msg,
+                                    center: true,
+                                })
+                            }
+                        },
+                        error: function () {
+                            self.editLoading = false;
+                            self.$message.error({
+                                message: "失败",
+                                center: true,
+                            })
+                        }
+                     })
+                }
+                )}
+            })
+        },
+        delTask(){
+            let self = this;
+            self.delLoading = true;
+            $.ajax({
+                type: "post",
+                url: test+"/api/automation/del_task",
+                async: true,
+                data: {
+                    project_id: self.$route.params.project_id,
+                    case_id: self.$route.params.case_id
+                },
+                headers: {
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                },
+                timeout: 5000,
+                success: (data) => {
+                    if (data.code === '999999') {
+                        self.delLoading = false;
+                        self.taskVShow = false;
+                        self.$message({
+                            message: "删除成功",
+                            center: true,
+                            type: "success"
+                        })
+                    }
+                    else {
+                        self.delLoading = false;
+                        self.$message.error({
+                            message: data.msg,
+                            center: true,
+                        })
+                    }
+                },
+                error: function () {
+                    self.delLoading = false;
+                    self.$message.error({
+                        message: "失败",
+                        center: true,
+                    })
+                }
+             })
+        },
     	// 获取用例列表
 		getCaseList() {
 			this.listLoading = true;
@@ -551,6 +858,7 @@ import $ from 'jquery'
     },
     mounted() {
         this.getCaseList();
+        this.getHost();
 
     }
   }

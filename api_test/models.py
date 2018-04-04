@@ -572,7 +572,7 @@ class AutomationTestTask(models.Model):
     用例定时任务
     """
     id = models.AutoField(primary_key=True)
-    automationTestCase = models.OneToOneField(AutomationTestCase, on_delete=models.CASCADE, verbose_name='用例')
+    project = models.OneToOneField(Project, on_delete=models.CASCADE, verbose_name='项目')
     Host = models.ForeignKey(GlobalHost, on_delete=models.CASCADE, verbose_name='HOST')
     name = models.CharField(max_length=50, verbose_name='任务名称')
     type = models.CharField(max_length=50, verbose_name='类型', choices=TASK_CHOICE)

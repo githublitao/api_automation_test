@@ -331,7 +331,7 @@ class AutomationTestTaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AutomationTestTask
-        fields = ('id', 'automationTestCase', 'Host', 'name', 'type', 'frequency', 'unit', 'startTime', 'endTime')
+        fields = ('id', 'project', 'Host', 'name', 'type', 'frequency', 'unit', 'startTime', 'endTime')
 
 
 class AutomationTestReportSerializer(serializers.ModelSerializer):
@@ -342,7 +342,7 @@ class AutomationTestReportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AutomationCaseApi
-        fields = ('id', 'automationTestCase', 'name', 'httpType', 'requestType', 'address', 'examineType', 'result')
+        fields = ('id', 'project', 'name', 'httpType', 'requestType', 'address', 'examineType', 'result')
 
 
 class AutomationTaskRunTimeSerializer(serializers.ModelSerializer):

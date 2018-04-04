@@ -12,17 +12,19 @@ sys.path.append(PathProject)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api_automation_test.settings")
 django.setup()
 
-from api_test.models import AutomationCaseApi, AutomationTaskRunTime
+from api_test.models import AutomationCaseApi, AutomationTaskRunTime, AutomationTestCase
 from api_test.common.confighttp import test_api
 
 
 def automation_task():
     data = AutomationCaseApi.objects.filter(automationTestCase=sys.argv[1])
     start_time = datetime.datetime.now()
-    for i in data:
-        test_api(host_id=sys.argv[2], case_id=sys.argv[1], _id=i.pk, project_id=sys.argv[3])
+    case = AutomationTestCase.objects.filter(project=sys.argv[2])
+    for j in case:
+        for i in data:
+            test_api(host_id=sys.argv[1], case_id=j.pk, _id=i.pk, project_id=sys.argv[2])
     end_time = datetime.datetime.now()
-    AutomationTaskRunTime(automationTestTask=sys.argv[4], startTime=start_time, endTime=end_time)
+    AutomationTaskRunTime(automationTestTask=sys.argv[3], startTime=start_time, endTime=end_time)
 
 
 if __name__ == '__main__':

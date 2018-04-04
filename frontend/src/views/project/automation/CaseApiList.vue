@@ -7,7 +7,6 @@
         </router-link>
         <el-button type="primary" @click.native="TestAll"><div>测试全部</div></el-button>
         <el-button type="primary" @click.native="TestReport"><div>查看报告</div></el-button>
-        <el-button type="primary" @click.native="getTask"><div>设置定时任务</div></el-button>
         <el-select v-model="url"  placeholder="测试环境" style="float: right">
             <el-option v-for="(item,index) in Host" :key="index+''" :label="item.name" :value="item.id"></el-option>
         </el-select>
@@ -90,46 +89,6 @@
             <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :page-count="total" style="float:right;">
             </el-pagination>
         </el-col>
-        <el-dialog title="定时任务" v-model="taskVShow"  :close-on-click-modal="false" style="width: 50%; left: 20%">
-            <el-form ref="form" :model="form" label-width="100px" :rules="formRules">
-                <el-form-item label="任务名称：" prop="name">
-                    <el-input v-model="form.name" placeholder="请输入任务名称"></el-input>
-                </el-form-item>
-                <el-form-item label="类型：" prop="type">
-                    <el-select v-model="form.type" placeholder="请选择">
-                        <el-option v-for="item in type" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="间隔：" prop="frequency" v-if="form.type === 'circulation'">
-                    <el-row :span="24">
-                        <el-col :span="14">
-                            <el-input v-model.number="form.frequency" placeholder="间隔"></el-input>
-                        </el-col>
-                        <el-col :span="5">
-                        <el-select v-model="form.unit" placeholder="请选择">
-                            <el-option v-for="item in unit" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                        </el-select>
-                        </el-col>
-                    </el-row>
-                </el-form-item>
-                <el-form-item label="执行时间：" prop="timeArray" v-if="form.type === 'circulation'">
-                    <el-date-picker  v-model="form.timeArray" type="datetimerange" :picker-options="pickerOptions2"
-                                     range-separator="   至   " start-placeholder="开始日期" end-placeholder="结束日期" align="right" ></el-date-picker>
-                </el-form-item>
-                <el-form-item label="执行时间：" prop="time" v-if="form.type === 'timing'">
-                    <el-date-picker v-model="form.time" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions1"></el-date-picker>
-                </el-form-item>
-                <el-form-item label="HOST：" prop="Host">
-                    <el-select v-model="form.Host"  placeholder="测试环境">
-                        <el-option v-for="(item,index) in Host" :key="index+''" :label="item.name" :value="item.id"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" :loading="editLoading" @click.native="addTask">创建</el-button>
-                    <el-button type="danger" :loading="delLoading" @click.native="delTask" :disabled="disDel">删除</el-button>
-                </el-form-item>
-            </el-form>
-        </el-dialog>
         <el-dialog title="测试结果" v-model="TestResult" :close-on-click-modal="false">
             <div style="height:700px;overflow:auto;overflow-x:hidden;border: 1px solid #e6e6e6">
                 <div style="font-size: 25px;" class="resultStyle">{{result.name}}</div>
@@ -226,75 +185,9 @@
                     }
                   }]
                 },
-                unit: [
-                    {value: "m", label: "分"},
-                    {value: "h", label: "时"},
-                    {value: "d", label: "天"},
-                    {value: "w", label: "周"},
-                ],
-                type: [ {value: "circulation", label: "循环"},
-                        {value: "timing", label: "定时"},],
-                form: {
-                    name: "",
-                    type: "circulation",
-                    frequency: "",
-                    unit: "s",
-                    time: "",
-                    timeArray: [],
-                    Host: "",
-                },
-                formRules: {
-                    name: [
-                        { required: true, message: '请输入任务名称', trigger: 'blur' },
-                        { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-                      ],
-                    frequency: [
-                        { type: "number", required: true, message: '请输入时间间隔' },
-                      ],
-                    timeArray: [
-                        { type: "array", required: true, message: '请选择执行时间' },
-                      ],
-                    time: [
-                        { required: true, message: '请选择执行时间'},
-                      ],
-                    Host: [
-                        { required: true, message: '请选择测试域名'},
-                      ],
-                    type: [
-                        { required: true, message: '请选择任务类型', trigger: 'blur' },
-                      ],
-                },
             }
         },
         methods: {
-            getHost() {
-              let self = this;
-              $.ajax({
-                    type: "get",
-                    url: test+"/api/global/host_total",
-                    async: true,
-                    data: { project_id: this.$route.params.project_id, page: this.page,},
-                    headers: {
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: (data) => {
-                        if (data.code === '999999') {
-                            data.data.data.forEach((item) => {
-                                if (item.status) {
-                                    self.Host.push(item)
-                                }
-                            })
-                        }
-                        else {
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                    },
-                })
-              },
             back(){
                 this.$router.go(-1); // 返回上一层
             },
