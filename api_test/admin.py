@@ -348,13 +348,13 @@ admin.site.register(AutomationTestTask, AutomationTestTaskForm)
 
 
 class AutomationTaskRunTimeForm(admin.ModelAdmin):
-    list_display = ('id', 'automationTestTask', 'startTime', 'endTime')
-    list_display_links = ('id', 'automationTestTask')
+    list_display = ('id', 'project', 'startTime', 'endTime')
+    list_display_links = ('id', 'project')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
-        '接口请求历史', {
-            'fields': ('automationTestTask', 'startTime', 'endTime')
+        '任务执行时间', {
+            'fields': ('project', 'startTime', 'endTime')
         }],)
 
 

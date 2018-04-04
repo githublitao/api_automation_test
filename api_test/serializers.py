@@ -336,13 +336,14 @@ class AutomationTestTaskSerializer(serializers.ModelSerializer):
 
 class AutomationTestReportSerializer(serializers.ModelSerializer):
     """
-    定时任务信息序列化
+    用例接口信息序列化
     """
     result = serializers.CharField(source='test_result.result')
+    automationTestCase = serializers.CharField(source='automationTestCase.caseName')
 
     class Meta:
         model = AutomationCaseApi
-        fields = ('id', 'project', 'name', 'httpType', 'requestType', 'address', 'examineType', 'result')
+        fields = ('id', 'automationTestCase', 'name', 'httpType', 'requestType', 'address', 'examineType', 'result')
 
 
 class AutomationTaskRunTimeSerializer(serializers.ModelSerializer):
@@ -351,10 +352,11 @@ class AutomationTaskRunTimeSerializer(serializers.ModelSerializer):
     """
     startTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
     endTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    project = serializers.CharField(source='project.name')
 
     class Meta:
         model = AutomationTaskRunTime
-        fields = ('id', 'automationTestTask', 'startTime', 'endTime')
+        fields = ('id', 'project', 'startTime', 'endTime')
 
 
 class AutomationTestResultSerializer(serializers.ModelSerializer):

@@ -1,4 +1,4 @@
-export const test = 'http://192.168.88.131:8000';
+export const test = 'http://127.0.0.1:8000';
 
 /**
  * 真正的请求
@@ -8,24 +8,24 @@ export const test = 'http://192.168.88.131:8000';
  * @param header 头文件
  */
 function commonFetcdh(url, options, header='', method = 'GET') {
-  let initObj = {};
-  if (method === 'GET') { // 如果是GET请求，拼接url
-    url += '?' + searchStr;
-    initObj = {
-      method: method,
+    let initObj = {};
+    if (method === 'GET') { // 如果是GET请求，拼接url
+        url += '?' + searchStr;
+        initObj = {
+            method: method,
+        }
+    } else {
+        initObj = {
+            method: method,
+            headers: header,
+            body: options
+        }
     }
-  } else {
-    initObj = {
-      method: method,
-      headers: header,
-      body: options
-    }
-  }
-  fetch(url, initObj).then((res) => {
-    return res.json()
-  }).then((res) => {
-    return res
-  })
+    fetch(url, initObj).then((res) => {
+        return res.json()
+    }).then((res) => {
+        return res
+    })
 }
 
 /**
@@ -34,7 +34,7 @@ function commonFetcdh(url, options, header='', method = 'GET') {
  * @param options 请求参数
  */
 function GET(url, options) {
-  return commonFetcdh(url, options, 'GET')
+    return commonFetcdh(url, options, 'GET')
 }
 
 /**
@@ -44,8 +44,8 @@ function GET(url, options) {
  * @param header 头文件
  */
 function POST(url, options, header) {
-  return commonFetcdh(url, options, header,'POST')
+    return commonFetcdh(url, options, header,'POST')
 }
 export { //很关键
-  POST,GET
+    POST,GET
 }

@@ -21,14 +21,14 @@
 			</el-col>
 		</el-col>
 		<el-col :span="24" class="main">
-            <aside :class="collapsed?'menu-collapsed':'menu-expanded'">
-                <!--导航菜单-->
-                <el-menu :default-active="$route.path" class="el-menu-vertical-demo" @select="handleselect"
-                     unique-opened router v-show="!collapsed">
-                    <template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
-                        <el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden"><i :class="child.iconCls"></i>{{child.name}}</el-menu-item>       
-                    </template>
-                </el-menu>
+			<aside :class="collapsed?'menu-collapsed':'menu-expanded'">
+				<!--导航菜单-->
+				<el-menu :default-active="$route.path" class="el-menu-vertical-demo" @select="handleselect"
+						 unique-opened router v-show="!collapsed">
+					<template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
+						<el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden"><i :class="child.iconCls"></i>{{child.name}}</el-menu-item>
+					</template>
+				</el-menu>
 			</aside>
 			<section class="content-container">
 				<div class="grid-content bg-purple-light">
@@ -52,69 +52,69 @@
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				sysName:'自动化测试平台',
-				collapsed:false,
-				sysUserName: '',
-				sysUserAvatar: '',
-				form: {
-					name: '',
-					region: '',
-					date1: '',
-					date2: '',
-					delivery: false,
-					type: [],
-					resource: '',
-					desc: ''
-				}
-			}
-		},
-		methods: {
-			onSubmit() {
-				console.log('submit!');
-			},
-			handleselect: function (a, b) {
-			},
-			//退出登录
-			logout: function () {
-				var _this = this;
-				this.$confirm('确认退出吗?', '提示', {
-					//type: 'warning'
-				}).then(() => {
-					sessionStorage.removeItem('token');
-					_this.$router.push('/login');
-				}).catch(() => {
+    export default {
+        data() {
+            return {
+                sysName:'自动化测试平台',
+                collapsed:false,
+                sysUserName: '',
+                sysUserAvatar: '',
+                form: {
+                    name: '',
+                    region: '',
+                    date1: '',
+                    date2: '',
+                    delivery: false,
+                    type: [],
+                    resource: '',
+                    desc: ''
+                }
+            }
+        },
+        methods: {
+            onSubmit() {
+                console.log('submit!');
+            },
+            handleselect: function (a, b) {
+            },
+            //退出登录
+            logout: function () {
+                var _this = this;
+                this.$confirm('确认退出吗?', '提示', {
+                    //type: 'warning'
+                }).then(() => {
+                    sessionStorage.removeItem('token');
+                    _this.$router.push('/login');
+                }).catch(() => {
 
-				});
+                });
 
 
-			},
-			//折叠导航栏
-			collapse:function(){
-				this.collapsed=!this.collapsed;
-			},
-			showMenu(i,status){
-				this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-'+i)[0].style.display=status?'block':'none';
-			}
-		},
-		mounted() {
-			var user = sessionStorage.getItem('username');
-			if (user) {
-				name = JSON.parse(user);
-				this.sysUserName = name || '';
+            },
+            //折叠导航栏
+            collapse:function(){
+                this.collapsed=!this.collapsed;
+            },
+            showMenu(i,status){
+                this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-'+i)[0].style.display=status?'block':'none';
+            }
+        },
+        mounted() {
+            var user = sessionStorage.getItem('username');
+            if (user) {
+                name = JSON.parse(user);
+                this.sysUserName = name || '';
 //				this.sysUserAvatar = '../assets/user.png';
-			}
+            }
 
-		}
-	}
+        }
+    }
 
 </script>
 
 <style scoped lang="scss">
 	@import '~scss_vars';
-	
+
 	.container {
 		position: absolute;
 		top: 0px;
@@ -174,72 +174,72 @@
 			}
 		}
 		.main {
-            display: flex;
-            // background: #324057;
-            position: absolute;
-            top: 60px;
-            bottom: 0px;
-            overflow: hidden;
-            margin-left: 0px;
-            aside {
-                flex:0 0 230px;
-                width: 230px;
-                // position: absolute;
-                // top: 0px;
-                // bottom: 0px;
-                .el-menu{
-                    height: 100%;
-                }
-                .collapsed{
-                    width:60px;
-                    .item{
-                        position: relative;
-                    }
-                    .submenu{
-                        position:absolute;
-                        top:0px;
-                        left:60px;
-                        z-index:99999;
-                        height:auto;
-                        display:none;
-                    }
+			display: flex;
+			// background: #324057;
+			position: absolute;
+			top: 60px;
+			bottom: 0px;
+			overflow: hidden;
+			margin-left: 0px;
+			aside {
+				flex:0 0 230px;
+				width: 230px;
+				// position: absolute;
+				// top: 0px;
+				// bottom: 0px;
+				.el-menu{
+					height: 100%;
+				}
+				.collapsed{
+					width:60px;
+					.item{
+						position: relative;
+					}
+					.submenu{
+						position:absolute;
+						top:0px;
+						left:60px;
+						z-index:99999;
+						height:auto;
+						display:none;
+					}
 
-                }
-            }
-            .menu-collapsed{
-                flex:0 0 60px;
-                width: 60px;
-            }
-            .menu-expanded{
-                flex:0 0 230px;
-                width: 230px;
-            }
-            .content-container {
-                // background: #f1f2f7;
-                flex:1;
-                // position: absolute;
-                // right: 0px;
-                // top: 0px;
-                // bottom: 0px;
-                // left: 230px;
-                overflow-y: scroll;
-                padding: 20px;
-                .breadcrumb-container {
-                    //margin-bottom: 15px;
-                    .title {
-                        width: 200px;
-                        float: left;
-                        color: #475669;
-                    }
-                    .breadcrumb-inner {
-                        float: right;
-                    }
-                }
-                .content-wrapper {
-                    background-color: #fff;
-                    box-sizing: border-box;
-                }
-            }
-        }
-    }
+				}
+			}
+			.menu-collapsed{
+				flex:0 0 60px;
+				width: 60px;
+			}
+			.menu-expanded{
+				flex:0 0 230px;
+				width: 230px;
+			}
+			.content-container {
+				// background: #f1f2f7;
+				flex:1;
+				// position: absolute;
+				// right: 0px;
+				// top: 0px;
+				// bottom: 0px;
+				// left: 230px;
+				overflow-y: scroll;
+				padding: 20px;
+				.breadcrumb-container {
+					//margin-bottom: 15px;
+					.title {
+						width: 200px;
+						float: left;
+						color: #475669;
+					}
+					.breadcrumb-inner {
+						float: right;
+					}
+				}
+				.content-wrapper {
+					background-color: #fff;
+					box-sizing: border-box;
+				}
+			}
+		}
+	}
 </style>

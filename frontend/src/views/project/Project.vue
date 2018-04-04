@@ -16,9 +16,9 @@
 			</el-col>
 		</el-col>
 		<el-col :span="24">
-		    <template :index='project_id'>
+			<template :index='project_id'>
 				<el-menu :default-active="$route.path" class="el-menu-vertical-demo" mode="horizontal" @select="handleselect"
-						unique-opened v-show="!collapsed">
+						 unique-opened v-show="!collapsed">
 					<template v-for="item in $router.options.routes" v-if="!item.projectHidden">
 						<template v-for="(items,index) in item.children">
 							<el-menu-item :index="items.path" v-if="items.leaf" :key="items.path">
@@ -35,7 +35,7 @@
 									{{child.name}}
 								</el-menu-item>
 							</el-submenu>
-						</template> 
+						</template>
 					</template>
 				</el-menu>
 			</template>
@@ -50,55 +50,55 @@
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				tabPosition: 'top',
-			    project_id:'',
-				sysName:'自动化测试平台',
-				collapsed:false,
-				sysUserName: '',
-				sysUserAvatar: '',
-			}
-		},
-		methods: {
-		    handleselect: function (a, b) {
+    export default {
+        data() {
+            return {
+                tabPosition: 'top',
+                project_id:'',
+                sysName:'自动化测试平台',
+                collapsed:false,
+                sysUserName: '',
+                sysUserAvatar: '',
+            }
+        },
+        methods: {
+            handleselect: function (a, b) {
             },
-			onSubmit() {
-				console.log('submit!');
-			},
-			//退出登录
-			logout: function () {
-				let _this = this;
-				this.$confirm('确认退出吗?', '提示', {
-					//type: 'warning'
-				}).then(() => {
-					sessionStorage.removeItem('token');
-					_this.$router.push('/login');
-				}).catch(() => {
+            onSubmit() {
+                console.log('submit!');
+            },
+            //退出登录
+            logout: function () {
+                let _this = this;
+                this.$confirm('确认退出吗?', '提示', {
+                    //type: 'warning'
+                }).then(() => {
+                    sessionStorage.removeItem('token');
+                    _this.$router.push('/login');
+                }).catch(() => {
 
-				});
-			},
-			showMenu(i,status){
-				this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-'+i)[0].style.display=status?'block':'none';
-			},
-		},
-		mounted() {
-			let user = sessionStorage.getItem('username');
-			if (user) {
-				name = JSON.parse(user);
-				this.sysUserName = name || '';
+                });
+            },
+            showMenu(i,status){
+                this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-'+i)[0].style.display=status?'block':'none';
+            },
+        },
+        mounted() {
+            let user = sessionStorage.getItem('username');
+            if (user) {
+                name = JSON.parse(user);
+                this.sysUserName = name || '';
 //				this.sysUserAvatar = '../assets/user.png';
-			}
-			this.project_id = this.$route.params.project_id
-		}
-	}
+            }
+            this.project_id = this.$route.params.project_id
+        }
+    }
 
 </script>
 
 <style scoped lang="scss">
 	@import '~scss_vars';
-	
+
 	.container {
 		position: absolute;
 		top: 0px;
@@ -162,9 +162,9 @@
 			float: left;
 			color: #475669;
 			font-size: 25px;
-    		margin: 15px;
-    		margin-left: 35px;
-    		margin-bottom: 0px;
+			margin: 15px;
+			margin-left: 35px;
+			margin-bottom: 0px;
 			font-family: PingFang SC;
 		}
 	}

@@ -24,7 +24,7 @@ def automation_task():
         for i in data:
             test_api(host_id=sys.argv[1], case_id=j.pk, _id=i.pk, project_id=sys.argv[2])
     end_time = datetime.datetime.now()
-    AutomationTaskRunTime(automationTestTask=sys.argv[3], startTime=start_time, endTime=end_time)
+    AutomationTaskRunTime(project=sys.argv[2], startTime=start_time, endTime=end_time).save()
 
 
 if __name__ == '__main__':

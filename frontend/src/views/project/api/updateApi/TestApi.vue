@@ -42,16 +42,16 @@
                             </el-table-column>
                             <el-table-column prop="name" label="标签" min-width="20%" sortable>
                                 <template slot-scope="scope">
-                                   <el-select placeholder="head标签" filterable v-model="scope.row.name">
-                                       <el-option v-for="(item,index) in header" :key="index+''" :label="item.label" :value="item.value"></el-option>
-                                   </el-select>
-                                   <el-input class="selectInput" v-model="scope.row.name" :value="scope.row.name" placeholder="请输入内容"></el-input>
-                               </template>
+                                    <el-select placeholder="head标签" filterable v-model="scope.row.name">
+                                        <el-option v-for="(item,index) in header" :key="index+''" :label="item.label" :value="item.value"></el-option>
+                                    </el-select>
+                                    <el-input class="selectInput" v-model="scope.row.name" :value="scope.row.name" placeholder="请输入内容"></el-input>
+                                </template>
                             </el-table-column>
                             <el-table-column prop="value" label="内容" min-width="40%" sortable>
                                 <template slot-scope="scope">
-                                   <el-input v-model="scope.row.value" :value="scope.row.value" placeholder="请输入内容"></el-input>
-                               </template>
+                                    <el-input v-model="scope.row.value" :value="scope.row.value" placeholder="请输入内容"></el-input>
+                                </template>
                             </el-table-column>
                             <el-table-column label="操作" min-width="10%">
                                 <template slot-scope="scope">
@@ -78,13 +78,13 @@
                             </el-table-column>
                             <el-table-column prop="name" label="参数名" min-width="20%" sortable>
                                 <template slot-scope="scope">
-                                   <el-input v-model="scope.row.name" :value="scope.row.name" placeholder="请输入参数值"></el-input>
-                               </template>
+                                    <el-input v-model="scope.row.name" :value="scope.row.name" placeholder="请输入参数值"></el-input>
+                                </template>
                             </el-table-column>
                             <el-table-column prop="value" label="参数值" min-width="40%" sortable>
                                 <template slot-scope="scope">
-                                   <el-input v-model="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
-                               </template>
+                                    <el-input v-model="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
+                                </template>
                             </el-table-column>
                             <el-table-column label="操作" min-width="10%">
                                 <template slot-scope="scope">
@@ -97,72 +97,72 @@
                                 </template>
                             </el-table-column>
                         </el-table>
-                     <template>
-                         <el-input :class="ParameterTyep? 'parameter-b': 'parameter-a'" type="textarea" :rows="5" placeholder="请输入内容" v-model="form.parameterRaw"></el-input>
-                     </template>
-                </el-collapse-item>
-                <el-collapse-item title="响应结果" name="4">
-                    <div style="margin-bottom: 10px">
-                        <el-button @click="showBody">Body</el-button>
-                        <el-button @click="showHeader">Head</el-button>
-                        <el-button type="primary" @click="neatenFormat">格式转换</el-button>
-                    </div>
-                    <el-card class="box-card">
-                      <div slot="header" class="clearfix">
-                        <span v-model="form.statusCode" style="font-size: 25px">{{form.statusCode}}</span>
-                      </div>
-                        <div v-model="form.resultData" :class="resultShow? 'parameter-a': 'parameter-b'" v-show="!format">
-                            <div style="word-break: break-all;overflow:auto;overflow-x:hidden">
-                            {{form.resultData}}
-                            </div>
+                        <template>
+                            <el-input :class="ParameterTyep? 'parameter-b': 'parameter-a'" type="textarea" :rows="5" placeholder="请输入内容" v-model="form.parameterRaw"></el-input>
+                        </template>
+                    </el-collapse-item>
+                    <el-collapse-item title="响应结果" name="4">
+                        <div style="margin-bottom: 10px">
+                            <el-button @click="showBody">Body</el-button>
+                            <el-button @click="showHeader">Head</el-button>
+                            <el-button type="primary" @click="neatenFormat">格式转换</el-button>
                         </div>
-                        <div v-model="form.resultHead" :class="resultShow? 'parameter-b': 'parameter-a'">{{form.resultHead}}</div>
-                        <div :class="resultShow? 'parameter-a': 'parameter-b'" v-show="format">
+                        <el-card class="box-card">
+                            <div slot="header" class="clearfix">
+                                <span v-model="form.statusCode" style="font-size: 25px">{{form.statusCode}}</span>
+                            </div>
+                            <div v-model="form.resultData" :class="resultShow? 'parameter-a': 'parameter-b'" v-show="!format">
+                                <div style="word-break: break-all;overflow:auto;overflow-x:hidden">
+                                    {{form.resultData}}
+                                </div>
+                            </div>
+                            <div v-model="form.resultHead" :class="resultShow? 'parameter-b': 'parameter-a'">{{form.resultHead}}</div>
+                            <div :class="resultShow? 'parameter-a': 'parameter-b'" v-show="format">
                             <pre style="border: 1px solid #e6e6e6;word-break: break-all;height:300px;overflow:auto;overflow-x:hidden">
                                 {{form.resultData}}
                             </pre>
-                        </div>
-                        <div v-show="!form.resultData&&!form.resultHead" class="raw">暂无数据</div>
-                    </el-card>
-                </el-collapse-item>
-                <el-collapse-item title="请求历史" name="5">
-                    <el-table :data="requestHistory" stripe style="width: 100%" v-loading="listLoading">
-                        <el-table-column prop="requestTime" label="操作时间" min-width="20%">
-                        </el-table-column>
-                        <el-table-column prop="requestType" label="请求方式" min-width="10%">
-                        </el-table-column>
-                        <el-table-column prop="requestAddress" label="请求地址" min-width="50%">
-                        </el-table-column>
-                        <el-table-column prop="httpCode" label="HTTP状态" min-width="10%">
-                        </el-table-column>
-                        <el-table-column min-width="10%" label="操作">
-                            <template slot-scope="scope">
-                                <i class="el-icon-delete" style="font-size:30px;cursor:pointer;" @click="delHistory(scope.row)"></i>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </el-collapse-item>
-            </el-collapse>
+                            </div>
+                            <div v-show="!form.resultData&&!form.resultHead" class="raw">暂无数据</div>
+                        </el-card>
+                    </el-collapse-item>
+                    <el-collapse-item title="请求历史" name="5">
+                        <el-table :data="requestHistory" stripe style="width: 100%" v-loading="listLoading">
+                            <el-table-column prop="requestTime" label="操作时间" min-width="20%">
+                            </el-table-column>
+                            <el-table-column prop="requestType" label="请求方式" min-width="10%">
+                            </el-table-column>
+                            <el-table-column prop="requestAddress" label="请求地址" min-width="50%">
+                            </el-table-column>
+                            <el-table-column prop="httpCode" label="HTTP状态" min-width="10%">
+                            </el-table-column>
+                            <el-table-column min-width="10%" label="操作">
+                                <template slot-scope="scope">
+                                    <i class="el-icon-delete" style="font-size:30px;cursor:pointer;" @click="delHistory(scope.row)"></i>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-collapse-item>
+                </el-collapse>
             </el-row>
         </el-form>
     </section>
 </template>
 <script>
-import { test } from '../../../../api/api'
-import $ from 'jquery'
-  export default {
-      data() {
-      return {
-        request: [{value: 'GET', label: 'GET'},
+    import { test } from '../../../../api/api'
+    import $ from 'jquery'
+    export default {
+        data() {
+            return {
+                request: [{value: 'GET', label: 'GET'},
                     {value: 'POST', label: 'POST'},
                     {value: 'PUT', label: 'PUT'},
                     {value: 'DELETE', label: 'DELETE'}],
-        Http: [{value: 'http', label: 'HTTP'},
-                {value: 'https', label: 'HTTPS'}],
-        ParameterTyep: true,
-        radio: "form-data",
-        loadingSend: false,
-        header: [{value: 'Accept', label: 'Accept'},
+                Http: [{value: 'http', label: 'HTTP'},
+                    {value: 'https', label: 'HTTPS'}],
+                ParameterTyep: true,
+                radio: "form-data",
+                loadingSend: false,
+                header: [{value: 'Accept', label: 'Accept'},
                     {value: 'Accept-Charset', label: 'Accept-Charset'},
                     {value: 'Accept-Encoding', label: 'Accept-Encoding'},
                     {value: 'Accept-Language', label: 'Accept-Language'},
@@ -194,358 +194,358 @@ import $ from 'jquery'
                     {value: 'User-Agent', label: 'User-Agent'},
                     {value: 'Via', label: 'Via'},
                     {value: 'Warning', label: 'Warning'}],
-        header4: "",
-        radioType: "",
-        result: true,
-        activeNames: ['1', '2', '3', '4', '5'],
-        id: "",
-        Host: [],
-        form: {
-            url: "",
-            request4: 'POST',
-            Http4: 'http',
-            addr: '',
-            head: [],
-            parameterRaw: "",
-            parameter: [],
-            parameterType: "",
-            statusCode: "",
-            resultData: "",
-            resultHead: "",
-        },
-        formRules: {
-            url: [
-                { required: true, message: '请选择测试环境', trigger: 'blur'}
-                ],
-            addr: [
-            { required: true, message: '请输入地址', trigger: 'blur' },
-            ]
-        },
-        requestHistory: [],
-        listLoading: false,
-        headers: "",
-        parameters: "",
-        resultShow: true,
-        format: false,
-      }
-    },
-    methods: {
-      getApiInfo() {
-            let self = this;
-            let param = {project_id: self.$route.params.project_id, api_id: self.$route.params.api_id};
-            $.ajax({
-                type: "get",
-                url: test+"/api/api/api_info",
-                async: true,
-                data: param,
-                headers: {
-                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                header4: "",
+                radioType: "",
+                result: true,
+                activeNames: ['1', '2', '3', '4', '5'],
+                id: "",
+                Host: [],
+                form: {
+                    url: "",
+                    request4: 'POST',
+                    Http4: 'http',
+                    addr: '',
+                    head: [],
+                    parameterRaw: "",
+                    parameter: [],
+                    parameterType: "",
+                    statusCode: "",
+                    resultData: "",
+                    resultHead: "",
                 },
-                timeout: 5000,
-                success: (data) => {
+                formRules: {
+                    url: [
+                        { required: true, message: '请选择测试环境', trigger: 'blur'}
+                    ],
+                    addr: [
+                        { required: true, message: '请输入地址', trigger: 'blur' },
+                    ]
+                },
+                requestHistory: [],
+                listLoading: false,
+                headers: "",
+                parameters: "",
+                resultShow: true,
+                format: false,
+            }
+        },
+        methods: {
+            getApiInfo() {
+                let self = this;
+                let param = {project_id: self.$route.params.project_id, api_id: self.$route.params.api_id};
+                $.ajax({
+                    type: "get",
+                    url: test+"/api/api/api_info",
+                    async: true,
+                    data: param,
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: (data) => {
 
-                    if (data.code === '999999') {
-                        self.form.request4 = data.data.requestType;
-                        self.form.Http4 = data.data.httpType.toLowerCase();
-                        self.form.addr = data.data.apiAddress;
-                        if (data.data.headers.length) {
-                            data.data.headers.forEach((item) => {
-                                self.form.head.push(item);
-                            });
-                        } else {
-                            var param = [{name: "", value: ""}, {name: "", value: ""}];
-                            param.forEach((item) => {
-                                self.form.head.push(item);
-                            });
-                        }
-                        if (data.data.requestParameter.length) {
-                            data.data.requestParameter.forEach((item) => {
-                                self.form.parameter.push(item);
-                            });
-                        } else {
-                            var param = [{name: "", value: "", required:true, restrict: "", description: ""},
+                        if (data.code === '999999') {
+                            self.form.request4 = data.data.requestType;
+                            self.form.Http4 = data.data.httpType.toLowerCase();
+                            self.form.addr = data.data.apiAddress;
+                            if (data.data.headers.length) {
+                                data.data.headers.forEach((item) => {
+                                    self.form.head.push(item);
+                                });
+                            } else {
+                                var param = [{name: "", value: ""}, {name: "", value: ""}];
+                                param.forEach((item) => {
+                                    self.form.head.push(item);
+                                });
+                            }
+                            if (data.data.requestParameter.length) {
+                                data.data.requestParameter.forEach((item) => {
+                                    self.form.parameter.push(item);
+                                });
+                            } else {
+                                var param = [{name: "", value: "", required:true, restrict: "", description: ""},
                                     {name: "", value: "", required:true, restrict: "", description: ""}];
-                            param.forEach((item) => {
-                                self.form.parameter.push(item);
-                            });
-                        }
-                        try {
-                            self.form.parameterRaw = data.data.requestParameterRaw[0].data;
-                        } catch (e) {
+                                param.forEach((item) => {
+                                    self.form.parameter.push(item);
+                                });
+                            }
+                            try {
+                                self.form.parameterRaw = data.data.requestParameterRaw[0].data;
+                            } catch (e) {
 
-                        }
-                        self.form.parameterType = data.data.requestParameterType;
-                        self.radio = data.data.requestParameterType;
-                        self.toggleHeadSelection(self.form.head);
-                        self.toggleParameterSelection(self.form.parameter);
-                    }
-                    else {
-                        self.$message.error({
-                            message: data.msg,
-                            center: true,
-                        })
-                    }
-                },
-            });
-        },
-        getHistory() {
-          let self = this;
-          this.listLoading = true;
-          $.ajax({
-                type: "get",
-                url: test+"/api/api/history_list",
-                async: true,
-                data: { project_id: this.$route.params.project_id, api_id: self.$route.params.api_id,},
-                headers: {
-                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                },
-                timeout: 5000,
-                success: (data) => {
-                    self.listLoading = false;
-                    if (data.code === '999999') {
-                        self.requestHistory = data.data
-                        // data.data.data.forEach((item) => {
-                        //     self.requestHistory.push(item)
-                        // })
-                    }
-                    else {
-                        self.$message.error({
-                            message: data.msg,
-                            center: true,
-                        })
-                    }
-                },
-            })
-        },
-        AddHistroy() {
-          let self = this;
-          this.listLoading = true;
-          let param = { project_id: this.$route.params.project_id,
-              api_id: self.$route.params.api_id,
-              requestType :self.form.request4,
-              url: self.form.Http4 + "://" + self.form.url + self.form.addr,
-              httpStatus: 200
-          };
-          $.ajax({
-                type: "POST",
-                url: test+"/api/api/add_history",
-                async: true,
-                data: param,
-                headers: {
-                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                },
-                timeout: 5000,
-                success: (data) => {
-                    self.listLoading = false;
-                    if (data.code === '999999') {
-                        self.getHistory()
-                    }
-                    else {
-                        self.$message.error({
-                            message: data.msg,
-                            center: true,
-                        })
-                    }
-                },
-            })
-        },
-        delHistory(row) {
-          let self = this;
-          let param = {
-              project_id: self.$route.params.project_id,
-              api_id: self.$route.params.api_id,
-              history_id: row.id
-          };
-          $.ajax({
-                type: "POST",
-                url: test+"/api/api/del_history",
-                async: true,
-                data: param,
-                headers: {
-                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                },
-                timeout: 5000,
-                success: (data) => {
-                    if (data.code === '999999') {
-                        this.getHistory()
-                    }
-                    else {
-                        self.$message.error({
-                            message: data.msg,
-                            center: true,
-                        })
-                    }
-                },
-            })
-        },
-        getHost() {
-          let self = this;
-          $.ajax({
-                type: "get",
-                url: test+"/api/global/host_total",
-                async: true,
-                data: { project_id: this.$route.params.project_id, page: this.page,},
-                headers: {
-                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                },
-                timeout: 5000,
-                success: (data) => {
-                    if (data.code === '999999') {
-                        data.data.data.forEach((item) => {
-                            if (item.status) {
-                                self.Host.push(item)
                             }
-                        })
-                    }
-                    else {
-                        self.$message.error({
-                            message: data.msg,
-                            center: true,
-                        })
-                    }
-                },
-            })
-        },
-        toggleHeadSelection(rows) {
-              rows.forEach(row => {
-                this.$refs.multipleHeadTable.toggleRowSelection(row, true);
-              });
-          },
-        toggleParameterSelection(rows) {
-              rows.forEach(row => {
-                this.$refs.multipleParameterTable.toggleRowSelection(row, true);
-              });
-          },
-        selsChangeHead: function (sels) {
-			this.headers = sels
-		},
-        selsChangeParameter: function (sels) {
-			this.parameters = sels
-		},
-        Test: function() {
-            this.$refs.form.validate((valid) => {
-                if (valid) {
-                    this.loadingSend = true;
-                    let self = this;
-                    let _parameter = new Object();
-                    let headers = new Object();
-                    self.form.statusCode = '';
-                    self.form.resultData = '';
-                    self.form.resultHead = '';
-                    for (let i = 0; i < self.headers.length; i++) {
-                        var a = self.headers[i]["name"];
-                        if (a) {
-                            headers[a] = self.headers[i]["value"]
+                            self.form.parameterType = data.data.requestParameterType;
+                            self.radio = data.data.requestParameterType;
+                            self.toggleHeadSelection(self.form.head);
+                            self.toggleParameterSelection(self.form.parameter);
                         }
-                    }
-                    let url = self.form.Http4 + "://" + self.form.url + self.form.addr;
-                    let _type = self.radio;
-                    if (_type === 'form-data') {
-                        if (self.radioType) {
-                            for (let i = 0; i < self.parameters.length; i++) {
-                                var a = self.parameters[i]["name"];
-                                if (a) {
-                                    _parameter[a] = self.parameters[i]["value"];
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                });
+            },
+            getHistory() {
+                let self = this;
+                this.listLoading = true;
+                $.ajax({
+                    type: "get",
+                    url: test+"/api/api/history_list",
+                    async: true,
+                    data: { project_id: this.$route.params.project_id, api_id: self.$route.params.api_id,},
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: (data) => {
+                        self.listLoading = false;
+                        if (data.code === '999999') {
+                            self.requestHistory = data.data
+                            // data.data.data.forEach((item) => {
+                            //     self.requestHistory.push(item)
+                            // })
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+            },
+            AddHistroy() {
+                let self = this;
+                this.listLoading = true;
+                let param = { project_id: this.$route.params.project_id,
+                    api_id: self.$route.params.api_id,
+                    requestType :self.form.request4,
+                    url: self.form.Http4 + "://" + self.form.url + self.form.addr,
+                    httpStatus: 200
+                };
+                $.ajax({
+                    type: "POST",
+                    url: test+"/api/api/add_history",
+                    async: true,
+                    data: param,
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: (data) => {
+                        self.listLoading = false;
+                        if (data.code === '999999') {
+                            self.getHistory()
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+            },
+            delHistory(row) {
+                let self = this;
+                let param = {
+                    project_id: self.$route.params.project_id,
+                    api_id: self.$route.params.api_id,
+                    history_id: row.id
+                };
+                $.ajax({
+                    type: "POST",
+                    url: test+"/api/api/del_history",
+                    async: true,
+                    data: param,
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: (data) => {
+                        if (data.code === '999999') {
+                            this.getHistory()
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+            },
+            getHost() {
+                let self = this;
+                $.ajax({
+                    type: "get",
+                    url: test+"/api/global/host_total",
+                    async: true,
+                    data: { project_id: this.$route.params.project_id, page: this.page,},
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: (data) => {
+                        if (data.code === '999999') {
+                            data.data.data.forEach((item) => {
+                                if (item.status) {
+                                    self.Host.push(item)
                                 }
+                            })
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+            },
+            toggleHeadSelection(rows) {
+                rows.forEach(row => {
+                    this.$refs.multipleHeadTable.toggleRowSelection(row, true);
+                });
+            },
+            toggleParameterSelection(rows) {
+                rows.forEach(row => {
+                    this.$refs.multipleParameterTable.toggleRowSelection(row, true);
+                });
+            },
+            selsChangeHead: function (sels) {
+                this.headers = sels
+            },
+            selsChangeParameter: function (sels) {
+                this.parameters = sels
+            },
+            Test: function() {
+                this.$refs.form.validate((valid) => {
+                    if (valid) {
+                        this.loadingSend = true;
+                        let self = this;
+                        let _parameter = new Object();
+                        let headers = new Object();
+                        self.form.statusCode = '';
+                        self.form.resultData = '';
+                        self.form.resultHead = '';
+                        for (let i = 0; i < self.headers.length; i++) {
+                            var a = self.headers[i]["name"];
+                            if (a) {
+                                headers[a] = self.headers[i]["value"]
                             }
-                            _parameter = JSON.stringify(_parameter)
+                        }
+                        let url = self.form.Http4 + "://" + self.form.url + self.form.addr;
+                        let _type = self.radio;
+                        if (_type === 'form-data') {
+                            if (self.radioType) {
+                                for (let i = 0; i < self.parameters.length; i++) {
+                                    var a = self.parameters[i]["name"];
+                                    if (a) {
+                                        _parameter[a] = self.parameters[i]["value"];
+                                    }
+                                }
+                                _parameter = JSON.stringify(_parameter)
+                            } else {
+                                _parameter = self.form.parameter
+                            }
                         } else {
-                            _parameter = self.form.parameter
+                            // POST(url, self.form.parameterRaw, headers)
+                            _parameter = self.form.parameterRaw;
                         }
-                    } else {
-                        // POST(url, self.form.parameterRaw, headers)
-                        _parameter = self.form.parameterRaw;
+                        $.ajax({
+                            type: self.form.request4,
+                            url: url,
+                            async: true,
+                            data: _parameter,
+                            headers: headers,
+                            timeout: 5000,
+                            success: function (data, status, jqXHR) {
+                                self.loadingSend = false;
+                                self.form.statusCode = jqXHR.status;
+                                self.form.resultData = data;
+                                self.form.resultHead = jqXHR.getAllResponseHeaders();
+                                self.AddHistroy()
+                            },
+                            error: function (jqXHR, error, errorThrown) {
+                                console.log(jqXHR);
+                                self.loadingSend = false;
+                                self.form.statusCode = jqXHR.status;
+                                self.form.resultData = jqXHR.responseJSON;
+                                self.form.resultHead = jqXHR.getAllResponseHeaders();
+                                self.AddHistroy()
+                            }
+                        })
                     }
-                    $.ajax({
-                        type: self.form.request4,
-                        url: url,
-                        async: true,
-                        data: _parameter,
-                        headers: headers,
-                        timeout: 5000,
-                        success: function (data, status, jqXHR) {
-                            self.loadingSend = false;
-                            self.form.statusCode = jqXHR.status;
-                            self.form.resultData = data;
-                            self.form.resultHead = jqXHR.getAllResponseHeaders();
-                            self.AddHistroy()
-                        },
-                        error: function (jqXHR, error, errorThrown) {
-                            console.log(jqXHR);
-                            self.loadingSend = false;
-                            self.form.statusCode = jqXHR.status;
-                            self.form.resultData = jqXHR.responseJSON;
-                            self.form.resultHead = jqXHR.getAllResponseHeaders();
-                            self.AddHistroy()
-                        }
-                    })
+                })
+            },
+            neatenFormat() {
+                this.format = !this.format
+            },
+            addHead() {
+                let headers = {name: "", value: ""};
+                this.form.head.push(headers);
+                let rows = [this.form.head[this.form.head.length-1]];
+                this.toggleHeadSelection(rows)
+            },
+            delHead(index) {
+                if (this.form.head.length !== 1) {
+                    this.form.head.splice(index, 1)
                 }
-            })
+            },
+            addParameter() {
+                let headers = {name: "", value: "", required:"True", restrict: "", description: ""};
+                this.form.parameter.push(headers);
+                let rows = [this.form.parameter[this.form.parameter.length-1]];
+                this.toggleParameterSelection(rows)
+            },
+            delParameter(index) {
+                if (this.form.parameter.length !== 1) {
+                    this.form.parameter.splice(index, 1)
+                }
+            },
+            addResponse() {
+                let headers = {name: "", value: "", required:"True", restrict: "", description: ""};
+                this.form.response.push(headers)
+            },
+            delResponse(index) {
+                if (this.form.response.length !== 1) {
+                    this.form.response.splice(index, 1)
+                }
+            },
+            changeParameterType() {
+                if (this.radio === 'form-data') {
+                    this.ParameterTyep = true
+                } else {
+                    this.ParameterTyep = false
+                }
+            },
+            showBody() {
+                this.resultShow = true
+            },
+            showHeader() {
+                this.resultShow = false
+            },
+            handleChange(val) {
+            },
+            onSubmit() {
+                console.log('submit!');
+            },
         },
-        neatenFormat() {
-            this.format = !this.format
-        },
-        addHead() {
-            let headers = {name: "", value: ""};
-            this.form.head.push(headers);
-            let rows = [this.form.head[this.form.head.length-1]];
-            this.toggleHeadSelection(rows)
-        },
-        delHead(index) {
-            if (this.form.head.length !== 1) {
-                this.form.head.splice(index, 1)
+        watch: {
+            radio() {
+                this.changeParameterType()
             }
         },
-        addParameter() {
-            let headers = {name: "", value: "", required:"True", restrict: "", description: ""};
-            this.form.parameter.push(headers);
-            let rows = [this.form.parameter[this.form.parameter.length-1]];
-            this.toggleParameterSelection(rows)
-        },
-        delParameter(index) {
-            if (this.form.parameter.length !== 1) {
-                this.form.parameter.splice(index, 1)
-            }
-        },
-        addResponse() {
-            let headers = {name: "", value: "", required:"True", restrict: "", description: ""};
-            this.form.response.push(headers)
-        },
-        delResponse(index) {
-            if (this.form.response.length !== 1) {
-                this.form.response.splice(index, 1)
-            }
-        },
-        changeParameterType() {
-            if (this.radio === 'form-data') {
-                this.ParameterTyep = true
-            } else {
-                this.ParameterTyep = false
-            }
-        },
-        showBody() {
-            this.resultShow = true
-        },
-        showHeader() {
-            this.resultShow = false
-        },
-        handleChange(val) {
-      },
-      onSubmit() {
-        console.log('submit!');
-      },
-    },
-    watch: {
-        radio() {
-            this.changeParameterType()
+        mounted() {
+            this.getApiInfo();
+            this.getHost();
+            this.getHistory()
         }
-    },
-    mounted() {
-        this.getApiInfo();
-        this.getHost();
-        this.getHistory()
     }
-  }
 </script>
 
 <style lang="scss" scoped>
@@ -553,10 +553,10 @@ import $ from 'jquery'
         margin-top: 0px;
         margin-bottom: 10px;
         border-radius: 25px;
- }
- .head-class {
-     font-size: 17px
- }
+    }
+    .head-class {
+        font-size: 17px
+    }
     .parameter-a {
         display: block;
     }

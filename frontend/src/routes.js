@@ -98,19 +98,13 @@ let routes = [
                         {   path: '/caseList/project=:project_id/first=:firstGroup/second=:secondGroup', component: CaseListGroup, name: '分组用例列表'},
                         {   path: '/caseApiList/project=:project_id/case=:case_id', component: CaseApiList, name: '用例接口列表'},
                         {   path: '/addCaseApi/project=:project_id/case=:case_id', component: AddCaseApi, name: '添加新接口'},
-                        {   path: '/updateCaseApi/project=:project_id/case=:case_id/api=:api_id', component: UpdateCaseApi, name: '修改接口'}
+                        {   path: '/updateCaseApi/project=:project_id/case=:case_id/api=:api_id', component: UpdateCaseApi, name: '修改接口'},
+                        {   path: '/testReport/project=:project_id', component: TestReport, name: '测试报告'},
                     ]
             },
             {   path: '/projectMember/project=:project_id', component: ProjectMember, name: '成员管理', leaf: true},
             {   path: '/projectDynamic/project=:project_id', component: ProjectDynamic, name: '项目动态', leaf: true},
             ]
-    },
-    {
-        path: '/testReport/project=:project_id/case=:case_id',
-        component: TestReport,
-        name: '测试报告',
-        hidden: true,
-        projectHidden: true
     },
 ];
 

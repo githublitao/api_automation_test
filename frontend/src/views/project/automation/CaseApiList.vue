@@ -6,7 +6,6 @@
             <el-button type="primary"><i class="el-icon-plus" style="margin-right: 5px"></i>新建接口</el-button>
         </router-link>
         <el-button type="primary" @click.native="TestAll"><div>测试全部</div></el-button>
-        <el-button type="primary" @click.native="TestReport"><div>查看报告</div></el-button>
         <el-select v-model="url"  placeholder="测试环境" style="float: right">
             <el-option v-for="(item,index) in Host" :key="index+''" :label="item.name" :value="item.id"></el-option>
         </el-select>
@@ -22,7 +21,7 @@
                                     </template>
                                     <template v-for="child in item.secondGroup">
                                         <el-menu-item class="group" style="padding-right: 10px;" :index="child.id+''" @click.native="getApiList([item.id, child.id])">
-                                                {{child.name }}
+                                            {{child.name }}
                                         </el-menu-item>
                                     </template>
                                 </el-submenu>
@@ -46,7 +45,7 @@
             </el-row>
             <el-col :span="24" class="toolbar">
                 <el-pagination layout="prev, pager, next" @current-change="handleCurrentChangeApi" :page-size="20" :page-count="total" style="float:right;">
-			    </el-pagination>
+                </el-pagination>
             </el-col>
             <div slot="footer" class="dialog-footer">
                 <el-button @click.native="searchApiListVisible = false">取消</el-button>
@@ -79,8 +78,8 @@
                 <template slot-scope="scope">
                     <el-button type="primary" size="small" @click="Test(scope.$index, scope.row)" :loading='TestStatus'>测试</el-button>
                     <router-link :to="{ name: '修改接口', params: {api_id: scope.row.id}}" style='text-decoration: none;color: #000000;'>
-                    <el-button size="small">修改</el-button>
-                        </router-link>
+                        <el-button size="small">修改</el-button>
+                    </router-link>
                     <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
@@ -142,7 +141,7 @@
                 apiListLoading: false,
                 apiTotal: 0,
                 pageApi: 1,
-			    sels: [],//列表选中列
+                sels: [],//列表选中列
                 TestResult: false,
                 result: {},
                 taskVShow: false,
@@ -151,39 +150,39 @@
                 disDel: true,
                 TestStatus: false,
                 pickerOptions1: {
-                  disabledDate(time) {
-                    return time.getTime() < Date.now() - 8.64e7;
-                  }
+                    disabledDate(time) {
+                        return time.getTime() < Date.now() - 8.64e7;
+                    }
                 },
                 pickerOptions2: {
-                   disabledDate(time) {
-                       return time.getTime() < Date.now() - 8.64e7;
-                  },
-                  shortcuts: [{
-                    text: '最近一周',
-                    onClick(picker) {
-                      const end = new Date();
-                      const start = new Date();
-                      end.setTime(end.getTime() + 3600 * 1000 * 24 * 7);
-                      picker.$emit('pick', [start, end]);
-                    }
-                  }, {
-                    text: '最近一个月',
-                    onClick(picker) {
-                      const end = new Date();
-                      const start = new Date();
-                      end.setTime(end.getTime() + 3600 * 1000 * 24 * 30);
-                      picker.$emit('pick', [start, end]);
-                    }
-                  }, {
-                    text: '最近三个月',
-                    onClick(picker) {
-                      const end = new Date();
-                      const start = new Date();
-                      end.setTime(end.getTime() + 3600 * 1000 * 24 * 90);
-                      picker.$emit('pick', [start, end]);
-                    }
-                  }]
+                    disabledDate(time) {
+                        return time.getTime() < Date.now() - 8.64e7;
+                    },
+                    shortcuts: [{
+                        text: '最近一周',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            end.setTime(end.getTime() + 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近一个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            end.setTime(end.getTime() + 3600 * 1000 * 24 * 30);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近三个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            end.setTime(end.getTime() + 3600 * 1000 * 24 * 90);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }]
                 },
             }
         },
@@ -271,7 +270,7 @@
             TestAll() {
                 this.ApiList.forEach((item,index) =>{
                     console.log(item,index);
-                        if (this.url) {
+                    if (this.url) {
                         let self = this;
                         $.ajax({
                             type: "post",
@@ -405,7 +404,7 @@
             },
             getResult(_id){
                 let self = this;
-                 $.ajax({
+                $.ajax({
                     type: "get",
                     url: test+"/api/automation/look_result",
                     async: true,
@@ -446,7 +445,7 @@
                             center: true,
                         })
                     }
-                 })
+                })
             },
             getTask(){
                 let self = this;
@@ -503,68 +502,68 @@
                             center: true,
                         })
                     }
-                 })
+                })
             },
             addTask(){
                 let self = this;
-			    this.$refs.form.validate((valid) => {if (valid) {
-					this.$confirm('确认提交吗？', '提示', {}).then(() => {
-					    console.log(self.form);
-                        self.editLoading = true;
-                        let param = {
-                            project_id: self.$route.params.project_id,
-                            case_id: self.$route.params.case_id,
-                            host_id: self.form.Host,
-                            name: self.form.name,
-                            type: self.form.type,
-                            frequency: self.form.frequency,
-                            unit: self.form.unit,
-                        };
-                        if (self.form.type === 'circulation') {
-                            param['startTime'] = moment(self.form.timeArray[0]).format("YYYY-MM-DD HH:mm:ss");
-                            param['endTime'] = moment(self.form.timeArray[1]).format("YYYY-MM-DD HH:mm:ss")
-                        } else {
-                            param['startTime'] = moment(self.form.time).format("YYYY-MM-DD HH:mm:ss");
-                            param['endTime'] = moment(self.form.time).format("YYYY-MM-DD HH:mm:ss")
-                        }
-					    $.ajax({
-                            type: "post",
-                            url: test+"/api/automation/add_time_task",
-                            async: true,
-                            data: param,
-                            headers: {
-                                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                            },
-                            timeout: 5000,
-                            success: (data) => {
-                                if (data.code === '999999') {
-                                    self.editLoading = false;
-                                    self.taskVShow = false;
-                                    self.$message({
-                                        message: '添加成功',
-                                        center: true,
-                                        type: "success",
-                                    })
-                                }
-                                else {
+                this.$refs.form.validate((valid) => {if (valid) {
+                    this.$confirm('确认提交吗？', '提示', {}).then(() => {
+                            console.log(self.form);
+                            self.editLoading = true;
+                            let param = {
+                                project_id: self.$route.params.project_id,
+                                case_id: self.$route.params.case_id,
+                                host_id: self.form.Host,
+                                name: self.form.name,
+                                type: self.form.type,
+                                frequency: self.form.frequency,
+                                unit: self.form.unit,
+                            };
+                            if (self.form.type === 'circulation') {
+                                param['startTime'] = moment(self.form.timeArray[0]).format("YYYY-MM-DD HH:mm:ss");
+                                param['endTime'] = moment(self.form.timeArray[1]).format("YYYY-MM-DD HH:mm:ss")
+                            } else {
+                                param['startTime'] = moment(self.form.time).format("YYYY-MM-DD HH:mm:ss");
+                                param['endTime'] = moment(self.form.time).format("YYYY-MM-DD HH:mm:ss")
+                            }
+                            $.ajax({
+                                type: "post",
+                                url: test+"/api/automation/add_time_task",
+                                async: true,
+                                data: param,
+                                headers: {
+                                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                                },
+                                timeout: 5000,
+                                success: (data) => {
+                                    if (data.code === '999999') {
+                                        self.editLoading = false;
+                                        self.taskVShow = false;
+                                        self.$message({
+                                            message: '添加成功',
+                                            center: true,
+                                            type: "success",
+                                        })
+                                    }
+                                    else {
+                                        self.editLoading = false;
+                                        self.$message.error({
+                                            message: data.msg,
+                                            center: true,
+                                        })
+                                    }
+                                },
+                                error: function () {
                                     self.editLoading = false;
                                     self.$message.error({
-                                        message: data.msg,
+                                        message: "失败",
                                         center: true,
                                     })
                                 }
-                            },
-                            error: function () {
-                                self.editLoading = false;
-                                self.$message.error({
-                                    message: "失败",
-                                    center: true,
-                                })
-                            }
-                         })
-					}
-					)}
-			    })
+                            })
+                        }
+                    )}
+                })
             },
             delTask(){
                 let self = this;
@@ -606,7 +605,7 @@
                             center: true,
                         })
                     }
-                 })
+                })
             },
             // 添加已有接口弹出
             addOldApi() {
@@ -618,45 +617,45 @@
                 let ids = this.sels.map(item => item.id).toString();
                 let self = this;
                 this.$confirm('确认添加选中记录吗？', '提示', {
-                        type: 'warning'
-                    }).then(() => {
-                        //NProgress.start();
-                        $.ajax({
-                            type: "post",
-                            url: test+"/api/automation/add_old_api",
-                            async: true,
-                            data:{
-                                project_id: this.$route.params.project_id,
-                                case_id: this.$route.params.case_id,
-                                api_ids: ids,
-                                head: JSON.stringify({value: "1", label: '是'}),
-                            },
-                            headers: {
-                                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                            },
-                            timeout: 5000,
-                            success: function(data) {
-                                self.searchApiListVisible = false;
-                                if (data.code === '999999') {
-                                    self.$message({
-                                        message: '添加成功',
-                                        center: true,
-                                        type: 'success'
-                                    })
-                                }
-                                else {
-                                    self.$message.error({
-                                        message: data.msg,
-                                        center: true,
-                                    })
-                                }
-                                self.getCaseApiList()
-                            },
-                        })
-                    }).catch(() => {
+                    type: 'warning'
+                }).then(() => {
+                    //NProgress.start();
+                    $.ajax({
+                        type: "post",
+                        url: test+"/api/automation/add_old_api",
+                        async: true,
+                        data:{
+                            project_id: this.$route.params.project_id,
+                            case_id: this.$route.params.case_id,
+                            api_ids: ids,
+                            head: JSON.stringify({value: "1", label: '是'}),
+                        },
+                        headers: {
+                            Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                        },
+                        timeout: 5000,
+                        success: function(data) {
+                            self.searchApiListVisible = false;
+                            if (data.code === '999999') {
+                                self.$message({
+                                    message: '添加成功',
+                                    center: true,
+                                    type: 'success'
+                                })
+                            }
+                            else {
+                                self.$message.error({
+                                    message: data.msg,
+                                    center: true,
+                                })
+                            }
+                            self.getCaseApiList()
+                        },
+                    })
+                }).catch(() => {
 
-                    });
-                },
+                });
+            },
             handleCurrentChange(val) {
                 this.page = val;
                 this.getCaseApiList()
@@ -666,15 +665,6 @@
             },
             selsChange(sels){
                 this.sels = sels;
-            },
-            TestReport(){
-                this.$router.push(
-                    {
-                        name: '测试报告', params:
-                            {
-                                project_id: this.$route.params.project_id,
-                                case_id: this.$route.params.case_id,
-                }});
             },
         },
         mounted() {
@@ -687,11 +677,11 @@
 </script>
 
 <style lang="scss" scoped>
-     .return-list {
+    .return-list {
         margin-top: 0px;
         margin-bottom: 10px;
         border-radius: 25px;
-     }
+    }
     .HttpStatus {
         border-radius: 25px;
         padding: 10px;

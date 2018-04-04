@@ -1028,7 +1028,7 @@ def get_task(request):
 
 
 @api_view(['POST'])
-@verify_parameter(['project_id', 'case_id'], 'POST')
+@verify_parameter(['project_id'], 'POST')
 def del_task(request):
     """
     删除任务
@@ -1038,14 +1038,13 @@ def del_task(request):
     :return:
     """
     project_id = request.POST.get('project_id')
-    case_id = request.POST.get('case_id')
-    if not project_id.isdecimal() or not case_id.isdecimal():
+    if not project_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
-        obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
+        obi = AutomationTestCase.objects.filter(project=project_id)
         if obi:
-            obm = AutomationTestTask.objects.filter(automationTestCase=case_id)
+            obm = AutomationTestTask.objects.filter(project=project_id)
             if obm:
                 obm.delete()
                 record_dynamic(project_id, '删除', '任务', '删除任务')
@@ -1113,7 +1112,7 @@ def test_report(request):
 
 
 @api_view(['GET'])
-@verify_parameter(['case_id', ], 'GET')
+@verify_parameter(['project_id', ], 'GET')
 def test_time(request):
     """
     执行测试用例时间
@@ -1121,14 +1120,18 @@ def test_time(request):
     :param request:
     :return:
     """
-    case_id = request.GET.get('case_id')
-    obj = AutomationTestCase.objects.filter(id=case_id)
+    project_id = request.GET.get('project_id')
+    obj = Project.objects.filter(id=project_id)
     if obj:
         try:
             data = AutomationTaskRunTimeSerializer(
-                AutomationTaskRunTime.objects.filter(automationTestTask=case_id).order_by('-startTime'), many=True).data
-            return JsonResponse(code_msg=GlobalStatusCode.success(), data={'data': data, 'caseName': obj[0].caseName, })
+                AutomationTaskRunTime.objects.filter(project=project_id).order_by('-startTime'), many=True).data[0]
+            return JsonResponse(code_msg=GlobalStatusCode.success(), data=data)
         except:
             return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
-        return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+
+
+# @api_view(['GET'])
+# @verify_parameter(['project_id'])

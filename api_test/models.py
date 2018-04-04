@@ -597,10 +597,10 @@ class AutomationTaskRunTime(models.Model):
     用例执行开始和结束时间
     """
     id = models.AutoField(primary_key=True)
-    automationTestTask = models.ForeignKey(AutomationTestTask, on_delete=models.CASCADE, verbose_name='测试任务')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='项目')
     startTime = models.DateTimeField(max_length=50, verbose_name='开始时间')
     endTime = models.DateTimeField(max_length=50, verbose_name='结束时间')
 
     class Meta:
-        verbose_name = '用例定时任务'
-        verbose_name_plural = '用例定时任务管理'
+        verbose_name = '用例任务执行时间'
+        verbose_name_plural = '用例任务执行时间'

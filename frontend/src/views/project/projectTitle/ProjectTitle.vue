@@ -66,76 +66,76 @@
 </template>
 
 <script>
-import { test } from '../../../api/api'
-import $ from 'jquery'
-export default {
-    data() {
-        return {
-            type: 'Web',
-            version: 'V1.2.30',
-            updateDate: '2017-12-12 12:17:55',
-            apiCount: 0,
-            statusCount: 0,
-            dynamicCount: 0,
-            memberCount: 0,
-            createDate: '2017-12-12 12:17:55',
+    import { test } from '../../../api/api'
+    import $ from 'jquery'
+    export default {
+        data() {
+            return {
+                type: 'Web',
+                version: 'V1.2.30',
+                updateDate: '2017-12-12 12:17:55',
+                apiCount: 0,
+                statusCount: 0,
+                dynamicCount: 0,
+                memberCount: 0,
+                createDate: '2017-12-12 12:17:55',
+            }
+        },
+        methods: {
+            getProjectInfo() {
+                var self = this
+                $.ajax({
+                    type: "get",
+                    url: test+"/api/title/project_info",
+                    async: true,
+                    data: { project_id: this.$route.params.project_id},
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: function(data) {
+                        self.listLoading = false
+                        if (data.code === '999999') {
+                            data = data.data
+                            self.type = data.type
+                            self.version = data.version
+                            self.updateDate = data.LastUpdateTime
+                            self.apiCount = data.apiCount
+                            self.dynamicCount = data.dynamicCount
+                            self.memberCount = data.memberCount
+                            self.createDate = data.createTime
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+            }
+        },
+        mounted() {
+            this.getProjectInfo()
         }
-    },
-    methods: {
-        getProjectInfo() {
-            var self = this
-            $.ajax({
-                type: "get",
-                url: test+"/api/title/project_info",
-                async: true,
-                data: { project_id: this.$route.params.project_id},
-                headers: {
-                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                },
-                timeout: 5000,
-                success: function(data) {
-                    self.listLoading = false
-                    if (data.code === '999999') {
-                        data = data.data
-                        self.type = data.type
-                        self.version = data.version
-                        self.updateDate = data.LastUpdateTime
-                        self.apiCount = data.apiCount
-                        self.dynamicCount = data.dynamicCount
-                        self.memberCount = data.memberCount
-                        self.createDate = data.createTime
-                    }
-                    else {
-                        self.$message.error({
-                            message: data.msg,
-                            center: true,
-                        })
-                    }
-                },
-            })
-        }
-    },
-    mounted() {
-        this.getProjectInfo()
     }
-}
 </script>
 
 <style lang="scss" scoped>
-  .box-card {
-    width: 100%;
-    height: 100%;
-  }
-  .member {
-      width: 10%;
-  }
-  .main {
-    margin: 35px;
-    margin-top: 10px;
-  }
-  .inline {
-    margin: 10px;
-    margin-left: 0px;
-    margin-right: 20px;
-  }
+    .box-card {
+        width: 100%;
+        height: 100%;
+    }
+    .member {
+        width: 10%;
+    }
+    .main {
+        margin: 35px;
+        margin-top: 10px;
+    }
+    .inline {
+        margin: 10px;
+        margin-left: 0px;
+        margin-right: 20px;
+    }
 </style>

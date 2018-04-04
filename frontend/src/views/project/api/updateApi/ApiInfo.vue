@@ -37,7 +37,7 @@
                 </template>
                 <div v-show="!parameter.length&&!parameterRaw" class="raw">暂无数据</div>
                 <el-table :data="parameter" highlight-current-row style="width: 100%;" v-loading="listLoadingParameter"
-                    :class="ParameterTyep? 'parameter-a': 'parameter-b'">
+                          :class="ParameterTyep? 'parameter-a': 'parameter-b'">
                     <el-table-column type="index" label="#" min-width="10%" sortable>
                     </el-table-column>
                     <el-table-column prop="name" label="参数名" min-width="22%" sortable show-overflow-tooltip>
@@ -139,14 +139,14 @@
             </el-dialog>
             <el-collapse-item title="普通Mock" name="4">
                 <el-card class="box-card">
-                  <div slot="header" class="clearfix">
-                      <el-select v-model="mockCode" placeholder="HTTP状态">
-                          <el-option v-for="(item,index) in httpCode" :key="index+''" :label="item.label" :value="item.value"></el-option>
-                      </el-select>
-                      <el-button type="primary" @click="changFormat">格式转换</el-button>
-                  </div >
+                    <div slot="header" class="clearfix">
+                        <el-select v-model="mockCode" placeholder="HTTP状态">
+                            <el-option v-for="(item,index) in httpCode" :key="index+''" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                        <el-button type="primary" @click="changFormat">格式转换</el-button>
+                    </div >
                     <div v-show="mockData" v-model="mockData" :class="resultShow? 'parameter-a': 'parameter-b'"
-                        style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px;word-break: break-all;line-height:25px">{{mockData}}</div>
+                         style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px;word-break: break-all;line-height:25px">{{mockData}}</div>
                     <div v-show="!mockData&&!mockJsonData" class="raw">暂无数据</div>
                     <div v-show="mockJsonData" :class="!resultShow? 'parameter-a': 'parameter-b'"
                          style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px;word-break: break-all;height:300px;overflow:auto;overflow-x:hidden">
