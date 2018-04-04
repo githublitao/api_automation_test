@@ -1,4 +1,4 @@
-export const test = 'http://192.168.89.117:8000';
+export const test = 'http://192.168.88.131:8000';
 
 /**
  * 真正的请求
