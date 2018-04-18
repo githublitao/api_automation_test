@@ -1,4 +1,3 @@
-import babelpolyfill from 'babel-polyfill'
 import Vue from 'vue'
 import App from './App'
 import ElementUI from 'element-ui'
@@ -31,12 +30,13 @@ router.beforeEach((to, from, next) => {
   }
   let token = JSON.parse(sessionStorage.getItem('token'));
   if (!token && to.path !== '/login') {
-    next({ path: '/login' })
+    console.log(to.path);
+    next({ path: '/login', query: {url: to.path}})
   } else {
     next()
   }
   if (to.path === '/') {
-    next({ path: '/projectList'})
+    next({ path: '/projectList',})
   }
 });
 
@@ -51,5 +51,5 @@ new Vue({
   store,
   //components: { App }
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');
 
