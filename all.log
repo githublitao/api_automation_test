@@ -10565,3 +10565,234 @@ Traceback (most recent call last):
     self.child.to_representation(item) for item in iterable
 TypeError: 'AutomationTaskRunTime' object is not iterable
 2018-04-04 18:32:25,013,16476,django.server,ERROR,basehttp.py:124,"GET /api/automation/test_time?project_id=1 HTTP/1.1" 500 19386
+2018-04-27 17:05:15,324,14244,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 246, in add_api
+    print(request.POST.body)
+AttributeError: 'QueryDict' object has no attribute 'body'
+2018-04-27 17:05:15,460,14244,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 18554
+2018-04-27 17:05:31,507,9788,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 246, in add_api
+    print(request.POST.Body)
+AttributeError: 'QueryDict' object has no attribute 'Body'
+2018-04-27 17:05:31,519,9788,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 18554
+2018-04-27 17:07:03,067,16244,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 246, in add_api
+    print(request.body.headDict)
+AttributeError: 'bytes' object has no attribute 'headDict'
+2018-04-27 17:07:03,080,16244,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 18559
+2018-04-27 17:07:17,980,4872,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 246, in add_api
+    print(request.body['headDict'])
+TypeError: byte indices must be integers or slices, not str
+2018-04-27 17:07:17,993,4872,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 18564
+2018-04-27 17:19:07,879,15556,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 496, in dispatch
+    self.response = self.finalize_response(request, response, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 411, in finalize_response
+    % type(response)
+AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`
+2018-04-27 17:19:07,925,15556,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 84473
+2018-04-27 17:20:30,057,4044,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 250, in add_api
+    print(data.project_id)
+AttributeError: 'dict' object has no attribute 'project_id'
+2018-04-27 17:20:30,070,4044,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 18555
+2018-04-27 17:21:02,648,14036,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 496, in dispatch
+    self.response = self.finalize_response(request, response, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 411, in finalize_response
+    % type(response)
+AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`
+2018-04-27 17:21:02,677,14036,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 84473
+2018-04-27 17:42:43,528,11808,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 253, in add_api
+    if not data['project_id'].isdecimal() or not data['first_group_id'].isdecimal():
+AttributeError: 'int' object has no attribute 'isdecimal'
+2018-04-27 17:42:43,542,11808,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 18609
+2018-04-27 17:44:12,441,6128,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 255, in add_api
+    if data['http_type'] not in ['HTTP', 'HTTPS']:
+KeyError: 'http_type'
+2018-04-27 17:44:12,454,6128,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 18502
+2018-04-27 17:48:35,899,9200,root,ERROR,ApiDoc.py:335,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 273, in add_api
+    if not data['second_group_id'].isdecimal():
+AttributeError: 'int' object has no attribute 'isdecimal'
+2018-04-27 17:48:35,900,9200,root,ERROR,ApiDoc.py:336,'int' object has no attribute 'isdecimal'
+2018-04-27 17:59:46,510,5732,root,ERROR,ApiDoc.py:336,error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 287, in add_api
+    userUpdate=User.objects.get(id=request.user.pk), description=data['desc'])
+KeyError: 'desc'
+2018-04-27 17:59:46,511,5732,root,ERROR,ApiDoc.py:337,'desc'
+2018-04-27 18:00:50,577,5732,root,ERROR,ApiDoc.py:312,Error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 304, in add_api
+    i = i.replace("true", "True").replace("false", "False")
+AttributeError: 'dict' object has no attribute 'replace'
+2018-04-27 18:01:23,164,2496,root,ERROR,ApiDoc.py:313,Error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 305, in add_api
+    i = i.replace("true", "True").replace("false", "False")
+AttributeError: 'dict' object has no attribute 'replace'
+2018-04-27 18:01:38,903,5860,root,ERROR,ApiDoc.py:327,Error
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\api\ApiDoc.py", line 321, in add_api
+    i = i.replace("true", "True").replace("false", "False")
+AttributeError: 'dict' object has no attribute 'replace'

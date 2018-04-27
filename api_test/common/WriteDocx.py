@@ -17,7 +17,6 @@ class Write:
         self.doc.add_paragraph(style="Title").add_run(api_name)
         index = 1
         for item in data:
-            print(item)
             self.doc.add_paragraph(style="Heading 1").add_run(str(index)+"、"+item["name"]).font.size = 300000
             _id = 1
             for items in item['First']:

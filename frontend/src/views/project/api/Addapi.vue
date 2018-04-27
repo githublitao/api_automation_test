@@ -211,9 +211,6 @@
                                     <el-option v-for="(item,index) in required4" :key="index+''" :label="item.label" :value="item.value"></el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="输入限制" prop='version' label-width="83px">
-                                <el-input v-model="editForm.restrict" auto-complete="off" placeholder="请输入输入限制"></el-input>
-                            </el-form-item>
                             <el-form-item label="描述" prop='description' label-width="83px">
                                 <el-input type="textarea" :rows="7" v-model="editForm.description" placeholder="请输入描述"></el-input>
                             </el-form-item>
@@ -330,7 +327,7 @@
                     name : [{ required: true, message: '请输入名称', trigger: 'blur' },
                         { max: 50, message: '不能超过50个字', trigger: 'blur' }],
                     addr : [{ required: true, message: '请输入地址', trigger: 'blur' }],
-                    required : [{ required: true, message: '请输入地址', trigger: 'blur' }],
+                    required : [{ type: 'boolean', required: true, message: '请输入地址', trigger: 'blur' }],
                     firstGroup : [{ type: 'number', required: true, message: '请选择父分组', trigger: 'blur'}],
                     secondGroup : [{ type: 'number', required: true, message: '请选择子分组', trigger: 'blur'}]
                 },
@@ -359,19 +356,20 @@
                                     self.form.parameter.forEach((item) => {
                                         _parameter[item.name] = item.value
                                     });
-                                    _parameter = JSON.stringify(_parameter)
                                 } else {
-                                    _parameter = JSON.stringify(self.form.parameter);
+                                    _parameter = self.form.parameter;
                                 }
                             } else {
-                                _parameter = self.form.parameterRaw
+                                _parameter = JSON.parse(self.form.parameterRaw)
                             }
                             $.ajax({
                                 type: "post",
                                 url: test+"/api/api/add_api",
                                 async: true,
-                                data: {
-                                    project_id: self.$route.params.project_id,
+                                contentType : "application/json",
+                                dataType : "json",
+                                data: JSON.stringify({
+                                    project_id: Number(self.$route.params.project_id),
                                     first_group_id: self.form.firstGroup,
                                     second_group_id: self.form.secondGroup,
                                     name: self.form.name,
@@ -379,15 +377,17 @@
                                     requestType: self.form.request4,
                                     address: self.form.addr,
                                     status: self.form.status,
-                                    headDict: JSON.stringify(self.form.head),
+                                    headDict: self.form.head,
                                     requestParameterType: _type,
                                     requestList: _parameter,
-                                    responseList: JSON.stringify(self.form.response),
+                                    responseList: self.form.response,
                                     mockStatus: self.form.mockCode,
-                                    code: self.form.mockData
-                                },
+                                    code: self.form.mockData,
+                                    desc: "",
+                                }),
                                 headers: {
                                     Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+
                                 },
                                 timeout: 5000,
                                 success: function(data) {
