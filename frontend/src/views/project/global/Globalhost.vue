@@ -47,7 +47,7 @@
         </el-col>
 
         <!--编辑界面-->
-        <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
+        <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
             <el-form :model="editForm"  :rules="editFormRules" ref="editForm" label-width="80px">
                 <el-form-item label="名称" prop="name">
                     <el-input v-model="editForm.name" auto-complete="off"></el-input>
@@ -66,7 +66,7 @@
         </el-dialog>
 
         <!--新增界面-->
-        <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
+        <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
             <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
                 <el-form-item label="名称" prop="name">
                     <el-input v-model="addForm.name" auto-complete="off"></el-input>
@@ -111,7 +111,6 @@
                     ],
                     host: [
                         { required: true, message: '请输入host', trigger: 'blur' },
-                        { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
                     ],
                     description: [
                         { required: false, message: '请输入描述', trigger: 'blur' },
@@ -134,7 +133,6 @@
                     ],
                     host: [
                         { required: true, message: '请输入host', trigger: 'blur' },
-                        { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
                     ],
                     description: [
                         { required: false, message: '请输入版本号', trigger: 'blur' },

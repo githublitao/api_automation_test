@@ -370,8 +370,8 @@
                                 dataType : "json",
                                 data: JSON.stringify({
                                     project_id: Number(self.$route.params.project_id),
-                                    first_group_id: self.form.firstGroup,
-                                    second_group_id: self.form.secondGroup,
+                                    first_group_id: Number(self.form.firstGroup),
+                                    second_group_id: Number(self.form.secondGroup),
                                     name: self.form.name,
                                     httpType: self.form.Http4,
                                     requestType: self.form.request4,

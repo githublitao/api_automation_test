@@ -54,20 +54,26 @@
 		</el-col>
 
 		<!--编辑界面-->
-		<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
+		<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
 		    <el-form :model="editForm" label-width="80px"  :rules="editFormRules" ref="editForm">
                 <el-form-item label="项目名称" prop="name">
                     <el-input v-model="editForm.name" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="类型" prop='type'>
-                    <el-radio-group v-model="editForm.type">
-                        <el-radio label="Web">Web</el-radio>
-                        <el-radio label="App">App</el-radio>
-                    </el-radio-group>
-                </el-form-item>
-                <el-form-item label="版本号" prop='version'>
-                    <el-input v-model="editForm.version" auto-complete="off"></el-input>
-                </el-form-item>
+                <el-row :gutter="24">
+                    <el-col :span="12">
+                        <el-form-item label="类型" prop='type'>
+                            <el-select v-model="editForm.type" placeholder="请选择">
+                                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                                </el-option>
+                              </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="版本号" prop='version'>
+                            <el-input v-model="editForm.version" auto-complete="off"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
                 <el-form-item label="描述" prop='description'>
                     <el-input type="textarea" :rows="7" v-model="editForm.description"></el-input>
                 </el-form-item>
@@ -79,20 +85,26 @@
 		</el-dialog>
 
 		<!--新增界面-->
-		<el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
+		<el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
 		    <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
                 <el-form-item label="项目名称" prop="name">
                     <el-input v-model="addForm.name" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="类型" prop='type'>
-                    <el-radio-group v-model="addForm.type">
-                        <el-radio label="Web">Web</el-radio>
-                        <el-radio label="App">App</el-radio>
-                    </el-radio-group>
-                </el-form-item>
-                <el-form-item label="版本号" prop='version'>
-                    <el-input v-model="addForm.version" auto-complete="off"></el-input>
-                </el-form-item>
+                <el-row :gutter="24">
+                    <el-col :span="12">
+                        <el-form-item label="类型" prop='type'>
+                            <el-select v-model="addForm.type" placeholder="请选择">
+                                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                                </el-option>
+                              </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="版本号" prop='version'>
+                            <el-input v-model="addForm.version" auto-complete="off"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
                 <el-form-item label="描述" prop='description'>
                     <el-input type="textarea" :rows="7" v-model="addForm.description"></el-input>
                 </el-form-item>
@@ -109,8 +121,10 @@
 	//import NProgress from 'nprogress'
 import { test } from '../api/api'
 import $ from 'jquery'
+    import ElRow from "element-ui/packages/row/src/row";
 export default {
-	data() {
+    components: {ElRow},
+    data() {
 		return {
 			filters: {
 				name: ''
@@ -123,6 +137,7 @@ export default {
 
 			editFormVisible: false,//编辑界面是否显示
 			editLoading: false,
+            options: [{ label: "Web", value: "Web"}, { label: "App", value: "App"}],
 			editFormRules: {
 				name: [
 					{ required: true, message: '请输入名称', trigger: 'blur' },
@@ -133,7 +148,7 @@ export default {
                 ],
 				version: [
                     { required: true, message: '请输入版本号', trigger: 'blur' },
-                    { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
+                    { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
                 ],
                 description: [
                     { required: false, message: '请输入描述', trigger: 'blur' },
@@ -160,7 +175,7 @@ export default {
                 ],
 				version: [
                     { required: true, message: '请输入版本号', trigger: 'blur' },
-                    { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
+                    { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
                 ],
                 description: [
                     { required: false, message: '请输入版本号', trigger: 'blur' },

@@ -20,7 +20,7 @@ class Write:
             self.doc.add_paragraph(style="Heading 1").add_run(str(index)+"、"+item["name"]).font.size = 300000
             _id = 1
             for items in item['First']:
-                self.doc.add_paragraph(style="Heading 2").add_run(str(index)+"、"+str(_id)+"."+items['name'],
+                self.doc.add_paragraph(style="Heading 2").add_run(str(_id)+"."+items['name'],
                                                                   style="Default Paragraph Font")
                 _id = _id+1
                 self.doc.add_paragraph("简要描述：", style="Body Text").paragraph_format.space_before = Pt(14)

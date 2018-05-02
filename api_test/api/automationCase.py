@@ -530,8 +530,8 @@ def add_old_api(request):
 
 
 @api_view(['POST'])
-@verify_parameter(['project_id', 'case_id', 'name', 'httpType', 'requestType', 'address',
-                   'requestParameterType', 'examineType'], 'POST')
+# @verify_parameter(['project_id', 'case_id', 'name', 'httpType', 'requestType', 'address',
+#                    'requestParameterType', 'examineType'], 'POST')
 def add_new_api(request):
     """
     新增用例新接口
@@ -549,69 +549,54 @@ def add_new_api(request):
     responseData 校验的内容
     :return:
     """
-    project_id = request.POST.get('project_id')
-    case_id = request.POST.get('case_id')
-    name = request.POST.get('name')
-    http_type = request.POST.get('httpType')
-    request_type = request.POST.get('requestType')
-    address = request.POST.get('address')
-    head_dict = request.POST.get('headDict')
-    request_parameter_type = request.POST.get('requestParameterType')
-    request_list = request.POST.get('requestList')
-    examine_type = request.POST.get('examineType')
-    http_code = request.POST.get('httpCode')
-    response_data = request.POST.get('responseData')
-    if not project_id.isdecimal() or not case_id.isdecimal():
+    data = json.loads(request.body)
+    if not data['project_id'] or not data['case_id'] or not data['name'] or not data['httpType'] or not data['requestType'] \
+            or not data['address'] or not data['requestParameterType'] or not data['examineType']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if http_type not in ['HTTP', 'HTTPS']:
+    if not isinstance(data['project_id'], int) or not isinstance(data['case_id'], int):
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if request_type not in ['POST', 'GET', 'PUT', 'DELETE']:
+    if data['httpType'] not in ['HTTP', 'HTTPS']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if request_parameter_type not in ['form-data', 'raw', 'Restful']:
+    if data['requestType'] not in ['POST', 'GET', 'PUT', 'DELETE']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if examine_type not in ['no_check',  'only_check_status', 'json', 'entirely_check', 'Regular_check']:
+    if data['requestParameterType'] not in ['form-data', 'raw', 'Restful']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if http_code:
-        if http_code not in ['200', '404', '400', '502', '500', '302']:
+    if data['examineType'] not in ['no_check',  'only_check_status', 'json', 'entirely_check', 'Regular_check']:
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+    if data['httpCode']:
+        if data['http_code'] not in ['200', '404', '400', '502', '500', '302']:
             return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    obj = Project.objects.filter(id=project_id)
+    obj = Project.objects.filter(id=data['project_id'])
     if obj:
-        obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
+        obi = AutomationTestCase.objects.filter(id=data['case_id'], project=data['project_id'])
         if obi:
-            obm = AutomationCaseApi.objects.filter(name=name, automationTestCase=case_id)
+            obm = AutomationCaseApi.objects.filter(name=data['name'], automationTestCase=data['case_id'])
             if len(obm) == 0:
                 with transaction.atomic():
-                    case_api = AutomationCaseApi(automationTestCase=AutomationTestCase.objects.get(id=case_id),
-                                                 name=name, httpType=http_type, requestType=request_type,
-                                                 address=address,
-                                                 requestParameterType=request_parameter_type, examineType=examine_type,
-                                                 httpCode=http_code, responseData=response_data)
+                    case_api = AutomationCaseApi(automationTestCase=AutomationTestCase.objects.get(id=data['case_id']),
+                                                 name=data['name'], httpType=data['httpType'],
+                                                 requestType=data['requestType'], address=data['address'],
+                                                 requestParameterType=data['requestParameterType'], examineType=data['examineType'],
+                                                 httpCode=data['httpCode'], responseData=data['responseData'])
                     case_api.save()
-                    if request_parameter_type == 'form-data':
-                        if request_list:
-                            request_parameter = re.findall('{.*?}', request_list)
-                            for i in request_parameter:
-                                try:
-                                    i = eval(i.replace("true", "True").replace("false", "False"))
-                                    if i['interrelate'] in [True, False]:
-                                        if i['name']:
-                                            parameter = AutomationParameter(automationCaseApi=
-                                                                            AutomationCaseApi.objects.get(id=case_api.pk),
-                                                                            name=i['name'], value=i['value'],
-                                                                            interrelate=i['interrelate'])
-                                            parameter.save()
-                                    else:
-                                        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-                                except:
-                                    return JsonResponse(code_msg=GlobalStatusCode.fail())
+                    if data['requestParameterType'] == 'form-data':
+                        if len(data['requestList']):
+                            for i in data['requestList']:
+                                if i['interrelate'] in [True, False]:
+                                    if i['name']:
+                                        parameter = AutomationParameter(automationCaseApi=
+                                                                        AutomationCaseApi.objects.get(id=case_api.pk),
+                                                                        name=i['name'], value=i['value'],
+                                                                        interrelate=i['interrelate'])
+                                        parameter.save()
+                                else:
+                                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                     else:
                         AutomationParameterRaw(automationCaseApi=AutomationCaseApi.objects.get(id=case_api.pk),
-                                               data=request_list).save()
-                    if head_dict:
-                        headers = re.findall('{.*?}', head_dict)
-                        for i in headers:
+                                               data=data['requestList']).save()
+                    if len(data['headDict']):
+                        for i in data['headDict']:
                             try:
-                                i = eval(i.replace("true", "True").replace("false", "False"))
                                 if i['interrelate'] in [True, False]:
                                     if i['name']:
                                         head = AutomationHead(automationCaseApi=AutomationCaseApi.objects.get(id=case_api.pk),
@@ -619,19 +604,19 @@ def add_new_api(request):
                                         head.save()
                                 else:
                                     return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-                            except:
+                            except KeyError:
                                 return JsonResponse(code_msg=GlobalStatusCode.fail())
                     case_name = AutomationTestCaseSerializer(AutomationTestCase.objects
-                                                             .get(id=case_id)).data['caseName']
-                    if examine_type == 'json':
+                                                             .get(id=data['case_id'])).data['caseName']
+                    if data['examineType'] == 'json':
                         try:
-                            response = eval(response_data.replace("true", "True").replace("false", "False"))
+                            response = eval(data['responseData'].replace("true", "True").replace("false", "False"))
                             api = "<response[%s]>" % case_api.pk
                             api_id = AutomationCaseApi.objects.get(id=case_api.pk)
                             create_json(api_id, api, response)
-                        except Exception as e:
+                        except KeyError:
                             return JsonResponse(code_msg=GlobalStatusCode.fail())
-                    record_dynamic(project_id, '新增', '用例接口', '用例“%s”新增接口"%s"' % (case_name, name))
+                    record_dynamic(data['project_id'], '新增', '用例接口', '用例“%s”新增接口"%s"' % (case_name, data['name']))
                 return JsonResponse(data={
                     'api_id': case_api.pk
                 }, code_msg=GlobalStatusCode.success())
@@ -674,8 +659,8 @@ def get_correlation_response(request):
 
 
 @api_view(['POST'])
-@verify_parameter(['project_id', 'case_id', 'api_id', 'name', 'httpType', 'requestType', 'address',
-                   'requestParameterType', 'examineType'], 'POST')
+# @verify_parameter(['project_id', 'case_id', 'api_id', 'name', 'httpType', 'requestType', 'address',
+#                    'requestParameterType', 'examineType'], 'POST')
 def update_api(request):
     """
     新增用例接口
@@ -694,132 +679,107 @@ def update_api(request):
     responseData 校验的内容
     :return:
     """
-    project_id = request.POST.get('project_id')
-    case_id = request.POST.get('case_id')
-    api_id = request.POST.get('api_id')
-    name = request.POST.get('name')
-    http_type = request.POST.get('httpType')
-    request_type = request.POST.get('requestType')
-    address = request.POST.get('address')
-    head_dict = request.POST.get('headDict')
-    request_parameter_type = request.POST.get('requestParameterType')
-    request_list = request.POST.get('requestList')
-    examine_type = request.POST.get('examineType')
-    http_code = request.POST.get('httpCode')
-    response_data = request.POST.get('responseData')
-    if not project_id.isdecimal() or not case_id.isdecimal() or not api_id.isdecimal():
+    data = json.loads(request.body)
+    if not data['project_id'] or not data['case_id'] or not data['name'] or not data['httpType'] \
+            or not data['requestType'] or not data['address'] or not data['requestParameterType'] \
+            or not data['examineType'] or not data['api_id']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if http_type not in ['HTTP', 'HTTPS']:
+    if not isinstance(data['project_id'], int) or not isinstance(data['case_id'], int) \
+            or not isinstance(data['api_id'], int):
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if request_type not in ['POST', 'GET', 'PUT', 'DELETE']:
+    if data['httpType'] not in ['HTTP', 'HTTPS']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if request_parameter_type not in ['form-data', 'raw', 'Restful']:
+    if data['requestType'] not in ['POST', 'GET', 'PUT', 'DELETE']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if examine_type not in ['no_check',  'only_check_status', 'json', 'entirely_check', 'Regular_check']:
+    if data['requestParameterType'] not in ['form-data', 'raw', 'Restful']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if http_code:
-        if http_code not in ['200', '404', '400', '502', '500', '302']:
+    if data['examineType'] not in ['no_check',  'only_check_status', 'json', 'entirely_check', 'Regular_check']:
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+    if data['httpCode']:
+        if data['httpCode'] not in ['200', '404', '400', '502', '500', '302']:
             return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    obj = Project.objects.filter(id=project_id)
+    obj = Project.objects.filter(id=data['project_id'])
     if obj:
-        obi = AutomationTestCase.objects.filter(id=case_id, project=project_id)
+        obi = AutomationTestCase.objects.filter(id=data['case_id'], project=data['project_id'])
         if obi:
-            obm = AutomationCaseApi.objects.filter(id=api_id, automationTestCase=case_id)
+            obm = AutomationCaseApi.objects.filter(id=data['api_id'], automationTestCase=data['case_id'])
             if obm:
-                obn = AutomationCaseApi.objects.filter(name=name).exclude(id=api_id)
+                obn = AutomationCaseApi.objects.filter(name=data['name']).exclude(id=data['api_id'])
                 if len(obn) == 0:
                     with transaction.atomic():
-                        obm.update(name=name, httpType=http_type, requestType=request_type,
-                                   address=address,
-                                   requestParameterType=request_parameter_type, examineType=examine_type,
-                                   httpCode=http_code, responseData=response_data)
-                        if request_parameter_type == 'form-data':
-                            AutomationParameterRaw.objects.filter(automationCaseApi=api_id).delete()
-                            if request_list:
-                                request_parameter = re.findall('{.*?}', request_list)
+                        obm.update(name=data['name'], httpType=data['httpType'], requestType=data['requestType'],
+                                   address=data['address'],
+                                   requestParameterType=data['requestParameterType'], examineType=data['examineType'],
+                                   httpCode=data['httpCode'], responseData=data['responseData'])
+                        if data['requestParameterType'] == 'form-data':
+                            AutomationParameterRaw.objects.filter(automationCaseApi=data['api_id']).delete()
+                            if len(data['requestList']):
                                 _list = []
-                                for j in request_parameter:
-                                    try:
-                                        j = eval(j.replace("true", "True").replace("false", "False"))
-                                        try:
-                                            _list.append(j["id"])
-                                        except KeyError:
-                                            pass
-                                    except:
-                                        return JsonResponse(code_msg=GlobalStatusCode.fail())
-                                parameter = AutomationParameter.objects.filter(automationCaseApi=api_id)
-                                for n in parameter:
-                                    if n.pk not in _list:
-                                        n.delete()
-                                for i in request_parameter:
-                                    try:
-                                        i = eval(i.replace("true", "True").replace("false", "False"))
-                                        if i['interrelate'] in [True, False]:
-                                            try:
-                                                if i['name']:
-                                                    AutomationParameter.objects.filter(id=i["id"],
-                                                                                       automationCaseApi=api_id).\
-                                                        update(name=i['name'], value=i['value'], interrelate=i['interrelate'])
-                                            except KeyError:
-                                                if i['name']:
-                                                    AutomationParameter(automationCaseApi=
-                                                                        AutomationCaseApi.objects.get(id=api_id),
-                                                                        name=i['name'], value=i['value'],
-                                                                        interrelate=i['interrelate']).save()
-                                        else:
-                                            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-                                    except:
-                                        return JsonResponse(code_msg=GlobalStatusCode.fail())
-                        else:
-                            AutomationParameter.objects.filter(automationCaseApi=api_id).delete()
-                            AutomationParameterRaw(automationCaseApi=AutomationCaseApi.objects.get(id=api_id),
-                                                   data=request_list).save()
-                        if head_dict:
-                            headers = re.findall('{.*?}', head_dict)
-                            _list = []
-                            for j in headers:
-                                try:
-                                    j = eval(j.replace("true", "True").replace("false", "False"))
+                                for j in data['requestList']:
                                     try:
                                         _list.append(j["id"])
                                     except KeyError:
                                         pass
-                                except:
-                                    return JsonResponse(code_msg=GlobalStatusCode.fail())
-                            parameter = AutomationHead.objects.filter(automationCaseApi=api_id)
-                            for n in parameter:
-                                if n.pk not in _list:
-                                    n.delete()
-                            for i in headers:
-                                try:
-                                    i = eval(i.replace("true", "True").replace("false", "False"))
+                                parameter = AutomationParameter.objects.filter(automationCaseApi=data['api_id'])
+                                for n in parameter:
+                                    if n.pk not in _list:
+                                        n.delete()
+                                for i in data['requestList']:
                                     if i['interrelate'] in [True, False]:
                                         try:
                                             if i['name']:
-                                                AutomationHead.objects.filter(id=i["id"], automationCaseApi=api_id). \
+                                                AutomationParameter.objects.filter(id=i["id"],
+                                                                                   automationCaseApi=data['api_id']).\
                                                     update(name=i['name'], value=i['value'], interrelate=i['interrelate'])
                                         except KeyError:
                                             if i['name']:
-                                                AutomationHead(automationCaseApi=
-                                                               AutomationCaseApi.objects.get(id=api_id),
-                                                               name=i['name'], value=i['value'],
-                                                               interrelate=i['interrelate']).save()
+                                                AutomationParameter(automationCaseApi=
+                                                                    AutomationCaseApi.objects.get(id=data['api_id']),
+                                                                    name=i['name'], value=i['value'],
+                                                                    interrelate=i['interrelate']).save()
                                     else:
                                         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-                                except:
-                                    return JsonResponse(code_msg=GlobalStatusCode.fail())
-                        if examine_type == 'json':
+                        else:
+                            AutomationParameter.objects.filter(automationCaseApi=data['api_id']).delete()
+                            AutomationParameterRaw(automationCaseApi=AutomationCaseApi.objects.get(id=data['api_id']),
+                                                   data=data['requestList']).save()
+                        if len(data['headDict']):
+                            _list = []
+                            for j in data['headDict']:
+                                try:
+                                    _list.append(j["id"])
+                                except KeyError:
+                                    pass
+                            parameter = AutomationHead.objects.filter(automationCaseApi=data['api_id'])
+                            for n in parameter:
+                                if n.pk not in _list:
+                                    n.delete()
+                            for i in data['headDict']:
+                                if i['interrelate'] in [True, False]:
+                                    try:
+                                        if i['name']:
+                                            AutomationHead.objects.filter(id=i["id"], automationCaseApi=data['api_id']). \
+                                                update(name=i['name'], value=i['value'], interrelate=i['interrelate'])
+                                    except KeyError:
+                                        if i['name']:
+                                            AutomationHead(automationCaseApi=
+                                                           AutomationCaseApi.objects.get(id=data['api_id']),
+                                                           name=i['name'], value=i['value'],
+                                                           interrelate=i['interrelate']).save()
+                                else:
+                                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                        if data['examineType'] == 'json':
                             try:
-                                AutomationResponseJson.objects.filter(automationCaseApi=api_id).delete()
-                                response = eval(response_data.replace("true", "True").replace("false", "False"))
-                                api = "<response[%s]>" % api_id
-                                api_id = AutomationCaseApi.objects.get(id=api_id)
+                                AutomationResponseJson.objects.filter(automationCaseApi=data['api_id']).delete()
+                                response = eval(data['responseData'].replace("true", "True").replace("false", "False"))
+                                api = "<response[%s]>" % data['api_id']
+                                api_id = AutomationCaseApi.objects.get(id=data['api_id'])
                                 create_json(api_id, api, response)
                             except Exception as e:
                                 logging.exception("error")
                                 return JsonResponse(code_msg=GlobalStatusCode.fail())
 
-                    record_dynamic(project_id, '修改', '用例接口', '修改用例“%s”接口"%s"' % (obi[0].caseName, name))
+                    record_dynamic(data['project_id'], '修改', '用例接口', '修改用例“%s”接口"%s"' % (obi[0].caseName, data['name']))
                     return JsonResponse(code_msg=GlobalStatusCode.success())
                 else:
                     return JsonResponse(code_msg=GlobalStatusCode.name_repetition())

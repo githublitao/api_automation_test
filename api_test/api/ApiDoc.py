@@ -250,7 +250,6 @@ def add_api(request):
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if data['status'] not in ['True', 'False']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    print(type(data['project_id']))
     if not isinstance(data['project_id'], int) or not isinstance(data['first_group_id'], int):
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if data['httpType'] not in ['HTTP', 'HTTPS']:
@@ -277,14 +276,17 @@ def add_api(request):
                                                                           apiGroupLevelFirst=data['first_group_id'])
                         if len(second_group) == 0:
                             return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
-                        oba = ApiInfo(project=Project.objects.get(id=data['project_id']),
-                                      apiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=data['first_group_id']),
-                                      apiGroupLevelSecond=ApiGroupLevelSecond.objects.get(id=data['second_group_id']),
-                                      name=data['name'], httpType=data['httpType'], status=data['status'],
-                                      requestType=data['requestType'], apiAddress=data['address'],
-                                      requestParameterType=data['requestParameterType'],
-                                      mockCode=data['mockStatus'], data=data['code'],
-                                      userUpdate=User.objects.get(id=request.user.pk), description=data['desc'])
+                        try:
+                            oba = ApiInfo(project=Project.objects.get(id=data['project_id']),
+                                          apiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=data['first_group_id']),
+                                          apiGroupLevelSecond=ApiGroupLevelSecond.objects.get(id=data['second_group_id']),
+                                          name=data['name'], httpType=data['httpType'], status=data['status'],
+                                          requestType=data['requestType'], apiAddress=data['address'],
+                                          requestParameterType=data['requestParameterType'],
+                                          mockCode=data['mockStatus'], data=data['code'],
+                                          userUpdate=User.objects.get(id=request.user.pk), description=data['desc'])
+                        except KeyError:
+                            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                     else:
                         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                     oba.save()
@@ -294,7 +296,7 @@ def add_api(request):
                                 if i['name']:
                                     ApiHead(api=ApiInfo.objects.get(id=oba.pk), name=i['name'],
                                             value=i['value']).save()
-                            except:
+                            except KeyError:
                                 logging.exception("Error")
                                 return JsonResponse(GlobalStatusCode.fail())
                     if data['requestParameterType'] == 'form-data':
@@ -309,7 +311,7 @@ def add_api(request):
                                                      _type=i['_type'],
                                                      restrict=i['restrict'],
                                                      description=i['description']).save()
-                                except Exception as e:
+                                except KeyError:
                                     logging.exception("Error")
                                     return JsonResponse(code_msg=GlobalStatusCode.fail())
                     else:
@@ -323,7 +325,7 @@ def add_api(request):
                                     ApiResponse(api=ApiInfo.objects.get(id=oba.pk), name=i['name'],
                                                 value=i['value'], required=i['required'], _type=i['_type'],
                                                 description=i['description']).save()
-                            except Exception as e:
+                            except KeyError:
                                 logging.exception("Error")
                                 return JsonResponse(code_msg=GlobalStatusCode.fail())
                     record_dynamic(data['project_id'], '新增', '接口', '新增接口“%s”' % data['name'])
@@ -342,8 +344,8 @@ def add_api(request):
 
 
 @api_view(['POST'])
-@verify_parameter(['project_id', 'api_id', 'first_group_id', 'name', 'httpType', 'requestType', 'address',
-                   'requestParameterType', 'status'], 'POST')
+# @verify_parameter(['project_id', 'api_id', 'first_group_id', 'name', 'httpType', 'requestType', 'address',
+#                    'requestParameterType', 'status'], 'POST')
 def update_api(request):
     """
     修改接口信息
@@ -364,163 +366,134 @@ def update_api(request):
     description 描述
     :return:
     """
-    project_id = request.POST.get('project_id')
-    api_id = request.POST.get('api_id')
-    first_group_id = request.POST.get('first_group_id')
-    second_group_id = request.POST.get('second_group_id')
-    if not project_id.isdecimal() or not api_id.isdecimal() or not first_group_id.isdecimal():
+    data = json.loads(request.body)
+    if not data['project_id'] or not data['first_group_id'] or not data['name'] or not data['httpType'] or not \
+            data['requestType'] or not data['address'] or not data['requestParameterType'] or not data['status'] or \
+            not data['api_id']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    name = request.POST.get('name')
-    http_type = request.POST.get('httpType')
-    request_type = request.POST.get('requestType')
-    address = request.POST.get('address')
-    head_dict = request.POST.get('headDict')
-    request_parameter_type = request.POST.get('requestParameterType')
-    request_list = request.POST.get('requestList')
-    response_list = request.POST.get('responseList')
-    mock_status = request.POST.get('mockStatus')
-    code = request.POST.get('code')
-    description = request.POST.get('description')
-    status = request.POST.get('status')
-    if status not in ['True', 'False']:
+    if not isinstance(data['project_id'], int) or not isinstance(data['first_group_id'], int) or \
+            not isinstance(data['api_id'], int):
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if http_type not in ['HTTP', 'HTTPS']:
+    if data['status'] not in ['True', 'False']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if request_type not in ['POST', 'GET', 'PUT', 'DELETE']:
+    if not isinstance(data['project_id'], int) or not isinstance(data['first_group_id'], int):
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if request_parameter_type not in ['form-data', 'raw', 'Restful']:
+    if data['httpType'] not in ['HTTP', 'HTTPS']:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    obj = Project.objects.filter(id=project_id)
+    if data['requestType'] not in ['POST', 'GET', 'PUT', 'DELETE']:
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+    if data['requestParameterType'] not in ['form-data', 'raw', 'Restful']:
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+    obj = Project.objects.filter(id=data['project_id'])
     if obj:
-        obm = ApiInfo.objects.filter(id=api_id, project=project_id)
+        obm = ApiInfo.objects.filter(id=data['api_id'], project=data['project_id'])
         if obm:
-            obi = ApiInfo.objects.filter(name=name, project=project_id).exclude(id=api_id)
+            obi = ApiInfo.objects.filter(name=data['name'], project=data['project_id']).exclude(id=data['api_id'])
             if len(obi) == 0:
                 try:
                     with transaction.atomic():
-                        first_group = ApiGroupLevelFirst.objects.filter(id=first_group_id, project=project_id)
+                        first_group = ApiGroupLevelFirst.objects.filter(id=data['first_group_id'], project=data['project_id'])
                         if len(first_group) == 0:
                             return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
-                        if first_group_id and second_group_id:
-                            if not second_group_id.isdecimal():
+                        if data['first_group_id'] and data['second_group_id']:
+                            if not isinstance(data['second_group_id'], int):
                                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-                            second_group = ApiGroupLevelSecond.objects.filter(id=second_group_id,
-                                                                              apiGroupLevelFirst=first_group_id)
+                            second_group = ApiGroupLevelSecond.objects.filter(id=data['second_group_id'],
+                                                                              apiGroupLevelFirst=data['first_group_id'])
                             if len(second_group) == 0:
                                 return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
-                            obm.update(project=Project.objects.get(id=project_id),
-                                       apiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=first_group_id),
-                                       apiGroupLevelSecond=ApiGroupLevelSecond.objects.get(id=second_group_id),
-                                       name=name, httpType=http_type, requestType=request_type, apiAddress=address,
-                                       requestParameterType=request_parameter_type, mockCode=mock_status,
-                                       data=code, userUpdate=User.objects.get(id=request.user.pk), description=description)
+                            try:
+                                obm.update(project=Project.objects.get(id=data['project_id']),
+                                           apiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=data['first_group_id']),
+                                           apiGroupLevelSecond=ApiGroupLevelSecond.objects.get(id=data['second_group_id']),
+                                           name=data['name'], httpType=data['httpType'], requestType=data['requestType'],
+                                           apiAddress=data['address'], requestParameterType=data['requestParameterType'],
+                                           mockCode=data['mockStatus'], data=data['code'],
+                                           userUpdate=User.objects.get(id=request.user.pk), description=data['description'])
+                            except KeyError:
+                                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                         else:
                             return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-                        if head_dict:
-                            head = re.findall('{.*?}', head_dict)
+                        if len(data['headDict']):
                             _list = []
-                            for j in head:
+                            for j in data['headDict']:
                                 try:
-                                    j = eval(j)
+                                    _list.append(j["id"])
+                                except KeyError:
+                                    pass
+                            parameter = ApiHead.objects.filter(api=data['api_id'])
+                            for n in parameter:
+                                if n.pk not in _list:
+                                    n.delete()
+                            for i in data['headDict']:
+                                if i['name']:
+                                    try:
+                                        ApiHead.objects.filter(id=i['id'], api=data['api_id']).\
+                                            update(name=i['name'], value=i['value'])
+                                    except KeyError:
+                                        ApiHead(api=ApiInfo.objects.get(id=data['api_id']), name=i['name'],
+                                                value=i['value']).save()
+                        if data['requestParameterType'] == 'form-data':
+                            ApiParameterRaw.objects.filter(api=data['api_id']).delete()
+                            if len(data['requestList']):
+                                _list = []
+                                for j in data['requestList']:
                                     try:
                                         _list.append(j["id"])
                                     except KeyError:
                                         pass
-                                except:
-                                    return JsonResponse(code_msg=GlobalStatusCode.fail())
-                            parameter = ApiHead.objects.filter(api=api_id)
-                            for n in parameter:
-                                if n.pk not in _list:
-                                    n.delete()
-                            for i in head:
-                                try:
-                                    i = eval(i)
-                                    if i['name']:
-                                        try:
-                                            ApiHead.objects.filter(id=i['id'], api=api_id).\
-                                                update(name=i['name'], value=i['value'])
-                                        except KeyError:
-                                            ApiHead(api=ApiInfo.objects.get(id=api_id), name=i['name'],
-                                                    value=i['value']).save()
-                                except Exception as e:
-                                    logging.exception("Error")
-                                    return JsonResponse(code_msg=GlobalStatusCode.fail())
-                        if request_parameter_type == 'form-data':
-                            ApiParameterRaw.objects.filter(api=api_id).delete()
-                            if request_list:
-                                request_list = re.findall('{.*?}', request_list)
-                                _list = []
-                                for j in request_list:
-                                    try:
-                                        j = eval(j.replace("true", "True").replace("false", "False"))
-                                        try:
-                                            _list.append(j["id"])
-                                        except KeyError:
-                                            pass
-                                    except:
-                                        return JsonResponse(code_msg=GlobalStatusCode.fail())
-                                parameter = ApiParameter.objects.filter(api=api_id)
+                                parameter = ApiParameter.objects.filter(api=data['api_id'])
                                 for n in parameter:
                                     if n.pk not in _list:
                                         n.delete()
-                                for i in request_list:
+                                for i in data['requestList']:
                                     try:
-                                        i = eval(i.replace("true", "True").replace("false", "False"))
                                         if i['name']:
                                             try:
-                                                ApiParameter.objects.filter(id=i['id'], api=api_id).\
+                                                ApiParameter.objects.filter(id=i['id'], api=data['api_id']).\
                                                     update(name=i['name'], value=i['value'], required=i['required'],
                                                            restrict=i['restrict'], _type=i['_type'],
                                                            description=i['description'])
                                             except KeyError:
-                                                ApiParameter(api=ApiInfo.objects.get(id=api_id), name=i['name'],
+                                                ApiParameter(api=ApiInfo.objects.get(id=data['api_id']), name=i['name'],
                                                              value=i['value'], required=i['required'], _type=i['_type'],
                                                              description=i['description']).save()
-                                    except Exception as e:
+                                    except KeyError:
                                         logging.exception("Error")
-                                        return JsonResponse(code_msg=GlobalStatusCode.fail())
+                                        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
 
                         else:
-                            ApiParameterRaw.objects.filter(api=api_id).delete()
-                            ApiParameter.objects.filter(api=api_id).delete()
-                            if request_list:
-                                ApiParameterRaw(api=ApiInfo.objects.get(id=api_id), data=request_list).save()
+                            ApiParameterRaw.objects.filter(api=data['api_id']).delete()
+                            ApiParameter.objects.filter(api=data['api_id']).delete()
+                            if data['requestList']:
+                                ApiParameterRaw(api=ApiInfo.objects.get(id=data['api_id']), data=data['requestList']).save()
 
-                        if response_list:
-                            response_list = re.findall('{.*?}', response_list)
+                        if len(data['responseList']):
                             _list = []
-                            for j in response_list:
+                            for j in data['responseList']:
                                 try:
-                                    j = eval(j.replace("true", "True").replace("false", "False"))
-                                    try:
-                                        _list.append(j["id"])
-                                    except KeyError:
-                                        pass
-                                except:
-                                    return JsonResponse(code_msg=GlobalStatusCode.fail())
-                            parameter = ApiResponse.objects.filter(api=api_id)
+                                    _list.append(j["id"])
+                                except KeyError:
+                                    pass
+                            parameter = ApiResponse.objects.filter(api=data['api_id'])
                             for n in parameter:
                                 if n.pk not in _list:
                                     n.delete()
-                            for i in response_list:
-                                try:
-                                    i = eval(i.replace("true", "True").replace("false", "False"))
-                                    if i['name']:
-                                        try:
-                                            ApiResponse.objects.filter(id=i['id'], api=api_id).\
-                                                update(name=i['name'], value=i['value'], required=i['required'],
-                                                       _type=i['_type'],
-                                                       description=i['description'])
-                                        except KeyError:
-                                            ApiResponse(api=ApiInfo.objects.get(id=api_id), name=i['name'],
-                                                        value=i['value'], required=i['required'], _type=i['_type'],
-                                                        description=i['description']).save()
-                                except Exception as e:
-                                    logging.exception("error")
-                                    return JsonResponse(code_msg=GlobalStatusCode.fail())
-                            record_dynamic(project_id, '修改', '接口', '修改接口“%s”' % name)
-                        api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=api_id), user=User.objects.get(id=request.user.pk),
-                                                         description='修改接口"%s"' % name)
+                            for i in data['responseList']:
+                                if i['name']:
+                                    try:
+                                        ApiResponse.objects.filter(id=i['id'], api=data['api_id']).\
+                                            update(name=i['name'], value=i['value'], required=i['required'],
+                                                   _type=i['_type'],
+                                                   description=i['description'])
+                                    except KeyError:
+                                        ApiResponse(api=ApiInfo.objects.get(id=data['api_id']), name=i['name'],
+                                                    value=i['value'], required=i['required'], _type=i['_type'],
+                                                    description=i['description']).save()
+                            record_dynamic(data['project_id'], '修改', '接口', '修改接口“%s”' % data['name'])
+                        api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=data['api_id']),
+                                                         user=User.objects.get(id=request.user.pk),
+                                                         description='修改接口"%s"' % data['name'])
                         api_record.save()
                         return JsonResponse(code_msg=GlobalStatusCode.success())
                 except Exception as e:
@@ -819,12 +792,8 @@ def download_doc(request):
                 yield c
             else:
                 break
-    try:
-        _file = open(url, 'rb')
-        response = StreamingHttpResponse(file_iterator(_file))
-        response['Content-Type'] = 'application/octet-stream'
-        response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file_name)
-    except:
-        pass
-
+    _file = open(url, 'rb')
+    response = StreamingHttpResponse(file_iterator(_file))
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file_name)
     return response

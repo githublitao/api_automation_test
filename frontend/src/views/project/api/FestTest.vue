@@ -118,7 +118,7 @@
                                 <div style="word-break: break-all;overflow:auto;overflow-x:hidden">{{form.resultData}}</div>
                             </div>
                             <div v-model="form.resultHead" :class="resultShow? 'parameter-b': 'parameter-a'">{{form.resultHead}}</div>
-                            <div :class="resultShow? 'parameter-a': 'parameter-b'" v-show="format">
+                            <div :class="resultShow? 'parameter-a': 'parameter-b'" v-show="format && form.resultData">
                                 <pre style="border: 1px solid #e6e6e6;word-break: break-all;height:300px;overflow:auto;overflow-x:hidden">{{form.resultData}}</pre>
                             </div>
                             <div v-show="!form.resultData&&!form.resultHead" class="raw">暂无数据</div>

@@ -414,9 +414,8 @@
                                     self.form.parameter.forEach((item) => {
                                         _parameter[item.name] = item.value
                                     });
-                                    _parameter = JSON.stringify(_parameter)
                                 } else {
-                                    _parameter = JSON.stringify(self.form.parameter);
+                                    _parameter = self.form.parameter;
                                 }
                             } else {
                                 _parameter = self.form.parameterRaw
@@ -427,23 +426,24 @@
                                 type: "post",
                                 url: test+"/api/api/update_api",
                                 async: true,
-                                data: {
-                                    project_id: self.$route.params.project_id,
-                                    api_id: self.$route.params.api_id,
-                                    first_group_id: self.form.firstGroup,
-                                    second_group_id: self.form.secondGroup,
+                                data: JSON.stringify({
+                                    project_id: Number(self.$route.params.project_id),
+                                    api_id: Number(self.$route.params.api_id),
+                                    first_group_id: Number(self.form.firstGroup),
+                                    second_group_id: Number(self.form.secondGroup),
                                     name: self.form.name,
                                     httpType: self.form.Http4,
                                     requestType: self.form.request4,
                                     address: self.form.addr,
                                     status: self.form.status,
-                                    headDict: JSON.stringify(self.form.head),
+                                    headDict: self.form.head,
                                     requestParameterType: _type,
                                     requestList: _parameter,
-                                    responseList: JSON.stringify(self.form.response),
+                                    responseList: self.form.response,
                                     mockStatus: self.form.mockCode,
-                                    code: self.form.mockData
-                                },
+                                    code: self.form.mockData,
+                                    description: ''
+                                }),
                                 headers: {
                                     Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                                 },

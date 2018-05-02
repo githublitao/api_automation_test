@@ -326,32 +326,27 @@
                                     self.form.parameter.forEach((item) => {
                                         _parameter[item.name] = item.value
                                     });
-                                    _parameter = JSON.stringify(JSON.stringify(_parameter))
                                 } else {
-                                    _parameter = JSON.stringify(self.form.parameter);
+                                    _parameter = self.form.parameter;
                                 }
                             } else {
-                                _parameter = JSON.stringify(self.form.parameterRaw)
+                                _parameter = self.form.parameterRaw
                             }
-                            for (var j=0; j<self.form.head.length; j++) {
-                            }
-                            console.log(self.form.head)
-                            console.log(self.form.parameter)
-                            let param = {
-                                project_id: self.$route.params.project_id,
-                                case_id: self.$route.params.case_id,
-                                api_id: self.$route.params.api_id,
+                            let param = JSON.stringify({
+                                project_id: Number(self.$route.params.project_id),
+                                case_id: Number(self.$route.params.case_id),
+                                api_id: Number(self.$route.params.api_id),
                                 name: self.form.name,
                                 httpType: self.form.Http4,
                                 requestType: self.form.request4,
                                 address: self.form.addr,
-                                headDict: JSON.stringify(self.form.head),
+                                headDict: self.form.head,
                                 requestParameterType: _type,
                                 requestList: _parameter,
                                 examineType: self.form.check,
                                 httpCode: self.form.checkHttp,
                                 responseData: self.form.checkData
-                            };
+                            });
                             $.ajax({
                                 type: "post",
                                 url: test+"/api/automation/update_api",
