@@ -11206,3 +11206,51 @@ Traceback (most recent call last):
     
     ^
 SyntaxError: unexpected EOF while parsing
+2018-05-03 18:09:49,365,4128,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/test_report
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 65, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 1073, in test_report
+    AutomationCaseApi.objects.filter(automationTestCase=case_id), many=True).data
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\serializers.py", line 740, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\serializers.py", line 260, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\serializers.py", line 658, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\serializers.py", line 658, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\serializers.py", line 485, in to_representation
+    fields = self._readable_fields
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\utils\functional.py", line 36, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\serializers.py", line 375, in _readable_fields
+    field for field in self.fields.values()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\serializers.py", line 361, in fields
+    for key, value in self.get_fields().items():
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\serializers.py", line 1020, in get_fields
+    source, info, model, depth
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\serializers.py", line 1165, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\serializers.py", line 1277, in build_unknown_field
+    (field_name, model_class.__name__)
+django.core.exceptions.ImproperlyConfigured: Field name `examineType.verbose_name` is not valid for model `AutomationCaseApi`.
+2018-05-03 18:09:49,560,4128,django.server,ERROR,basehttp.py:124,"GET /api/automation/test_report?case_id=1&project_id=1 HTTP/1.1" 500 20861

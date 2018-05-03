@@ -1053,7 +1053,7 @@ def look_result(request):
 
 
 @api_view(['GET'])
-@verify_parameter(['case_id', ], 'GET')
+@verify_parameter(['case_id', 'project_id'], 'GET')
 def test_report(request):
     """
     测试结果报告
@@ -1061,14 +1061,40 @@ def test_report(request):
     :param request:
     :return:
     """
+    project_id = request.GET.get('project_id')
     case_id = request.GET.get('case_id')
-    obj = AutomationTestCase.objects.filter(id=case_id)
-    if obj:
-        data = AutomationTestReportSerializer(
-            AutomationCaseApi.objects.filter(automationTestCase=case_id), many=True).data
-        return JsonResponse(code_msg=GlobalStatusCode.success(), data=data)
+    if not case_id.isdecimal() or not project_id.isdecimal():
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+    obi = Project.objects.filter(id=project_id)
+    if obi:
+        obj = AutomationTestCase.objects.filter(id=case_id, project=project_id)
+        if obj:
+            data = AutomationTestReportSerializer(
+                AutomationCaseApi.objects.filter(automationTestCase=case_id), many=True).data
+            success = 0
+            fail = 0
+            not_run = 0
+            error = 0
+            for i in data:
+                if i['result'] == 'PASS':
+                    success = success+1
+                elif i['result'] == 'FAIL':
+                    fail = fail+1
+                elif i['result'] == 'ERROR':
+                    error = error+1
+                else:
+                    not_run = not_run+1
+            return JsonResponse(code_msg=GlobalStatusCode.success(), data={"data": data,
+                                                                           "total": len(data),
+                                                                           "pass": success,
+                                                                           "fail": fail,
+                                                                           "error": error,
+                                                                           "NotRun": not_run
+                                                                           })
+        else:
+            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
     else:
-        return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
 @api_view(['GET'])
@@ -1091,7 +1117,3 @@ def test_time(request):
             return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
-
-
-# @api_view(['GET'])
-# @verify_parameter(['project_id'])

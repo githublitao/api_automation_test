@@ -666,6 +666,34 @@
             selsChange(sels){
                 this.sels = sels;
             },
+            getHost() {
+                let self = this;
+                $.ajax({
+                    type: "get",
+                    url: test+"/api/global/host_total",
+                    async: true,
+                    data: { project_id: this.$route.params.project_id},
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: (data) => {
+                        if (data.code === '999999') {
+                            data.data.data.forEach((item) => {
+                                if (item.status) {
+                                    self.Host.push(item)
+                                }
+                            })
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+            },
         },
         mounted() {
             this.getCaseApiList();

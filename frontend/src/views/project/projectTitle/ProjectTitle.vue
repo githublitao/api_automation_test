@@ -127,7 +127,7 @@
         height: 100%;
     }
     .member {
-        width: 10%;
+        width: 7%;
     }
     .main {
         margin: 35px;
