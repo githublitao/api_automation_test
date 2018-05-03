@@ -121,9 +121,9 @@
 	//import NProgress from 'nprogress'
 import { test } from '../api/api'
 import $ from 'jquery'
-    import ElRow from "element-ui/packages/row/src/row";
+// import ElRow from "element-ui/packages/row/src/row";
 export default {
-    components: {ElRow},
+    // components: {ElRow},
     data() {
 		return {
 			filters: {

@@ -58,7 +58,7 @@ let routes = [
         hidden: true,
         projectHidden: true,
         redirect: { path: '/404' }
-    },    
+    },
     {
         path: '/project/project=:project_id',
         component: ProjectInfo,
@@ -69,7 +69,7 @@ let routes = [
             {   path: '/GlobalHost/project=:project_id', component: globalHost, name: 'Host配置', leaf: true},
             {   path: '/api/project=:project_id',
                     component: API,
-                    name: 'API接口', 
+                    name: 'API接口',
                     leaf: true,
                     child: true,
                     children: [
