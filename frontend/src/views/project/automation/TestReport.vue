@@ -23,20 +23,30 @@
             <div>Total</div>
         </div>
         <div style="padding-left: 10px; padding-top: 45px">
-            <el-table :data="tableData" stripe style="width: 100%" v-loading="listLoading">
+            <el-table :data="tableData" v-loading="listLoading" :row-style="tableRowStyle">
                 <el-table-column type="index" label="#">
                 </el-table-column>
-                <el-table-column prop="type" label="接口名称">
+                <el-table-column prop="name" label="接口名称" min-width="20%" sortable show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="operationObject" label="用例名称">
+                <el-table-column prop="automationTestCase" label="用例名称" min-width="20%" sortable show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="operationUser" label="请求方法">
+                <el-table-column prop="requestType" label="请求方法" min-width="8%" sortable show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="operationUser" label="请求地址">
+                <el-table-column prop="address" label="请求地址" min-width="30%" sortable show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="operationUser" label="校验方式">
+                <el-table-column prop="examineType" label="校验方式" min-width="12%" sortable show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <a v-if="scope.row.examineType === 'no_check'">不校验</a>
+                        <a v-if="scope.row.examineType === 'only_check_status'">校验http状态</a>
+                        <a v-if="scope.row.examineType === 'json'">JSON校验</a>
+                        <a v-if="scope.row.examineType === 'entirely_check'">完全校验</a>
+                        <a v-if="scope.row.examineType === 'Regular_check'">正则校验</a>
+                    </template>
                 </el-table-column>
-                <el-table-column prop="description" label="结果">
+                <el-table-column prop="result" label="结果" min-width="10%" :filters="resultFilter" :filter-method="filterHandler">
+                    <template slot-scope="scope">
+                        {{scope.row.result? scope.row.result: "NotRun"}}
+                    </template>
                 </el-table-column>
             </el-table>
         </div>
@@ -44,6 +54,8 @@
 </template>
 
 <script>
+    import { test } from '../../../api/api'
+    import $ from 'jquery'
     export default {
         name: "test-report",
         data(){
@@ -56,8 +68,61 @@
                 start_time: "",
                 end_time: "",
                 listLoading: false,
+                resultFilter: [
+                    {text: 'ERROR', value: 'ERROR'},
+                    {text: 'FAIL', value: 'FAIL'},
+                    {text: 'NotRun', value: 'NotRun'},
+                    {text: 'PASS', value: 'PASS'},
+                ],
                 tableData: []
             }
+        },
+        methods: {
+            tableRowStyle(row) {
+                if (row.result === 'ERROR' || row.result === 'FAIL') {
+                    return "background-color: #DC143C;"
+                } else if(row.result === 'TimeOut'){
+                    return "background-color: #FFE4C4;"
+                }
+              },
+            filterHandler(value, row, column) {
+                return row.result === value;
+            },
+            getTestResult() {
+                this.listLoading = true;
+                let self = this;
+                $.ajax({
+                    type: "get",
+                    url: test + "/api/automation/test_report",
+                    async: true,
+                    data: { project_id: this.$route.params.project_id},
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: function(data) {
+                        self.listLoading = false;
+                        if (data.code === '999999') {
+                            self.total = data.data.total;
+                            self.pass = data.data.pass;
+                            self.fail = data.data.fail;
+                            self.not_run = data.data.NotRun;
+                            self.error = data.data.error;
+                            self.tableData = data.data.data
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+            },
+        },
+        mounted() {
+            this.getTestResult();
+
         }
     }
 </script>

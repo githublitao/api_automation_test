@@ -72,11 +72,12 @@
                     <span v-show="!scope.row.result">尚无测试结果</span>
                     <span v-show="scope.row.result==='success'" style="color: #11b95c;cursor:pointer;" @click="resultShow(scope.row)">成功,查看详情</span>
                     <span v-show="scope.row.result==='fail'" style="color: #cc0000;cursor:pointer;" @click="resultShow(scope.row)">失败,查看详情</span>
+                    <span v-show="scope.row.result==='timeout'" style="color: #cc0000;cursor:pointer;" @click="resultShow(scope.row)">请求超时</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" min-width="20%">
                 <template slot-scope="scope">
-                    <el-button type="primary" size="small" @click="Test(scope.$index, scope.row)" :loading='TestStatus'>测试</el-button>
+                    <el-button type="primary" size="small" @click="Test(scope.$index, scope.row)">测试</el-button>
                     <router-link :to="{ name: '修改接口', params: {api_id: scope.row.id}}" style='text-decoration: none;color: #000000;'>
                         <el-button size="small">修改</el-button>
                     </router-link>
@@ -148,7 +149,6 @@
                 editLoading: false,
                 delLoading: false,
                 disDel: true,
-                TestStatus: false,
                 pickerOptions1: {
                     disabledDate(time) {
                         return time.getTime() < Date.now() - 8.64e7;
@@ -228,7 +228,6 @@
             },
             Test(index, row) {
                 if (this.url) {
-                    this.TestStatus = true;
                     let self = this;
                     $.ajax({
                         type: "post",
@@ -242,7 +241,7 @@
                         headers: {
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
-                        timeout: 5000,
+                        timeout: 8000,
                         success: function(data) {
                             if (data.code === '999999') {
                                 row.result = data.data.result
@@ -253,11 +252,14 @@
                                     center: true,
                                 })
                             }
-                            self.TestStatus = false
                         },
                         error: function () {
-                            self.TestStatus = false
-                        }
+                        },
+                        // complete: function(XMLHttpRequest,status){
+                        //     if( status ==='timeout'){
+                        //         row.result = "timeout"
+                        //     }
+                        // }
                     })
                 } else {
                     this.$message({

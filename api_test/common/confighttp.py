@@ -6,6 +6,7 @@ import operator
 import requests
 import simplejson
 from django.core import serializers
+from requests import ReadTimeout
 
 from api_test.common.common import check_json, record_results
 from api_test.models import GlobalHost, AutomationCaseApi, AutomationParameter, AutomationTestResult, AutomationHead, \
@@ -90,24 +91,29 @@ def test_api(host_id, case_id, project_id, _id):
 
     request_parameter_type = data['requestParameterType']
     examine_type = data['examineType']
+    http_code = data['httpCode']
+    response_parameter_list = data['responseData']
+    header["Content-Length"] = '%s' % len(str(parameter))
     if http_type == 'HTTP':
         url = 'http://'+address
     else:
         url = 'https://'+address
-    if request_type == 'GET':
-        code, response_data = get(header, url, request_parameter_type, parameter)
-    elif request_type == 'POST':
-        code, response_data = post(header, url, request_parameter_type, parameter)
-    elif request_type == 'PUT':
-        code, response_data = post(header, url, request_parameter_type, parameter)
-    elif request_type == 'DELETE':
-        code, response_data = post(header, url, request_parameter_type, parameter)
-    else:
-        return 'fail'
-
-    http_code = data['httpCode']
-    response_parameter_list = data['responseData']
-    header["Content-Length"] = '%s' % len(str(parameter))
+    try:
+        if request_type == 'GET':
+            code, response_data = get(header, url, request_parameter_type, parameter)
+        elif request_type == 'POST':
+            code, response_data = post(header, url, request_parameter_type, parameter)
+        elif request_type == 'PUT':
+            code, response_data = post(header, url, request_parameter_type, parameter)
+        elif request_type == 'DELETE':
+            code, response_data = post(header, url, request_parameter_type, parameter)
+        else:
+            return 'fail'
+    except ReadTimeout:
+        record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
+                       status_code=http_code, examine_type="不校验", examine_data=response_parameter_list,
+                       _result='TimeOut', code="", response_data="")
+        return 'timeout'
     if examine_type == 'no_check':
         record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                        status_code=http_code, examine_type="不校验", examine_data=response_parameter_list,
@@ -209,7 +215,7 @@ def post(header, address, request_parameter_type, data):
     """
     if request_parameter_type == 'raw':
         data = json.dumps(data)
-    response = requests.post(url=address, data=data, headers=header)
+    response = requests.post(url=address, data=data, headers=header, timeout=5)
     try:
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:
@@ -233,7 +239,7 @@ def get(header, address, request_parameter_type, data):
     """
     if request_parameter_type == 'raw':
         data = json.dumps(data)
-    response = requests.get(url=address, params=data, headers=header)
+    response = requests.get(url=address, params=data, headers=header, timeout=5)
     try:
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:
@@ -257,7 +263,7 @@ def put(header, address, request_parameter_type, data):
     """
     if request_parameter_type == 'raw':
         data = json.dumps(data)
-    response = requests.put(url=address, data=data, headers=header)
+    response = requests.put(url=address, data=data, headers=header, timeout=5)
     try:
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:
@@ -281,7 +287,7 @@ def delete(header, address, request_parameter_type, data):
     """
     if request_parameter_type == 'raw':
         data = json.dumps(data)
-    response = requests.delete(url=address, data=data, headers=header)
+    response = requests.delete(url=address, data=data, headers=header, timeout=5)
     try:
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:

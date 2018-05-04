@@ -9,6 +9,7 @@ from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
+from django.db.models import Q
 from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
@@ -1053,24 +1054,26 @@ def look_result(request):
 
 
 @api_view(['GET'])
-@verify_parameter(['case_id', 'project_id'], 'GET')
+@verify_parameter(['project_id'], 'GET')
 def test_report(request):
     """
     测试结果报告
-    case_id  用例ID
+    project_id  项目ID
     :param request:
     :return:
     """
     project_id = request.GET.get('project_id')
-    case_id = request.GET.get('case_id')
-    if not case_id.isdecimal() or not project_id.isdecimal():
+    if not project_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obi = Project.objects.filter(id=project_id)
     if obi:
-        obj = AutomationTestCase.objects.filter(id=case_id, project=project_id)
+        obj = AutomationTestCase.objects.filter(project=project_id)
         if obj:
+            case = Q()
+            for i in obj:
+                case = case | Q(automationTestCase=i.pk)
             data = AutomationTestReportSerializer(
-                AutomationCaseApi.objects.filter(automationTestCase=case_id), many=True).data
+                AutomationCaseApi.objects.filter(case), many=True).data
             success = 0
             fail = 0
             not_run = 0
