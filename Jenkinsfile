@@ -1,24 +1,14 @@
-#!/usr/bing/env groovy
-
-//Declarative
 pipeline {
-	agent any    		//agent必需的,告诉Jenkins分配执行器和工作空间
-
-    stages {			//stage必需的,
-		stage('Build') {
-			steps {		//step必需的
-				echo 'Building....'
-			}
-		}
-		stage('Test') {
-			steps{
-				echo 'Testing....'
-			}
-		}
-		stage('Deploy') {
-			steps{
-				echo 'Deploying....'
-			}
-		}
+  agent any
+  stages {
+    stage('Build') {
+      steps {
+        sh 'sudo kill -9  uwsgi'
+        sh 'pip3 install -r requirements.txt'
+        sh 'python3 manage.py makemigrations'
+        sh 'python3 manage.py migrate'
+        sh '/usr/local/python3/bin/uwsgi --ini /etc/script/uwsgi.ini'
+      }
     }
+  }
 }
