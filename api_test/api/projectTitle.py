@@ -12,15 +12,15 @@ from api_test.serializers import ProjectSerializer
 logger = logging.getLogger(__name__) # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
 
-@api_view(['GET'])
-@verify_parameter(['project_id', ], 'GET')
+@api_view(["GET"])
+@verify_parameter(["project_id", ], "GET")
 def project_info(request):
     """
     获取项目详情
     project_id 项目id
     :return:
     """
-    project_id = request.GET.get('project_id')
+    project_id = request.GET.get("project_id")
     if not project_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     try:

@@ -453,7 +453,6 @@
                                 _parameter = self.form.parameter
                             }
                         } else {
-                            // POST(url, self.form.parameterRaw, headers)
                             _parameter = self.form.parameterRaw;
                         }
                         $.ajax({

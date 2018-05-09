@@ -230,7 +230,7 @@
                             self.parameterType = data.requestParameterType;
                             self.parameter = data.requestParameter;
                             try {
-                                self.parameterRaw = JSON.parse(data.requestParameterRaw[0].data);
+                                self.parameterRaw = data.requestParameterRaw[0].data;
                             } catch (e){
 
                             }

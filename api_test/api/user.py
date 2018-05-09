@@ -16,9 +16,9 @@ class ObtainAuthToken(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
-                                           context={'request': request})
+                                           context={"request": request})
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
+        user = serializer.validated_data["user"]
         # token, created = Token.objects.get_or_create(user=user)
         data = TokenSerializer(Token.objects.get(user=user)).data
         return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
