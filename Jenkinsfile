@@ -3,10 +3,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        catchError() {
-          sh 'sudo kill -9 uwsgi'
-        }
-
+        error 'cc'
       }
     }
   }
