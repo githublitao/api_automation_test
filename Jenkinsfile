@@ -15,7 +15,9 @@ pipeline {
           sh 'python3 manage.py makemigrations'
           sh 'python3 manage.py migrate'
           sh '/usr/local/python3/bin/uwsgi --ini /etc/script/uwsgi.ini'
+
         }
+
       }
     }
   }
