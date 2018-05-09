@@ -3,7 +3,11 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        error 'cc'
+        sh 'sudo kill -9  uwsgi'
+        sh 'pip3 install -r requirements.txt'
+        sh 'python3 manage.py makemigrations'
+        sh 'python3 manage.py migrate'
+        sh '/usr/local/python3/bin/uwsgi --ini /etc/script/uwsgi.ini'
       }
     }
   }
