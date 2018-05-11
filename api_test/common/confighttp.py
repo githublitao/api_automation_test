@@ -25,7 +25,7 @@ def test_api(host_id, case_id, project_id, _id):
     :param project_id: 所属项目
     :return:
     """
-    host = GlobalHost.objects.get(id=host_id, project=project_id).host
+    host = GlobalHost.objects.get(id=host_id, project=project_id)
     data = AutomationCaseApiSerializer(AutomationCaseApi.objects.get(id=_id, automationTestCase=case_id)).data
     if data['requestParameterType'] == 'form-data':
         parameter_list = json.loads(serializers.serialize('json',
@@ -65,7 +65,7 @@ def test_api(host_id, case_id, project_id, _id):
             parameter = []
     http_type = data['httpType']
     request_type = data['requestType']
-    address = host + data['address']
+    address = host.host + data['address']
     head = json.loads(serializers.serialize('json', AutomationHead.objects.filter(automationCaseApi=_id)))
     header = {}
 
@@ -110,12 +110,12 @@ def test_api(host_id, case_id, project_id, _id):
         else:
             return 'fail'
     except ReadTimeout:
-        record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
+        record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter, host=host.name,
                        status_code=http_code, examine_type="不校验", examine_data=response_parameter_list,
                        _result='TimeOut', code="", response_data="")
         return 'timeout'
     if examine_type == 'no_check':
-        record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
+        record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter, host=host.name,
                        status_code=http_code, examine_type="不校验", examine_data=response_parameter_list,
                        _result='PASS', code=code, response_data=response_data)
         return 'success'
@@ -129,28 +129,28 @@ def test_api(host_id, case_id, project_id, _id):
             if result:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                status_code=http_code, examine_type="JSON校验", examine_data=response_parameter_list,
-                               _result='PASS', code=code, response_data=response_data)
+                               host=host.name, _result='PASS', code=code, response_data=response_data)
             else:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                status_code=http_code, examine_type="JSON校验", examine_data=response_parameter_list,
-                               _result='FAIL', code=code, response_data=response_data)
+                               host=host.name, _result='FAIL', code=code, response_data=response_data)
             return result
         else:
             record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                            status_code=http_code, examine_type="JSON校验", examine_data=response_parameter_list,
-                           _result='FAIL', code=code, response_data=response_data)
+                           host=host.name, _result='FAIL', code=code, response_data=response_data)
             return 'fail'
 
     elif examine_type == 'only_check_status':
         if int(http_code) == code:
             record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                            status_code=http_code, examine_type="校验HTTP状态", examine_data=response_parameter_list,
-                           _result='PASS', code=code, response_data=response_data)
+                           host=host.name, _result='PASS', code=code, response_data=response_data)
             return 'success'
         else:
             record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                            status_code=http_code, examine_type="校验HTTP状态", examine_data=response_parameter_list,
-                           _result='FAIL', code=code, response_data=response_data)
+                           host=host.name, _result='FAIL', code=code, response_data=response_data)
             return 'fail'
 
     elif examine_type == 'entirely_check':
@@ -162,17 +162,17 @@ def test_api(host_id, case_id, project_id, _id):
             if result:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                status_code=http_code, examine_type="完全校验", examine_data=response_parameter_list,
-                               _result='PASS', code=code, response_data=response_data)
+                               host=host.name, _result='PASS', code=code, response_data=response_data)
                 return 'success'
             else:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                status_code=http_code, examine_type="完全校验", examine_data=response_parameter_list,
-                               _result='FAIL', code=code, response_data=response_data)
+                               host=host.name, _result='FAIL', code=code, response_data=response_data)
                 return 'fail'
         else:
             record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                            status_code=http_code, examine_type="完全校验", examine_data=response_parameter_list,
-                           _result='FAIL', code=code, response_data=response_data)
+                           host=host.name, _result='FAIL', code=code, response_data=response_data)
             return 'fail'
 
     elif examine_type == 'Regular_check':
@@ -184,23 +184,23 @@ def test_api(host_id, case_id, project_id, _id):
             if result:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                status_code=http_code, examine_type="正则校验", examine_data=response_parameter_list,
-                               _result='PASS', code=code, response_data=response_data)
+                               host=host.name, _result='PASS', code=code, response_data=response_data)
                 return 'success'
             else:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                status_code=http_code, examine_type="正则校验", examine_data=response_parameter_list,
-                               _result='FAIL', code=code, response_data=response_data)
+                               host=host.name, _result='FAIL', code=code, response_data=response_data)
                 return 'fail'
         else:
             record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                            status_code=http_code, examine_type="正则校验", examine_data=response_parameter_list,
-                           _result='FAIL', code=code, response_data=response_data)
+                           host=host.name, _result='FAIL', code=code, response_data=response_data)
             return 'fail'
 
     else:
         record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                        status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
-                       _result='FAIL', code=code, response_data=response_data)
+                       host=host.name, _result='FAIL', code=code, response_data=response_data)
         return 'fail'
 
 

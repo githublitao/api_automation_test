@@ -103,7 +103,7 @@ def check_json(src_data, dst_data):
         return 'fail'
 
 
-def record_results(_id, url, request_type, header, parameter,
+def record_results(_id, url, request_type, header, parameter, host,
                    status_code, examine_type, examine_data, _result, code, response_data):
     """
     记录测试结果
@@ -118,15 +118,16 @@ def record_results(_id, url, request_type, header, parameter,
     :param _result:  是否通过
     :param code:  HTTP状态码
     :param response_data:  返回结果
+    :param host:  测试地址
     :return:
     """
     rt = AutomationTestResult.objects.filter(automationCaseApi=_id)
     if rt:
-        rt.update(url=url, requestType=request_type, header=header, parameter=parameter,
+        rt.update(url=url, requestType=request_type, header=header, parameter=parameter, host=host,
                   statusCode=status_code, examineType=examine_type, data=examine_data,
                   result=_result, httpStatus=code, responseData=response_data)
     else:
-        result_ = AutomationTestResult(automationCaseApi=AutomationCaseApi.objects.get(id=_id),
+        result_ = AutomationTestResult(automationCaseApi=AutomationCaseApi.objects.get(id=_id), host=host,
                                        url=url, requestType=request_type, header=header, parameter=parameter,
                                        statusCode=status_code, examineType=examine_type, data=examine_data,
                                        result=_result, httpStatus=code, responseData=response_data)

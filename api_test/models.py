@@ -549,6 +549,7 @@ class AutomationTestResult(models.Model):
                                              , related_name="test_result")
     url = models.CharField(max_length=1024, verbose_name='请求地址')
     requestType = models.CharField(max_length=1024, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)
+    host = models.CharField(max_length=1024, verbose_name='测试地址', null=True, blank=True)
     header = models.CharField(max_length=1024, blank=True, null=True, verbose_name='请求头')
     parameter = models.TextField(blank=True, null=True, verbose_name='请求参数')
     statusCode = models.CharField(max_length=1024, verbose_name='期望HTTP状态', choices=HTTP_CODE_CHOICE)

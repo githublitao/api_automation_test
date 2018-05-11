@@ -339,11 +339,16 @@ class AutomationTestReportSerializer(serializers.ModelSerializer):
     用例接口信息序列化
     """
     result = serializers.CharField(source='test_result.result')
+    host = serializers.CharField(source='test_result.host')
+    parameter = serializers.CharField(source='test_result.parameter')
+    httpStatus = serializers.CharField(source='test_result.httpStatus')
+    responseData = serializers.CharField(source='test_result.responseData')
     automationTestCase = serializers.CharField(source='automationTestCase.caseName')
 
     class Meta:
         model = AutomationCaseApi
-        fields = ('id', 'automationTestCase', 'name', 'httpType', 'requestType', 'address', 'examineType', 'result')
+        fields = ('id', 'automationTestCase', 'name', 'host', 'httpType', 'requestType', 'address', 'examineType',
+                  'result', 'parameter', 'httpStatus', 'responseData')
 
 
 class AutomationTaskRunTimeSerializer(serializers.ModelSerializer):

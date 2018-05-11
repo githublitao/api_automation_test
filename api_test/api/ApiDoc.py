@@ -303,7 +303,6 @@ def add_api(request):
                         if len(data["requestList"]):
                             for i in data["requestList"]:
                                 try:
-                                    print(i)
                                     # i = i.replace("true", "True").replace("false", "False")
                                     if i["name"]:
                                         ApiParameter(api=ApiInfo.objects.get(id=oba.pk), name=i["name"],
@@ -408,7 +407,7 @@ def update_api(request):
                                            apiGroupLevelSecond=ApiGroupLevelSecond.objects.get(id=data["second_group_id"]),
                                            name=data["name"], httpType=data["httpType"], requestType=data["requestType"],
                                            apiAddress=data["address"], requestParameterType=data["requestParameterType"],
-                                           mockCode=data["mockStatus"], data=data["code"],
+                                           mockCode=data["mockStatus"], data=data["code"], status=data["status"],
                                            userUpdate=User.objects.get(id=request.user.pk), description=data["description"])
                             except KeyError:
                                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())

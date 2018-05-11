@@ -1,3 +1,4 @@
+import json
 import logging
 
 import docx
@@ -56,10 +57,11 @@ class Write:
                         j = j+1
                 else:
                     try:
-                        data = eval(items['requestParameterRaw'][0]["data"].replace("true", "True").replace("false", "False"))
-                        self.doc.add_paragraph(style="Normal").add_run('{')
-                        write_json(self.doc, data, 0.3)
-                        self.doc.add_paragraph(style="Normal").add_run('}')
+                        if len(items['requestParameterRaw']):
+                            data = json.loads(items['requestParameterRaw'][0]["data"])
+                            self.doc.add_paragraph(style="Normal").add_run('{')
+                            write_json(self.doc, data, 0.3)
+                            self.doc.add_paragraph(style="Normal").add_run('}')
                     except:
                         logging.exception("Error")
                 self.doc.add_paragraph("返回参数：", style="Body Text")
@@ -86,10 +88,11 @@ class Write:
                 self.doc.add_paragraph()
                 self.doc.add_paragraph("返回示例：", style="Body Text")
                 try:
-                    data = eval(items['data'].replace("true", "True").replace("false", "False"))
-                    self.doc.add_paragraph(style="Normal").add_run('{')
-                    write_json(self.doc, data, 0.3)
-                    self.doc.add_paragraph(style="Normal").add_run('}')
+                    if len(items['data']):
+                        data = eval(items['data'].replace("true", "True").replace("false", "False"))
+                        self.doc.add_paragraph(style="Normal").add_run('{')
+                        write_json(self.doc, data, 0.3)
+                        self.doc.add_paragraph(style="Normal").add_run('}')
                 except:
                     logging.exception("Error")
             index = index + 1
