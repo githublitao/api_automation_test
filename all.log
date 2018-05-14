@@ -1,0 +1,484 @@
+2018-05-14 13:50:46,136,1216,root,ERROR,confighttp.py:87,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 80, in test_api
+    print(type( AutomationTestResult.objects.filter(automationCaseApi=api_id[0]))[0]['fields']["responseData"])
+TypeError: 'type' object is not subscriptable
+2018-05-14 13:50:46,136,1216,root,ERROR,confighttp.py:88,'type' object is not subscriptable
+2018-05-14 13:51:10,989,13088,root,ERROR,confighttp.py:87,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 80, in test_api
+    print(AutomationTestResult.objects.filter(automationCaseApi=api_id[0])[0]['fields']["responseData"])
+TypeError: 'AutomationTestResult' object is not subscriptable
+2018-05-14 13:51:10,990,13088,root,ERROR,confighttp.py:88,'AutomationTestResult' object is not subscriptable
+2018-05-14 13:53:27,124,4668,root,ERROR,confighttp.py:87,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 80, in test_api
+    print(type(json.loads(serializers.serialize('json', AutomationTestResult.objects.filter(automationCaseApi=api_id[0]))))[0]['fields']["responseData"])
+TypeError: 'type' object is not subscriptable
+2018-05-14 13:53:27,125,4668,root,ERROR,confighttp.py:88,'type' object is not subscriptable
+2018-05-14 13:53:39,867,7240,root,ERROR,confighttp.py:87,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 80, in test_api
+    print(type(json.loads(serializers.serialize('json', AutomationTestResult.objects.filter(automationCaseApi=api_id[0]))))[0])
+TypeError: 'type' object is not subscriptable
+2018-05-14 13:53:39,867,7240,root,ERROR,confighttp.py:88,'type' object is not subscriptable
+2018-05-14 13:54:32,569,10868,root,ERROR,confighttp.py:87,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 80, in test_api
+    print(type(json.loads(json.loads(serializers.serialize('json', AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])))
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 355, in raw_decode
+    obj, end = self.scan_once(s, idx)
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+2018-05-14 13:54:32,583,10868,root,ERROR,confighttp.py:88,Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+2018-05-14 13:55:40,453,9276,root,ERROR,confighttp.py:87,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 80, in test_api
+    print(json.loads(json.loads(serializers.serialize('json', AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"]))
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 355, in raw_decode
+    obj, end = self.scan_once(s, idx)
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+2018-05-14 13:55:40,454,9276,root,ERROR,confighttp.py:88,Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+2018-05-14 13:58:47,234,14168,root,ERROR,confighttp.py:87,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 83, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"].replace('\'', '"'))
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 357, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 575 (char 574)
+2018-05-14 13:58:47,235,14168,root,ERROR,confighttp.py:88,Expecting value: line 1 column 575 (char 574)
+2018-05-14 13:59:06,908,5168,root,ERROR,confighttp.py:87,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 83, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"].replace('\'', '"'))
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 357, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 575 (char 574)
+2018-05-14 13:59:06,909,5168,root,ERROR,confighttp.py:88,Expecting value: line 1 column 575 (char 574)
+2018-05-14 14:15:53,430,14044,root,ERROR,confighttp.py:88,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 81, in test_api
+    print(json.loads(json.loads(serializers.serialize('json', AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"].replace('\'', '"')))
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 357, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 575 (char 574)
+2018-05-14 14:15:53,431,14044,root,ERROR,confighttp.py:89,Expecting value: line 1 column 575 (char 574)
+2018-05-14 14:17:57,399,10908,root,ERROR,confighttp.py:87,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 83, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"][0])
+  File "<string>", line 1
+    {
+    ^
+SyntaxError: unexpected EOF while parsing
+2018-05-14 14:17:57,399,10908,root,ERROR,confighttp.py:88,unexpected EOF while parsing (<string>, line 1)
+2018-05-14 14:18:38,764,11144,root,ERROR,confighttp.py:87,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 83, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"].replace('True', 'true'))
+  File "<string>", line 1, in <module>
+NameError: name 'true' is not defined
+2018-05-14 14:18:38,765,11144,root,ERROR,confighttp.py:88,name 'true' is not defined
+2018-05-14 14:31:43,948,9740,root,ERROR,confighttp.py:87,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 85, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-14 14:31:43,949,9740,root,ERROR,confighttp.py:88,'data'
+2018-05-14 14:39:00,484,13740,root,ERROR,confighttp.py:130,eee
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 127, in test_api
+    print(json.loads(response_parameter_list))
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 357, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 396 (char 395)
+2018-05-14 14:39:16,575,13740,root,ERROR,confighttp.py:130,eee
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 127, in test_api
+    print(response_parameter_list)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 357, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 396 (char 395)
+2018-05-14 14:39:22,893,13064,root,ERROR,confighttp.py:131,eee
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 128, in test_api
+    print(json.loads(response_parameter_list))
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 357, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 396 (char 395)
+2018-05-14 14:39:49,299,8624,root,ERROR,confighttp.py:131,eee
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 129, in test_api
+    result = check_json(json.loads(response_parameter_list), response_data)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 357, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 396 (char 395)
+2018-05-14 14:42:34,221,10852,root,ERROR,confighttp.py:129,eee
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 127, in test_api
+    result = check_json(eval(response_parameter_list), response_data)
+  File "<string>", line 1, in <module>
+NameError: name 'true' is not defined
+2018-05-14 14:42:40,931,10852,root,ERROR,confighttp.py:129,eee
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 127, in test_api
+    result = check_json(eval(response_parameter_list), response_data)
+  File "<string>", line 1, in <module>
+NameError: name 'true' is not defined
+2018-05-14 14:43:32,390,3948,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/start_test
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 65, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 859, in start_test
+    result = test_api(host_id=host_id, case_id=case_id, _id=_id, project_id=project_id1)
+NameError: name 'project_id1' is not defined
+2018-05-14 14:43:32,480,3948,django.server,ERROR,basehttp.py:124,"POST /api/automation/start_test HTTP/1.1" 500 18910
+2018-05-14 14:53:45,070,14168,root,ERROR,confighttp.py:107,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 103, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
+IndexError: list index out of range
+2018-05-14 14:53:45,070,14168,root,ERROR,confighttp.py:108,list index out of range
+2018-05-14 14:55:00,857,13900,root,ERROR,confighttp.py:107,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 103, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
+IndexError: list index out of range
+2018-05-14 14:55:00,857,13900,root,ERROR,confighttp.py:108,list index out of range
+2018-05-14 15:30:07,357,4496,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/start_test
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 176, in test_api
+    result = operator.eq(json.loads(response_parameter_list), response_data)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 355, in raw_decode
+    obj, end = self.scan_once(s, idx)
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 65, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 859, in start_test
+    result = test_api(host_id=host_id, case_id=case_id, _id=_id, project_id=project_id)
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 178, in test_api
+    result = operator.eq(json.loads(response_parameter_list.replace('True', 'true').replace('False', 'false')), response_data)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 355, in raw_decode
+    obj, end = self.scan_once(s, idx)
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+2018-05-14 15:30:07,377,4496,django.server,ERROR,basehttp.py:124,"POST /api/automation/start_test HTTP/1.1" 500 20444
+2018-05-14 15:30:13,624,4496,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/start_test
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 176, in test_api
+    result = operator.eq(json.loads(response_parameter_list), response_data)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 355, in raw_decode
+    obj, end = self.scan_once(s, idx)
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 65, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 859, in start_test
+    result = test_api(host_id=host_id, case_id=case_id, _id=_id, project_id=project_id)
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 178, in test_api
+    result = operator.eq(json.loads(response_parameter_list.replace('True', 'true').replace('False', 'false')), response_data)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 355, in raw_decode
+    obj, end = self.scan_once(s, idx)
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+2018-05-14 15:30:13,641,4496,django.server,ERROR,basehttp.py:124,"POST /api/automation/start_test HTTP/1.1" 500 20444
+2018-05-14 15:30:15,109,4496,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/start_test
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 176, in test_api
+    result = operator.eq(json.loads(response_parameter_list), response_data)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 355, in raw_decode
+    obj, end = self.scan_once(s, idx)
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 65, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 859, in start_test
+    result = test_api(host_id=host_id, case_id=case_id, _id=_id, project_id=project_id)
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 178, in test_api
+    result = operator.eq(json.loads(response_parameter_list.replace('True', 'true').replace('False', 'false')), response_data)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 355, in raw_decode
+    obj, end = self.scan_once(s, idx)
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+2018-05-14 15:30:15,126,4496,django.server,ERROR,basehttp.py:124,"POST /api/automation/start_test HTTP/1.1" 500 20444
+2018-05-14 15:30:25,989,9768,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/start_test
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 176, in test_api
+    result = operator.eq(json.loads(response_parameter_list), response_data)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 355, in raw_decode
+    obj, end = self.scan_once(s, idx)
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 65, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 859, in start_test
+    result = test_api(host_id=host_id, case_id=case_id, _id=_id, project_id=project_id)
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 178, in test_api
+    result = operator.eq(json.loads(response_parameter_list.replace('True', 'true').replace('False', 'false')), response_data)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\json\decoder.py", line 355, in raw_decode
+    obj, end = self.scan_once(s, idx)
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+2018-05-14 15:30:26,008,9768,django.server,ERROR,basehttp.py:124,"POST /api/automation/start_test HTTP/1.1" 500 20445
+2018-05-14 15:33:26,693,4620,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/start_test
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 176, in test_api
+    result = operator.eq(eval(response_parameter_list), response_data)
+  File "<string>", line 1, in <module>
+NameError: name 'true' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 65, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 859, in start_test
+    result = test_api(host_id=host_id, case_id=case_id, _id=_id, project_id=project_id)
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 178, in test_api
+    result = operator.eq(eval(response_parameter_list.replace('true', True)), response_data)
+TypeError: replace() argument 2 must be str, not bool
+2018-05-14 15:33:26,712,4620,django.server,ERROR,basehttp.py:124,"POST /api/automation/start_test HTTP/1.1" 500 19436
+2018-05-14 15:36:10,776,14056,root,ERROR,confighttp.py:107,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 103, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
+IndexError: list index out of range
+2018-05-14 15:36:10,779,14056,root,ERROR,confighttp.py:108,list index out of range
+2018-05-14 15:36:10,831,14056,root,ERROR,confighttp.py:107,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 103, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
+IndexError: list index out of range
+2018-05-14 15:36:10,831,14056,root,ERROR,confighttp.py:108,list index out of range
+2018-05-14 15:36:17,879,14056,root,ERROR,confighttp.py:107,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 103, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
+IndexError: list index out of range
+2018-05-14 15:36:17,882,14056,root,ERROR,confighttp.py:107,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 103, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
+IndexError: list index out of range
+2018-05-14 15:36:17,883,14056,root,ERROR,confighttp.py:108,list index out of range
+2018-05-14 15:36:17,885,14056,root,ERROR,confighttp.py:108,list index out of range
+2018-05-14 15:36:26,890,14056,root,ERROR,confighttp.py:107,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 103, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
+IndexError: list index out of range
+2018-05-14 15:36:26,893,14056,root,ERROR,confighttp.py:108,list index out of range
+2018-05-14 15:36:32,566,14056,root,ERROR,confighttp.py:107,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 103, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
+IndexError: list index out of range
+2018-05-14 15:36:32,566,14056,root,ERROR,confighttp.py:108,list index out of range
+2018-05-14 15:36:32,597,14056,root,ERROR,confighttp.py:107,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 103, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
+IndexError: list index out of range
+2018-05-14 15:36:32,600,14056,root,ERROR,confighttp.py:108,list index out of range
+2018-05-14 15:37:53,619,14056,root,ERROR,confighttp.py:107,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 103, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
+IndexError: list index out of range
+2018-05-14 15:37:53,621,14056,root,ERROR,confighttp.py:108,list index out of range
+2018-05-14 15:45:57,350,7000,root,ERROR,confighttp.py:107,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 103, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
+IndexError: list index out of range
+2018-05-14 15:45:57,350,7000,root,ERROR,confighttp.py:108,list index out of range
+2018-05-14 15:45:57,365,7000,root,ERROR,confighttp.py:107,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\confighttp.py", line 103, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
+IndexError: list index out of range
+2018-05-14 15:45:57,366,7000,root,ERROR,confighttp.py:108,list index out of range

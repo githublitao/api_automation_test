@@ -184,6 +184,8 @@
                         }
                     }]
                 },
+                ApiListLen: "",
+                ApiListIndex: 0,
             }
         },
         methods: {
@@ -269,10 +271,11 @@
                     })
                 }
             },
+            ApiTotal() {
+                this.ApiListLen = this.ApiList.length
+            },
             TestAll() {
-                this.ApiList.forEach((item,index) =>{
-                    console.log(item,index);
-                    if (this.url) {
+                if (this.url) {
                         let self = this;
                         $.ajax({
                             type: "post",
@@ -281,7 +284,7 @@
                             data: { project_id: this.$route.params.project_id,
                                 case_id: this.$route.params.case_id,
                                 host_id: this.url,
-                                id: item.id
+                                id: this.ApiList[this.ApiListIndex].id
                             },
                             headers: {
                                 Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
@@ -289,7 +292,11 @@
                             timeout: 5000,
                             success: function(data) {
                                 if (data.code === '999999') {
-                                    self.ApiList[index].result = data.data.result
+                                    self.ApiList[self.ApiListIndex].result = data.data.result;
+                                    self.ApiListIndex = self.ApiListIndex + 1;
+                                    if (self.ApiListIndex !== self.ApiList.length) {
+                                        self.TestAll()
+                                    }
                                 }
                                 else {
                                     self.$message.error({
@@ -306,7 +313,42 @@
                             type: 'warning'
                         })
                     }
-                })
+                // this.ApiList.forEach((item,index) =>{
+                //     if (this.url) {
+                //         let self = this;
+                //         $.ajax({
+                //             type: "post",
+                //             url: test+"/api/automation/start_test",
+                //             async: true,
+                //             data: { project_id: this.$route.params.project_id,
+                //                 case_id: this.$route.params.case_id,
+                //                 host_id: this.url,
+                //                 id: item.id
+                //             },
+                //             headers: {
+                //                 Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                //             },
+                //             timeout: 5000,
+                //             success: function(data) {
+                //                 if (data.code === '999999') {
+                //                     self.ApiList[index].result = data.data.result
+                //                 }
+                //                 else {
+                //                     self.$message.error({
+                //                         message: data.msg,
+                //                         center: true,
+                //                     })
+                //                 }
+                //             },
+                //         })
+                //     } else {
+                //         this.$message({
+                //             message: '请选择测试环境',
+                //             center: true,
+                //             type: 'warning'
+                //         })
+                //     }
+                // })
             },
             handleDel(index, row){
                 this.$confirm('确认删除该记录吗?', '提示', {

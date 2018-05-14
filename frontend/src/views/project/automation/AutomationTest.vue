@@ -18,6 +18,7 @@
                                     <el-dropdown trigger="hover" class="editGroup" style="margin-right:10%">
                                         <i class="el-icon-more"></i>
                                         <el-dropdown-menu slot="dropdown">
+                                            <el-dropdown-item @click.native="handleAddSecond(item.id)">新增子分组</el-dropdown-item>
                                             <el-dropdown-item @click.native="handleDelFirst(item.id)">删除</el-dropdown-item>
                                             <el-dropdown-item @click.native="handleEditFirstGroup(item.id, item.name)">修改</el-dropdown-item>
                                         </el-dropdown-menu>
@@ -43,7 +44,7 @@
                 </aside>
             </el-col>
             <!--新增-->
-            <el-dialog title="新增分组" v-model="addGroupFormVisible" :close-on-click-modal="false">
+            <el-dialog title="新增分组" v-model="addGroupFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
                 <el-form :model="addGroupForm" label-width="80px"  :rules="addGroupFormRules" ref="addGroupForm">
                     <el-form-item label="父分组">
                         <el-select v-model="addGroupForm.firstgroup" placeholder="请选择">
@@ -61,7 +62,7 @@
                 </div>
             </el-dialog>
             <!--编辑-->
-            <el-dialog title="编辑分组" v-model="editGroupFormVisible" :close-on-click-modal="false">
+            <el-dialog title="编辑分组" v-model="editGroupFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
                 <el-form :model="editGroupForm" label-width="80px"  :rules="editGroupFormRules" ref="editGroupForm">
                     <el-form-item label="父分组">
                         <el-select v-model="editGroupForm.firstgroup" placeholder="请选择">
@@ -105,9 +106,11 @@
                 addGroupFormRules: {
                     firstgroup: [
                         { required: false, trigger: 'blur' },
+                        { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
                     ],
                     secondGroup: [
-                        { required: true, message: '请输入子分组名称', trigger: 'blur' }
+                        { required: true, message: '请输入子分组名称', trigger: 'blur' },
+                        { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
                     ]
                 },
                 //新增界面数据
@@ -121,9 +124,11 @@
                 editGroupFormRules: {
                     firstgroup: [
                         { required: false, trigger: 'blur' },
+                        { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
                     ],
                     secondGroup: [
-                        { required: true, message: '请输入子分组名称', trigger: 'blur' }
+                        { required: true, message: '请输入子分组名称', trigger: 'blur' },
+                        { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
                     ]
                 },
                 //编辑界面数据
@@ -152,7 +157,7 @@
                 }];
                 this.editGroupForm.firstgroup = ''
             },
-            // 获取api分组
+            // 获取自动化分组
             getCaseGroup() {
                 let self = this;
                 $.ajax({
@@ -301,6 +306,10 @@
                         });
                     }
                 });
+            },
+            handleAddSecond(first_id){
+                this.addGroupFormVisible = true;
+                this.addGroupForm.firstgroup = first_id;
             },
             //删除一级分组
             handleDelFirst: function (id) {

@@ -27,6 +27,19 @@ def test_api(host_id, case_id, project_id, _id):
     """
     host = GlobalHost.objects.get(id=host_id, project=project_id)
     data = AutomationCaseApiSerializer(AutomationCaseApi.objects.get(id=_id, automationTestCase=case_id)).data
+    http_type = data['httpType']
+    request_type = data['requestType']
+    address = host.host + data['address']
+    head = json.loads(serializers.serialize('json', AutomationHead.objects.filter(automationCaseApi=_id)))
+    header = {}
+    request_parameter_type = data['requestParameterType']
+    examine_type = data['examineType']
+    http_code = data['httpCode']
+    response_parameter_list = data['responseData']
+    if http_type == 'HTTP':
+        url = 'http://'+address
+    else:
+        url = 'https://'+address
     if data['requestParameterType'] == 'form-data':
         parameter_list = json.loads(serializers.serialize('json',
                                                           AutomationParameter.objects.filter(automationCaseApi=_id)))
@@ -48,8 +61,16 @@ def test_api(host_id, case_id, project_id, _id):
                         for j in a:
                             value = value[j]
                     except:
+                        record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
+                                       host=host.name,
+                                       status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
+                                       _result='ERROR', code="", response_data="")
                         return 'fail'
             except KeyError:
+                record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
+                               host=host.name,
+                               status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
+                               _result='ERROR', code="", response_data="")
                 return 'fail'
 
             parameter[key_] = value
@@ -60,14 +81,13 @@ def test_api(host_id, case_id, project_id, _id):
             try:
                 parameter = eval(parameter[0]["data"])
             except:
-                parameter = []
+                record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
+                               host=host.name,
+                               status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
+                               _result='ERROR', code="", response_data="")
+                return 'fail'
         else:
             parameter = []
-    http_type = data['httpType']
-    request_type = data['requestType']
-    address = host.host + data['address']
-    head = json.loads(serializers.serialize('json', AutomationHead.objects.filter(automationCaseApi=_id)))
-    header = {}
 
     for i in head:
         key_ = i['fields']['name']
@@ -77,6 +97,7 @@ def test_api(host_id, case_id, project_id, _id):
             try:
                 api_id = re.findall('(?<=<response\[).*?(?=\])', value)
                 a = re.findall('(?<=\[").*?(?="])', value)
+
                 value = eval(json.loads(serializers.serialize(
                     'json',
                     AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
@@ -85,19 +106,15 @@ def test_api(host_id, case_id, project_id, _id):
             except Exception as e:
                 logging.exception("ERROR")
                 logging.error(e)
+                record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
+                               host=host.name,
+                               status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
+                               _result='ERROR', code="", response_data="")
                 return 'fail'
 
         header[key_] = value
 
-    request_parameter_type = data['requestParameterType']
-    examine_type = data['examineType']
-    http_code = data['httpCode']
-    response_parameter_list = data['responseData']
     header["Content-Length"] = '%s' % len(str(parameter))
-    if http_type == 'HTTP':
-        url = 'http://'+address
-    else:
-        url = 'https://'+address
     try:
         if request_type == 'GET':
             code, response_data = get(header, url, request_parameter_type, parameter)
@@ -108,15 +125,15 @@ def test_api(host_id, case_id, project_id, _id):
         elif request_type == 'DELETE':
             code, response_data = post(header, url, request_parameter_type, parameter)
         else:
-            return 'fail'
+            return 'ERROR'
     except ReadTimeout:
         record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter, host=host.name,
-                       status_code=http_code, examine_type="不校验", examine_data=response_parameter_list,
+                       status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                        _result='TimeOut', code="", response_data="")
         return 'timeout'
     if examine_type == 'no_check':
         record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter, host=host.name,
-                       status_code=http_code, examine_type="不校验", examine_data=response_parameter_list,
+                       status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                        _result='PASS', code=code, response_data=response_data)
         return 'success'
 
@@ -125,7 +142,7 @@ def test_api(host_id, case_id, project_id, _id):
             try:
                 result = check_json(eval(response_parameter_list), response_data)
             except:
-                return 'fail'
+                result = check_json(eval(response_parameter_list.replace('true', 'True').replace('false', 'False')), response_data)
             if result:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                status_code=http_code, examine_type="JSON校验", examine_data=response_parameter_list,
@@ -158,7 +175,7 @@ def test_api(host_id, case_id, project_id, _id):
             try:
                 result = operator.eq(eval(response_parameter_list), response_data)
             except:
-                return 'fail'
+                result = operator.eq(eval(response_parameter_list.replace('true', 'True').replace('false', 'False')), response_data)
             if result:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                status_code=http_code, examine_type="完全校验", examine_data=response_parameter_list,

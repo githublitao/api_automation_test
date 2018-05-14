@@ -55,7 +55,7 @@
                             </el-table-column>
                             <el-table-column min-width="5%">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" size="mini" style="margin-bottom: 5px" v-show="scope.row.interrelate" @click="handleCorrelation(scope.$index, scope.row)">关联</el-button>
+                                    <el-button type="primary" size="mini" style="margin-bottom: 5px" v-show="scope.row.interrelate" @click="handleCorrelation(scope.row)">关联</el-button>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" min-width="15%">
@@ -259,7 +259,7 @@
             selsChange(sels){
                 this.sels = sels;
             },
-            handleCorrelation(index, row) {
+            handleCorrelation(row) {
                 let self = this;
                 $.ajax({
                     type: "get",
@@ -267,6 +267,7 @@
                     async: true,
                     data: {project_id: this.$route.params.project_id,
                         case_id: this.$route.params.case_id,
+                        api_id: this.$route.params.api_id,
                     },
                     headers: {
                         Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
@@ -280,7 +281,7 @@
                                     self.ApiList.push(item)
                                 });
                                 self.searchApiVisible = true;
-                                self.handleResponse(index);
+                                self.handleResponse(0);
                                 self.interrelateObjects = row
                             } else {
                                 self.$message.warning({
@@ -307,7 +308,7 @@
             addInterrelateSubmit() {
                 this.saveCorrelation = true;
                 this.interrelateObjects['value'] =  this.currentRow['tier'];
-                this.interrelateObjects['interrelate'] = 1;
+                this.interrelateObjects['interrelate'] = true;
                 this.saveCorrelation = false;
                 this.searchApiVisible = false;
             },

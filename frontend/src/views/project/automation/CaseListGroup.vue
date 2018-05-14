@@ -124,9 +124,7 @@
             <el-table-column label="操作" min-width="10%">
                 <template slot-scope="scope">
                     <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-                    <router-link :to="{ name: '用例接口列表', params: {case_id: scope.row.id}}" style='text-decoration: none;color: aliceblue;'>
-                        <el-button type="info" size="small" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
-                    </router-link>
+                    <el-button type="info" size="small" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
                 </template>
             </el-table-column>
         </el-table>

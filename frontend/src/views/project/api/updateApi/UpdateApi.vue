@@ -359,7 +359,6 @@
                             data = data.data;
                             self.id = data.id;
                             self.form.firstGroup = data.apiGroupLevelFirst;
-                            self.form.secondGroup = data.apiGroupLevelSecond;
                             self.form.name = data.name;
                             if (data.status) {
                                 self.form.status = 'True';
@@ -390,6 +389,7 @@
                             }
                             self.form.parameterType = data.requestParameterType;
                             self.radio = self.form.parameterType;
+                            self.form.secondGroup = data.apiGroupLevelSecond;
                         }
                         else {
                             self.$message.error({
@@ -517,7 +517,7 @@
                     success: function(data) {
                         if (data.code === '999999') {
                             self.group = data.data;
-                            self.form.firstGroup = self.group[0].id
+                            // self.form.firstGroup = self.group[0].id
                         }
                         else {
                             self.$message.error({
@@ -594,7 +594,7 @@
         },
         mounted() {
             this.getApiGroup();
-            this.getApiInfo()
+            this.getApiInfo();
         }
     }
 </script>

@@ -342,6 +342,9 @@
             }
         },
         methods: {
+            back(){
+                this.$router.go(-1); // 返回上一层
+            },
             addApi: function () {
                 this.$refs.form.validate((valid) => {
                     if (valid) {
@@ -360,7 +363,7 @@
                                     _parameter = self.form.parameter;
                                 }
                             } else {
-                                _parameter = JSON.parse(self.form.parameterRaw)
+                                _parameter = self.form.parameterRaw
                             }
                             $.ajax({
                                 type: "post",
@@ -392,7 +395,8 @@
                                 timeout: 5000,
                                 success: function(data) {
                                     if (data.code === '999999') {
-                                        self.$router.push({ name: "接口列表"});
+                                        // self.$router.push({ name: "接口列表"});
+                                        self.back();
                                         self.$message({
                                             message: '保存成功',
                                             center: true,

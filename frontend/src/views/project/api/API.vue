@@ -109,11 +109,11 @@
                 addGroupFormRules: {
                     firstgroup: [
                         { required: false, trigger: 'blur' },
-                        { min: 1, max: 14, message: '长度在 1 到 14 个字符', trigger: 'blur' }
+                        // { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
                     ],
                     secondGroup: [
                         { required: true, message: '请输入子分组名称', trigger: 'blur' },
-                        { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+                        // { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
                     ]
                 },
                 //新增界面数据
@@ -127,11 +127,11 @@
                 editGroupFormRules: {
                     firstgroup: [
                         { required: false, trigger: 'blur' },
-                        { min: 1, max: 14, message: '长度在 1 到 14 个字符', trigger: 'blur' }
+                        // { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
                     ],
                     secondGroup: [
                         { required: true, message: '请输入子分组名称', trigger: 'blur' },
-                        { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+                        // { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
                     ]
                 },
                 //编辑界面数据

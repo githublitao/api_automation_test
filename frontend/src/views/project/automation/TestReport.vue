@@ -1,7 +1,6 @@
 <template>
     <section>
-        <div style="position: absolute;top: -50px;font-size: 20px;padding-left: 10px"><strong>Start Time： 2018-04-03 10:27:00</strong></div>
-        <div style="position: absolute;top: -10px;font-size: 20px;padding-left: 10px"><strong>End Time： 2018-04-04 10:27:00</strong></div>
+        <el-button class="return-list" @click="back"><i class="el-icon-d-arrow-left" style="margin-right: 5px"></i>用例列表</el-button>
         <div class="number-pass" style="background-color: #43CD80;">
             <div style="font-size: 40px;padding-top: 15px">{{pass}}</div>
             <div>Passed</div>
@@ -22,17 +21,46 @@
             <div style="font-size: 40px;padding-top: 15px">{{total}}</div>
             <div>Total</div>
         </div>
-        <div style="padding-left: 10px; padding-top: 45px">
+        <div>
             <el-table :data="tableData" v-loading="listLoading" :row-style="tableRowStyle">
+                <el-table-column type="expand">
+                    <template slot-scope="props">
+                        <el-form label-position="left" inline class="demo-table-expand">
+                          <el-form-item label="名称: ">
+                            <span>{{ props.row.name }}</span>
+                          </el-form-item>
+                          <el-form-item>
+                          </el-form-item>
+                          <el-form-item label="测试环境： ">
+                            <span>{{ props.row.host }}</span>
+                          </el-form-item>
+                          <el-form-item label="接口地址： ">
+                            <span>{{ props.row.address }}</span>
+                          </el-form-item>
+                          <el-form-item label="请求方式： ">
+                            <span>{{ props.row.requestType }}</span>
+                          </el-form-item>
+                          <el-form-item label="测试结果： ">
+                            <span>{{ props.row.result }}</span>
+                          </el-form-item>
+                          <el-form-item label="请求参数： ">
+                            <span style="word-break: break-all;overflow:auto;overflow-x:hidden">{{ props.row.parameter }}</span>
+                          </el-form-item>
+                          <el-form-item>
+                          </el-form-item>
+                          <el-form-item label="返回结果： ">
+                              <span style="word-break: break-all;overflow:auto;overflow-x:hidden">{{props.row.responseData}}</span>
+                          </el-form-item>
+                        </el-form>
+                    </template>
+                </el-table-column>
                 <el-table-column type="index" label="#">
                 </el-table-column>
-                <el-table-column prop="name" label="接口名称" min-width="20%" sortable show-overflow-tooltip>
+                <el-table-column prop="name" label="接口名称" min-width="29" sortable show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="automationTestCase" label="用例名称" min-width="20%" sortable show-overflow-tooltip>
+                <el-table-column prop="automationTestCase" label="用例名称" min-width="29%" sortable show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="requestType" label="请求方法" min-width="8%" sortable show-overflow-tooltip>
-                </el-table-column>
-                <el-table-column prop="address" label="请求地址" min-width="30%" sortable show-overflow-tooltip>
+                <el-table-column prop="address" label="请求地址" min-width="20%" sortable show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="examineType" label="校验方式" min-width="12%" sortable show-overflow-tooltip>
                     <template slot-scope="scope">
@@ -65,8 +93,6 @@
                 not_run: 11,
                 error: 11,
                 total: 44,
-                start_time: "",
-                end_time: "",
                 listLoading: false,
                 resultFilter: [
                     {text: 'ERROR', value: 'ERROR'},
@@ -78,6 +104,9 @@
             }
         },
         methods: {
+            back(){
+                this.$router.go(-1); // 返回上一层
+            },
             tableRowStyle(row) {
                 if (row.result === 'ERROR' || row.result === 'FAIL') {
                     return "background-color: #DC143C;"
@@ -122,7 +151,6 @@
         },
         mounted() {
             this.getTestResult();
-
         }
     }
 </script>
@@ -191,5 +219,22 @@
         width: 6%;
         top: -70px;
         right: 0px;
+    }
+    .demo-table-expand {
+        font-size: 0;
+      }
+      .demo-table-expand label {
+          width: 90px;
+          color: #99a9bf;
+      }
+      .demo-table-expand .el-form-item {
+          margin-right: 0;
+          margin-bottom: 0;
+          width: 50%;
+      }
+    .return-list {
+        margin-top: 0px;
+        margin-bottom: 10px;
+        border-radius: 25px;
     }
 </style>

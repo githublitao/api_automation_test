@@ -307,7 +307,7 @@
             addInterrelateSubmit() {
                 this.saveCorrelation = true;
                 this.interrelateObjects['value'] =  this.currentRow['tier'];
-                this.interrelateObjects['interrelate'] = 1;
+                this.interrelateObjects['interrelate'] = true;
                 this.saveCorrelation = false;
                 this.searchApiVisible = false;
             },
