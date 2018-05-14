@@ -31,7 +31,7 @@ def add(host_id, _type, task_id, start_time, end_time, project, frequency=None, 
             start_time[2],
             start_time[1],
         )
-        job = my_user_cron.new(command='/usr/local/python3/bin/python3 /var/lib/jenkins/workspace/master-build/'
+        job = my_user_cron.new(command='/usr/local/python3/bin/python3 /var/lib/jenkins/workspace//var/lib/jenkins/workspace/api_automation_test_master-JU72M6SAEYKDY6SN3LUUPLXPTX3F35MVFZ57J4JE3I5TJCTRFXHQ/'
                                        'api_test/common/auto_test.py %s %s >> /var/lib/jenkins/task/%s.log'
                                        % (host_id, project, project))
     else:
@@ -43,7 +43,7 @@ def add(host_id, _type, task_id, start_time, end_time, project, frequency=None, 
         )
 
         #  创建任务
-        job = my_user_cron.new(command='/usr/local/python3/bin/python3 /var/lib/jenkins/workspace/master-build/'
+        job = my_user_cron.new(command='/usr/local/python3/bin/python3 /var/lib/jenkins/workspace//var/lib/jenkins/workspace/api_automation_test_master-JU72M6SAEYKDY6SN3LUUPLXPTX3F35MVFZ57J4JE3I5TJCTRFXHQ/'
                                        'api_test/common/auto_start.py %s %s %s %s %s %s %s %s >> '
                                        '/var/lib/jenkins/task/%s.log'
                                        % (frequency, unit, host_id, end_time[4], end_time[3],

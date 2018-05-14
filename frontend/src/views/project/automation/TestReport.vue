@@ -54,7 +54,7 @@
                         </el-form>
                     </template>
                 </el-table-column>
-                <el-table-column type="index" label="#">
+                <el-table-column type="index" label="#" width="100">
                 </el-table-column>
                 <el-table-column prop="name" label="接口名称" min-width="29" sortable show-overflow-tooltip>
                 </el-table-column>
