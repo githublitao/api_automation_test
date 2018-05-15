@@ -482,3 +482,5 @@ Traceback (most recent call last):
     AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
 IndexError: list index out of range
 2018-05-14 15:45:57,366,7000,root,ERROR,confighttp.py:108,list index out of range
+2018-05-15 11:45:39,766,14152,django.server,ERROR,basehttp.py:124,"GET /static/admin/css/changelists.css HTTP/1.1" 500 59
+2018-05-15 11:45:39,768,14152,django.server,ERROR,basehttp.py:124,"GET /static/suit/css/font-awesome.min.css HTTP/1.1" 500 59

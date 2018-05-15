@@ -77,6 +77,7 @@ AUTH_PROFILE_MODULE = 'djangoadmin.api_test.UserProfile'
 # Application definition
 
 INSTALLED_APPS = [
+    'api_test.apps.SuitConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
