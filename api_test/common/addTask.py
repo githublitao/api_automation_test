@@ -23,7 +23,7 @@ def add(host_id, _type, start_time, end_time, project, frequency=None, unit=None
     my_user_cron.remove_all(comment=project+"_开始")
     my_user_cron.remove_all(comment=project+"_结束")
     # for j in my_user_cron.crons:
-    if type == 'timing':
+    if _type == 'timing':
         _time = '%s %s %s %s *' % (
             start_time[4],
             start_time[3],

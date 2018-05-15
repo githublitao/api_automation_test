@@ -927,7 +927,7 @@ def add_time_task(request):
                     else:
                         return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
                 record_dynamic(project_id, "新增", "任务", "新增循环任务\"%s\"" % name)
-                add(host_id=host_id, _type=_type, task_id=_id,
+                add(host_id=host_id, _type=_type,
                     start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"),
                     frequency=frequency, unit=unit, project=project_id)
             else:
@@ -950,7 +950,7 @@ def add_time_task(request):
                     else:
                         return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
                 record_dynamic(project_id, "新增", "任务", "新增定时任务\"%s\"" % name)
-                add(host_id=host_id, _type=_type, project=project_id, task_id=_id,
+                add(host_id=host_id, _type=_type, project=project_id,
                     start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
             return JsonResponse(data={
                 "task_id": _id.pk
