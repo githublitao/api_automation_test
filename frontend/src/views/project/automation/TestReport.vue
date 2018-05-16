@@ -9,10 +9,6 @@
             <div style="font-size: 40px;padding-top: 15px">{{fail}}</div>
             <div>Failed</div>
         </div>
-        <div class="number-not_run">
-            <div style="font-size: 40px;padding-top: 15px">{{not_run}}</div>
-            <div>Not Run</div>
-        </div>
         <div class="number-error" style="background-color: #DC143C;">
             <div style="font-size: 40px;padding-top: 15px">{{error}}</div>
             <div>Error</div>
@@ -159,20 +155,6 @@
     .number-pass {
         border-radius: 25px;
         position: absolute;
-        padding-right: 10px;
-        padding-left: 10px;
-        height: 100px;
-        box-sizing: border-box;
-        color: #fff;
-        font-size: 25px;
-        text-align: center;
-        width: 6%;
-        top: -70px;
-        right: 26%;
-    }
-    .number-fail {
-        border-radius: 25px;
-        position: absolute;
         height: 100px;
         box-sizing: border-box;
         color: #fff;
@@ -182,7 +164,7 @@
         top: -70px;
         right: 19.5%;
     }
-    .number-not_run {
+    .number-fail {
         border-radius: 25px;
         border: 1px solid #C4C4C4;
         position: absolute;

@@ -1,3 +1,4 @@
+from crontab import CronTab
 from django.contrib.auth.models import User
 from rest_framework.views import exception_handler
 
@@ -163,3 +164,10 @@ def create_json(api_id, api, data):
             AutomationResponseJson(automationCaseApi=api_id, name=i, tier=m).save()
             create_json(api_id, m, data[i])
 
+
+def del_task_crontab(project):
+    my_user_cron = CronTab(user=True)
+    my_user_cron.remove_all(comment=project)
+    my_user_cron.remove_all(comment=project+"_开始")
+    my_user_cron.remove_all(comment=project+"_结束")
+    my_user_cron.write()

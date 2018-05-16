@@ -15,7 +15,7 @@ from rest_framework.decorators import api_view
 from api_test.common import GlobalStatusCode
 from api_test.common.addTask import add
 from api_test.common.api_response import JsonResponse
-from api_test.common.common import verify_parameter, record_dynamic, create_json
+from api_test.common.common import verify_parameter, record_dynamic, create_json, del_task_crontab
 from api_test.common.confighttp import test_api
 from api_test.models import Project, AutomationGroupLevelFirst, AutomationGroupLevelSecond, \
     AutomationTestCase, AutomationCaseApi, AutomationParameter, GlobalHost, AutomationHead, AutomationTestTask, \
@@ -1003,6 +1003,7 @@ def del_task(request):
             obm = AutomationTestTask.objects.filter(project=project_id)
             if obm:
                 obm.delete()
+                del_task_crontab(project_id)
                 record_dynamic(project_id, "删除", "任务", "删除任务")
                 return JsonResponse(code_msg=GlobalStatusCode.success())
             else:
