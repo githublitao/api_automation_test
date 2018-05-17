@@ -22,6 +22,7 @@ def automation_task():
     case = AutomationTestCase.objects.filter(project=sys.argv[2])
     for j in case:
         for i in data:
+            print("测试%s" % j.caseName)
             test_api(host_id=sys.argv[1], case_id=j.pk, _id=i.pk, project_id=sys.argv[2])
     end_time = datetime.datetime.now()
     AutomationTaskRunTime(project=sys.argv[2], startTime=start_time, endTime=end_time).save()
