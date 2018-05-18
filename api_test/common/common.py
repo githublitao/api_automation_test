@@ -1,10 +1,23 @@
+import django
+import sys
+import os
+
+curPath = os.path.abspath(os.path.dirname(__file__))
+rootPath = os.path.split(curPath)[0]
+PathProject = os.path.split(rootPath)[0]
+sys.path.append(rootPath)
+sys.path.append(PathProject)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api_automation_test.settings")
+django.setup()
+
 from crontab import CronTab
 from django.contrib.auth.models import User
 from rest_framework.views import exception_handler
 
 from api_test.common import GlobalStatusCode
 from api_test.common.api_response import JsonResponse
-from api_test.models import AutomationTestResult, AutomationCaseApi, ProjectDynamic, Project, AutomationResponseJson
+from api_test.models import AutomationTestResult, AutomationCaseApi, ProjectDynamic, Project, AutomationResponseJson, \
+    AutomationCaseTestResult
 
 
 def custom_exception_handler(exc, context):
@@ -100,14 +113,13 @@ def check_json(src_data, dst_data):
         return 'fail'
 
     except Exception as e:
-        print(e)
         return 'fail'
 
 
 def record_results(_id, url, request_type, header, parameter, host,
                    status_code, examine_type, examine_data, _result, code, response_data):
     """
-    记录测试结果
+    记录手动测试结果
     :param _id: ID
     :param url:  请求地址
     :param request_type:  请求方式
@@ -133,6 +145,24 @@ def record_results(_id, url, request_type, header, parameter, host,
                                        statusCode=status_code, examineType=examine_type, data=examine_data,
                                        result=_result, httpStatus=code, responseData=response_data)
         result_.save()
+
+
+def record_auto_results(_id, time,  header, parameter, _result, code, response_data):
+    """
+    记录自动测试结果
+    :param _id: ID
+    :param time:  测试时间
+    :param header: 请求头
+    :param parameter: 请求参数
+    :param _result:  是否通过
+    :param code:  HTTP状态码
+    :param response_data:  返回结果
+    :return:
+    """
+    result_ = AutomationCaseTestResult(automationCaseApi=AutomationCaseApi.objects.get(id=_id), header=header,
+                                       parameter=parameter, testTime=time,
+                                       result=_result, httpStatus=code, responseData=response_data)
+    result_.save()
 
 
 def record_dynamic(project_id, _type, _object, desc):

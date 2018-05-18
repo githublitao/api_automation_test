@@ -19,11 +19,12 @@ from api_test.common.common import verify_parameter, record_dynamic, create_json
 from api_test.common.confighttp import test_api
 from api_test.models import Project, AutomationGroupLevelFirst, AutomationGroupLevelSecond, \
     AutomationTestCase, AutomationCaseApi, AutomationParameter, GlobalHost, AutomationHead, AutomationTestTask, \
-    AutomationTestResult, ApiInfo, AutomationParameterRaw, AutomationResponseJson, AutomationTaskRunTime
+    AutomationTestResult, ApiInfo, AutomationParameterRaw, AutomationResponseJson, AutomationTaskRunTime, \
+    AutomationCaseTestResult
 from api_test.serializers import AutomationGroupLevelFirstSerializer, AutomationTestCaseSerializer, \
     AutomationCaseApiSerializer, AutomationCaseApiListSerializer, AutomationTestTaskSerializer, \
     AutomationTestResultSerializer, ApiInfoSerializer, CorrelationDataSerializer, AutomationTestReportSerializer, \
-    AutomationTaskRunTimeSerializer
+    AutomationTaskRunTimeSerializer, AutomationAutoTestResultSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -775,7 +776,8 @@ def update_api(request):
                         except Exception as e:
                             logging.exception("error")
                             return JsonResponse(code_msg=GlobalStatusCode.fail())
-
+                    else:
+                        AutomationResponseJson.objects.filter(automationCaseApi=data["api_id"]).delete()
                 record_dynamic(data["project_id"], "修改", "用例接口", "修改用例“%s”接口\"%s\"" % (obi[0].caseName, data["name"]))
                 return JsonResponse(code_msg=GlobalStatusCode.success())
             else:
@@ -1114,5 +1116,61 @@ def test_time(request):
             return JsonResponse(code_msg=GlobalStatusCode.success(), data=data)
         except:
             return JsonResponse(code_msg=GlobalStatusCode.success())
+    else:
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+
+
+@api_view(["GET"])
+@verify_parameter(["project_id", "time"], "GET")
+def auto_test_report(request):
+    """
+    测试结果报告
+    project_id  项目ID
+    :param request:
+    :return:
+    """
+    project_id = request.GET.get("project_id")
+    time = request.GET.get('time')
+    if not project_id.isdecimal():
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+    obi = Project.objects.filter(id=project_id)
+    if obi:
+        obj = AutomationTestCase.objects.filter(project=project_id)
+        if obj:
+            case = Q()
+            for i in obj:
+                case = case | Q(automationTestCase=i.pk)
+            case_data = AutomationCaseApi.objects.filter(case)
+            api = Q()
+            if case_data:
+                for j in case_data:
+                    api = api | Q(automationCaseApi=j.pk)
+
+                data = AutomationAutoTestResultSerializer(
+                    AutomationCaseTestResult.objects.filter(api, testTime=time), many=True).data
+                success = 0
+                fail = 0
+                not_run = 0
+                error = 0
+                for i in data:
+                    if i["result"] == "PASS":
+                        success = success+1
+                    elif i["result"] == "FAIL":
+                        fail = fail+1
+                    elif i["result"] == "ERROR":
+                        error = error+1
+                    else:
+                        not_run = not_run+1
+                return JsonResponse(code_msg=GlobalStatusCode.success(), data={"data": data,
+                                                                               "total": len(data),
+                                                                               "pass": success,
+                                                                               "fail": fail,
+                                                                               "error": error,
+                                                                               "NotRun": not_run
+                                                                               })
+            else:
+                return JsonResponse(code_msg=GlobalStatusCode.success())
+        else:
+            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())

@@ -542,7 +542,7 @@ class AutomationResponseJson(models.Model):
 
 class AutomationTestResult(models.Model):
     """
-    用例执行结果
+    手动执行结果
     """
     id = models.AutoField(primary_key=True)
     automationCaseApi = models.OneToOneField(AutomationCaseApi, on_delete=models.CASCADE, verbose_name='接口'
@@ -564,8 +564,8 @@ class AutomationTestResult(models.Model):
         return self.httpStatus
 
     class Meta:
-        verbose_name = '测试结果'
-        verbose_name_plural = '测试结果管理'
+        verbose_name = '手动测试结果'
+        verbose_name_plural = '手动测试结果管理'
 
 
 class AutomationTestTask(models.Model):
@@ -600,8 +600,31 @@ class AutomationTaskRunTime(models.Model):
     id = models.AutoField(primary_key=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='项目')
     startTime = models.DateTimeField(max_length=50, verbose_name='开始时间')
+    host = models.CharField(max_length=1024, null=True, blank=True, verbose_name='测试地址')
     endTime = models.DateTimeField(max_length=50, verbose_name='结束时间')
 
     class Meta:
         verbose_name = '用例任务执行时间'
         verbose_name_plural = '用例任务执行时间'
+
+
+class AutomationCaseTestResult(models.Model):
+    """
+    任务执行结果
+    """
+    id = models.AutoField(primary_key=True)
+    automationCaseApi = models.ForeignKey(AutomationCaseApi, on_delete=models.CASCADE, verbose_name='接口'
+                                          , related_name="auto_result")
+    header = models.CharField(max_length=1024, blank=True, null=True, verbose_name='请求头')
+    parameter = models.TextField(blank=True, null=True, verbose_name='请求参数')
+    result = models.CharField(max_length=50, verbose_name='测试结果', choices=RESULT_CHOICE)
+    httpStatus = models.CharField(max_length=50, blank=True, null=True, verbose_name='http状态', choices=HTTP_CODE_CHOICE)
+    responseData = models.TextField(blank=True, null=True, verbose_name='实际返回内容')
+    testTime = models.CharField(max_length=128, null=True, blank=True, verbose_name='测试时间')
+
+    def __unicode__(self):
+        return self.httpStatus
+
+    class Meta:
+        verbose_name = '自动测试结果'
+        verbose_name_plural = '自动测试结果管理'

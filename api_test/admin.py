@@ -354,7 +354,7 @@ class AutomationTaskRunTimeForm(admin.ModelAdmin):
     ordering = ('id',)
     fieldsets = ([
         '任务执行时间', {
-            'fields': ('project', 'startTime', 'endTime')
+            'fields': ('project', 'startTime', 'endTime', 'host')
         }],)
 
 

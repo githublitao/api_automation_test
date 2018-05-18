@@ -58,6 +58,7 @@ urlpatterns = [
     url(r'automation/del_task', Case.del_task),
     url(r'automation/look_result', Case.look_result),
     url(r'automation/test_report', Case.test_report),
+    url(r'automation/auto_test_report', Case.auto_test_report),
     url(r'automation/test_time', Case.test_time),
     url(r'member/project_member', member.project_member),
     url(r'dynamic/dynamic', dynamic.dynamic),

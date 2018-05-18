@@ -1,4 +1,3 @@
-import datetime
 import django
 import sys
 import os
@@ -135,9 +134,9 @@ def test_api(host_id, case_id, project_id, _id):
         elif request_type == 'POST':
             code, response_data = post(header, url, request_parameter_type, parameter)
         elif request_type == 'PUT':
-            code, response_data = post(header, url, request_parameter_type, parameter)
+            code, response_data = put(header, url, request_parameter_type, parameter)
         elif request_type == 'DELETE':
-            code, response_data = post(header, url, request_parameter_type, parameter)
+            code, response_data = delete(header, url, request_parameter_type, parameter)
         else:
             return 'ERROR'
     except ReadTimeout:

@@ -6,7 +6,7 @@ from api_test.models import Project, ProjectDynamic, ProjectMember, GlobalHost, 
     ApiInfo, APIRequestHistory, ApiOperationHistory, AutomationGroupLevelFirst, AutomationGroupLevelSecond, \
     AutomationTestCase, AutomationCaseApi, AutomationHead, AutomationParameter, AutomationTestTask, \
     AutomationTestResult, ApiHead, ApiParameter, ApiResponse, ApiParameterRaw, AutomationParameterRaw, \
-    AutomationResponseJson, AutomationTaskRunTime
+    AutomationResponseJson, AutomationTaskRunTime, AutomationCaseTestResult
 
 
 class TokenSerializer(serializers.ModelSerializer):
@@ -336,7 +336,7 @@ class AutomationTestTaskSerializer(serializers.ModelSerializer):
 
 class AutomationTestReportSerializer(serializers.ModelSerializer):
     """
-    用例接口信息序列化
+    测试报告测试结果信息序列化
     """
     result = serializers.CharField(source='test_result.result')
     host = serializers.CharField(source='test_result.host')
@@ -344,11 +344,12 @@ class AutomationTestReportSerializer(serializers.ModelSerializer):
     httpStatus = serializers.CharField(source='test_result.httpStatus')
     responseData = serializers.CharField(source='test_result.responseData')
     automationTestCase = serializers.CharField(source='automationTestCase.caseName')
+    testTime = serializers.CharField(source='test_result.testTime')
 
     class Meta:
         model = AutomationCaseApi
         fields = ('id', 'automationTestCase', 'name', 'host', 'httpType', 'requestType', 'address', 'examineType',
-                  'result', 'parameter', 'httpStatus', 'responseData')
+                  'result', 'parameter', 'httpStatus', 'responseData', 'testTime')
 
 
 class AutomationTaskRunTimeSerializer(serializers.ModelSerializer):
@@ -361,12 +362,12 @@ class AutomationTaskRunTimeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AutomationTaskRunTime
-        fields = ('id', 'project', 'startTime', 'endTime')
+        fields = ('id', 'project', 'startTime', 'endTime', 'host')
 
 
 class AutomationTestResultSerializer(serializers.ModelSerializer):
     """
-    测试结果详情序列化
+    手动测试结果详情序列化
     """
     testTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
 
@@ -374,3 +375,21 @@ class AutomationTestResultSerializer(serializers.ModelSerializer):
         model = AutomationTestResult
         fields = ('id', 'url', 'requestType', 'header', 'parameter', 'statusCode', 'examineType', 'data',
                   'result', 'httpStatus', 'responseData', 'testTime')
+
+
+class AutomationAutoTestResultSerializer(serializers.ModelSerializer):
+    """
+    自动测试结果详情序列化
+    """
+
+    name = serializers.CharField(source='automationCaseApi.name')
+    httpType = serializers.CharField(source='automationCaseApi.httpType')
+    requestType = serializers.CharField(source='automationCaseApi.requestType')
+    address = serializers.CharField(source='automationCaseApi.address')
+    examineType = serializers.CharField(source='automationCaseApi.examineType')
+    automationTestCase = serializers.CharField(source='automationCaseApi.automationTestCase')
+
+    class Meta:
+        model = AutomationCaseTestResult
+        fields = ('id', 'automationTestCase', 'name', 'httpType', 'requestType', 'address', 'examineType',
+                  'result', 'parameter', 'httpStatus', 'responseData', 'testTime')
