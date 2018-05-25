@@ -599,9 +599,9 @@ class AutomationTaskRunTime(models.Model):
     """
     id = models.AutoField(primary_key=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='项目')
-    startTime = models.DateTimeField(max_length=50, verbose_name='开始时间')
+    startTime = models.CharField(max_length=50, verbose_name='开始时间')
     host = models.CharField(max_length=1024, null=True, blank=True, verbose_name='测试地址')
-    endTime = models.DateTimeField(max_length=50, verbose_name='结束时间')
+    elapsedTime = models.CharField(max_length=50, verbose_name='结束时间')
 
     class Meta:
         verbose_name = '用例任务执行时间'

@@ -14,7 +14,6 @@ django.setup()
 from api_test.common.auto_task_test import test_api
 from api_test.models import AutomationCaseApi, AutomationTaskRunTime, AutomationTestCase, GlobalHost, Project
 import time
-import logging
 import logging.config
 runtime = time.strftime('%Y-%m-%d', time.localtime(time.time()))
 logger = logging.getLogger()
@@ -38,14 +37,15 @@ logger.addHandler(ch)
 def automation_task():
     # data = AutomationCaseApi.objects.filter(automationTestCase=sys.argv[1])
     start_time = datetime.datetime.now()
+    format_start_time = start_time.strftime('%Y-%m-%d %H:%M:%S')
     case = AutomationTestCase.objects.filter(project=sys.argv[2])
     host = GlobalHost.objects.get(id=sys.argv[1], project=sys.argv[2])
     for j in case:
         data = AutomationCaseApi.objects.filter(automationTestCase=j.pk)
         for i in data:
-            test_api(host=host, case_id=j.pk, _id=i.pk, time=start_time)
-    end_time = datetime.datetime.now()
-    AutomationTaskRunTime(project=Project.objects.get(id=sys.argv[2]), startTime=start_time, endTime=end_time, host=host.name).save()
+            test_api(host=host, case_id=j.pk, _id=i.pk, time=format_start_time)
+    elapsed_time = (datetime.datetime.now() - start_time).seconds
+    AutomationTaskRunTime(project=Project.objects.get(id=sys.argv[2]), startTime=format_start_time, elapsedTime=elapsed_time, host=host.name).save()
 
 
 if __name__ == '__main__':

@@ -26,6 +26,7 @@ import TestReport from './views/project/automation/TestReport.vue'
 import ProjectMember from './views/project/ProjectMember.vue'
 import ProjectDynamic from './views/project/ProjectDynamic.vue'
 import ProjectTitle from './views/project/projectTitle/ProjectTitle.vue'
+import ProjectReport from './views/project/projectReport'
 
 let routes = [
     {
@@ -104,6 +105,7 @@ let routes = [
             },
             {   path: '/projectMember/project=:project_id', component: ProjectMember, name: '成员管理', leaf: true},
             {   path: '/projectDynamic/project=:project_id', component: ProjectDynamic, name: '项目动态', leaf: true},
+            {   path: '/projectReport/project=:project_id', component: ProjectReport, name: '自动化测试报告', leaf: true},
             ]
     },
 ];

@@ -357,12 +357,11 @@ class AutomationTaskRunTimeSerializer(serializers.ModelSerializer):
     任务执行时间
     """
     startTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
-    endTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
     project = serializers.CharField(source='project.name')
 
     class Meta:
         model = AutomationTaskRunTime
-        fields = ('id', 'project', 'startTime', 'endTime', 'host')
+        fields = ('id', 'project', 'startTime', 'elapsedTime', 'host')
 
 
 class AutomationTestResultSerializer(serializers.ModelSerializer):

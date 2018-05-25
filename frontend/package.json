@@ -19,6 +19,7 @@
     "vue": "^2.2.2",
     "vue-moment": "^3.2.0",
     "vue-router": "^2.3.0",
+    "vue-schart": "^1.0.0",
     "vuex": "^2.0.0-rc.6"
   },
   "devDependencies": {

@@ -20,7 +20,7 @@ from requests import ReadTimeout
 
 from api_test.common.confighttp import get, post, put, delete
 from api_test.common.common import check_json, record_auto_results
-from api_test.models import AutomationCaseApi, AutomationParameter, AutomationTestResult, AutomationHead, \
+from api_test.models import AutomationCaseApi, AutomationParameter, AutomationHead, \
     AutomationParameterRaw, AutomationCaseTestResult
 from api_test.serializers import AutomationCaseApiSerializer, AutomationParameterRawSerializer
 

@@ -1,6 +1,5 @@
 import json
 import logging
-import re
 
 import time
 from django.contrib.auth.models import User

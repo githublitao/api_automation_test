@@ -348,13 +348,13 @@ admin.site.register(AutomationTestTask, AutomationTestTaskForm)
 
 
 class AutomationTaskRunTimeForm(admin.ModelAdmin):
-    list_display = ('id', 'project', 'startTime', 'endTime')
+    list_display = ('id', 'project', 'startTime', 'elapsedTime')
     list_display_links = ('id', 'project')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '任务执行时间', {
-            'fields': ('project', 'startTime', 'endTime', 'host')
+            'fields': ('project', 'startTime', 'elapsedTime', 'host')
         }],)
 
 

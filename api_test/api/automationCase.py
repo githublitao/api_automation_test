@@ -1112,7 +1112,7 @@ def test_time(request):
     if obj:
         try:
             data = AutomationTaskRunTimeSerializer(
-                AutomationTaskRunTime.objects.filter(project=project_id).order_by("-startTime"), many=True).data[0]
+                AutomationTaskRunTime.objects.filter(project=project_id).order_by("-startTime")[:10], many=True).data
             return JsonResponse(code_msg=GlobalStatusCode.success(), data=data)
         except:
             return JsonResponse(code_msg=GlobalStatusCode.success())
@@ -1131,6 +1131,7 @@ def auto_test_report(request):
     """
     project_id = request.GET.get("project_id")
     time = request.GET.get('time')
+    print(time)
     if not project_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obi = Project.objects.filter(id=project_id)

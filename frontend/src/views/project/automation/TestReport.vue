@@ -89,11 +89,11 @@
         name: "test-report",
         data(){
             return {
-                pass: 11,
-                fail: 11,
-                not_run: 11,
-                error: 11,
-                total: 44,
+                pass: "",
+                fail: "",
+                not_run: "",
+                error: "",
+                total: "",
                 listLoading: false,
                 resultFilter: [
                     {text: 'ERROR', value: 'ERROR'},
