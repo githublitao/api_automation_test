@@ -1131,7 +1131,6 @@ def auto_test_report(request):
     """
     project_id = request.GET.get("project_id")
     time = request.GET.get('time')
-    print(time)
     if not project_id.isdecimal():
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obi = Project.objects.filter(id=project_id)
