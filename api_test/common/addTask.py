@@ -51,5 +51,4 @@ def add(host_id, _type, start_time, end_time, project, frequency=None, unit=None
     # 设置任务执行周期
     job.setall(_time)
     # 最后将crontab写入配置文件
-    print(my_user_cron)
     my_user_cron.write()

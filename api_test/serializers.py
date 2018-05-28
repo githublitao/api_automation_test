@@ -392,3 +392,12 @@ class AutomationAutoTestResultSerializer(serializers.ModelSerializer):
         model = AutomationCaseTestResult
         fields = ('id', 'automationTestCase', 'name', 'httpType', 'requestType', 'address', 'examineType',
                   'result', 'parameter', 'httpStatus', 'responseData', 'testTime')
+
+
+class AutomationTestLatelyTenTimeSerializer(serializers.ModelSerializer):
+    """
+    最近10次测试结果
+    """
+    class Meta:
+        model = AutomationTaskRunTime
+        fields = ("id", "startTime")
