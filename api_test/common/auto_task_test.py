@@ -191,13 +191,17 @@ def test_api(host, case_id, _id, time):
             if result:
                 record_auto_results(_id=_id, header=header, parameter=parameter,
                                     _result='PASS', code=code, response_data=response_data, time=time)
+                return 'fail'
             else:
                 record_auto_results(_id=_id, header=header, parameter=parameter,
                                     _result='FAIL', code=code, response_data=response_data, time=time)
+                return 'fail'
         else:
             record_auto_results(_id=_id, header=header, parameter=parameter,
                                 _result='FAIL', code=code, response_data=response_data, time=time)
+            return 'fail'
 
     else:
         record_auto_results(_id=_id, header=header, parameter=parameter,
                             _result='FAIL', code=code, response_data=response_data, time=time)
+        return 'fail'

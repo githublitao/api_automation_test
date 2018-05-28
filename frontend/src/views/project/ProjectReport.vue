@@ -18,7 +18,7 @@
             </el-col>
             <el-col :span="4">
                 <div>
-                    <p>测试耗时： {{elapsedTime}}</p></div>
+                    <p>测试耗时： {{elapsedTime}}s</p></div>
             </el-col>
             <el-col :span="16">
                 <div>
@@ -35,9 +35,6 @@
                             </el-form-item>
                             <el-form-item>
                             </el-form-item>
-                            <el-form-item label="测试环境： ">
-                                <span>{{ props.row.host }}</span>
-                            </el-form-item>
                             <el-form-item label="接口地址： ">
                                 <span>{{ props.row.address }}</span>
                             </el-form-item>
@@ -46,6 +43,8 @@
                             </el-form-item>
                             <el-form-item label="测试结果： ">
                                 <span>{{ props.row.result }}</span>
+                            </el-form-item>
+                            <el-form-item>
                             </el-form-item>
                             <el-form-item label="请求参数： ">
                                 <span style="word-break: break-all;overflow:auto;overflow-x:hidden">{{ props.row.parameter }}</span>

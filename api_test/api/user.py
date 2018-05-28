@@ -21,6 +21,7 @@ class ObtainAuthToken(APIView):
         user = serializer.validated_data["user"]
         # token, created = Token.objects.get_or_create(user=user)
         data = TokenSerializer(Token.objects.get(user=user)).data
+        data["userphoto"] = '/file/userphoto.jpg'
         return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
 
 
