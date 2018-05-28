@@ -1,0 +1,336 @@
+2018-05-28 17:05:16,858,4640,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:05:16,861,4640,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:05:16,876,4640,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:05:16,876,4640,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:05:16,889,4640,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:05:16,890,4640,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:05:16,920,4640,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:05:16,921,4640,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:05:17,009,4640,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:05:17,010,4640,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:05:17,038,4640,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:05:17,039,4640,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:05:17,054,4640,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:05:17,057,4640,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:05:17,072,4640,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:05:17,073,4640,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:05:17,087,4640,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:05:17,088,4640,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:05:17,188,4640,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:05:17,189,4640,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:05:17,210,4640,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:05:17,211,4640,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:07:06,946,12464,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:07:06,947,12464,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:07:06,965,12464,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:07:06,966,12464,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:07:06,981,12464,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:07:06,982,12464,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:07:06,998,12464,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:07:06,999,12464,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:07:07,091,12464,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:07:07,092,12464,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:07:07,107,12464,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:07:07,108,12464,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:07:07,122,12464,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:07:07,122,12464,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:07:07,136,12464,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:07:07,137,12464,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:07:07,153,12464,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:07:07,154,12464,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:07:07,249,12464,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:07:07,250,12464,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:07:07,268,12464,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:07:07,269,12464,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:00,888,11244,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:00,889,11244,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:00,906,11244,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:00,907,11244,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:00,926,11244,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:00,926,11244,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:00,958,11244,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:00,962,11244,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:01,058,11244,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:01,059,11244,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:01,076,11244,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:01,077,11244,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:01,093,11244,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:01,096,11244,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:01,125,11244,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:01,126,11244,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:01,143,11244,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:01,144,11244,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:01,233,11244,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:01,234,11244,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:01,250,11244,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:01,251,11244,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:27,663,7776,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:27,665,7776,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:27,681,7776,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:27,682,7776,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:27,697,7776,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:27,698,7776,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:27,715,7776,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:27,716,7776,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:27,803,7776,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:27,804,7776,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:27,819,7776,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:27,820,7776,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:27,836,7776,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:27,836,7776,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:27,877,7776,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:27,878,7776,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:27,894,7776,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:27,895,7776,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:27,997,7776,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:27,998,7776,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:09:28,012,7776,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:09:28,013,7776,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:10:01,030,10916,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:10:01,033,10916,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:10:01,053,10916,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:10:01,055,10916,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:10:01,083,10916,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:10:01,083,10916,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:10:01,101,10916,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:10:01,101,10916,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:10:11,264,11436,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:10:11,268,11436,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:10:11,284,11436,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:10:11,285,11436,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:10:11,301,11436,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:10:11,303,11436,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:10:11,318,11436,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:10:11,319,11436,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:10:49,932,14624,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:10:49,933,14624,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:10:49,947,14624,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:10:49,948,14624,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:10:49,964,14624,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:10:49,965,14624,root,ERROR,auto_task_test.py:110,'data'
+2018-05-28 17:10:49,979,14624,root,ERROR,auto_task_test.py:109,ERROR
+Traceback (most recent call last):
+  File "H:\project\api_automation_test\api_test\common\auto_task_test.py", line 107, in test_api
+    value = value[j]
+KeyError: 'data'
+2018-05-28 17:10:49,980,14624,root,ERROR,auto_task_test.py:110,'data'
