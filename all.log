@@ -165,3 +165,843 @@ Traceback (most recent call last):
     _mysql.connection.query(self, query)
 django.db.utils.OperationalError: (1054, "Unknown column 'api_test_automationtaskruntime.elapsedTime' in 'field list'")
 2018-05-25 16:34:51,876,7324,django.server,ERROR,basehttp.py:124,"GET /api/automation/test_time?project_id=1 HTTP/1.1" 500 23592
+2018-05-28 10:15:15,505,16216,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 10:15:15,697,16216,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19465
+2018-05-28 10:16:11,512,16216,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 10:16:11,525,16216,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19464
+2018-05-28 10:35:06,054,16216,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 10:35:06,066,16216,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19483
+2018-05-28 10:38:44,412,16216,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 10:38:44,425,16216,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19482
+2018-05-28 10:40:48,065,16216,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 10:40:48,077,16216,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19474
+2018-05-28 10:41:13,731,16216,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 10:41:13,743,16216,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19475
+2018-05-28 10:41:41,408,16216,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 10:41:41,421,16216,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19475
+2018-05-28 10:43:55,203,16216,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 10:43:55,216,16216,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19475
+2018-05-28 10:46:28,475,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 10:46:28,492,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19465
+2018-05-28 10:48:56,100,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 10:48:56,114,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19475
+2018-05-28 10:51:01,981,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 10:51:01,996,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19475
+2018-05-28 10:55:55,361,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 10:55:55,374,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19475
+2018-05-28 10:57:20,238,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 10:57:20,251,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19475
+2018-05-28 10:59:12,281,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 10:59:12,295,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19475
+2018-05-28 11:00:02,099,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 934, in add_time_task
+    frequency=frequency, unit=unit, project=project_id)
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 11:00:02,114,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19453
+2018-05-28 11:00:53,966,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 934, in add_time_task
+    frequency=frequency, unit=unit, project=project_id)
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 11:00:53,998,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19453
+2018-05-28 11:00:56,310,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 11:00:56,322,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19465
+2018-05-28 11:01:02,295,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 11:01:02,308,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19465
+2018-05-28 11:02:20,404,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 11:02:20,418,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19465
+2018-05-28 11:02:46,983,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 11:02:46,995,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19465
+2018-05-28 11:02:54,237,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 934, in add_time_task
+    frequency=frequency, unit=unit, project=project_id)
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 11:02:54,251,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19453
+2018-05-28 11:03:49,880,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 934, in add_time_task
+    frequency=frequency, unit=unit, project=project_id)
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 11:03:49,892,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19454
+2018-05-28 11:06:02,638,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 934, in add_time_task
+    frequency=frequency, unit=unit, project=project_id)
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 11:06:02,651,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19454
+2018-05-28 11:06:57,226,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 934, in add_time_task
+    frequency=frequency, unit=unit, project=project_id)
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 11:06:57,239,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19454
+2018-05-28 11:09:58,957,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 11:09:58,969,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19465
+2018-05-28 11:10:10,728,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/del_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 1008, in del_task
+    del_task_crontab(project_id)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 203, in del_task_crontab
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 11:10:10,741,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/del_task HTTP/1.1" 500 19260
+2018-05-28 11:10:48,936,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 11:10:48,947,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19466
+2018-05-28 11:11:04,650,6360,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "H:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "H:\project\api_automation_test\api_test\api\automationCase.py", line 956, in add_time_task
+    start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
+  File "H:\project\api_automation_test\api_test\common\addTask.py", line 54, in add
+    my_user_cron.write()
+  File "D:\Users\SIMO\AppData\Local\Programs\Python\Python36\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-05-28 11:11:04,664,6360,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19475
