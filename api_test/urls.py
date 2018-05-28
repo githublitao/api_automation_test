@@ -1,6 +1,7 @@
 from django.conf.urls import url
 
 from api_test.api import ApiDoc, automationCase as Case, member, dynamic, user
+from api_test.api import automationReport as report
 from api_test.api.global_parameter import host_total, add_host, update_host, del_host, enable_host, disable_host
 from api_test.api.projectList import project_list, add_project, update_project, del_project, disable_project, \
      enable_project
@@ -58,8 +59,9 @@ urlpatterns = [
     url(r'automation/del_task', Case.del_task),
     url(r'automation/look_result', Case.look_result),
     url(r'automation/test_report', Case.test_report),
-    url(r'automation/auto_test_report', Case.auto_test_report),
-    url(r'automation/test_time', Case.test_time),
+    url(r'report/auto_test_report', report.auto_test_report),
+    url(r'report/test_time', report.test_time),
+    url(r'report/lately_ten', report.auto_lately_ten_time),
     url(r'member/project_member', member.project_member),
     url(r'dynamic/dynamic', dynamic.dynamic),
     url(r'user/login', user.obtain_auth_token),

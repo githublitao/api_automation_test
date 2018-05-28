@@ -112,11 +112,16 @@
                 pass: "",
                 fail: "",
                 error: "",
+                latelyTenPass: [],
+                latelyTenFail: [],
+                latelyTenError: [],
+
             }
         },
         mounted(){
-            this.drawLine();
+            // this.drawLine();
             this.getTenTestTime();
+            this.getLatelyTenTestResult();
         },
         methods: {
             getTestResult() {
@@ -124,7 +129,7 @@
                 let self = this;
                 $.ajax({
                     type: "get",
-                    url: test + "/api/automation/auto_test_report",
+                    url: test + "/api/report/auto_test_report",
                     async: true,
                     data: { project_id: this.$route.params.project_id,
                             time: this.time.toString()
@@ -208,21 +213,21 @@
                     ],
                     series: [
                         {
-                            name:'通过率',
-                            type:'bar',
-                            data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 32.6, 20.0, 6.4, 3.3]
-                        },
-                        {
                             name:'失败率',
                             type:'bar',
-                            data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 48.7, 18.8, 6.0, 2.3]
+                            data:this.latelyTenFail
                         },
                         {
                             name:'错误率',
                             type:'line',
                             // yAxisIndex: 1,
-                            data:[2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 23.0, 16.5, 12.0, 6.2]
-                        }
+                            data:this.latelyTenError
+                        },
+                        {
+                            name:'通过率',
+                            type:'bar',
+                            data: this.latelyTenPass
+                        },
                     ]
                 };
                 myChart.setOption(option);
@@ -256,14 +261,14 @@
                     },
                     series : [
                         {
-                            name: '姓名',
+                            // name: '姓名',
                             type: 'pie',
                             radius : '50%',
                             center: ['50%', '50%'],
                             data: [
-                                {value:this.pass, name:'PASS'},
-                                {value:this.fail, name:'FAIL'},
                                 {value:this.error, name:'ERROR'},
+                                {value:this.fail, name:'FAIL'},
+                                {value:this.pass, name:'PASS'},
                             ],
                             itemStyle: {
                                 emphasis: {
@@ -291,7 +296,7 @@
                 let self = this;
                 $.ajax({
                     type: "get",
-                    url: test + "/api/automation/test_time",
+                    url: test + "/api/report/test_time",
                     async: true,
                     data: { project_id: this.$route.params.project_id},
                     headers: {
@@ -323,6 +328,36 @@
                   }
               }
             },
+            getLatelyTenTestResult(){
+                let self = this;
+                $.ajax({
+                    type: "get",
+                    url: test + "/api/report/lately_ten",
+                    async: true,
+                    data: { project_id: this.$route.params.project_id },
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: function(data) {
+                        if (data.code === '999999') {
+                            console.log(data.data)
+                            data.data.forEach((item) => {
+                                self.latelyTenPass.push(item.pass*100)
+                                self.latelyTenFail.push(item.fail*100)
+                                self.latelyTenError.push(item.error*100)
+                            });
+                            self.drawLine()
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+            }
         },
         watch: {
             time(){
