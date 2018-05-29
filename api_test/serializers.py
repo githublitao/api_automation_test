@@ -6,7 +6,7 @@ from api_test.models import Project, ProjectDynamic, ProjectMember, GlobalHost, 
     ApiInfo, APIRequestHistory, ApiOperationHistory, AutomationGroupLevelFirst, AutomationGroupLevelSecond, \
     AutomationTestCase, AutomationCaseApi, AutomationHead, AutomationParameter, AutomationTestTask, \
     AutomationTestResult, ApiHead, ApiParameter, ApiResponse, ApiParameterRaw, AutomationParameterRaw, \
-    AutomationResponseJson, AutomationTaskRunTime, AutomationCaseTestResult
+    AutomationResponseJson, AutomationTaskRunTime, AutomationCaseTestResult, Robot
 
 
 class TokenSerializer(serializers.ModelSerializer):
@@ -401,3 +401,12 @@ class AutomationTestLatelyTenTimeSerializer(serializers.ModelSerializer):
     class Meta:
         model = AutomationTaskRunTime
         fields = ("id", "startTime")
+
+
+class RobotSerializer(serializers.ModelSerializer):
+    """
+    机器人列表
+    """
+    class Meta:
+        model = Robot
+        fields = ("id", "nickName", "role_type", 'robotType', 'name', 'updateTime')

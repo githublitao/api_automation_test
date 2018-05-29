@@ -67,4 +67,5 @@ urlpatterns = [
     url(r'user/login', user.obtain_auth_token),
     url(r'robot/wx_robot', robot.wx_robot),
     url(r'robot/logout_wx', robot.logout_wx_robot),
+    url(r'robot/get_robot', robot.get_robot),
 ]

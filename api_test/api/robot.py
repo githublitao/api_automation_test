@@ -7,6 +7,8 @@ from api_test.common import GlobalStatusCode
 from api_test.common.api_response import JsonResponse
 from api_test.common.common import verify_parameter
 from api_test.common.logOutWx import logout_wechat
+from api_test.models import Robot
+from api_test.serializers import RobotSerializer
 
 logger = logging.getLogger(__name__) # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -48,3 +50,16 @@ def logout_wx_robot(request):
         return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.fail())
+
+
+@api_view(["GET"])
+@verify_parameter([], "GET")
+def get_robot(request):
+    """
+    获取机器人
+    :param request:
+    :return:
+    """
+    obi = Robot.objects.all()
+    data = RobotSerializer(obi, many=True).data
+    return JsonResponse(code_msg=GlobalStatusCode.success(), data=data)
