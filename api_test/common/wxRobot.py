@@ -1,4 +1,5 @@
 import itchat
+import sys
 
 
 def test_connect_wechat(data, name, _type):
@@ -17,6 +18,7 @@ def test_connect_wechat(data, name, _type):
     if len(users):
         use_name = users[0]['UserName']
         itchat.send(data, toUserName=use_name)
-        return True
-    else:
-        return False
+
+
+if __name__ == "__main__":
+    test_connect_wechat(sys.argv[1], sys.argv[2], sys.argv[3])

@@ -1,5 +1,6 @@
 import logging
 
+import os
 from rest_framework.decorators import api_view
 
 from api_test.common import GlobalStatusCode
@@ -26,8 +27,13 @@ def wx_robot(request):
     name = request.GET.get("name")
     if _type not in ["group", "person"]:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    result = test_connect_wechat(data=data, name=name, _type=_type)
-    if result:
+    os.system("nohup /usr/local/python3/bin/python3 "
+              "/var/lib/jenkins/workspace/api_automation_test_master-"
+              "JU72M6SAEYKDY6SN3LUUPLXPTX3F35MVFZ57J4JE3I5TJCTRFXHQ/"
+              "api_test/common/wxRobot.py %s %s %s &" % (data, name, _type))
+    _path = os.path.dirname(os.path.dirname(os.getcwd())) + "/frontend/dist/static/img/QR.png"
+    is_exists = os.path.exists(_path)
+    if is_exists:
         return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.fail())
