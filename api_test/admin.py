@@ -7,7 +7,7 @@ from api_test.models import Project, GlobalHost, ApiGroupLevelFirst, ApiGroupLev
     APIRequestHistory, ApiOperationHistory, ProjectDynamic, ProjectMember, \
     AutomationGroupLevelSecond, AutomationGroupLevelFirst, AutomationTestCase, AutomationParameter, AutomationCaseApi, \
     AutomationTestResult, AutomationTestTask, AutomationHead, UserProfile, ApiHead, ApiParameter, ApiResponse, \
-    ApiParameterRaw, AutomationParameterRaw, AutomationResponseJson, AutomationTaskRunTime
+    ApiParameterRaw, AutomationParameterRaw, AutomationResponseJson, AutomationTaskRunTime, Robot, RobotInfo
 
 from django.contrib import admin
 from django.utils.text import capfirst
@@ -388,3 +388,17 @@ class ProjectDynamicForm(ReadOnlyModelAdmin):
 
 
 admin.site.register(ProjectDynamic, ProjectDynamicForm)
+
+
+class RobotForm(ReadOnlyModelAdmin):
+    list_filter = ('nickName', 'role_type', 'name', 'updateTime')
+
+
+admin.site.register(Robot, RobotForm)
+
+
+class RobotInfoForm(ReadOnlyModelAdmin):
+    list_filter = ('robotType', 'info', 'creatTime')
+
+
+admin.site.register(RobotInfo, RobotInfoForm)

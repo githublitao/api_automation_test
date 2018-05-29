@@ -1,7 +1,7 @@
 import NotFound from './views/common/404.vue'
 import Login from './views/common/Login.vue'
 import Home from './views/Home.vue'
-import Monkey from './views/Monkey.vue'
+import robot from './views/robot/robot.vue'
 import About from './views/About.vue'
 import projectList from './views/Projectlist.vue'
 import ProjectInfo from './views/project.vue'
@@ -50,7 +50,7 @@ let routes = [
         projectHidden: true,
         children: [
             { path: '/projectList', component: projectList, iconCls:'el-icon-message', name: '项目列表'},
-            { path: '/monkey', component: Monkey, iconCls:'fa fa-id-card-o', name: 'Moneky测试'},
+            { path: '/robot', component: robot, iconCls:'fa fa-id-card-o', name: '消息机器人'},
             { path: '/about', component: About, iconCls:'fa fa-address-card', name: '关于我们'},
             ]
     },
