@@ -66,4 +66,5 @@ urlpatterns = [
     url(r'dynamic/dynamic', dynamic.dynamic),
     url(r'user/login', user.obtain_auth_token),
     url(r'robot/wx_robot', robot.wx_robot),
+    url(r'robot/logout_wx', robot.logout_wx_robot),
 ]
