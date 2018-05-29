@@ -27,7 +27,8 @@ def wx_robot(request):
     name = request.GET.get("name")
     if _type not in ["group", "person"]:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    commond = "nohup /usr/local/python3/bin/python3 /var/lib/jenkins/workspace/api_automation_test_master-JU72M6SAEYKDY6SN3LUUPLXPTX3F35MVFZ57J4JE3I5TJCTRFXHQ/api_test/common/wxRobot.py %s %s %s &" % ("微信机器人接入成功！", name, _type)
+    commond = "nohup /usr/local/python3/bin/python3 /var/lib/jenkins/workspace/api_automation_test_master-JU72M6SAEYKDY6SN3LUUPLXPTX3F35MVFZ57J4JE3I5TJCTRFXHQ/api_test/common/wxRobot.py %s %s %s &" % ('微信机器人接入成功！', name, _type)
+    # commond = "python H:/project/api_automation_test/api_test/common/wxRobot.py %s %s %s " % ("微信机器人接入成功！", name, _type)
     os.system(commond)
     _path = os.getcwd() + "/frontend/dist/static/img/QR.png"
     is_exists = os.path.exists(_path)
@@ -46,6 +47,7 @@ def logout_wx_robot(request):
     :return:
     """
     result = logout_wechat()
+    Robot.objects.filter(robotType="WX").update(nickName=None)
     if result:
         return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
