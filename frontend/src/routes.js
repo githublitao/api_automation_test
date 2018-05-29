@@ -1,6 +1,6 @@
 import NotFound from './views/common/404.vue'
 import Login from './views/common/Login.vue'
-import Home from './views/common/Home.vue'
+import Home from './views/Home.vue'
 import Monkey from './views/Monkey.vue'
 import About from './views/About.vue'
 import projectList from './views/Projectlist.vue'

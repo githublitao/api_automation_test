@@ -11,7 +11,10 @@
 			</el-col>
 			<el-col :span="4" class="userinfo">
 				<el-dropdown trigger="hover">
-					<span class="el-dropdown-link userinfo-inner"><img src="/assets/icon-yes.svg"/>{{sysUserName}}</span>
+					<span class="el-dropdown-link userinfo-inner">
+						{{sysUserName}}
+						<img src="../assets/userphoto.jpg"/>
+					</span>
 					<el-dropdown-menu slot="dropdown">
 						<el-dropdown-item>我的消息</el-dropdown-item>
 						<el-dropdown-item>设置</el-dropdown-item>
@@ -58,7 +61,7 @@
                 sysName:'自动化测试平台',
                 collapsed:false,
                 sysUserName: '',
-                sysUserAvatar: '',
+                // sysUserAvatar: '',
                 form: {
                     name: '',
                     region: '',
