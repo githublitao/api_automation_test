@@ -35,30 +35,31 @@ def send_email(project_id, data):
     """
     # 第三方 SMTP 服务
     email_config = AutomationReportSendConfig.objects.filter(project=project_id)
-    mail_host = email_config[0].mailSmtp  # 设置服务器
-    mail_user = email_config[0].mailUser  # 用户名
-    mail_pass = email_config[0].mailPass  # 口令
+    if email_config:
+        mail_host = email_config[0].mailSmtp  # 设置服务器
+        mail_user = email_config[0].mailUser  # 用户名
+        mail_pass = email_config[0].mailPass  # 口令
 
-    sender = email_config[0].reportFrom
-    to_member = ProjectMemberSerializer(ProjectMember.objects.filter(project=project_id), many=True).data
-    receivers = []  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
-    for i in to_member:
-        receivers.append(i["userEmail"])
-    message = MIMEText(data, 'plain', 'utf-8')
-    message['From'] = email_config[0].reportFrom
-    message['To'] = receivers[0]
+        sender = email_config[0].reportFrom
+        to_member = ProjectMemberSerializer(ProjectMember.objects.filter(project=project_id), many=True).data
+        receivers = []  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
+        for i in to_member:
+            receivers.append(i["userEmail"])
+        message = MIMEText(data, 'plain', 'utf-8')
+        message['From'] = email_config[0].reportFrom
+        message['To'] = receivers[0]
 
-    subject = Project.objects.filter(id=project_id)[0].name
-    message['Subject'] = Header(subject, 'utf-8')
+        subject = Project.objects.filter(id=project_id)[0].name
+        message['Subject'] = Header(subject, 'utf-8')
 
-    try:
-        smtpObj = smtplib.SMTP()
-        smtpObj.connect(mail_host, 25)  # 25 为 SMTP 端口号
-        smtpObj.login(mail_user, mail_pass)
-        smtpObj.sendmail(sender, receivers, message.as_string())
-        return True
-    except smtplib.SMTPException:
-        return
+        try:
+            smtpObj = smtplib.SMTP()
+            smtpObj.connect(mail_host, 25)  # 25 为 SMTP 端口号
+            smtpObj.login(mail_user, mail_pass)
+            smtpObj.sendmail(sender, receivers, message.as_string())
+            return True
+        except smtplib.SMTPException:
+            return
 
 
 if __name__ == "__main__":

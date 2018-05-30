@@ -305,10 +305,12 @@
                     success: function(data) {
                         if (data.code === '999999') {
                             self.options = data.data;
-                            self.time = data.data[0].startTime;
-                            self.elapsedTime = data.data[0].elapsedTime;
-                            self.host = data.data[0].host;
-                            self.getTestResult();
+                            if (data.data.length) {
+                                self.time = data.data[0].startTime;
+                                self.elapsedTime = data.data[0].elapsedTime;
+                                self.host = data.data[0].host;
+                                self.getTestResult();
+                            }
                         }
                         else {
                             self.$message.error({
