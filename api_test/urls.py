@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from api_test.api import ApiDoc, automationCase as Case, member, dynamic, user, robot
+from api_test.api import ApiDoc, automationCase as Case, member, dynamic, user
 from api_test.api import automationReport as report
 from api_test.api.global_parameter import host_total, add_host, update_host, del_host, enable_host, disable_host
 from api_test.api.projectList import project_list, add_project, update_project, del_project, disable_project, \
@@ -65,8 +65,4 @@ urlpatterns = [
     url(r'member/project_member', member.project_member),
     url(r'dynamic/dynamic', dynamic.dynamic),
     url(r'user/login', user.obtain_auth_token),
-    url(r'robot/wx_robot', robot.wx_robot),
-    url(r'robot/logout_wx', robot.logout_wx_robot),
-    url(r'robot/get_robot', robot.get_robot),
-    url(r'robot/get_wx_QRcode', robot.get_wx_QRcode),
 ]

@@ -39,7 +39,6 @@ def automation_task():
                 error = error+1
             elif result == 'timeout':
                 time_out = time_out+1
-    print(_pass, fail, error, time_out)
     elapsed_time = (datetime.datetime.now(tz) - start_time).seconds
     AutomationTaskRunTime(project=Project.objects.get(id=sys.argv[2]), startTime=format_start_time, elapsedTime=elapsed_time, host=host.name).save()
 

@@ -56,7 +56,3 @@ def task_not_exist():
 
 def page_not_int():
     return '999985', 'page and page_size must be integer!'
-
-
-def robot_not_exist():
-    return '999984', '机器人不存在'
