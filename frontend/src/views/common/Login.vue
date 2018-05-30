@@ -64,7 +64,6 @@ export default {
           	  	if (data.code === '999999') {
           	  	  sessionStorage.setItem('username', JSON.stringify(data.data.first_name))
           	  		sessionStorage.setItem('token', JSON.stringify(data.data.key))
-          	  		debugger
           	  		console.log(_this.$route)
           	  		if (_this.$route.query.url) {
           	  		  _this.$router.push(_this.$route.query.url);

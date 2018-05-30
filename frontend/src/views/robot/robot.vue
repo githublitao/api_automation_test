@@ -50,7 +50,7 @@
                 </div>
                 <el-dialog title="扫码登录" v-model="WXQRcode" style="width: 50%; left: 20%">
                     <p style="color:#999">*注<strong>: </strong>微信昵称不得包含emoji, 微信接收到“微信机器人接入成功”，表示已成功添加</p>
-                    <img src="../../assets/QR.png" style="max-width:100%">
+                    <img :src="QRcode" style="max-width:100%">
                 </el-dialog>
             </el-col>
             <el-col :span="12">
@@ -63,6 +63,7 @@
     import { test } from '../../api/api'
     import $ from 'jquery'
     export default {
+        props: ['src'],
         data() {
             return {
                 options: [
@@ -74,6 +75,8 @@
                 WXData: {},
                 WXLoginStatus: true,
                 name: "",
+                QRcode: "http://www.86y.org/images/loading.gif",
+                // QRloading: false,
             }
         },
         methods: {
@@ -94,7 +97,7 @@
                                 data.data.forEach((item) => {
                                     if (item.robotType === "WX") {
                                         if (item.nickName) {
-                                            console.log(item.nickName)
+                                            self.WXData = item;
                                             self.WXLoginStatus = false
                                         }
                                     }
@@ -122,7 +125,6 @@
                     },
                     timeout: 5000,
                     success: function(data) {
-                        self.listLoading = false;
                         if (data.code === '999999') {
                             self.$message.success({
                                 message: "退出微信机器人成功！",
@@ -154,7 +156,8 @@
                             self.listLoading = false;
                             if (data.code === '999999') {
                                 self.WXQRcode = true;
-                                self.getRobot()
+                                self.getQRcode()
+                                self.getRobot();
                             }
                             else {
                                 self.$message.error({
@@ -166,9 +169,39 @@
                     })
                 }
             },
+            getQRcode() {
+                let self =this;
+                $.ajax({
+                    type: "get",
+                    url: test+"/api/robot/get_wx_QRcode",
+                    async: true,
+                    data: {type: "WX"},
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: function(data) {
+                        self.listLoading = false;
+                        if (data.code === '999999') {
+                            self.WXQRcode = true;
+                            console.log(data.data)
+                            self.QRcode = data.data[0].img
+                            console.log(self.QRcode)
+                            self.getRobot();
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+            }
         },
         mounted(){
             this.getRobot();
+            // this.getQRcode();
         }
     }
 </script>

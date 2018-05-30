@@ -7,7 +7,7 @@ from api_test.models import Project, GlobalHost, ApiGroupLevelFirst, ApiGroupLev
     APIRequestHistory, ApiOperationHistory, ProjectDynamic, ProjectMember, \
     AutomationGroupLevelSecond, AutomationGroupLevelFirst, AutomationTestCase, AutomationParameter, AutomationCaseApi, \
     AutomationTestResult, AutomationTestTask, AutomationHead, UserProfile, ApiHead, ApiParameter, ApiResponse, \
-    ApiParameterRaw, AutomationParameterRaw, AutomationResponseJson, AutomationTaskRunTime, Robot, RobotInfo
+    ApiParameterRaw, AutomationParameterRaw, AutomationResponseJson, AutomationTaskRunTime, Robot, RobotInfo, QRCode
 
 from django.contrib import admin
 from django.utils.text import capfirst
@@ -402,3 +402,10 @@ class RobotInfoForm(ReadOnlyModelAdmin):
 
 
 admin.site.register(RobotInfo, RobotInfoForm)
+
+
+class QRCodeForm(ReadOnlyModelAdmin):
+    list_filter = ('id', 'robot', 'img')
+
+
+admin.site.register(QRCode, QRCodeForm)

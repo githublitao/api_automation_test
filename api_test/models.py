@@ -664,3 +664,16 @@ class RobotInfo(models.Model):
     class Meta:
         verbose_name = "消息管理"
         verbose_name_plural = "消息管理"
+
+
+class QRCode(models.Model):
+    """
+    二维码地址
+    """
+    id = models.AutoField(primary_key=True)
+    robot = models.ForeignKey(Robot, on_delete=models.CASCADE, verbose_name="机器人")
+    img = models.CharField(max_length=1024, blank=True, null=True, verbose_name="图片地址")
+
+    class Meta:
+        verbose_name = "二维码管理"
+        verbose_name_plural = "二维码管理"

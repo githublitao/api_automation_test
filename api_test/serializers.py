@@ -6,7 +6,7 @@ from api_test.models import Project, ProjectDynamic, ProjectMember, GlobalHost, 
     ApiInfo, APIRequestHistory, ApiOperationHistory, AutomationGroupLevelFirst, AutomationGroupLevelSecond, \
     AutomationTestCase, AutomationCaseApi, AutomationHead, AutomationParameter, AutomationTestTask, \
     AutomationTestResult, ApiHead, ApiParameter, ApiResponse, ApiParameterRaw, AutomationParameterRaw, \
-    AutomationResponseJson, AutomationTaskRunTime, AutomationCaseTestResult, Robot
+    AutomationResponseJson, AutomationTaskRunTime, AutomationCaseTestResult, Robot, QRCode
 
 
 class TokenSerializer(serializers.ModelSerializer):
@@ -410,3 +410,14 @@ class RobotSerializer(serializers.ModelSerializer):
     class Meta:
         model = Robot
         fields = ("id", "nickName", "role_type", 'robotType', 'name', 'updateTime')
+
+
+class QRCodeSerializer(serializers.ModelSerializer):
+    """
+    二维码地址
+    """
+    robot = serializers.CharField(source='robot.robotType')
+
+    class Meta:
+        model = QRCode
+        fields = ("id", "robot", "img")

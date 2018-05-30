@@ -10,8 +10,8 @@ sys.path.append(PathProject)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api_automation_test.settings")
 django.setup()
 
-from api_test.models import Robot
 import itchat
+from api_test.models import Robot
 import sys
 
 

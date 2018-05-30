@@ -50,7 +50,7 @@ let routes = [
         projectHidden: true,
         children: [
             { path: '/projectList', component: projectList, iconCls:'el-icon-message', name: '项目列表'},
-            { path: '/robot', component: robot, iconCls:'fa fa-id-card-o', name: '消息机器人'},
+            { path: '/robot', component: robot, iconCls:'fa fa-id-card-o', name: '消息机器人', meta: { keepAlive: false }},
             { path: '/about', component: About, iconCls:'fa fa-address-card', name: '关于我们'},
             ]
     },
