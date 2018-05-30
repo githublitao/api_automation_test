@@ -83,7 +83,7 @@
         },
         methods: {
             getProjectInfo() {
-                var self = this
+                var self = this;
                 $.ajax({
                     type: "get",
                     url: test+"/api/title/project_info",

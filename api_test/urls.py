@@ -63,6 +63,9 @@ urlpatterns = [
     url(r'report/test_time', report.test_time),
     url(r'report/lately_ten', report.auto_lately_ten_time),
     url(r'member/project_member', member.project_member),
+    url(r'member/email_config', member.email_config),
+    url(r'member/del_email', member.del_email),
+    url(r'member/get_email', member.get_email),
     url(r'dynamic/dynamic', dynamic.dynamic),
     url(r'user/login', user.obtain_auth_token),
 ]

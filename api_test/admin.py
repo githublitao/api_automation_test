@@ -7,7 +7,7 @@ from api_test.models import Project, GlobalHost, ApiGroupLevelFirst, ApiGroupLev
     APIRequestHistory, ApiOperationHistory, ProjectDynamic, ProjectMember, \
     AutomationGroupLevelSecond, AutomationGroupLevelFirst, AutomationTestCase, AutomationParameter, AutomationCaseApi, \
     AutomationTestResult, AutomationTestTask, AutomationHead, UserProfile, ApiHead, ApiParameter, ApiResponse, \
-    ApiParameterRaw, AutomationParameterRaw, AutomationResponseJson, AutomationTaskRunTime
+    ApiParameterRaw, AutomationParameterRaw, AutomationResponseJson, AutomationTaskRunTime, AutomationReportSendConfig
 
 from django.contrib import admin
 from django.utils.text import capfirst
@@ -388,3 +388,13 @@ class ProjectDynamicForm(ReadOnlyModelAdmin):
 
 
 admin.site.register(ProjectDynamic, ProjectDynamicForm)
+
+
+class AutomationReportSendConfigForm(ReadOnlyModelAdmin):
+    list_display = ('id', 'project', 'reportFrom', 'mailUser', 'mailPass', 'mailSmtp')
+    list_display_links = ('id', 'project', 'reportFrom', 'mailUser', 'mailPass', 'mailSmtp')
+    list_per_page = 20
+    ordering = ('-id',)
+
+
+admin.site.register(AutomationReportSendConfig, AutomationReportSendConfigForm)

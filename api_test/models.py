@@ -628,3 +628,22 @@ class AutomationCaseTestResult(models.Model):
     class Meta:
         verbose_name = '自动测试结果'
         verbose_name_plural = '自动测试结果管理'
+
+
+class AutomationReportSendConfig(models.Model):
+    """
+    报告发送人配置
+    """
+    id = models.AutoField(primary_key=True)
+    project = models.OneToOneField(Project, on_delete=models.CASCADE, verbose_name="项目")
+    reportFrom = models.CharField(max_length=1024, blank=True, null=True, verbose_name="发送人邮箱")
+    mailUser = models.CharField(max_length=1024, blank=True, null=True, verbose_name="用户名")
+    mailPass = models.CharField(max_length=1024, blank=True, null=True, verbose_name="口令")
+    mailSmtp = models.CharField(max_length=1024, blank=True, null=True, verbose_name="邮箱服务器")
+
+    def __unicode__(self):
+        return self.reportFrom
+
+    class Meta:
+        verbose_name = "邮件发送配置"
+        verbose_name_plural = "邮件发送配置"
