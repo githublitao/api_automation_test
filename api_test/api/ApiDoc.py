@@ -13,6 +13,7 @@ from api_test.common import GlobalStatusCode
 from api_test.common.WriteDocx import Write
 from api_test.common.api_response import JsonResponse
 from api_test.common.common import verify_parameter, record_dynamic
+from api_test.common.loadSwaggerApi import swagger_api
 from api_test.models import Project, ApiGroupLevelFirst, ApiGroupLevelSecond, ApiInfo, \
     ApiOperationHistory, APIRequestHistory, ApiHead, ApiParameter, ApiResponse, ApiParameterRaw
 from api_test.serializers import ApiGroupLevelFirstSerializer, ApiInfoSerializer, APIRequestHistorySerializer, \
@@ -244,12 +245,12 @@ def add_api(request):
     :return:
     """
     data = json.loads(request.body)
-    if not data["project_id"] or not data["first_group_id"] or not data["name"] or not data["httpType"] or not \
+    if not data["project_id"] or not data["name"] or not data["httpType"] or not \
             data["requestType"] or not data["address"] or not data["requestParameterType"] or not data["status"]:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if data["status"] not in ["True", "False"]:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    if not isinstance(data["project_id"], int) or not isinstance(data["first_group_id"], int):
+    if not isinstance(data["project_id"], int):
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     if data["httpType"] not in ["HTTP", "HTTPS"]:
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
@@ -287,7 +288,15 @@ def add_api(request):
                         except KeyError:
                             return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                     else:
-                        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                        try:
+                            oba = ApiInfo(project=Project.objects.get(id=data["project_id"]),
+                                          name=data["name"], httpType=data["httpType"], status=data["status"],
+                                          requestType=data["requestType"], apiAddress=data["address"],
+                                          requestParameterType=data["requestParameterType"],
+                                          mockCode=data["mockStatus"], data=data["code"],
+                                          userUpdate=User.objects.get(id=request.user.pk), description=data["desc"])
+                        except KeyError:
+                            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                     oba.save()
                     if len(data["headDict"]):
                         for i in data["headDict"]:
@@ -337,6 +346,26 @@ def add_api(request):
                 logging.exception("error")
                 logging.error(e)
                 return JsonResponse(code_msg=GlobalStatusCode.fail())
+    else:
+        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+
+
+@api_view(["POST"])
+@verify_parameter(["project_id", "url"], "POST")
+def lead_swagger(request):
+    """
+    导入swagger接口信息
+    :param request:
+    :return:
+    """
+    project_id = request.POST.get("project_id")
+    if not project_id.isdecimal():
+        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+    url = request.POST.get("url")
+    obi = Project.objects.filter(id=project_id)
+    if obi:
+        swagger_api(url, project_id, request.user)
+        return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
@@ -772,8 +801,10 @@ def download(request):
         return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
     obj = Project.objects.filter(id=project_id)
     if obj:
-        data = ApiInfoDocSerializer(ApiGroupLevelFirst.objects.filter(project=project_id), many=True).data
-        url = Write().write_api(str(obj[0]), data)
+        obi = ApiGroupLevelFirst.objects.filter(project=project_id)
+        data = ApiInfoDocSerializer(obi, many=True).data
+        obn = ApiInfoSerializer(ApiInfo.objects.filter(project=project_id), many=True).data
+        url = Write().write_api(str(obj[0]), group_data=data, data=obn)
         return JsonResponse(code_msg=GlobalStatusCode.success(), data=url)
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())

@@ -296,7 +296,7 @@ class ApiParameter(models.Model):
     id = models.AutoField(primary_key=True)
     api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name="所属接口", related_name='requestParameter')
     name = models.CharField(max_length=1024, verbose_name="参数名")
-    _type = models.CharField( default="String",max_length=1024, verbose_name='参数类型', choices=(('Int', 'Int'), ('String', 'String')))
+    _type = models.CharField(default="String", max_length=1024, verbose_name='参数类型', choices=(('Int', 'Int'), ('String', 'String')))
     value = models.CharField(max_length=1024, blank=True, null=True, verbose_name='参数值')
     required = models.BooleanField(default=True, verbose_name="是否必填")
     restrict = models.CharField(max_length=1024, blank=True, null=True, verbose_name="输入限制")
