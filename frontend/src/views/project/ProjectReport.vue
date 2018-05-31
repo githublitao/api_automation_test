@@ -119,6 +119,7 @@
         },
         mounted(){
             // this.drawLine();
+            // this.singleTestDraw();
             this.getTenTestTime();
             this.getLatelyTenTestResult();
         },
@@ -215,17 +216,20 @@
                             name:'失败率',
                             type:'bar',
                             data:this.latelyTenFail
+                            // data: [20, 10, 15, 2, 8, 56, 45, 10, 48, 1]
                         },
                         {
                             name:'错误率',
                             type:'line',
                             // yAxisIndex: 1,
                             data:this.latelyTenError
+                            // data: [1, 5, 7, 2, 5, 6, 1, 0, 4, 7]
                         },
                         {
                             name:'通过率',
                             type:'bar',
                             data: this.latelyTenPass
+                            // data: [79, 85, 78, 96, 87, 48, 54, 90, 52, 8]
                         },
                     ]
                 };
@@ -268,6 +272,9 @@
                                 {value:this.error, name:'ERROR'},
                                 {value:this.fail, name:'FAIL'},
                                 {value:this.pass, name:'PASS'},
+                                // {value:'90', name:'ERROR'},
+                                // {value:'5', name:'FAIL'},
+                                // {value:'5', name:'PASS'},
                             ],
                             itemStyle: {
                                 emphasis: {
@@ -364,7 +371,6 @@
             time(){
                 this.getTestResult();
                 this.changeHost()
-                console.log(this.time)
             }
         }
     }
