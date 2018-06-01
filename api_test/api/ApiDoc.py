@@ -364,8 +364,11 @@ def lead_swagger(request):
     url = request.POST.get("url")
     obi = Project.objects.filter(id=project_id)
     if obi:
-        swagger_api(url, project_id, request.user)
-        return JsonResponse(code_msg=GlobalStatusCode.success())
+        try:
+            swagger_api(url, project_id, request.user)
+            return JsonResponse(code_msg=GlobalStatusCode.success())
+        except:
+            return JsonResponse(code_msg=GlobalStatusCode.fail())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 

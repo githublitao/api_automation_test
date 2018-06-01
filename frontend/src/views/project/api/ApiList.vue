@@ -20,6 +20,14 @@
 				<el-form-item>
 					<el-button type="primary" @click.native="DownloadApi">下载接口文档</el-button>
 				</el-form-item>
+				<el-form-item>
+					<el-button type="primary" @click.native="loadSwaggerApi = true">导入接口</el-button>
+					<el-dialog title="导入swagger接口" v-model="loadSwaggerApi" :close-on-click-modal="false">
+						<el-input v-model="swaggerUrl" placeholder="请输入swagger接口地址" style="width:90%"></el-input>
+						<el-button type="primary" @click="addSubmit" :loading="addLoading">导入</el-button>
+						<P v-if="!swaggerUrl" style="color: red; margin: 0px">不能为空</P>
+					</el-dialog>
+				</el-form-item>
 			</el-form>
 		</el-col>
 		<el-dialog title="修改所属分组" v-model="updateGroupFormVisible" :close-on-click-modal="false">
@@ -112,6 +120,10 @@
                 secondGroup: [],
                 updateGroupLoading: false,
                 update: true,
+                loadSwaggerApi: false,
+                addLoading: false,
+                //新增界面数据
+                swaggerUrl: "",
             }
         },
         methods: {
@@ -341,6 +353,46 @@
 
                 });
             },
+			addSubmit(){
+                let self = this;
+				this.addLoading = true;
+				console.log(this.swaggerUrl)
+				if (this.swaggerUrl){
+				    $.ajax({
+                        type: "post",
+                        url: test+"/api/api/lead_swagger",
+                        async: true,
+                        data:{ project_id: this.$route.params.project_id, url: this.swaggerUrl},
+                        headers: {
+                            Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                        },
+                        timeout: 5000,
+                        success: function(data) {
+                            if (data.code === '999999') {
+                                self.$message({
+                                    message: '添加成功',
+                                    center: true,
+                                    type: 'success'
+                                });
+                                self.listLoading = true;
+                                self.addLoading = false;
+                                self.loadSwaggerApi = false;
+                                self.getApiList()
+                            }
+                            else {
+                                self.addLoading = false;
+                                self.$message.error({
+                                    message: "导入失败，请检查地址是否正确",
+                                    center: true,
+                                })
+                            }
+                            self.getApiList();
+                        },
+                    })
+				} else {
+				    this.addLoading = false
+				}
+			},
         },
         mounted() {
             this.getApiList();
