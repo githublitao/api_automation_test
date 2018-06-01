@@ -42,10 +42,7 @@ python manage.py migrate
 ```bash
 python manage.py createsuperuser
 ```
-### 8.安装VUE环境，下载node.js并配置环境，下载npm包管理器，安装vue脚手架用于生成vue工程模板<br>
-```bash
-npm install --global vue-cli
-```
+### 8.安装VUE环境，下载node.js并配置环境，下载npm包管理器<br>
 ### 9.cmd进入frontend目录下，运行npm install安装相关依赖包<br>
 ### 10.打包<br>
 ```bash
@@ -53,9 +50,9 @@ npm run build
 ```
 ### 11.运行启动django服务<br>
 ```bash
-python manage.py runserver 0.0.0.0:8001 
+python manage.py runserver 0.0.0.0:8000
 ```
-### 12.现在就可以访问 http://127.0.0.1:8001/login 进行登录， http://127.0.0.1:8001/admin 为后台管理平台<br>
+### 12.现在就可以访问 http://127.0.0.1:8000/login 进行登录， http://127.0.0.1:8000/admin 为后台管理平台<br>
 
 项目讲解：
 ----
