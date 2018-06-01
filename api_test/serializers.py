@@ -31,6 +31,15 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'first_name')
 
 
+class ProjectDeserializer(serializers.ModelSerializer):
+    """
+    项目信息反序列化
+    """
+    class Meta:
+        model = Project
+        fields = ('id', 'name', 'version', 'type', 'status', 'LastUpdateTime', 'createTime', 'description', 'user')
+
+
 class ProjectSerializer(serializers.ModelSerializer):
     """
     项目信息序列化
@@ -57,6 +66,15 @@ class ProjectSerializer(serializers.ModelSerializer):
         return obj.member_project.all().count()
 
 
+class ProjectDynamicDeserializer(serializers.ModelSerializer):
+    """
+    项目动态信息反序列化
+    """
+    class Meta:
+        model = ProjectDynamic
+        fields = ('id', 'project', 'time', 'type', 'operationObject', 'user', 'description')
+
+
 class ProjectDynamicSerializer(serializers.ModelSerializer):
     """
     项目动态信息序列化
@@ -67,6 +85,15 @@ class ProjectDynamicSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectDynamic
         fields = ('id', 'time', 'type', 'operationObject', 'operationUser', 'description')
+
+
+class ProjectMemberDeserializer(serializers.ModelSerializer):
+    """
+    项目成员信息反序列化
+    """
+    class Meta:
+        model = ProjectMember
+        fields = ('id', 'permissionType', 'project', 'user')
 
 
 class ProjectMemberSerializer(serializers.ModelSerializer):

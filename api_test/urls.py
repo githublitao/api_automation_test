@@ -3,13 +3,13 @@ from django.conf.urls import url
 from api_test.api import ApiDoc, automationCase as Case, member, dynamic, user
 from api_test.api import automationReport as report
 from api_test.api.global_parameter import host_total, add_host, update_host, del_host, enable_host, disable_host
-from api_test.api.projectList import project_list, add_project, update_project, del_project, disable_project, \
+from api_test.api.projectList import ProjectList, AddProject, update_project, del_project, disable_project, \
      enable_project
 from api_test.api.projectTitle import project_info
 
 urlpatterns = [
-    url(r'project/project_list', project_list),
-    url(r'project/add_project', add_project),
+    url(r'project/project_list', ProjectList.as_view()),
+    url(r'project/add_project', AddProject.as_view()),
     url(r'project/update_project', update_project),
     url(r'project/del_project', del_project),
     url(r'project/disable_project', disable_project),
