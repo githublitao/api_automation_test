@@ -1,7 +1,7 @@
-import json
 import logging
 
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from rest_framework.decorators import api_view
 
@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 from api_test.common import GlobalStatusCode
 from api_test.common.api_response import JsonResponse
 from api_test.common.common import verify_parameter
-from api_test.models import Project, ProjectDynamic, ProjectMember
+from api_test.models import Project, ProjectDynamic
 from api_test.serializers import ProjectSerializer, ProjectDeserializer, ProjectDynamicDeserializer, \
     ProjectMemberDeserializer
 
@@ -55,15 +55,29 @@ class AddProject(APIView):
     新增项目
     """
     def parameter_check(self, data):
+        """
+        验证参数
+        :param data:
+        :return:
+        """
         try:
-            if not data["name"] or not data["v"] or not data["type"]:
+            # 必传参数 name, version, type
+            if not data["name"] or not data["version"] or not data["type"]:
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-            if data["type"] in ["Web", "App"]:
+            # type 类型 Web， App
+            if data["type"] not in ["Web", "App"]:
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
         except KeyError:
             return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
 
     def record_dynamic(self, project, user, data):
+        """
+        记录项目动态
+        :param project: 项目ID
+        :param user:  操作ID
+        :param data:  操作内容
+        :return:
+        """
         dynamic_serializer = ProjectDynamicDeserializer(data={
             "project": project, "type": "创建",
             "operationObject": "项目", "user": user,
@@ -74,6 +88,12 @@ class AddProject(APIView):
             dynamic_serializer.save()
 
     def add_project_member(self, project, user):
+        """
+        添加项目创建人员
+        :param project: 项目ID
+        :param user:  用户ID
+        :return:
+        """
         member_serializer = ProjectMemberDeserializer(data={
             "permissionType": "admin", "project": project,
             "user": user
@@ -83,57 +103,80 @@ class AddProject(APIView):
 
     def post(self, request):
         data = JSONParser().parse(request)
-        self.parameter_check(data)
+        result = self.parameter_check(data)
+        if result:
+            return result
         data["user"] = request.user.pk
         project_serializer = ProjectDeserializer(data=data)
         with transaction.atomic():
             if project_serializer.is_valid():
                 project_serializer.save()
                 self.record_dynamic(project_serializer.data.get("id"), request.user.pk, data["name"])
-                self.add_project_member((project_serializer.data.get("id"), request.user.pk))
+                self.add_project_member(project_serializer.data.get("id"), request.user.pk)
                 return JsonResponse(data={
                         "project_id": project_serializer.data.get("id")
                     }, code_msg=GlobalStatusCode.success())
 
 
-@api_view(["POST"])
-@verify_parameter(["project_id", "name", "v", "type"], "POST")
-def update_project(request):
+class UpdateProject(APIView):
     """
     修改项目
-    project_id: 项目唯一id
-    name: 项目名称
-    v: 项目版本
-    type: 项目类型
-    description: 项目描述
-    :return:
     """
-    project_id = request.POST.get("project_id")
-    if not project_id.isdecimal():
-        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    name = request.POST.get("name")
-    version = request.POST.get("v")
-    _type = request.POST.get("type")
-    description = request.POST.get("description")
-    if _type in ["Web", "App"]:
-        obj = Project.objects.filter(id=project_id)
-        if obj:
-            obi = Project.objects.filter(name=name).exclude(id=project_id)
-            if len(obi) == 0:
-                obj.update(name=name, version=version, type=_type, description=description,
-                           user=User.objects.get(id=request.user.pk))
-                record = ProjectDynamic(project=Project.objects.get(id=project_id), type="修改",
-                                        operationObject="项目", user=User.objects.get(id=request.user.pk),
-                                        description="修改项目“%s”" % name)
-                record.save()
-                return JsonResponse(code_msg=GlobalStatusCode.success())
+    def parameter_check(self, data):
+        """
+        校验参数
+        :param data:
+        :return:
+        """
+        try:
+            # 校验project_id类型为int
+            if not isinstance(data["project_id"], int):
+                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            # 必传参数 name, version , type
+            if not data["name"] or not data["version"] or not data["type"]:
+                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            # type 必为Web， App
+            if data["type"] not in ["Web", "App"]:
+                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+        except KeyError:
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
 
-            else:
-                return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
-        else:
+    def record_dynamic(self, project, user, data):
+        """
+        记录修改项目动态
+        :param project: 项目ID
+        :param user:  用户ID
+        :param data:  操作内容
+        :return:
+        """
+        dynamic_serializer = ProjectDynamicDeserializer(data={
+            "project": project, "type": "修改",
+            "operationObject": "修改项目", "user": user,
+            "description": "修改项目“%s”" % data
+        }
+        )
+        if dynamic_serializer.is_valid():
+            dynamic_serializer.save()
+
+    def post(self, request):
+        data = JSONParser().parse(request)
+        result = self.parameter_check(data)
+        if result:
+            return result
+        try:
+            obj = Project.objects.get(id=data["project_id"])
+        except ObjectDoesNotExist:
             return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
-    else:
-        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+        obi = Project.objects.filter(name=data["name"]).exclude(id=data["project_id"])
+        if len(obi) == 0:
+            serializer = ProjectDeserializer(data=data)
+            with transaction.atomic():
+                if serializer.is_valid():
+                    serializer.update(instance=obj, validated_data=data)
+                    self.record_dynamic(data["project_id"], request.user.pk, data["name"])
+                    return JsonResponse(code_msg=GlobalStatusCode.success())
+        else:
+            return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
 
 
 @api_view(["POST"])

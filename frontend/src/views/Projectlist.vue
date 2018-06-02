@@ -344,7 +344,13 @@ methods: {
                             type: "post",
                             url: test+"/api/project/update_project",
                             async: true,
-                            data: { project_id: self.editForm.id, name: self.editForm.name, type: self.editForm.type, v: self.editForm.version, description: self.editForm.description },
+                            data: {
+                                project_id: self.editForm.id,
+                                name: self.editForm.name,
+                                type: self.editForm.type,
+                                version: self.editForm.version,
+                                description: self.editForm.description
+                            },
                             headers: {
                                 Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                             },
@@ -389,7 +395,7 @@ methods: {
                             type: "post",
                             url: test+"/api/project/add_project",
                             async: true,
-                            data: { name: self.addForm.name, type: self.addForm.type, v: self.addForm.version, description: self.addForm.description },
+                            data: { name: self.addForm.name, type: self.addForm.type, version: self.addForm.version, description: self.addForm.description },
                             headers: {
                                 Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                             },

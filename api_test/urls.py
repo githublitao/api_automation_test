@@ -4,13 +4,13 @@ from api_test.api import ApiDoc, automationCase as Case, member, dynamic, user
 from api_test.api import automationReport as report
 from api_test.api.global_parameter import host_total, add_host, update_host, del_host, enable_host, disable_host
 from api_test.api.projectList import ProjectList, AddProject, update_project, del_project, disable_project, \
-     enable_project
+    enable_project, UpdateProject
 from api_test.api.projectTitle import project_info
 
 urlpatterns = [
     url(r'project/project_list', ProjectList.as_view()),
     url(r'project/add_project', AddProject.as_view()),
-    url(r'project/update_project', update_project),
+    url(r'project/update_project', UpdateProject.as_view()),
     url(r'project/del_project', del_project),
     url(r'project/disable_project', disable_project),
     url(r'project/enable_project', enable_project),
