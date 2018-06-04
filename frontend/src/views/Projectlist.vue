@@ -233,8 +233,9 @@ methods: {
                 type: "post",
                 url: test+"/api/project/del_project",
                 async: true,
-                data: {ids: row.id},
+                data: JSON.stringify({ids: [row.id, ]}),
                 headers: {
+                    "Content-Type": "application/json",
                     Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                 },
                 timeout: 5000,
@@ -266,8 +267,9 @@ methods: {
                     type: "post",
                     url: test+"/api/project/disable_project",
                     async: true,
-                    data: { project_id: row.id},
+                    data: JSON.stringify({ project_id: row.id}),
                     headers: {
+                        "Content-Type": "application/json",
                         Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                     },
                     timeout: 5000,
@@ -294,8 +296,9 @@ methods: {
                     type: "post",
                     url: test+"/api/project/enable_project",
                     async: true,
-                    data: { project_id: row.id},
+                    data: JSON.stringify({ project_id: row.id}),
                     headers: {
+                        "Content-Type": "application/json",
                         Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                     },
                     timeout: 5000,
@@ -340,18 +343,20 @@ methods: {
 					this.$confirm('确认提交吗？', '提示', {}).then(() => {
 						self.editLoading = true;
 						//NProgress.start();
-						$.ajax({
-                            type: "post",
-                            url: test+"/api/project/update_project",
-                            async: true,
-                            data: {
+                        let data = JSON.stringify({
                                 project_id: self.editForm.id,
                                 name: self.editForm.name,
                                 type: self.editForm.type,
                                 version: self.editForm.version,
                                 description: self.editForm.description
-                            },
+                            });
+						$.ajax({
+                            type: "post",
+                            url: test+"/api/project/update_project",
+                            async: true,
+                            data: data,
                             headers: {
+                                "Content-Type": "application/json",
                                 Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                             },
                             timeout: 5000,
@@ -391,12 +396,19 @@ methods: {
 					this.$confirm('确认提交吗？', '提示', {}).then(() => {
 						self.addLoading = true;
 						//NProgress.start();
+                        let data = JSON.stringify({
+                            name: self.addForm.name,
+                            type: self.addForm.type,
+                            version: self.addForm.version,
+                            description: self.addForm.description
+                        });
                         $.ajax({
                             type: "post",
                             url: test+"/api/project/add_project",
                             async: true,
-                            data: { name: self.addForm.name, type: self.addForm.type, version: self.addForm.version, description: self.addForm.description },
+                            data: data,
                             headers: {
+                                "Content-Type": "application/json",
                                 Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                             },
                             timeout: 5000,
@@ -436,7 +448,7 @@ methods: {
 		},
 		//批量删除
 		batchRemove: function () {
-			let ids = this.sels.map(item => item.id).toString();
+			let ids = this.sels.map(item => item.id);
 			let self = this;
 			this.$confirm('确认删除选中记录吗？', '提示', {
 				type: 'warning'
@@ -447,8 +459,9 @@ methods: {
                     type: "post",
                     url: test+"/api/project/del_project",
                     async: true,
-                    data:{ids: ids},
+                    data:JSON.stringify({ids: ids}),
                     headers: {
+                        "Content-Type": "application/json",
                         Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                     },
                     timeout: 5000,

@@ -1,11 +1,9 @@
 import json
 import logging
-import re
 
 from datetime import datetime
 
 from django.contrib.auth.models import User
-from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
@@ -19,12 +17,11 @@ from api_test.common.common import verify_parameter, record_dynamic, create_json
 from api_test.common.confighttp import test_api
 from api_test.models import Project, AutomationGroupLevelFirst, AutomationGroupLevelSecond, \
     AutomationTestCase, AutomationCaseApi, AutomationParameter, GlobalHost, AutomationHead, AutomationTestTask, \
-    AutomationTestResult, ApiInfo, AutomationParameterRaw, AutomationResponseJson, AutomationTaskRunTime, \
-    AutomationCaseTestResult
+    AutomationTestResult, ApiInfo, AutomationParameterRaw, AutomationResponseJson
+
 from api_test.serializers import AutomationGroupLevelFirstSerializer, AutomationTestCaseSerializer, \
     AutomationCaseApiSerializer, AutomationCaseApiListSerializer, AutomationTestTaskSerializer, \
-    AutomationTestResultSerializer, ApiInfoSerializer, CorrelationDataSerializer, AutomationTestReportSerializer, \
-    AutomationTaskRunTimeSerializer, AutomationAutoTestResultSerializer
+    AutomationTestResultSerializer, ApiInfoSerializer, CorrelationDataSerializer, AutomationTestReportSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -83,7 +80,8 @@ def add_group(request):
         else:
             obi = AutomationGroupLevelFirst(project=Project.objects.get(id=project_id), name=name)
             obi.save()
-        record_dynamic(project_id, "新增", "用例分组", "新增用例分组“%s”" % obi.name)
+        record_dynamic(project=project_id,
+                       _type="新增", operationObject="用例分组", user=request.user.pk, data="新增用例分组“%s”" % obi.name)
         return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
@@ -121,7 +119,8 @@ def del_group(request):
                     return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
             else:
                 obi.delete()
-            record_dynamic(project_id, "删除", "用例分组", "删除用例分组“%s”" % name)
+            record_dynamic(project=project_id,
+                           _type="删除", operationObject="用例分组", user=request.user.pk, data="删除用例分组“%s”" % name)
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
@@ -163,7 +162,8 @@ def update_name_group(request):
             # 修改一级分组名称
             else:
                 obi.update(name=name)
-            record_dynamic(project_id, "修改", "用例分组", "修改用例分组“%s”" % name)
+            record_dynamic(project=project_id,
+                           _type="修改", operationObject="用例分组", user=request.user.pk, data="修改用例分组“%s”" % name)
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
@@ -216,7 +216,8 @@ def update_case_group(request):
                         automationGroupLevelFirst=AutomationGroupLevelFirst.objects.get(id=first_group_id))
             else:
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-            record_dynamic(project_id, "修改", "用例", "修改用例分组，列表\"%s\"" % id_list)
+            record_dynamic(project=project_id,
+                           _type="修改", operationObject="用例", user=request.user.pk, data="修改用例分组，列表\"%s\"" % id_list)
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
@@ -324,7 +325,8 @@ def add_case(request):
             else:
                 case = AutomationTestCase(caseName=name, user=User.objects.get(id=request.user.pk), description=description)
                 case.save()
-            record_dynamic(project_id, "新增", "用例", "新增用例\"%s\"" % name)
+            record_dynamic(project=project_id,
+                           _type="新增", operationObject="用例", user=request.user.pk, data="新增用例，列表\"%s\"" % name)
             return JsonResponse(data={
                 "case_id": case.pk
             }, code_msg=GlobalStatusCode.success())
@@ -359,7 +361,8 @@ def update_case(request):
         obi = AutomationTestCase.objects.filter(caseName=name, project=project_id).exclude(id=case_id)
         if len(obi) == 0:
             obm.update(caseName=name, description=description)
-            record_dynamic(project_id, "修改", "用例", "修改用例\"%s\"" % name)
+            record_dynamic(project=project_id,
+                           _type="修改", operationObject="用例", user=request.user.pk, data="修改用例\"%s\"" % name)
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
@@ -391,7 +394,8 @@ def del_case(request):
             if len(obi) != 0:
                 name = obi[0].caseName
                 obi.delete()
-                record_dynamic(project_id, "删除", "用例", "删除用例\"%s\"" % name)
+                record_dynamic(project=project_id,
+                               _type="删除", operationObject="用例", user=request.user.pk, data="删除用例\"%s\"" % name)
         return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
@@ -521,7 +525,9 @@ def add_old_api(request):
                                                    name=n["name"], value=n["value"], interrelate=False).save()
                         case_name = AutomationTestCaseSerializer(AutomationTestCase.objects
                                                                  .get(id=case_id)).data["caseName"]
-                        record_dynamic(project_id, "新增", "用例接口", "用例“%s”新增接口\"%s\"" % (case_name, case_api.name))
+                        record_dynamic(project=project_id,
+                                       _type="新增", operationObject="用例接口", user=request.user.pk,
+                                       data="用例“%s”新增接口\"%s\"" % (case_name, case_api.name))
                 except ObjectDoesNotExist:
                     pass
             return JsonResponse(code_msg=GlobalStatusCode.success())
@@ -616,7 +622,9 @@ def add_new_api(request):
                         create_json(api_id, api, response)
                     except KeyError:
                         return JsonResponse(code_msg=GlobalStatusCode.fail())
-                record_dynamic(data["project_id"], "新增", "用例接口", "用例“%s”新增接口\"%s\"" % (case_name, data["name"]))
+                record_dynamic(project=data["project_id"],
+                               _type="新增", operationObject="用例接口", user=request.user.pk,
+                               data="用例“%s”新增接口\"%s\"" % (case_name, data["name"]))
             return JsonResponse(data={
                 "api_id": case_api.pk
             }, code_msg=GlobalStatusCode.success())
@@ -778,7 +786,9 @@ def update_api(request):
                             return JsonResponse(code_msg=GlobalStatusCode.fail())
                     else:
                         AutomationResponseJson.objects.filter(automationCaseApi=data["api_id"]).delete()
-                record_dynamic(data["project_id"], "修改", "用例接口", "修改用例“%s”接口\"%s\"" % (obi[0].caseName, data["name"]))
+                record_dynamic(project=data["project_id"],
+                               _type="修改", operationObject="用例接口",
+                               user=request.user.pk, data="修改用例“%s”接口\"%s\"" % (obi[0].caseName, data["name"]))
                 return JsonResponse(code_msg=GlobalStatusCode.success())
             else:
                 return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
@@ -816,7 +826,9 @@ def del_api(request):
                 if len(obi) != 0:
                     name = obi[0].name
                     obi.delete()
-                    record_dynamic(project_id, "删除", "用例接口", "删除用例\"%s\"的接口\"%s\"" % (obm[0].caseName, name))
+                    record_dynamic(project=project_id,
+                                   _type="删除", operationObject="用例接口",
+                                   user=request.user.pk, data="删除用例\"%s\"的接口\"%s\"" % (obm[0].caseName, name))
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
@@ -851,7 +863,9 @@ def start_test(request):
                 if obn:
                     AutomationTestResult.objects.filter(automationCaseApi=_id).delete()
                     result = test_api(host_id=host_id, case_id=case_id, _id=_id, project_id=project_id)
-                    record_dynamic(project_id, "测试", "用例接口", "测试用例“%s”接口\"%s\"" % (obi[0].caseName, obn[0].name))
+                    record_dynamic(project=project_id,
+                                   _type="测试", operationObject="用例接口",
+                                   user=request.user.pk, data="测试用例“%s”接口\"%s\"" % (obi[0].caseName, obn[0].name))
                     return JsonResponse(data={
                         "result": result
                     }, code_msg=GlobalStatusCode.success())
@@ -928,7 +942,9 @@ def add_time_task(request):
                         _id.save()
                     else:
                         return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
-                record_dynamic(project_id, "新增", "任务", "新增循环任务\"%s\"" % name)
+                record_dynamic(project=project_id,
+                               _type="新增", operationObject="任务",
+                               user=request.user.pk, data="新增循环任务\"%s\"" % name)
                 add(host_id=host_id, _type=_type,
                     start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"),
                     frequency=frequency, unit=unit, project=project_id)
@@ -951,7 +967,9 @@ def add_time_task(request):
                         _id.save()
                     else:
                         return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
-                record_dynamic(project_id, "新增", "任务", "新增定时任务\"%s\"" % name)
+                record_dynamic(project=project_id,
+                               _type="新增", operationObject="任务",
+                               user=request.user.pk, data="新增定时任务\"%s\"" % name)
                 add(host_id=host_id, _type=_type, project=project_id,
                     start_time=request.POST.get("startTime"), end_time=request.POST.get("endTime"))
             return JsonResponse(data={
@@ -1006,7 +1024,9 @@ def del_task(request):
             if obm:
                 obm.delete()
                 del_task_crontab(project_id)
-                record_dynamic(project_id, "删除", "任务", "删除任务")
+                record_dynamic(project=project_id,
+                               _type="删除", operationObject="任务",
+                               user=request.user.pk, data="删除任务")
                 return JsonResponse(code_msg=GlobalStatusCode.success())
             else:
                 return JsonResponse(code_msg=GlobalStatusCode.task_not_exist())

@@ -2,25 +2,25 @@ from django.conf.urls import url
 
 from api_test.api import ApiDoc, automationCase as Case, member, dynamic, user
 from api_test.api import automationReport as report
-from api_test.api.global_parameter import host_total, add_host, update_host, del_host, enable_host, disable_host
-from api_test.api.projectList import ProjectList, AddProject, update_project, del_project, disable_project, \
-    enable_project, UpdateProject
-from api_test.api.projectTitle import project_info
+from api_test.api.global_parameter import HostTotal, AddHost, UpdateHost, DelHost, DisableHost, EnableHost
+from api_test.api.projectList import ProjectList, AddProject, DelProject, \
+    EnableProject, UpdateProject, DisableProject
+from api_test.api.projectTitle import ProjectInfo
 
 urlpatterns = [
     url(r'project/project_list', ProjectList.as_view()),
     url(r'project/add_project', AddProject.as_view()),
     url(r'project/update_project', UpdateProject.as_view()),
-    url(r'project/del_project', del_project),
-    url(r'project/disable_project', disable_project),
-    url(r'project/enable_project', enable_project),
-    url(r'title/project_info', project_info),
-    url(r'global/host_total', host_total),
-    url(r'global/add_host', add_host),
-    url(r'global/update_host', update_host),
-    url(r'global/del_host', del_host),
-    url(r'global/disable_host', disable_host),
-    url(r'global/enable_host', enable_host),
+    url(r'project/del_project', DelProject.as_view()),
+    url(r'project/disable_project', DisableProject.as_view()),
+    url(r'project/enable_project', EnableProject.as_view()),
+    url(r'title/project_info', ProjectInfo.as_view()),
+    url(r'global/host_total', HostTotal.as_view()),
+    url(r'global/add_host', AddHost.as_view()),
+    url(r'global/update_host', UpdateHost.as_view()),
+    url(r'global/del_host', DelHost.as_view()),
+    url(r'global/disable_host', DisableHost.as_view()),
+    url(r'global/enable_host', EnableHost.as_view()),
     url(r'api/group', ApiDoc.group),
     url(r'api/add_group', ApiDoc.add_group),
     url(r'api/update_name_group', ApiDoc.update_name_group),

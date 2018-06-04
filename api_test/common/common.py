@@ -2,6 +2,8 @@ import django
 import sys
 import os
 
+from api_test.serializers import ProjectDynamicDeserializer
+
 curPath = os.path.abspath(os.path.dirname(__file__))
 rootPath = os.path.split(curPath)[0]
 PathProject = os.path.split(rootPath)[0]
@@ -165,21 +167,6 @@ def record_auto_results(_id, time,  header, parameter, _result, code, response_d
     result_.save()
 
 
-def record_dynamic(project_id, _type, _object, desc):
-    """
-    记录动态
-    :param project_id:  项目ID
-    :param _type:  操作类型
-    :param _object:  操作对象
-    :param desc:  描述
-    :return:
-    """
-    record = ProjectDynamic(project=Project.objects.get(id=project_id), type=_type,
-                            operationObject=_object, user=User.objects.get(id=1),
-                            description=desc)
-    record.save()
-
-
 def create_json(api_id, api, data):
     """
     根据json数据生成关联数据接口
@@ -201,3 +188,23 @@ def del_task_crontab(project):
     my_user_cron.remove_all(comment=project+"_开始")
     my_user_cron.remove_all(comment=project+"_结束")
     my_user_cron.write()
+
+
+def record_dynamic(project, _type, operationObject,  user, data):
+    """
+    记录动态
+    :param project: 项目ID
+    :param _type: 类型
+    :param operationObject:  操作对象
+    :param user:  用户ID
+    :param data:  操作内容
+    :return:
+    """
+    dynamic_serializer = ProjectDynamicDeserializer(data={
+        "project": project, "type": "禁用",
+        "operationObject": operationObject, "user": user,
+        "description": data
+    }
+    )
+    if dynamic_serializer.is_valid():
+        dynamic_serializer.save()

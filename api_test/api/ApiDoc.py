@@ -76,7 +76,8 @@ def add_group(request):
         else:
             obi = ApiGroupLevelFirst(project=Project.objects.get(id=project_id), name=name)
             obi.save()
-        record_dynamic(project_id, "新增", "接口分组", "新增接口分组“%s”" % obi.name)
+        record_dynamic(project=project_id,
+                       _type="新增", operationObject="接口分组", user=request.user.pk, data="新增接口分组“%s”" % obi.name)
         return JsonResponse(data={
             "group_id": obi.pk
         }, code_msg=GlobalStatusCode.success())
@@ -118,7 +119,8 @@ def update_name_group(request):
             # 修改一级分组名称
             else:
                 obi.update(name=name)
-            record_dynamic(project_id, "修改", "接口分组", "修改接口分组“%s”" % name)
+            record_dynamic(project=project_id,
+                           _type="修改", operationObject="接口分组", user=request.user.pk, data="修改接口分组“%s”" % name)
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
@@ -157,7 +159,8 @@ def del_group(request):
                     return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
             else:
                 obi.delete()
-            record_dynamic(project_id, "删除", "接口分组", "删除接口分组“%s”" % name)
+            record_dynamic(project=project_id,
+                           _type="删除", operationObject="接口分组", user=request.user.pk, data="删除接口分组“%s”" % name)
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
@@ -335,7 +338,9 @@ def add_api(request):
                             except KeyError:
                                 logging.exception("Error")
                                 return JsonResponse(code_msg=GlobalStatusCode.fail())
-                    record_dynamic(data["project_id"], "新增", "接口", "新增接口“%s”" % data["name"])
+                    record_dynamic(project=data["project_id"],
+                                   _type="新增", operationObject="接口", user=request.user.pk,
+                                   data="新增接口“%s”" % data["name"])
                     api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=oba.pk), user=User.objects.get(id=request.user.pk),
                                                      description="新增接口\"%s\"" % data["name"])
                     api_record.save()
@@ -520,7 +525,9 @@ def update_api(request):
                                         ApiResponse(api=ApiInfo.objects.get(id=data["api_id"]), name=i["name"],
                                                     value=i["value"], required=i["required"], _type=i["_type"],
                                                     description=i["description"]).save()
-                            record_dynamic(data["project_id"], "修改", "接口", "修改接口“%s”" % data["name"])
+                            record_dynamic(project=data["project_id"],
+                                           _type="修改", operationObject="接口", user=request.user.pk,
+                                           data="修改接口“%s”" % data["name"])
                         api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=data["api_id"]),
                                                          user=User.objects.get(id=request.user.pk),
                                                          description="修改接口\"%s\"" % data["name"])
@@ -562,7 +569,8 @@ def del_api(request):
             if len(obi) != 0:
                 name = obi[0].name
                 obi.delete()
-                record_dynamic(project_id, "删除", "接口", "删除接口“%s”" % name)
+                record_dynamic(project=project_id,
+                               _type="删除", operationObject="接口", user=request.user.pk, data="删除接口“%s”" % name)
         return JsonResponse(code_msg=GlobalStatusCode.success())
     else:
         return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
@@ -613,7 +621,8 @@ def update_group(request):
                         apiGroupLevelFirst=ApiGroupLevelFirst.objects.get(id=first_group_id))
             else:
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-            record_dynamic(project_id, "修改", "接口", "修改接口分组，列表“%s”" % id_list)
+            record_dynamic(project=project_id,
+                           _type="修改", operationObject="接口", user=request.user.pk, data="修改接口分组，列表“%s”" % id_list)
             return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())

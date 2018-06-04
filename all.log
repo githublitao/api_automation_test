@@ -4235,3 +4235,1484 @@ Traceback (most recent call last):
     code, msg = code_msg
 TypeError: 'NoneType' object is not iterable
 2018-06-01 17:58:19,081,3648,django.server,ERROR,basehttp.py:124,"POST /api/project/add_project HTTP/1.1" 500 19289
+2018-06-02 11:23:57,573,8568,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/update_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+TypeError: __init__() takes 1 positional argument but 2 were given
+2018-06-02 11:23:57,853,8568,django.server,ERROR,basehttp.py:124,"POST /api/project/update_project HTTP/1.1" 500 65348
+2018-06-02 11:27:11,823,9456,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/update_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 116, in post
+    obj = Project.objects.filter(id=data["project_id"])
+KeyError: 'project_id'
+2018-06-02 11:27:12,033,9456,django.server,ERROR,basehttp.py:124,"POST /api/project/update_project HTTP/1.1" 500 17660
+2018-06-02 11:28:19,874,6340,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/update_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 116, in post
+    obj = Project.objects.filter(id=data["project_id"])
+KeyError: 'project_id'
+2018-06-02 11:28:19,929,6340,django.server,ERROR,basehttp.py:124,"POST /api/project/update_project HTTP/1.1" 500 17660
+2018-06-02 11:36:00,992,3852,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/update_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 116, in post
+    obj = Project.objects.filter(id=data["project_id"])
+KeyError: 'project_id'
+2018-06-02 11:36:01,085,3852,django.server,ERROR,basehttp.py:124,"POST /api/project/update_project HTTP/1.1" 500 17660
+2018-06-02 11:57:37,670,10060,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/update_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 118, in post
+    result = self.parameter_check(data)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 107, in parameter_check
+    if not data["project_id"].isdecimal():
+AttributeError: 'int' object has no attribute 'isdecimal'
+2018-06-02 11:57:37,705,10060,django.server,ERROR,basehttp.py:124,"POST /api/project/update_project HTTP/1.1" 500 17859
+2018-06-02 12:00:31,162,7432,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/update_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 496, in dispatch
+    self.response = self.finalize_response(request, response, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 411, in finalize_response
+    % type(response)
+AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`
+2018-06-02 12:00:31,239,7432,django.server,ERROR,basehttp.py:124,"POST /api/project/update_project HTTP/1.1" 500 82194
+2018-06-02 12:10:54,567,4216,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/add_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 95, in post
+    self.add_project_member((project_serializer.data.get("id"), request.user.pk))
+TypeError: add_project_member() missing 1 required positional argument: 'user'
+2018-06-02 12:10:54,601,4216,django.server,ERROR,basehttp.py:124,"POST /api/project/add_project HTTP/1.1" 500 17794
+2018-06-02 12:11:42,966,9144,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/update_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 127, in post
+    serializer.update(validated_data=data)
+TypeError: update() missing 1 required positional argument: 'instance'
+2018-06-02 12:11:42,997,9144,django.server,ERROR,basehttp.py:124,"POST /api/project/update_project HTTP/1.1" 500 17756
+2018-06-02 12:12:25,672,6120,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/update_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 127, in post
+    serializer.update(validated_data=data, instance=True)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\serializers.py", line 946, in update
+    info = model_meta.get_field_info(instance)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\utils\model_meta.py", line 35, in get_field_info
+    opts = model._meta.concrete_model._meta
+AttributeError: 'bool' object has no attribute '_meta'
+2018-06-02 12:12:25,853,6120,django.server,ERROR,basehttp.py:124,"POST /api/project/update_project HTTP/1.1" 500 18064
+2018-06-02 12:14:22,434,7232,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/update_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 496, in dispatch
+    self.response = self.finalize_response(request, response, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 411, in finalize_response
+    % type(response)
+AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`
+2018-06-02 12:14:22,530,7232,django.server,ERROR,basehttp.py:124,"POST /api/project/update_project HTTP/1.1" 500 82195
+2018-06-02 12:15:15,005,9632,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/update_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 127, in post
+    serializer.update()
+TypeError: update() missing 2 required positional arguments: 'instance' and 'validated_data'
+2018-06-02 12:15:15,052,9632,django.server,ERROR,basehttp.py:124,"POST /api/project/update_project HTTP/1.1" 500 17781
+2018-06-02 12:16:55,612,9296,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/update_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 127, in post
+    serializer.update(instance=Project, validated_data=data)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\serializers.py", line 958, in update
+    instance.save()
+TypeError: save() missing 1 required positional argument: 'self'
+2018-06-02 12:16:55,654,9296,django.server,ERROR,basehttp.py:124,"POST /api/project/update_project HTTP/1.1" 500 17895
+2018-06-02 12:24:59,997,9884,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/update_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+TypeError: post() missing 1 required positional argument: 'pk'
+2018-06-02 12:25:00,030,9884,django.server,ERROR,basehttp.py:124,"POST /api/project/update_project HTTP/1.1" 500 17599
+2018-06-02 12:28:45,355,4600,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/update_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 123, in post
+    self.get_object(1)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 117, in get_object
+    return Project.objects.get(id=pk)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 403, in get
+    self.model._meta.object_name
+api_test.models.DoesNotExist: Project matching query does not exist.
+2018-06-02 12:28:45,487,4600,django.server,ERROR,basehttp.py:124,"POST /api/project/update_project HTTP/1.1" 500 18158
+2018-06-02 12:30:07,377,8700,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/update_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 118, in get_object
+    return Project.objects.get(id=pk)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 403, in get
+    self.model._meta.object_name
+api_test.models.DoesNotExist: Project matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 124, in post
+    self.get_object(1)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 119, in get_object
+    except models.DoesNotExist:
+AttributeError: module 'api_test.models' has no attribute 'DoesNotExist'
+2018-06-02 12:30:07,421,8700,django.server,ERROR,basehttp.py:124,"POST /api/project/update_project HTTP/1.1" 500 18432
+2018-06-02 12:30:31,055,1056,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/update_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 118, in get_object
+    return Project.objects.get(id=pk)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 403, in get
+    self.model._meta.object_name
+api_test.models.DoesNotExist: Project matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 124, in post
+    self.get_object(1)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 120, in get_object
+    raise KeyError
+KeyError
+2018-06-02 12:30:31,110,1056,django.server,ERROR,basehttp.py:124,"POST /api/project/update_project HTTP/1.1" 500 18311
+2018-06-02 12:34:19,017,4204,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/update_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 123, in post
+    obj = Project.objects.get(id=data["project_id"])
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 403, in get
+    self.model._meta.object_name
+api_test.models.DoesNotExist: Project matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 124, in post
+    except Project.DoseNotExist:
+AttributeError: type object 'Project' has no attribute 'DoseNotExist'
+2018-06-02 12:34:19,084,4204,django.server,ERROR,basehttp.py:124,"POST /api/project/update_project HTTP/1.1" 500 18321
+2018-06-04 14:58:07,014,7516,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/del_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 247, in execute
+    res = self._query(query)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 374, in _do_query
+    db.query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+_mysql_exceptions.ProgrammingError: (1146, "Table 'api_test.api_test_automationreportsendconfig' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 244, in post
+    obj.delete()
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 891, in delete
+    return collector.delete()
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\deletion.py", line 283, in delete
+    count = qs._raw_delete(using=self.using)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 676, in _raw_delete
+    return sql.DeleteQuery(self.model).delete_qs(self, using)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\subqueries.py", line 75, in delete_qs
+    cursor = self.get_compiler(using).execute_sql(CURSOR)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1064, in execute_sql
+    cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 247, in execute
+    res = self._query(query)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 374, in _do_query
+    db.query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+django.db.utils.ProgrammingError: (1146, "Table 'api_test.api_test_automationreportsendconfig' doesn't exist")
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 246, in post
+    return JsonResponse(GlobalStatusCode.fail())
+  File "E:\project\api_automation_test\api_test\common\api_response.py", line 23, in __init__
+    code, msg = code_msg
+TypeError: 'NoneType' object is not iterable
+2018-06-04 14:58:07,246,7516,django.server,ERROR,basehttp.py:124,"POST /api/project/del_project HTTP/1.1" 500 22396
+2018-06-04 14:58:36,331,7516,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/del_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 247, in execute
+    res = self._query(query)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 374, in _do_query
+    db.query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+_mysql_exceptions.ProgrammingError: (1146, "Table 'api_test.api_test_automationreportsendconfig' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 244, in post
+    obj.delete()
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 891, in delete
+    return collector.delete()
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\deletion.py", line 283, in delete
+    count = qs._raw_delete(using=self.using)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 676, in _raw_delete
+    return sql.DeleteQuery(self.model).delete_qs(self, using)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\subqueries.py", line 75, in delete_qs
+    cursor = self.get_compiler(using).execute_sql(CURSOR)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1064, in execute_sql
+    cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 247, in execute
+    res = self._query(query)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 374, in _do_query
+    db.query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+django.db.utils.ProgrammingError: (1146, "Table 'api_test.api_test_automationreportsendconfig' doesn't exist")
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 246, in post
+    return JsonResponse(GlobalStatusCode.fail())
+  File "E:\project\api_automation_test\api_test\common\api_response.py", line 23, in __init__
+    code, msg = code_msg
+TypeError: 'NoneType' object is not iterable
+2018-06-04 14:58:36,397,7516,django.server,ERROR,basehttp.py:124,"POST /api/project/del_project HTTP/1.1" 500 22397
+2018-06-04 14:59:33,820,3916,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/del_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 247, in execute
+    res = self._query(query)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 374, in _do_query
+    db.query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+_mysql_exceptions.ProgrammingError: (1146, "Table 'api_test.api_test_automationreportsendconfig' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 244, in post
+    obj.delete()
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 662, in delete
+    deleted, _rows_count = collector.delete()
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\deletion.py", line 283, in delete
+    count = qs._raw_delete(using=self.using)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 676, in _raw_delete
+    return sql.DeleteQuery(self.model).delete_qs(self, using)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\subqueries.py", line 75, in delete_qs
+    cursor = self.get_compiler(using).execute_sql(CURSOR)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1064, in execute_sql
+    cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 247, in execute
+    res = self._query(query)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 374, in _do_query
+    db.query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+django.db.utils.ProgrammingError: (1146, "Table 'api_test.api_test_automationreportsendconfig' doesn't exist")
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 246, in post
+    return JsonResponse(GlobalStatusCode.fail())
+  File "E:\project\api_automation_test\api_test\common\api_response.py", line 23, in __init__
+    code, msg = code_msg
+TypeError: 'NoneType' object is not iterable
+2018-06-04 14:59:33,908,3916,django.server,ERROR,basehttp.py:124,"POST /api/project/del_project HTTP/1.1" 500 22414
+2018-06-04 15:00:24,101,3916,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/del_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 247, in execute
+    res = self._query(query)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 374, in _do_query
+    db.query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+_mysql_exceptions.ProgrammingError: (1146, "Table 'api_test.api_test_automationreportsendconfig' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 244, in post
+    obj.delete()
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 662, in delete
+    deleted, _rows_count = collector.delete()
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\deletion.py", line 283, in delete
+    count = qs._raw_delete(using=self.using)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 676, in _raw_delete
+    return sql.DeleteQuery(self.model).delete_qs(self, using)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\subqueries.py", line 75, in delete_qs
+    cursor = self.get_compiler(using).execute_sql(CURSOR)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1064, in execute_sql
+    cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 247, in execute
+    res = self._query(query)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 374, in _do_query
+    db.query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+django.db.utils.ProgrammingError: (1146, "Table 'api_test.api_test_automationreportsendconfig' doesn't exist")
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 246, in post
+    return JsonResponse(GlobalStatusCode.fail())
+  File "E:\project\api_automation_test\api_test\common\api_response.py", line 23, in __init__
+    code, msg = code_msg
+TypeError: 'NoneType' object is not iterable
+2018-06-04 15:00:24,190,3916,django.server,ERROR,basehttp.py:124,"POST /api/project/del_project HTTP/1.1" 500 22414
+2018-06-04 15:02:21,488,8520,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/del_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 247, in execute
+    res = self._query(query)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 374, in _do_query
+    db.query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+_mysql_exceptions.ProgrammingError: (1146, "Table 'api_test.api_test_automationreportsendconfig' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "E:\project\api_automation_test\api_test\common\common.py", line 79, in verify
+    return func(reality_parameter)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 267, in del_project
+    obj.delete()
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 662, in delete
+    deleted, _rows_count = collector.delete()
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\deletion.py", line 283, in delete
+    count = qs._raw_delete(using=self.using)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 676, in _raw_delete
+    return sql.DeleteQuery(self.model).delete_qs(self, using)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\subqueries.py", line 75, in delete_qs
+    cursor = self.get_compiler(using).execute_sql(CURSOR)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1064, in execute_sql
+    cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 247, in execute
+    res = self._query(query)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 374, in _do_query
+    db.query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+django.db.utils.ProgrammingError: (1146, "Table 'api_test.api_test_automationreportsendconfig' doesn't exist")
+2018-06-04 15:02:21,597,8520,django.server,ERROR,basehttp.py:124,"POST /api/project/del_project HTTP/1.1" 500 22443
+2018-06-04 15:11:01,228,8744,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/del_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 496, in dispatch
+    self.response = self.finalize_response(request, response, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 411, in finalize_response
+    % type(response)
+AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`
+2018-06-04 15:11:01,338,8744,django.server,ERROR,basehttp.py:124,"POST /api/project/del_project HTTP/1.1" 500 82243
+2018-06-04 15:13:11,415,5900,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/del_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 496, in dispatch
+    self.response = self.finalize_response(request, response, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 411, in finalize_response
+    % type(response)
+AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`
+2018-06-04 15:13:11,529,5900,django.server,ERROR,basehttp.py:124,"POST /api/project/del_project HTTP/1.1" 500 82367
+2018-06-04 15:35:43,227,8060,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/del_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 246, in post
+    obj = Project.objects.filter(id=data["ids"])
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 836, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 854, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\query.py", line 1253, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\query.py", line 1277, in _add_q
+    split_subq=split_subq,
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\query.py", line 1215, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\query.py", line 1085, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\lookups.py", line 18, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\lookups.py", line 68, in get_prep_lookup
+    return self.lhs.output_field.get_prep_value(self.rhs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\fields\__init__.py", line 947, in get_prep_value
+    return int(value)
+TypeError: int() argument must be a string, a bytes-like object or a number, not 'list'
+2018-06-04 15:35:43,725,8060,django.server,ERROR,basehttp.py:124,"POST /api/project/del_project HTTP/1.1" 500 19745
+2018-06-04 15:36:23,038,8060,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/del_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 246, in post
+    obj = Project.objects.filter(id=data["ids"])
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 836, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 854, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\query.py", line 1253, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\query.py", line 1277, in _add_q
+    split_subq=split_subq,
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\query.py", line 1215, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\query.py", line 1085, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\lookups.py", line 18, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\lookups.py", line 68, in get_prep_lookup
+    return self.lhs.output_field.get_prep_value(self.rhs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\fields\__init__.py", line 947, in get_prep_value
+    return int(value)
+TypeError: int() argument must be a string, a bytes-like object or a number, not 'list'
+2018-06-04 15:36:23,176,8060,django.server,ERROR,basehttp.py:124,"POST /api/project/del_project HTTP/1.1" 500 19745
+2018-06-04 15:48:11,477,4428,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/disable_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 282, in post
+    obj.update(status=False)
+AttributeError: 'Project' object has no attribute 'update'
+2018-06-04 15:48:11,513,4428,django.server,ERROR,basehttp.py:124,"POST /api/project/disable_project HTTP/1.1" 500 18017
+2018-06-04 15:48:50,065,9256,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/disable_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 283, in post
+    obj.update(status=False)
+AttributeError: 'Project' object has no attribute 'update'
+2018-06-04 15:48:50,102,9256,django.server,ERROR,basehttp.py:124,"POST /api/project/disable_project HTTP/1.1" 500 18017
+2018-06-04 15:56:12,317,9832,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/disable_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 281, in post
+    self.record_dynamic(data["project_id"], request.user.pk, obj.name)
+AttributeError: 'QuerySet' object has no attribute 'name'
+2018-06-04 15:56:12,360,9832,django.server,ERROR,basehttp.py:124,"POST /api/project/disable_project HTTP/1.1" 500 18061
+2018-06-04 15:56:34,947,9832,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/disable_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 281, in post
+    self.record_dynamic(data["project_id"], request.user.pk, obj.name)
+AttributeError: 'QuerySet' object has no attribute 'name'
+2018-06-04 15:56:34,990,9832,django.server,ERROR,basehttp.py:124,"POST /api/project/disable_project HTTP/1.1" 500 18061
+2018-06-04 16:45:44,708,9276,django.request,ERROR,exception.py:118,Internal Server Error: /api/global/add_host
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 247, in execute
+    res = self._query(query)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 374, in _do_query
+    db.query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+_mysql_exceptions.OperationalError: (1048, "Column 'project_id' cannot be null")
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\global_parameter.py", line 111, in post
+    serializer.save()
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\serializers.py", line 214, in save
+    self.instance = self.create(validated_data)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\serializers.py", line 917, in create
+    instance = ModelClass.objects.create(**validated_data)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 417, in create
+    obj.save(force_insert=True, using=self.db)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1281, in execute_sql
+    cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 76, in execute
+    raise utils.IntegrityError(*tuple(e.args))
+django.db.utils.IntegrityError: (1048, "Column 'project_id' cannot be null")
+2018-06-04 16:45:45,057,9276,django.server,ERROR,basehttp.py:124,"POST /api/global/add_host HTTP/1.1" 500 21927
+2018-06-04 16:47:00,986,2492,django.request,ERROR,exception.py:118,Internal Server Error: /api/global/add_host
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 247, in execute
+    res = self._query(query)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 374, in _do_query
+    db.query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+_mysql_exceptions.OperationalError: (1048, "Column 'project_id' cannot be null")
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\global_parameter.py", line 112, in post
+    serializer.save()
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\serializers.py", line 214, in save
+    self.instance = self.create(validated_data)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\serializers.py", line 917, in create
+    instance = ModelClass.objects.create(**validated_data)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 417, in create
+    obj.save(force_insert=True, using=self.db)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1281, in execute_sql
+    cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 76, in execute
+    raise utils.IntegrityError(*tuple(e.args))
+django.db.utils.IntegrityError: (1048, "Column 'project_id' cannot be null")
+2018-06-04 16:47:01,336,2492,django.server,ERROR,basehttp.py:124,"POST /api/global/add_host HTTP/1.1" 500 21926
+2018-06-04 16:48:42,569,2312,django.request,ERROR,exception.py:118,Internal Server Error: /api/global/add_host
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 247, in execute
+    res = self._query(query)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 374, in _do_query
+    db.query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+_mysql_exceptions.OperationalError: (1048, "Column 'project_id' cannot be null")
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\global_parameter.py", line 113, in post
+    serializer.save()
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\serializers.py", line 214, in save
+    self.instance = self.create(validated_data)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\serializers.py", line 917, in create
+    instance = ModelClass.objects.create(**validated_data)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 417, in create
+    obj.save(force_insert=True, using=self.db)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1281, in execute_sql
+    cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 76, in execute
+    raise utils.IntegrityError(*tuple(e.args))
+django.db.utils.IntegrityError: (1048, "Column 'project_id' cannot be null")
+2018-06-04 16:48:42,880,2312,django.server,ERROR,basehttp.py:124,"POST /api/global/add_host HTTP/1.1" 500 21927
+2018-06-04 16:50:02,686,2464,django.request,ERROR,exception.py:118,Internal Server Error: /api/global/add_host
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 247, in execute
+    res = self._query(query)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 374, in _do_query
+    db.query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+_mysql_exceptions.OperationalError: (1048, "Column 'project_id' cannot be null")
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\global_parameter.py", line 111, in post
+    serializer.save()
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\serializers.py", line 214, in save
+    self.instance = self.create(validated_data)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\serializers.py", line 917, in create
+    instance = ModelClass.objects.create(**validated_data)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 417, in create
+    obj.save(force_insert=True, using=self.db)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1281, in execute_sql
+    cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 76, in execute
+    raise utils.IntegrityError(*tuple(e.args))
+django.db.utils.IntegrityError: (1048, "Column 'project_id' cannot be null")
+2018-06-04 16:50:02,977,2464,django.server,ERROR,basehttp.py:124,"POST /api/global/add_host HTTP/1.1" 500 21926
+2018-06-04 16:50:50,809,1872,django.request,ERROR,exception.py:118,Internal Server Error: /api/global/add_host
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 247, in execute
+    res = self._query(query)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\cursors.py", line 374, in _do_query
+    db.query(q)
+  File "E:\project\api_automation_test\venv\lib\site-packages\MySQLdb\connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+_mysql_exceptions.OperationalError: (1048, "Column 'project_id' cannot be null")
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\global_parameter.py", line 112, in post
+    serializer.save()
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\serializers.py", line 214, in save
+    self.instance = self.create(validated_data)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\serializers.py", line 917, in create
+    instance = ModelClass.objects.create(**validated_data)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 417, in create
+    obj.save(force_insert=True, using=self.db)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1281, in execute_sql
+    cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\backends\mysql\base.py", line 76, in execute
+    raise utils.IntegrityError(*tuple(e.args))
+django.db.utils.IntegrityError: (1048, "Column 'project_id' cannot be null")
+2018-06-04 16:50:51,062,1872,django.server,ERROR,basehttp.py:124,"POST /api/global/add_host HTTP/1.1" 500 21926
+2018-06-04 17:22:12,016,3756,django.request,ERROR,exception.py:118,Internal Server Error: /api/global/del_host
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\global_parameter.py", line 247, in post
+    self.record_dynamic(data["project_id"], request.user.pk, obj[0].name)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 307, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+2018-06-04 17:22:12,058,3756,django.server,ERROR,basehttp.py:124,"POST /api/global/del_host HTTP/1.1" 500 18142
+2018-06-04 17:27:09,424,8608,django.request,ERROR,exception.py:118,Internal Server Error: /api/global/del_host
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\global_parameter.py", line 253, in post
+    self.record_dynamic(data["project_id"], request.user.pk, obj[0].name)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\db\models\query.py", line 307, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+2018-06-04 17:27:09,480,8608,django.server,ERROR,basehttp.py:124,"POST /api/global/del_host HTTP/1.1" 500 18142
+2018-06-04 17:30:50,072,9908,django.request,ERROR,exception.py:118,Internal Server Error: /api/global/del_host
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\project\api_automation_test\venv\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\global_parameter.py", line 251, in post
+    obj.delele()
+AttributeError: 'QuerySet' object has no attribute 'delele'
+2018-06-04 17:30:50,206,9908,django.server,ERROR,basehttp.py:124,"POST /api/global/del_host HTTP/1.1" 500 17988

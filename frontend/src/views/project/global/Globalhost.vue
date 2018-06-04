@@ -189,8 +189,9 @@
                         type: "post",
                         url: test+"/api/global/del_host",
                         async: true,
-                        data: {project_id: this.$route.params.project_id, ids: row.id},
+                        data: JSON.stringify({project_id: Number(this.$route.params.project_id), ids: [row.id, ]}),
                         headers: {
+                            "Content-Type": "application/json",
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
                         timeout: 5000,
@@ -222,8 +223,9 @@
                         type: "post",
                         url: test+"/api/global/disable_host",
                         async: true,
-                        data: { project_id: this.$route.params.project_id, host_id: row.id},
+                        data: JSON.stringify({ project_id: Number(this.$route.params.project_id), host_id: Number(row.id)}),
                         headers: {
+                            "Content-Type": "application/json",
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
                         timeout: 5000,
@@ -250,8 +252,9 @@
                         type: "post",
                         url: test+"/api/global/enable_host",
                         async: true,
-                        data: { project_id: this.$route.params.project_id, host_id: row.id},
+                        data: JSON.stringify({ project_id: Number(this.$route.params.project_id), host_id: Number(row.id)}),
                         headers: {
+                            "Content-Type": "application/json",
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
                         timeout: 5000,
@@ -296,16 +299,18 @@
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             self.editLoading = true;
                             //NProgress.start();
+                            let data = JSON.stringify({ project_id: Number(this.$route.params.project_id),
+                                    host_id: Number(self.editForm.id),
+                                    name: self.editForm.name,
+                                    host: self.editForm.host,
+                                    description: self.editForm.description });
                             $.ajax({
                                 type: "post",
                                 url: test+"/api/global/update_host",
                                 async: true,
-                                data: { project_id: this.$route.params.project_id,
-                                    host_id: self.editForm.id,
-                                    name: self.editForm.name,
-                                    host: self.editForm.host,
-                                    description: self.editForm.description },
+                                data: data,
                                 headers: {
+                                    "Content-Type": "application/json",
                                     Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                                 },
                                 timeout: 5000,
@@ -349,11 +354,12 @@
                                 type: "post",
                                 url: test+"/api/global/add_host",
                                 async: true,
-                                data: { project_id: this.$route.params.project_id,
+                                data: JSON.stringify({ project_id: Number(this.$route.params.project_id),
                                     name: self.addForm.name,
                                     host: self.addForm.host,
-                                    description: self.addForm.description },
+                                    description: self.addForm.description }),
                                 headers: {
+                                    "Content-Type": "application/json",
                                     Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                                 },
                                 timeout: 5000,
@@ -393,7 +399,7 @@
             },
             //批量删除
             batchRemove: function () {
-                let ids = this.sels.map(item => item.id).toString();
+                let ids = this.sels.map(item => item.id);
                 let self = this;
                 this.$confirm('确认删除选中记录吗？', '提示', {
                     type: 'warning'
@@ -404,8 +410,9 @@
                         type: "post",
                         url: test+"/api/global/del_host",
                         async: true,
-                        data: {project_id: this.$route.params.project_id, ids: ids},
+                        data: JSON.stringify({project_id: Number(this.$route.params.project_id), ids: ids}),
                         headers: {
+                            "Content-Type": "application/json",
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
                         timeout: 5000,

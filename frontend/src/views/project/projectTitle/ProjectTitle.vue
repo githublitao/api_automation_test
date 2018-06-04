@@ -90,20 +90,21 @@
                     async: true,
                     data: { project_id: this.$route.params.project_id},
                     headers: {
+                        "Content-Type": "application/json",
                         Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                     },
                     timeout: 5000,
                     success: function(data) {
                         self.listLoading = false
                         if (data.code === '999999') {
-                            data = data.data
-                            self.type = data.type
-                            self.version = data.version
-                            self.updateDate = data.LastUpdateTime
-                            self.apiCount = data.apiCount
-                            self.dynamicCount = data.dynamicCount
-                            self.memberCount = data.memberCount
-                            self.createDate = data.createTime
+                            data = data.data;
+                            self.type = data.type;
+                            self.version = data.version;
+                            self.updateDate = data.LastUpdateTime;
+                            self.apiCount = data.apiCount;
+                            self.dynamicCount = data.dynamicCount;
+                            self.memberCount = data.memberCount;
+                            self.createDate = data.createTime;
                         }
                         else {
                             self.$message.error({
