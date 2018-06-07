@@ -3,7 +3,7 @@
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
-from api_test.models import Project, GlobalHost, ApiGroupLevelFirst, ApiGroupLevelSecond, ApiInfo, \
+from api_test.models import Project, GlobalHost, ApiGroupLevelFirst, ApiInfo, \
     APIRequestHistory, ApiOperationHistory, ProjectDynamic, ProjectMember, \
     AutomationGroupLevelSecond, AutomationGroupLevelFirst, AutomationTestCase, AutomationParameter, AutomationCaseApi, \
     AutomationTestResult, AutomationTestTask, AutomationHead, UserProfile, ApiHead, ApiParameter, ApiResponse, \
@@ -147,12 +147,8 @@ class CustomMethodForm(admin.ModelAdmin):
         }],)
 
 
-class APIGroupLevelSecondInFirst(admin.TabularInline):
-    model = ApiGroupLevelSecond
-
 
 class ApiGroupLevelFirstForm(admin.ModelAdmin):
-    inlines = [APIGroupLevelSecondInFirst]
     search_fields = ('name', 'project')
     list_display = ('id', 'project', 'name')
     list_display_links = ('id', 'project', 'name')

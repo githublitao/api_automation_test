@@ -5716,3 +5716,1277 @@ Traceback (most recent call last):
     obj.delele()
 AttributeError: 'QuerySet' object has no attribute 'delele'
 2018-06-04 17:30:50,206,9908,django.server,ERROR,basehttp.py:124,"POST /api/global/del_host HTTP/1.1" 500 17988
+2018-06-07 14:20:47,442,5680,django.request,ERROR,exception.py:118,Internal Server Error: /api/member/email_config
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+TypeError: __init__() takes 1 positional argument but 2 were given
+2018-06-07 14:20:47,576,5680,django.server,ERROR,basehttp.py:124,"POST /api/member/email_config HTTP/1.1" 500 64518
+2018-06-07 14:30:43,632,7832,django.request,ERROR,exception.py:118,Internal Server Error: /api/member/email_config
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\member.py", line 88, in post
+    obj = AutomationReportSendConfig.objects.get(project=data["project_id"])
+KeyError: 'project_id'
+2018-06-07 14:30:43,713,7832,django.server,ERROR,basehttp.py:124,"POST /api/member/email_config HTTP/1.1" 500 17007
+2018-06-07 14:31:47,683,7936,django.request,ERROR,exception.py:118,Internal Server Error: /api/member/email_config
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\member.py", line 88, in post
+    obj = AutomationReportSendConfig.objects.get(project=data["project"])
+KeyError: 'project'
+2018-06-07 14:31:47,717,7936,django.server,ERROR,basehttp.py:124,"POST /api/member/email_config HTTP/1.1" 500 16998
+2018-06-07 14:32:20,767,5840,django.request,ERROR,exception.py:118,Internal Server Error: /api/member/email_config
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\member.py", line 88, in post
+    obj = AutomationReportSendConfig.objects.get(project=data["project_id"])
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 403, in get
+    self.model._meta.object_name
+api_test.models.DoesNotExist: AutomationReportSendConfig matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.IntegrityError: (1048, "Column 'project_id' cannot be null")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\member.py", line 91, in post
+    serialize.save()
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 214, in save
+    self.instance = self.create(validated_data)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 917, in create
+    instance = ModelClass.objects.create(**validated_data)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 417, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\sql\compiler.py", line 1281, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.IntegrityError: (1048, "Column 'project_id' cannot be null")
+2018-06-07 14:32:20,960,5840,django.server,ERROR,basehttp.py:124,"POST /api/member/email_config HTTP/1.1" 500 23373
+2018-06-07 15:11:34,222,10308,django.request,ERROR,exception.py:118,Internal Server Error: /api/report/test_time
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+TypeError: __init__() takes 1 positional argument but 2 were given
+2018-06-07 15:11:34,368,10308,django.server,ERROR,basehttp.py:124,"GET /api/report/test_time?project_id=8 HTTP/1.1" 500 64555
+2018-06-07 15:33:12,127,10388,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 35, in get
+    if not project_id.isdecimal():
+AttributeError: 'NoneType' object has no attribute 'isdecimal'
+2018-06-07 15:33:12,203,10388,django.server,ERROR,basehttp.py:124,"GET /api/api/group HTTP/1.1" 500 16992
+2018-06-07 15:33:14,488,10388,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 35, in get
+    if not project_id.isdecimal():
+AttributeError: 'NoneType' object has no attribute 'isdecimal'
+2018-06-07 15:33:14,525,10388,django.server,ERROR,basehttp.py:124,"GET /api/api/group HTTP/1.1" 500 16992
+2018-06-07 15:53:06,857,10228,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.IntegrityError: (1048, "Column 'project_id' cannot be null")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 83, in post
+    serializer.save()
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 214, in save
+    self.instance = self.create(validated_data)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 917, in create
+    instance = ModelClass.objects.create(**validated_data)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 417, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\sql\compiler.py", line 1281, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.IntegrityError: (1048, "Column 'project_id' cannot be null")
+2018-06-07 15:53:07,073,10228,django.server,ERROR,basehttp.py:124,"POST /api/api/add_group HTTP/1.1" 500 22731
+2018-06-07 15:57:15,616,1736,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.IntegrityError: (1048, "Column 'apiGroupLevelFirst_id' cannot be null")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 86, in post
+    serializer.save()
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 214, in save
+    self.instance = self.create(validated_data)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 917, in create
+    instance = ModelClass.objects.create(**validated_data)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 417, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\sql\compiler.py", line 1281, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.IntegrityError: (1048, "Column 'apiGroupLevelFirst_id' cannot be null")
+2018-06-07 15:57:15,688,1736,django.server,ERROR,basehttp.py:124,"POST /api/api/add_group HTTP/1.1" 500 22764
+2018-06-07 15:59:43,679,10864,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 87, in post
+    obi = ApiGroupLevelFirst.objects.get(id=data["apiGroupLevelFirst_id"])
+KeyError: 'apiGroupLevelFirst_id'
+2018-06-07 15:59:43,728,10864,django.server,ERROR,basehttp.py:124,"POST /api/api/add_group HTTP/1.1" 500 17007
+2018-06-07 16:00:15,844,8508,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 88, in post
+    obi = ApiGroupLevelFirst.objects.get(id=data["apiGroupLevelFirst_id"])
+KeyError: 'apiGroupLevelFirst_id'
+2018-06-07 16:00:15,879,8508,django.server,ERROR,basehttp.py:124,"POST /api/api/add_group HTTP/1.1" 500 17007
+2018-06-07 16:01:18,502,8508,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 88, in post
+    obi = ApiGroupLevelFirst.objects.get(id=data["apiGroupLevelFirst_id"])
+KeyError: 'apiGroupLevelFirst_id'
+2018-06-07 16:01:18,528,8508,django.server,ERROR,basehttp.py:124,"POST /api/api/add_group HTTP/1.1" 500 17006
+2018-06-07 16:02:44,520,1988,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 87, in post
+    obi = ApiGroupLevelFirst.objects.get(id=data["apiGroupLevelFirst_id"])
+KeyError: 'apiGroupLevelFirst_id'
+2018-06-07 16:02:44,569,1988,django.server,ERROR,basehttp.py:124,"POST /api/api/add_group HTTP/1.1" 500 17006
+2018-06-07 16:04:49,537,2580,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 83, in post
+    obi = ApiGroupLevelFirst.objects.get(id=data["apiGroupLevelFirst_id"])
+KeyError: 'apiGroupLevelFirst_id'
+2018-06-07 16:04:49,577,2580,django.server,ERROR,basehttp.py:124,"POST /api/api/add_group HTTP/1.1" 500 16999
+2018-06-07 16:15:06,466,4056,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/update_name_group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 139, in post
+    serializer.update(instance=obi, validated_data=obi)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 952, in update
+    for attr, value in validated_data.items():
+AttributeError: 'ApiGroupLevelFirst' object has no attribute 'items'
+2018-06-07 16:15:06,508,4056,django.server,ERROR,basehttp.py:124,"POST /api/api/update_name_group HTTP/1.1" 500 17241
+2018-06-07 18:03:24,345,10684,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 268, in post
+    data = json.loads(request.body)
+  File "D:\Program Files (x86)\python\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Program Files (x86)\python\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Program Files (x86)\python\lib\json\decoder.py", line 355, in raw_decode
+    obj, end = self.scan_once(s, idx)
+json.decoder.JSONDecodeError: Expecting ':' delimiter: line 1 column 175 (char 174)
+2018-06-07 18:03:24,408,10684,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 17398
+2018-06-07 18:04:23,176,10684,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 268, in post
+    data = json.loads(request.body)
+  File "D:\Program Files (x86)\python\lib\json\__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "D:\Program Files (x86)\python\lib\json\decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "D:\Program Files (x86)\python\lib\json\decoder.py", line 355, in raw_decode
+    obj, end = self.scan_once(s, idx)
+json.decoder.JSONDecodeError: Expecting ':' delimiter: line 1 column 176 (char 175)
+2018-06-07 18:04:23,206,10684,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 17399
+2018-06-07 18:04:40,980,10280,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 268, in post
+    data = json.dumps(request.body)
+  File "D:\Program Files (x86)\python\lib\json\__init__.py", line 231, in dumps
+    return _default_encoder.encode(obj)
+  File "D:\Program Files (x86)\python\lib\json\encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "D:\Program Files (x86)\python\lib\json\encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "D:\Program Files (x86)\python\lib\json\encoder.py", line 180, in default
+    o.__class__.__name__)
+TypeError: Object of type 'bytes' is not JSON serializable
+2018-06-07 18:04:41,054,10280,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 17480
+2018-06-07 18:04:53,250,7408,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 268, in post
+    data = json.dump(request.body)
+TypeError: dump() missing 1 required positional argument: 'fp'
+2018-06-07 18:04:53,303,7408,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 17007
+2018-06-07 18:09:06,233,2028,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/api_list
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\fields.py", line 441, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\fields.py", line 100, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'NoneType' object has no attribute 'first_name'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 229, in get
+    return JsonResponse(data={"data": serialize.data,
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 491, in to_representation
+    attribute = field.get_attribute(instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\fields.py", line 462, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `userUpdate` on serializer `ApiInfoListSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `ApiInfo` instance.
+Original exception text was: 'NoneType' object has no attribute 'first_name'.
+2018-06-07 18:09:06,246,2028,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 47, in get
+    return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 487, in to_representation
+    fields = self._readable_fields
+  File "D:\Program Files (x86)\python\lib\site-packages\django\utils\functional.py", line 36, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 377, in _readable_fields
+    field for field in self.fields.values()
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 363, in fields
+    for key, value in self.get_fields().items():
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1022, in get_fields
+    source, info, model, depth
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1167, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1279, in build_unknown_field
+    (field_name, model_class.__name__)
+django.core.exceptions.ImproperlyConfigured: Field name `secondGroup` is not valid for model `ApiGroupLevelFirst`.
+2018-06-07 18:09:06,481,2028,django.server,ERROR,basehttp.py:124,"GET /api/api/api_list?project_id=1&page=1&name= HTTP/1.1" 500 19151
+2018-06-07 18:09:06,488,2028,django.server,ERROR,basehttp.py:124,"GET /api/api/group?project_id=1 HTTP/1.1" 500 19050
+2018-06-07 18:09:09,760,2028,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 47, in get
+    return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 487, in to_representation
+    fields = self._readable_fields
+  File "D:\Program Files (x86)\python\lib\site-packages\django\utils\functional.py", line 36, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 377, in _readable_fields
+    field for field in self.fields.values()
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 363, in fields
+    for key, value in self.get_fields().items():
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1022, in get_fields
+    source, info, model, depth
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1167, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1279, in build_unknown_field
+    (field_name, model_class.__name__)
+django.core.exceptions.ImproperlyConfigured: Field name `secondGroup` is not valid for model `ApiGroupLevelFirst`.
+2018-06-07 18:09:09,812,2028,django.server,ERROR,basehttp.py:124,"GET /api/api/group?project_id=1 HTTP/1.1" 500 19051
+2018-06-07 18:09:21,398,2028,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/api_list
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\fields.py", line 441, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\fields.py", line 100, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'NoneType' object has no attribute 'first_name'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 229, in get
+    return JsonResponse(data={"data": serialize.data,
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 491, in to_representation
+    attribute = field.get_attribute(instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\fields.py", line 462, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `userUpdate` on serializer `ApiInfoListSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `ApiInfo` instance.
+Original exception text was: 'NoneType' object has no attribute 'first_name'.
+2018-06-07 18:09:21,462,2028,django.server,ERROR,basehttp.py:124,"GET /api/api/api_list?project_id=1&page=1&name= HTTP/1.1" 500 19151
+2018-06-07 18:09:23,925,2028,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 47, in get
+    return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 487, in to_representation
+    fields = self._readable_fields
+  File "D:\Program Files (x86)\python\lib\site-packages\django\utils\functional.py", line 36, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 377, in _readable_fields
+    field for field in self.fields.values()
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 363, in fields
+    for key, value in self.get_fields().items():
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1022, in get_fields
+    source, info, model, depth
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1167, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1279, in build_unknown_field
+    (field_name, model_class.__name__)
+django.core.exceptions.ImproperlyConfigured: Field name `secondGroup` is not valid for model `ApiGroupLevelFirst`.
+2018-06-07 18:09:23,973,2028,django.server,ERROR,basehttp.py:124,"GET /api/api/group?project_id=1 HTTP/1.1" 500 19051
+2018-06-07 18:10:18,401,2028,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 47, in get
+    return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 487, in to_representation
+    fields = self._readable_fields
+  File "D:\Program Files (x86)\python\lib\site-packages\django\utils\functional.py", line 36, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 377, in _readable_fields
+    field for field in self.fields.values()
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 363, in fields
+    for key, value in self.get_fields().items():
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1022, in get_fields
+    source, info, model, depth
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1167, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1279, in build_unknown_field
+    (field_name, model_class.__name__)
+django.core.exceptions.ImproperlyConfigured: Field name `secondGroup` is not valid for model `ApiGroupLevelFirst`.
+2018-06-07 18:10:18,446,2028,django.server,ERROR,basehttp.py:124,"GET /api/api/group?project_id=1 HTTP/1.1" 500 19057
+2018-06-07 18:10:18,482,2028,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 47, in get
+    return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 487, in to_representation
+    fields = self._readable_fields
+  File "D:\Program Files (x86)\python\lib\site-packages\django\utils\functional.py", line 36, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 377, in _readable_fields
+    field for field in self.fields.values()
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 363, in fields
+    for key, value in self.get_fields().items():
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1022, in get_fields
+    source, info, model, depth
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1167, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1279, in build_unknown_field
+    (field_name, model_class.__name__)
+django.core.exceptions.ImproperlyConfigured: Field name `secondGroup` is not valid for model `ApiGroupLevelFirst`.
+2018-06-07 18:10:18,541,2028,django.server,ERROR,basehttp.py:124,"GET /api/api/group?project_id=1 HTTP/1.1" 500 19051
+2018-06-07 18:10:42,871,2028,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 47, in get
+    return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 487, in to_representation
+    fields = self._readable_fields
+  File "D:\Program Files (x86)\python\lib\site-packages\django\utils\functional.py", line 36, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 377, in _readable_fields
+    field for field in self.fields.values()
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 363, in fields
+    for key, value in self.get_fields().items():
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1022, in get_fields
+    source, info, model, depth
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1167, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1279, in build_unknown_field
+    (field_name, model_class.__name__)
+django.core.exceptions.ImproperlyConfigured: Field name `secondGroup` is not valid for model `ApiGroupLevelFirst`.
+2018-06-07 18:10:42,917,2028,django.server,ERROR,basehttp.py:124,"GET /api/api/group?project_id=1 HTTP/1.1" 500 19057
+2018-06-07 18:10:42,961,2028,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 47, in get
+    return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 487, in to_representation
+    fields = self._readable_fields
+  File "D:\Program Files (x86)\python\lib\site-packages\django\utils\functional.py", line 36, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 377, in _readable_fields
+    field for field in self.fields.values()
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 363, in fields
+    for key, value in self.get_fields().items():
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1022, in get_fields
+    source, info, model, depth
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1167, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1279, in build_unknown_field
+    (field_name, model_class.__name__)
+django.core.exceptions.ImproperlyConfigured: Field name `secondGroup` is not valid for model `ApiGroupLevelFirst`.
+2018-06-07 18:10:43,016,2028,django.server,ERROR,basehttp.py:124,"GET /api/api/group?project_id=1 HTTP/1.1" 500 19051
+2018-06-07 18:13:29,588,6120,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/api_list
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\fields.py", line 441, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\fields.py", line 100, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'NoneType' object has no attribute 'first_name'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 229, in get
+    return JsonResponse(data={"data": serialize.data,
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 491, in to_representation
+    attribute = field.get_attribute(instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\fields.py", line 462, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `userUpdate` on serializer `ApiInfoListSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `ApiInfo` instance.
+Original exception text was: 'NoneType' object has no attribute 'first_name'.
+2018-06-07 18:13:29,812,6120,django.server,ERROR,basehttp.py:124,"GET /api/api/api_list?project_id=1&page=1&name= HTTP/1.1" 500 19151
+2018-06-07 18:14:38,196,6120,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\decorators.py", line 53, in handler
+    return func(*args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 335, in add_api
+    data["requestType"] or not data["address"] or not data["requestParameterType"] or not data["status"]:
+KeyError: 'address'
+2018-06-07 18:14:38,270,6120,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 17142
+2018-06-07 18:20:01,183,1716,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 277, in post
+    ApiInfo.objects.get(name=data["name"], project=data["project_id"])
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 403, in get
+    self.model._meta.object_name
+api_test.models.DoesNotExist: ApiInfo matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 300, in post
+    head_serialize.save(api=add_api)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 214, in save
+    self.instance = self.create(validated_data)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 917, in create
+    instance = ModelClass.objects.create(**validated_data)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 415, in create
+    obj = self.model(**kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 477, in __init__
+    _setattr(self, field.name, rel_obj)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\fields\related_descriptors.py", line 197, in __set__
+    self.field.remote_field.model._meta.object_name,
+ValueError: Cannot assign "<function WrappedAPIView at 0x05FE46A8>": "ApiHead.api" must be a "ApiInfo" instance.
+2018-06-07 18:20:01,295,1716,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 18729
+2018-06-07 18:21:19,269,8496,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 277, in post
+    ApiInfo.objects.get(name=data["name"], project=data["project_id"])
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 403, in get
+    self.model._meta.object_name
+api_test.models.DoesNotExist: ApiInfo matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 300, in post
+    head_serialize.save(api=serialize)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 214, in save
+    self.instance = self.create(validated_data)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 917, in create
+    instance = ModelClass.objects.create(**validated_data)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 415, in create
+    obj = self.model(**kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 477, in __init__
+    _setattr(self, field.name, rel_obj)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\fields\related_descriptors.py", line 197, in __set__
+    self.field.remote_field.model._meta.object_name,
+ValueError: Cannot assign "ApiInfoDeserializer(data={'project_id': 1, 'name': '1113313测试', 'httpType': 'HTTP', 'requestType': 'POST', 'apiAddress': '/none/login', 'requestParameterType': 'raw', 'status': True, 'headDict': [{'name': 'Accept', 'value': '321', 'api': 18}], 'userUpdate': 1}):
+    id = IntegerField(read_only=True)
+    project_id = ReadOnlyField()
+    apiGroupLevelFirst_id = ReadOnlyField()
+    name = CharField(label='接口名称', max_length=50)
+    httpType = ChoiceField(choices=(('HTTP', 'HTTP'), ('HTTPS', 'HTTPS')), label='Http/https', required=False)
+    requestType = ChoiceField(choices=(('POST', 'POST'), ('GET', 'GET'), ('PUT', 'PUT'), ('DELETE', 'DELETE')), label='请求方式')
+    apiAddress = CharField(label='接口地址', max_length=1024)
+    requestParameterType = ChoiceField(choices=(('form-data', '表单(form-data)'), ('raw', '源数据(raw)'), ('Restful', 'Restful')), label='请求参数格式')
+    status = BooleanField(label='状态', required=False)
+    mockCode = ChoiceField(allow_blank=True, allow_null=True, choices=(('200', '200'), ('404', '404'), ('400', '400'), ('502', '502'), ('500', '500'), ('302', '302')), label='HTTP状态', required=False)
+    data = CharField(allow_blank=True, allow_null=True, label='Mock内容', required=False, style={'base_template': 'textarea.html'})
+    lastUpdateTime = DateTimeField(label='最近更新', read_only=True)
+    userUpdate = PrimaryKeyRelatedField(allow_null=True, label='更新人', queryset=User.objects.all(), required=False)
+    description = CharField(allow_blank=True, allow_null=True, label='描述', max_length=1024, required=False)": "ApiHead.api" must be a "ApiInfo" instance.
+2018-06-07 18:21:19,382,8496,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 21885
+2018-06-07 18:21:48,757,11108,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/add_api
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 277, in post
+    ApiInfo.objects.get(name=data["name"], project=data["project_id"])
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 403, in get
+    self.model._meta.object_name
+api_test.models.DoesNotExist: ApiInfo matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 494, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 454, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 491, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 300, in post
+    head_serialize.save(api=serialize.data)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 214, in save
+    self.instance = self.create(validated_data)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 917, in create
+    instance = ModelClass.objects.create(**validated_data)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 415, in create
+    obj = self.model(**kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 477, in __init__
+    _setattr(self, field.name, rel_obj)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\fields\related_descriptors.py", line 197, in __set__
+    self.field.remote_field.model._meta.object_name,
+ValueError: Cannot assign "{'id': 19, 'project_id': 1, 'apiGroupLevelFirst_id': None, 'name': '1113313测试', 'httpType': 'HTTP', 'requestType': 'POST', 'apiAddress': '/none/login', 'requestParameterType': 'raw', 'status': True, 'mockCode': None, 'data': None, 'lastUpdateTime': '2018-06-07T18:21:48.740688', 'userUpdate': 1, 'description': None}": "ApiHead.api" must be a "ApiInfo" instance.
+2018-06-07 18:21:48,861,11108,django.server,ERROR,basehttp.py:124,"POST /api/api/add_api HTTP/1.1" 500 19297

@@ -21,6 +21,8 @@ class ProjectInfo(APIView):
         """
         try:
             # 校验project_id类型为int
+            if not project_id:
+                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             if not project_id.isdecimal():
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
         except KeyError:

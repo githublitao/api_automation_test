@@ -1,3 +1,5 @@
+import datetime
+
 import django
 import sys
 import os
@@ -13,12 +15,11 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api_automation_test.settings")
 django.setup()
 
 from crontab import CronTab
-from django.contrib.auth.models import User
 from rest_framework.views import exception_handler
 
 from api_test.common import GlobalStatusCode
 from api_test.common.api_response import JsonResponse
-from api_test.models import AutomationTestResult, AutomationCaseApi, ProjectDynamic, Project, AutomationResponseJson, \
+from api_test.models import AutomationTestResult, AutomationCaseApi, AutomationResponseJson, \
     AutomationCaseTestResult
 
 
@@ -200,7 +201,9 @@ def record_dynamic(project, _type, operationObject,  user, data):
     :param data:  操作内容
     :return:
     """
+    time = datetime.datetime.now()
     dynamic_serializer = ProjectDynamicDeserializer(data={
+        "time": time,
         "project": project, "type": "禁用",
         "operationObject": operationObject, "user": user,
         "description": data

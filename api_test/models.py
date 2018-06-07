@@ -118,7 +118,7 @@ class ProjectDynamic(models.Model):
     """
     id = models.AutoField(primary_key=True)
     project = models.ForeignKey(Project, related_name='dynamic_project', on_delete=models.CASCADE, verbose_name='所属项目')
-    time = models.DateTimeField(auto_now_add=True, verbose_name='操作时间')
+    time = models.DateTimeField(max_length=128, verbose_name='操作时间')
     type = models.CharField(max_length=50, verbose_name='操作类型')
     operationObject = models.CharField(max_length=50, verbose_name='操作对象')
     user = models.ForeignKey(User, blank=True, null=True, related_name='userName',
@@ -219,24 +219,24 @@ class ApiGroupLevelFirst(models.Model):
         verbose_name_plural = '接口分组'
 
 
-class ApiGroupLevelSecond(models.Model):
-    """
-    接口二级分组
-    """
-    id = models.AutoField(primary_key=True)
-    apiGroupLevelFirst = models.ForeignKey(ApiGroupLevelFirst, related_name='secondGroup',
-                                           on_delete=models.CASCADE, verbose_name='项目')
-    name = models.CharField(max_length=50, verbose_name='接口二级分组名称')
-
-    def __unicode__(self):
-        return self.name
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = '接口二级分组'
-        verbose_name_plural = '接口二级分组'
+# class ApiGroupLevelSecond(models.Model):
+#     """
+#     接口二级分组
+#     """
+#     id = models.AutoField(primary_key=True)
+#     apiGroupLevelFirst = models.ForeignKey(ApiGroupLevelFirst, related_name='secondGroup',
+#                                            on_delete=models.CASCADE, verbose_name='项目')
+#     name = models.CharField(max_length=50, verbose_name='接口二级分组名称')
+#
+#     def __unicode__(self):
+#         return self.name
+#
+#     def __str__(self):
+#         return self.name
+#
+#     class Meta:
+#         verbose_name = '接口二级分组'
+#         verbose_name_plural = '接口二级分组'
 
 
 class ApiInfo(models.Model):
@@ -248,9 +248,9 @@ class ApiInfo(models.Model):
     apiGroupLevelFirst = models.ForeignKey(ApiGroupLevelFirst, blank=True, null=True,
                                            related_name='First',
                                            on_delete=models.SET_NULL, verbose_name='所属一级分组')
-    apiGroupLevelSecond = models.ForeignKey(ApiGroupLevelSecond, blank=True, null=True,
-                                            related_name='ApiGroupLevelSecond_id',
-                                            on_delete=models.SET_NULL, verbose_name='所属二级分组')
+    # apiGroupLevelSecond = models.ForeignKey(ApiGroupLevelSecond, blank=True, null=True,
+    #                                         related_name='ApiGroupLevelSecond_id',
+    #                                         on_delete=models.SET_NULL, verbose_name='所属二级分组')
     name = models.CharField(max_length=50, verbose_name='接口名称')
     httpType = models.CharField(max_length=50, default='HTTP', verbose_name='http/https', choices=HTTP_CHOICE)
     requestType = models.CharField(max_length=50, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)
@@ -636,7 +636,7 @@ class AutomationReportSendConfig(models.Model):
     """
     id = models.AutoField(primary_key=True)
     project = models.OneToOneField(Project, on_delete=models.CASCADE, verbose_name="项目")
-    reportFrom = models.CharField(max_length=1024, blank=True, null=True, verbose_name="发送人邮箱")
+    reportFrom = models.EmailField(max_length=1024, blank=True, null=True, verbose_name="发送人邮箱")
     mailUser = models.CharField(max_length=1024, blank=True, null=True, verbose_name="用户名")
     mailPass = models.CharField(max_length=1024, blank=True, null=True, verbose_name="口令")
     mailSmtp = models.CharField(max_length=1024, blank=True, null=True, verbose_name="邮箱服务器")

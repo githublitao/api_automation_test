@@ -1,52 +1,61 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 
 from api_test.common import GlobalStatusCode
 from api_test.common.api_response import JsonResponse
-from api_test.common.common import verify_parameter
 from api_test.models import Project, AutomationTaskRunTime, AutomationTestCase, AutomationCaseApi, \
     AutomationCaseTestResult
-from api_test.serializers import AutomationTaskRunTimeSerializer, AutomationAutoTestResultSerializer, \
-    AutomationTestLatelyTenTimeSerializer
+from api_test.serializers import AutomationAutoTestResultSerializer, \
+    AutomationTestLatelyTenTimeSerializer, AutomationTaskRunTimeSerializer
 
 
-@api_view(["GET"])
-@verify_parameter(["project_id", ], "GET")
-def test_time(request):
-    """
-    执行测试用例时间
-    case_id  用例ID
-    :param request:
-    :return:
-    """
-    project_id = request.GET.get("project_id")
-    obj = Project.objects.filter(id=project_id)
-    if obj:
+class TestTime(APIView):
+
+    def get(self, request):
+        """
+        获取执行测试时间
+        :param request:
+        :return:
+        """
+        project_id = request.GET.get("project_id")
+        if not project_id:
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+        if not project_id.isdecimal():
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+        try:
+            Project.objects.get(id=project_id)
+        except ObjectDoesNotExist:
+            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
         try:
             data = AutomationTaskRunTimeSerializer(
-                AutomationTaskRunTime.objects.filter(project=project_id).order_by("-startTime")[:10], many=True).data
-            return JsonResponse(code_msg=GlobalStatusCode.success(), data=data)
-        except:
-            return JsonResponse(code_msg=GlobalStatusCode.success())
-    else:
-        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+                AutomationTaskRunTime.objects.filter(project=project_id).order_by("-startTime")[:10],
+                many=True).data
+        except IndexError:
+            data = AutomationTaskRunTimeSerializer(
+                AutomationTaskRunTime.objects.filter(project=project_id).order_by("-startTime"),
+                many=True).data
+        return JsonResponse(code_msg=GlobalStatusCode.success(), data=data)
 
 
-@api_view(["GET"])
-@verify_parameter(["project_id", "time"], "GET")
-def auto_test_report(request):
-    """
-    测试结果报告
-    project_id  项目ID
-    :param request:
-    :return:
-    """
-    project_id = request.GET.get("project_id")
-    time = request.GET.get('time')
-    if not project_id.isdecimal():
-        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    obi = Project.objects.filter(id=project_id)
-    if obi:
+class AutoTestReport(APIView):
+
+    def get(self, request):
+        """
+        测试结果报告
+        :param request:
+        :return:
+        """
+        project_id = request.GET.get("project_id")
+        time = request.GET.get('time')
+        if not project_id or not time:
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+        if not project_id.isdecimal():
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+        try:
+            Project.objects.get(id=project_id)
+        except ObjectDoesNotExist:
+            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
         obj = AutomationTestCase.objects.filter(project=project_id)
         if obj:
             case = Q()
@@ -66,13 +75,13 @@ def auto_test_report(request):
                 error = 0
                 for i in data:
                     if i["result"] == "PASS":
-                        success = success+1
+                        success = success + 1
                     elif i["result"] == "FAIL":
-                        fail = fail+1
+                        fail = fail + 1
                     elif i["result"] == "ERROR":
-                        error = error+1
+                        error = error + 1
                     else:
-                        not_run = not_run+1
+                        not_run = not_run + 1
                 return JsonResponse(code_msg=GlobalStatusCode.success(), data={"data": data,
                                                                                "total": len(data),
                                                                                "pass": success,
@@ -84,46 +93,49 @@ def auto_test_report(request):
                 return JsonResponse(code_msg=GlobalStatusCode.success())
         else:
             return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
-    else:
-        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
 
 
-@api_view(["GET"])
-@verify_parameter(["project_id"], "GET")
-def auto_lately_ten_time(request):
-    """
-    获取最近十次的测试数据
-    project_id 项目ID
-    :param request:
-    :return:
-    """
-    project_id = request.GET.get("project_id")
-    if not project_id.isdecimal():
-        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-    obi = Project.objects.filter(id=project_id)
-    if obi:
+class AutoLatelyTenTime(APIView):
+
+    def get(self, request):
+        """
+        获取最近十次的测试数据
+        project_id 项目ID
+        :param request:
+        :return:
+        """
+        project_id = request.GET.get("project_id")
+        if not project_id:
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+        if not project_id.isdecimal():
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+        try:
+            Project.objects.get(id=project_id)
+        except ObjectDoesNotExist:
+            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
         try:
             data = AutomationTestLatelyTenTimeSerializer(
-                AutomationTaskRunTime.objects.filter(project=project_id).order_by("-startTime")[:10], many=True).data
-            for i in data:
-                result = AutomationCaseTestResult.objects.filter(testTime=i["startTime"])
-                _pass = 0
-                fail = 0
-                error = 0
-                for j in result:
-                    if j.result == "PASS":
-                        _pass = _pass+1
-                    elif j.result == "ERROR":
-                        error = error+1
-                    elif j.result == "FAIL":
-                        fail = fail+1
-                total = _pass + error + fail
-                data[data.index(i)]["fail"] = "%.4f" % (fail/total)
-                data[data.index(i)]["error"] = "%.4f" % (error / total)
-                data[data.index(i)]["pass"] = "%.4f" % (1-fail/total-error/total)
-            data.reverse()
-            return JsonResponse(code_msg=GlobalStatusCode.success(), data=data)
-        except:
-            return JsonResponse(code_msg=GlobalStatusCode.success())
-    else:
-        return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+                AutomationTaskRunTime.objects.filter(project=project_id).order_by("-startTime")[:10],
+                many=True).data
+        except IndexError:
+            data = AutomationTestLatelyTenTimeSerializer(
+                AutomationTaskRunTime.objects.filter(project=project_id).order_by("-startTime"),
+                many=True).data
+        for i in data:
+            result = AutomationCaseTestResult.objects.filter(testTime=i["startTime"])
+            _pass = 0
+            fail = 0
+            error = 0
+            for j in result:
+                if j.result == "PASS":
+                    _pass = _pass + 1
+                elif j.result == "ERROR":
+                    error = error + 1
+                elif j.result == "FAIL":
+                    fail = fail + 1
+            total = _pass + error + fail
+            data[data.index(i)]["fail"] = "%.4f" % (fail / total)
+            data[data.index(i)]["error"] = "%.4f" % (error / total)
+            data[data.index(i)]["pass"] = "%.4f" % (1 - fail / total - error / total)
+        data.reverse()
+        return JsonResponse(code_msg=GlobalStatusCode.success(), data=data)

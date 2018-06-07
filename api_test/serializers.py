@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
-from api_test.models import Project, ProjectDynamic, ProjectMember, GlobalHost, ApiGroupLevelSecond, ApiGroupLevelFirst, \
+from api_test.models import Project, ProjectDynamic, ProjectMember, GlobalHost, ApiGroupLevelFirst, \
     ApiInfo, APIRequestHistory, ApiOperationHistory, AutomationGroupLevelFirst, AutomationGroupLevelSecond, \
     AutomationTestCase, AutomationCaseApi, AutomationHead, AutomationParameter, AutomationTestTask, \
     AutomationTestResult, ApiHead, ApiParameter, ApiResponse, ApiParameterRaw, AutomationParameterRaw, \
@@ -119,25 +119,22 @@ class GlobalHostSerializer(serializers.ModelSerializer):
         fields = ('id', 'project_id', 'name', 'host', 'status', 'description')
 
 
-class ApiGroupLevelSecondSerializer(serializers.ModelSerializer):
-    """
-    接口二级分组信息序列化
-    """
-
-    class Meta:
-        model = ApiGroupLevelSecond
-        fields = ('id', 'name')
-
-
 class ApiGroupLevelFirstSerializer(serializers.ModelSerializer):
     """
     接口一级分组信息序列化
     """
-    secondGroup = ApiGroupLevelSecondSerializer(many=True, read_only=True)
-
     class Meta:
         model = ApiGroupLevelFirst
-        fields = ('id', 'project_id', 'name', 'secondGroup')
+        fields = ('id', 'project_id', 'name')
+
+
+class ApiGroupLevelFirstDeserializer(serializers.ModelSerializer):
+    """
+    接口一级分组信息反序列化
+    """
+    class Meta:
+        model = ApiGroupLevelFirst
+        fields = ('id', 'project_id', 'name')
 
 
 class ApiHeadSerializer(serializers.ModelSerializer):
@@ -147,6 +144,15 @@ class ApiHeadSerializer(serializers.ModelSerializer):
     class Meta:
         model = ApiHead
         fields = ('id', 'name', 'value')
+
+
+class ApiHeadDeserializer(serializers.ModelSerializer):
+    """
+    接口请求头反序列化
+    """
+    class Meta:
+        model = ApiHead
+        fields = ('id', 'api', 'name', 'value')
 
 
 class ApiParameterSerializer(serializers.ModelSerializer):
@@ -159,6 +165,16 @@ class ApiParameterSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'value', '_type', 'required', 'restrict', 'description')
 
 
+class ApiParameterDeserializer(serializers.ModelSerializer):
+    """
+    接口请求参数反序列化
+    """
+
+    class Meta:
+        model = ApiParameter
+        fields = ('id', 'api', 'name', 'value', '_type', 'required', 'restrict', 'description')
+
+
 class ApiParameterRawSerializer(serializers.ModelSerializer):
     """
     接口请求参数源数据序列化
@@ -169,6 +185,16 @@ class ApiParameterRawSerializer(serializers.ModelSerializer):
         fields = ('id', 'data')
 
 
+class ApiParameterRawDeserializer(serializers.ModelSerializer):
+    """
+    接口请求参数源数据序列化
+    """
+
+    class Meta:
+        model = ApiParameterRaw
+        fields = ('id', 'api', 'data')
+
+
 class ApiResponseSerializer(serializers.ModelSerializer):
     """
     接口返回参数序列化
@@ -177,6 +203,16 @@ class ApiResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = ApiResponse
         fields = ('id', 'name', 'value', '_type', 'required', 'description')
+
+
+class ApiResponseDeserializer(serializers.ModelSerializer):
+    """
+    接口返回参数序列化
+    """
+
+    class Meta:
+        model = ApiResponse
+        fields = ('id', 'api', 'name', 'value', '_type', 'required', 'description')
 
 
 class ApiInfoSerializer(serializers.ModelSerializer):
@@ -192,9 +228,20 @@ class ApiInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ApiInfo
-        fields = ('id', 'apiGroupLevelFirst', 'apiGroupLevelSecond', 'name', 'httpType', 'requestType', 'apiAddress', 'headers',
+        fields = ('id', 'apiGroupLevelFirst', 'name', 'httpType', 'requestType', 'apiAddress', 'headers',
                   'requestParameterType', 'requestParameter', 'requestParameterRaw', 'status',
                   'response', 'mockCode', 'data', 'lastUpdateTime', 'userUpdate', 'description')
+
+
+class ApiInfoDeserializer(serializers.ModelSerializer):
+    """
+    接口详细信息序列化
+    """
+    class Meta:
+        model = ApiInfo
+        fields = ('id', 'project_id', 'apiGroupLevelFirst_id', 'name', 'httpType',
+                  'requestType', 'apiAddress', 'requestParameterType', 'status',
+                  'mockCode', 'data', 'lastUpdateTime', 'userUpdate', 'description')
 
 
 class ApiInfoDocSerializer(serializers.ModelSerializer):
@@ -241,6 +288,16 @@ class ApiOperationHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ApiOperationHistory
         fields = ('id', 'user', 'time', 'description')
+
+
+class ApiOperationHistoryDeserializer(serializers.ModelSerializer):
+    """
+    接口操作历史信息反序列化
+    """
+
+    class Meta:
+        model = ApiOperationHistory
+        fields = ('id', 'apiInfo', 'user', 'time', 'description')
 
 
 class AutomationGroupLevelSecondSerializer(serializers.ModelSerializer):
@@ -432,10 +489,20 @@ class AutomationTestLatelyTenTimeSerializer(serializers.ModelSerializer):
 
 class AutomationReportSendConfigSerializer(serializers.ModelSerializer):
     """
-    最近10次测试结果
+    发送人配置序列
     """
     project = serializers.CharField(source='project.name')
 
     class Meta:
         model = AutomationReportSendConfig
         fields = ("id", "project", 'reportFrom', 'mailUser', 'mailPass', 'mailSmtp')
+
+
+class AutomationReportSendConfigDeserializer(serializers.ModelSerializer):
+    """
+    发送人配置反序列
+    """
+
+    class Meta:
+        model = AutomationReportSendConfig
+        fields = ("id", "project_id", 'reportFrom', 'mailUser', 'mailPass', 'mailSmtp')

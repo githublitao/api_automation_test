@@ -61,6 +61,18 @@
                     <el-button type="primary" @click.native="addGroupSubmit" :loading="addGroupLoading">提交</el-button>
                 </div>
             </el-dialog>
+                        <!--编辑父分组-->
+            <el-dialog title="编辑分组" v-model="editFirstGroupFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
+                <el-form :model="editFirstGroupForm" label-width="80px"  :rules="editFirstGroupFormRules" ref="editFirstGroupForm">
+                    <el-form-item label="分组名称" prop='secondFirstGroup'>
+                        <el-input v-model="editFirstGroupForm.secondFirstGroup" auto-complete="off"></el-input>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click.native="editFirstGroupFormVisible = false">取消</el-button>
+                    <el-button type="primary" @click.native="editFirstGroupSubmit" :loading="editFirstGroupLoading">提交</el-button>
+                </div>
+            </el-dialog>
             <!--编辑-->
             <el-dialog title="编辑分组" v-model="editGroupFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
                 <el-form :model="editGroupForm" label-width="80px"  :rules="editGroupFormRules" ref="editGroupForm">
@@ -137,6 +149,21 @@
                     secondGroup: '',
                     second_id: '',
                 },
+                editFirstGroupFormVisible: false,
+                editFirstGroupLoading: false,
+                editFirstFormVisible: false,//编辑界面是否显示
+                editFirstGroupFormRules: {
+                    secondFirstGroup: [
+                        { required: true, message: '请输入分组名称', trigger: 'blur' },
+                        // { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
+                    ]
+                },
+                //编辑界面数据
+                editFirstGroupForm: {
+                    firstgroup: '',
+                    secondGroup: '',
+                    second_id: '',
+                },
                 filters: {
                     name: ''
                 },
@@ -198,9 +225,9 @@
                 this.editGroupForm.second_id = second_id;
             },
             handleEditFirstGroup(first_id, name) {
-                this.editGroupFormVisible = true;
-                this.editGroupForm.second_id = first_id;
-                this.editGroupForm.secondGroup = name
+                this.editFirstGroupFormVisible = true;
+                this.editFirstGroupForm.second_id = first_id;
+                this.editFirstGroupForm.secondFirstGroup = name
             },
             addGroupSubmit() {
                 this.$refs.addGroupForm.validate((valid) => {
@@ -251,6 +278,62 @@
                     }
                 });
             },
+            editFirstGroupSubmit(){
+                this.$refs.editFirstGroupForm.validate((valid) => {
+                    if (valid) {
+                        let self = this;
+                        this.$confirm('确认提交吗？', '提示', {}).then(() => {
+                            self.editFirstGroupLoading = true;
+                            //NProgress.start();
+                            // if (!self.editFirstGroupForm.firstgroup) {
+                            //     self.editFirstGroupForm.firstgroup = self.editFirstGroupForm.second_id;
+                            //     self.editFirstGroupForm.second_id = ''
+                            // }
+                            $.ajax({
+                                type: "post",
+                                url: test+"/api/automation/update_name_group",
+                                async: true,
+                                data: { project_id: this.$route.params.project_id,
+                                    name: self.editFirstGroupForm.secondFirstGroup,
+                                    first_group_id: self.editFirstGroupForm.second_id,
+                                    second_group_id: self.editFirstGroupForm.firstgroup},
+                                headers: {
+                                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                                },
+                                timeout: 5000,
+                                success: function(data) {
+                                    self.editFirstGroupLoading = false;
+                                    if (data.code === '999999') {
+                                        self.$message({
+                                            message: '修改成功',
+                                            center: true,
+                                            type: 'success'
+                                        });
+                                        self.$refs['editFirstGroupForm'].resetFields();
+                                        self.editFirstGroupFormVisible = false;
+                                        self.getCaseGroup();
+                                        self.init()
+                                    } else if (data.code === '999997'){
+                                        self.$message.error({
+                                            message: data.msg,
+                                            center: true,
+                                        })
+                                    } else {
+                                        self.$message.error({
+                                            message: data.msg,
+                                            center: true,
+                                        });
+                                        self.$refs['editFirstGroupForm'].resetFields();
+                                        self.editFirstGroupFormVisible = false;
+                                        self.getCaseGroup();
+                                        self.init()
+                                    }
+                                },
+                            })
+                        });
+                    }
+                });
+            },
             editGroupSubmit() {
                 this.$refs.editGroupForm.validate((valid) => {
                     if (valid) {
@@ -278,7 +361,7 @@
                                     self.editGroupLoading = false;
                                     if (data.code === '999999') {
                                         self.$message({
-                                            message: '添加成功',
+                                            message: '修改成功',
                                             center: true,
                                             type: 'success'
                                         });

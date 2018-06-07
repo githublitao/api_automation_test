@@ -17,7 +17,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="4">
-                        <el-form-item prop="secondGroup">
+                        <el-form-item>
                             <el-select v-model="form.secondGroup" placeholder="子分组">
                                 <el-option v-for="(item,index) in secondGroup" :key="index+''" :label="item.name" :value="item.id"></el-option>
                             </el-select>
@@ -441,10 +441,6 @@
                 this.id = index;
                 this.editForm = Object.assign({}, row);
             },
-            back(){
-                this.$router.go(-1); // 返回上一层
-
-            },
             // 获取api分组
             getApiGroup() {
                 let self = this;
@@ -454,6 +450,7 @@
                     async: true,
                     data: { project_id: this.$route.params.project_id},
                     headers: {
+                        "Content-Type": "application/json",
                         Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                     },
                     timeout: 5000,

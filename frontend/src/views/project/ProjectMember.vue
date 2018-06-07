@@ -103,6 +103,7 @@
                     async: true,
                     data: { project_id: this.$route.params.project_id, page: self.page},
                     headers: {
+                        "Content-Type": "application/json",
                         Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                     },
                     timeout: 5000,
@@ -129,6 +130,7 @@
                     async: true,
                     data: { project_id: this.$route.params.project_id},
                     headers: {
+                        "Content-Type": "application/json",
                         Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                     },
                     timeout: 5000,
@@ -158,8 +160,9 @@
                     type: "post",
                     url: test+"/api/member/del_email",
                     async: true,
-                    data: { project_id: this.$route.params.project_id},
+                    data: JSON.stringify({ project_id: Number(this.$route.params.project_id)}),
                     headers: {
+                        "Content-Type": "application/json",
                         Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                     },
                     timeout: 5000,
@@ -169,7 +172,7 @@
                             self.$message.success({
                                 message: "删除成功",
                                 center: true,
-                            })
+                            });
                             self.getEmailConfig()
                         }
                         else {
@@ -188,19 +191,19 @@
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             self.editLoading = true;
                             //NProgress.start();
-                            console.log(this.editForm)
                             $.ajax({
                                 type: "post",
                                 url: test+"/api/member/email_config",
                                 async: true,
-                                data: {
-                                    project_id: this.$route.params.project_id,
+                                data: JSON.stringify({
+                                    project_id: Number(this.$route.params.project_id),
                                     from: this.editForm.reportFrom,
                                     user: this.editForm.mailUser,
                                     mailPass: this.editForm.mailPass,
                                     mailSmtp: this.editForm.mailSmtp,
-                                },
+                                }),
                                 headers: {
+                                    "Content-Type": "application/json",
                                     Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                                 },
                                 timeout: 5000,
