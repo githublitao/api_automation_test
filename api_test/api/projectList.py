@@ -11,7 +11,7 @@ from api_test.common import GlobalStatusCode
 from api_test.common.api_response import JsonResponse
 from api_test.common.common import record_dynamic
 from api_test.models import Project
-from api_test.serializers import ProjectSerializer, ProjectDeserializer, ProjectDynamicDeserializer, \
+from api_test.serializers import ProjectSerializer, ProjectDeserializer, \
     ProjectMemberDeserializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
@@ -176,10 +176,10 @@ class DelProject(APIView):
         try:
             # 校验project_id类型为int
             if not isinstance(data["ids"], list):
-                for i in data["ids"]:
-                    if not isinstance(i, int):
-                        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            for i in data["ids"]:
+                if not isinstance(i, int):
+                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
         except KeyError:
             return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
 

@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 from api_test.api import ApiDoc, automationCase as Case, member, dynamic, user
-from api_test.api import automationReport as report
+from api_test.api import automationReport as Report
 from api_test.api.global_parameter import HostTotal, AddHost, UpdateHost, DelHost, DisableHost, EnableHost
 from api_test.api.projectList import ProjectList, AddProject, DelProject, \
     EnableProject, UpdateProject, DisableProject
@@ -27,17 +27,17 @@ urlpatterns = [
     url(r'api/del_group', ApiDoc.DelGroup.as_view()),
     url(r'api/api_list', ApiDoc.ApiList.as_view()),
     url(r'api/add_api', ApiDoc.AddApi.as_view()),
-    url(r'api/lead_swagger', ApiDoc.lead_swagger),
-    url(r'api/update_api', ApiDoc.update_api),
-    url(r'api/del_api', ApiDoc.del_api),
-    url(r'api/update_group', ApiDoc.update_group),
-    url(r'api/api_info', ApiDoc.api_info),
-    url(r'api/add_history', ApiDoc.add_history),
-    url(r'api/history_list', ApiDoc.history_list),
-    url(r'api/del_history', ApiDoc.del_history),
-    url(r'api/operation_history', ApiDoc.operation_history),
-    url(r'api/Download', ApiDoc.download),
-    url(r'api/download_doc', ApiDoc.download_doc),
+    url(r'api/lead_swagger', ApiDoc.LeadSwagger.as_view()),
+    url(r'api/update_api', ApiDoc.UpdateApi.as_view()),
+    url(r'api/del_api', ApiDoc.DelApi.as_view()),
+    url(r'api/update_group', ApiDoc.UpdateGroup.as_view()),
+    url(r'api/api_info', ApiDoc.ApiInfoDetail.as_view()),
+    url(r'api/add_history', ApiDoc.AddHistory.as_view()),
+    url(r'api/history_list', ApiDoc.HistoryList.as_view()),
+    url(r'api/del_history', ApiDoc.DelHistory.as_view()),
+    url(r'api/operation_history', ApiDoc.OperationHistory.as_view()),
+    url(r'api/Download', ApiDoc.DownLoad.as_view()),
+    url(r'api/download_doc', ApiDoc.DownLoadDoc.as_view()),
     url(r'automation/group', Case.group),
     url(r'automation/add_group', Case.add_group),
     url(r'automation/del_group', Case.del_group),
@@ -60,9 +60,9 @@ urlpatterns = [
     url(r'automation/del_task', Case.del_task),
     url(r'automation/look_result', Case.look_result),
     url(r'automation/test_report', Case.test_report),
-    url(r'report/auto_test_report', report.AutoTestReport.as_view()),
-    url(r'report/test_time', report.TestTime.as_view()),
-    url(r'report/lately_ten', report.AutoLatelyTenTime.as_view()),
+    url(r'report/auto_test_report', Report.AutoTestReport.as_view()),
+    url(r'report/test_time', Report.TestTime.as_view()),
+    url(r'report/lately_ten', Report.AutoLatelyTenTime.as_view()),
     url(r'member/project_member', member.ProjectMemberList.as_view()),
     url(r'member/email_config', member.EmailConfig.as_view()),
     url(r'member/del_email', member.DelEmail.as_view()),

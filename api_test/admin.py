@@ -199,15 +199,15 @@ admin.site.register(ApiInfo, ApiInfoForm)
 
 
 class APIRequestHistoryForm(ReadOnlyModelAdmin):
-    search_fields = ('apiInfo', 'requestType', 'httpCode')
-    list_display = ('id', 'apiInfo', 'requestType', 'requestAddress', 'httpCode', 'requestTime')
-    list_display_links = ('id', 'apiInfo', 'requestTime')
+    search_fields = ('api', 'requestType', 'httpCode')
+    list_display = ('id', 'api', 'requestType', 'requestAddress', 'httpCode', 'requestTime')
+    list_display_links = ('id', 'api', 'requestTime')
     list_filter = ('requestType', 'httpCode')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '接口请求历史', {
-            'fields': ('apiInfo', 'requestType', 'requestAddress', 'httpCode')
+            'fields': ('api', 'requestType', 'requestAddress', 'httpCode')
         }],)
 
 
@@ -215,15 +215,15 @@ admin.site.register(APIRequestHistory, APIRequestHistoryForm)
 
 
 class ApiOperationHistoryForm(ReadOnlyModelAdmin):
-    search_fields = ('apiInfo', 'user')
-    list_display = ('id', 'apiInfo', 'user', 'description', 'time')
-    list_display_links = ('id', 'apiInfo', 'user')
+    search_fields = ('api', 'user')
+    list_display = ('id', 'api', 'user', 'description', 'time')
+    list_display_links = ('id', 'api', 'user')
     list_filter = ('user',)
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '接口操作记录', {
-            'fields': ('apiInfo', 'user', 'description')
+            'fields': ('api', 'user', 'description')
         }],)
 
 

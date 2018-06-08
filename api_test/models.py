@@ -347,7 +347,7 @@ class APIRequestHistory(models.Model):
     接口请求历史
     """
     id = models.AutoField(primary_key=True)
-    apiInfo = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name='接口')
+    api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name='接口')
     requestTime = models.DateTimeField(auto_now_add=True, verbose_name='请求时间')
     requestType = models.CharField(max_length=50, verbose_name='请求方法')
     requestAddress = models.CharField(max_length=1024, verbose_name='请求地址')
@@ -366,7 +366,7 @@ class ApiOperationHistory(models.Model):
     API操作历史
     """
     id = models.AutoField(primary_key=True)
-    apiInfo = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name='接口')
+    api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name='接口')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, max_length=50, verbose_name='用户姓名')
     time = models.DateTimeField(auto_now_add=True, verbose_name='操作时间')
     description = models.CharField(max_length=1024, blank=True, null=True, verbose_name='操作内容')

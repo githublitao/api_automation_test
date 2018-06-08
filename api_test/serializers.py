@@ -278,6 +278,15 @@ class APIRequestHistorySerializer(serializers.ModelSerializer):
         fields = ('id', 'requestTime', 'requestType', 'requestAddress', 'httpCode')
 
 
+class APIRequestHistoryDeserializer(serializers.ModelSerializer):
+    """
+    接口请求历史信息反序列化
+    """
+    class Meta:
+        model = APIRequestHistory
+        fields = ('id', 'api', 'requestTime', 'requestType', 'requestAddress', 'httpCode')
+
+
 class ApiOperationHistorySerializer(serializers.ModelSerializer):
     """
     接口操作历史信息序列化
