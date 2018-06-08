@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1bff3874-0f80-4ef6-957e-fc1f35d5523e" name="Default" comment="">
+    <list default="true" id="1bff3874-0f80-4ef6-957e-fc1f35d5523e" name="Default" comment="1.重构接口代码,接口管理模块接口">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/all.log" beforeDir="false" afterPath="$PROJECT_DIR$/all.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_test/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_test/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_test/api/ApiDoc.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_test/api/ApiDoc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_test/api/projectList.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_test/api/projectList.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_test/common/loadSwaggerApi.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_test/common/loadSwaggerApi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_test/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_test/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_test/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_test/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_test/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_test/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/收款码.JPG" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -128,8 +121,8 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api_test/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="395">
-              <caret line="67" column="50" selection-start-line="67" selection-start-column="50" selection-end-line="67" selection-end-column="50" />
+            <state relative-caret-position="665">
+              <caret line="55" column="43" lean-forward="true" selection-start-line="55" selection-start-column="43" selection-end-line="55" selection-end-column="43" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -253,17 +246,6 @@
             <path>
               <item name="api_automation_test" type="b2602c69:ProjectViewProjectNode" />
               <item name="api_automation_test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="api_automation_test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="api_automation_test" type="462c0819:PsiDirectoryNode" />
-              <item name="api_test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="api_automation_test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="api_automation_test" type="462c0819:PsiDirectoryNode" />
-              <item name="api_test" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -393,7 +375,21 @@
       <option name="project" value="LOCAL" />
       <updated>1528368269596</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="1.重构接口代码,接口管理模块接口">
+      <created>1528444429320</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1528444429321</updated>
+    </task>
+    <task id="LOCAL-00005" summary="1.重构接口代码,接口管理模块接口">
+      <created>1528444891318</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1528444891318</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TodoView">
@@ -407,18 +403,18 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.4989339" weight="0.3279396" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.3795309" side_tool="true" visible="true" weight="0.30636463" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50053304" side_tool="true" visible="true" weight="0.32901832" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" sideWeight="0.49840087" weight="0.3279396" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6204691" visible="true" weight="0.30636463" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6204691" weight="0.30636463" />
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.6791045" weight="0.3149946" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18283582" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="4" weight="0.32980332" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49946696" visible="true" weight="0.32901832" />
       <window_info anchor="right" id="SciView" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -429,7 +425,6 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -442,7 +437,8 @@
     <MESSAGE value="1.重构新增项目，修改项目接口代码，增加详细注释" />
     <MESSAGE value="1" />
     <MESSAGE value="1.重构接口代码" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.重构接口代码" />
+    <MESSAGE value="1.重构接口代码,接口管理模块接口" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.重构接口代码,接口管理模块接口" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -826,8 +822,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api_test/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="67" column="50" selection-start-line="67" selection-start-column="50" selection-end-line="67" selection-end-column="50" />
+        <state relative-caret-position="665">
+          <caret line="55" column="43" lean-forward="true" selection-start-line="55" selection-start-column="43" selection-end-line="55" selection-end-column="43" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>
