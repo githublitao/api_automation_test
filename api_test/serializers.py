@@ -284,7 +284,7 @@ class APIRequestHistoryDeserializer(serializers.ModelSerializer):
     """
     class Meta:
         model = APIRequestHistory
-        fields = ('id', 'api', 'requestTime', 'requestType', 'requestAddress', 'httpCode')
+        fields = ('id', 'api_id', 'requestTime', 'requestType', 'requestAddress', 'httpCode')
 
 
 class ApiOperationHistorySerializer(serializers.ModelSerializer):
@@ -446,7 +446,7 @@ class AutomationCaseApiDeserializer(serializers.ModelSerializer):
     """
     class Meta:
         model = AutomationCaseApi
-        fields = ('id', 'automationTestCase', 'name', 'httpType', 'requestType', 'apiAddress', 'requestParameterType',
+        fields = ('id', 'automationTestCase_id', 'name', 'httpType', 'requestType', 'apiAddress', 'requestParameterType',
                   'examineType', 'httpCode', 'responseData')
 
 

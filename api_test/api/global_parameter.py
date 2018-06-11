@@ -115,7 +115,7 @@ class UpdateHost(APIView):
         """
         try:
             # 校验project_id类型为int
-            if not isinstance(data["project_id"], int) or not isinstance(data["host_id"], int):
+            if not isinstance(data["project_id"], int) or not isinstance(data["id"], int):
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             # 必传参数 name, host
             if not data["name"] or not data["host"]:
@@ -138,7 +138,7 @@ class UpdateHost(APIView):
         except ObjectDoesNotExist:
             return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
         try:
-            obi = GlobalHost.objects.get(id=data["host_id"])
+            obi = GlobalHost.objects.get(id=data["id"])
         except ObjectDoesNotExist:
             return JsonResponse(code_msg=GlobalStatusCode.host_not_exist())
 
@@ -193,8 +193,8 @@ class DelHost(APIView):
             for j in data["ids"]:
                 obj = GlobalHost.objects.filter(id=j)
                 if obj:
-                    obj.delete()
                     name = obj[0].name
+                    obj.delete()
                     record_dynamic(project=data["project_id"],
                                    _type="删除", operationObject="域名", user=request.user.pk, data=name)
             return JsonResponse(code_msg=GlobalStatusCode.success())

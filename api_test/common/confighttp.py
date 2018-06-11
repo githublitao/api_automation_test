@@ -42,7 +42,7 @@ def test_api(host_id, case_id, project_id, _id):
     data = AutomationCaseApiSerializer(AutomationCaseApi.objects.get(id=_id, automationTestCase=case_id)).data
     http_type = data['httpType']
     request_type = data['requestType']
-    address = host.host + data['address']
+    address = host.host + data['apiAddress']
     head = json.loads(serializers.serialize('json', AutomationHead.objects.filter(automationCaseApi=_id)))
     header = {}
     request_parameter_type = data['requestParameterType']

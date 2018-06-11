@@ -1,5 +1,6 @@
 import logging
 
+from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 
@@ -77,11 +78,13 @@ class AddProject(APIView):
         :return:
         """
         member_serializer = ProjectMemberDeserializer(data={
-            "permissionType": "admin", "project": project,
+            "permissionType": "超级管理员", "project": project,
             "user": user
         })
+        project = Project.objects.get(id=project)
+        user = User.objects.get(id=user)
         if member_serializer.is_valid():
-            member_serializer.save()
+            member_serializer.save(project=project, user=user)
 
     def post(self, request):
         """
@@ -95,20 +98,24 @@ class AddProject(APIView):
             return result
         data["user"] = request.user.pk
         project_serializer = ProjectDeserializer(data=data)
-        with transaction.atomic():
-            if project_serializer.is_valid():
-                # 保持新项目
-                project_serializer.save()
-                # 记录动态
-                record_dynamic(project=project_serializer.data.get("id"),
-                               _type="添加", operationObject="项目", user=request.user.pk, data=data["name"])
-                # 创建项目的用户添加为该项目的成员
-                self.add_project_member(project_serializer.data.get("id"), request.user.pk)
-                return JsonResponse(data={
-                        "project_id": project_serializer.data.get("id")
-                    }, code_msg=GlobalStatusCode.success())
-            else:
-                return JsonResponse(code_msg=GlobalStatusCode.fail())
+        try:
+            Project.objects.filter(name=data["name"]).exclude(id=data["project_id"])
+            return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
+        except ObjectDoesNotExist:
+            with transaction.atomic():
+                if project_serializer.is_valid():
+                    # 保持新项目
+                    project_serializer.save()
+                    # 记录动态
+                    record_dynamic(project=project_serializer.data.get("id"),
+                                   _type="添加", operationObject="项目", user=request.user.pk, data=data["name"])
+                    # 创建项目的用户添加为该项目的成员
+                    self.add_project_member(project_serializer.data.get("id"), request.user.pk)
+                    return JsonResponse(data={
+                            "project_id": project_serializer.data.get("id")
+                        }, code_msg=GlobalStatusCode.success())
+                else:
+                    return JsonResponse(code_msg=GlobalStatusCode.fail())
 
 
 class UpdateProject(APIView):
@@ -148,8 +155,10 @@ class UpdateProject(APIView):
         except ObjectDoesNotExist:
             return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
         # 查找是否相同名称的项目
-        obi = Project.objects.filter(name=data["name"]).exclude(id=data["project_id"])
-        if len(obi) == 0:
+        try:
+            Project.objects.filter(name=data["name"]).exclude(id=data["project_id"])
+            return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
+        except ObjectDoesNotExist:
             serializer = ProjectDeserializer(data=data)
             with transaction.atomic():
                 if serializer.is_valid():
@@ -161,8 +170,7 @@ class UpdateProject(APIView):
                     return JsonResponse(code_msg=GlobalStatusCode.success())
                 else:
                     return JsonResponse(code_msg=GlobalStatusCode.fail())
-        else:
-            return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
+
 
 
 class DelProject(APIView):

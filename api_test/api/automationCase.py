@@ -193,10 +193,10 @@ class UpdateGroup(APIView):
         """
         try:
             # 校验project_id, id类型为int
-            if not data["project_id"] or not data["ids"] or not data["apiGroupLevelFirst_id"]:
+            if not data["project_id"] or not data["ids"] or not data["automationGroupLevelFirst_id"]:
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             if not isinstance(data["project_id"], int) or not isinstance(data["ids"], list) \
-                    or not isinstance(data["apiGroupLevelFirst_id"], int):
+                    or not isinstance(data["automationGroupLevelFirst_id"], int):
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             for i in data["ids"]:
                 if not isinstance(i, int):
@@ -218,13 +218,16 @@ class UpdateGroup(APIView):
             Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+        try:
+            obj = AutomationGroupLevelFirst.objects.get(id=data["automationGroupLevelFirst_id"])
+        except ObjectDoesNotExist:
+            return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
         id_list = Q()
         for i in data["ids"]:
             id_list = id_list | Q(id=i)
         case_list = AutomationTestCase.objects.filter(id_list, project=data["project_id"])
         with transaction.atomic():
-            case_list.update(automationGroupLevelFirst=
-                             AutomationGroupLevelFirst.objects.get(id=data["apiGroupLevelFirst_id"]))
+            case_list.update(automationGroupLevelFirst=obj)
             name_list = []
             for j in case_list:
                 name_list.append(str(j.name))
@@ -314,12 +317,13 @@ class AddCase(APIView):
         result = self.parameter_check(data)
         if result:
             return result
+        data["user"] = request.user.pk
         try:
             obj = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
         try:
-            AutomationTestCase.objects.get(name=data["caseName"], project=data["project_id"])
+            AutomationTestCase.objects.get(caseName=data["caseName"], project=data["project_id"])
             return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
         except ObjectDoesNotExist:
             with transaction.atomic():
@@ -330,9 +334,9 @@ class AddCase(APIView):
                             if not isinstance(data["automationGroupLevelFirst_id"], int):
                                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
                             obi = AutomationGroupLevelFirst.objects.get(id=data["automationGroupLevelFirst_id"], project=data["project_id"])
-                            serialize.save(project=obj, automationGroupLevelFirst=obi)
+                            serialize.save(project=obj, automationGroupLevelFirst=obi, user=User.objects.get(id=data["user"]))
                         except KeyError:
-                            serialize.save(project=obj)
+                            serialize.save(project=obj, user=User.objects.get(id=data["user"]))
                         record_dynamic(project=data["project_id"],
                                        _type="新增", operationObject="用例", user=request.user.pk,
                                        data="新增用例\"%s\"" % data["caseName"])
@@ -516,7 +520,7 @@ class AddOldApi(APIView):
             if not data["project_id"] or not data["case_id"] or not data["api_ids"]:
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             if not isinstance(data["project_id"], int) or \
-                    not isinstance(data["api_ids"], list) or isinstance(data["case_id"], int):
+                    not isinstance(data["api_ids"], list) or not isinstance(data["case_id"], int):
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             for i in data["api_ids"]:
                 if not isinstance(i, int):
@@ -546,35 +550,33 @@ class AddOldApi(APIView):
             try:
                 api_data = ApiInfoSerializer(ApiInfo.objects.get(id=i, project=data["project_id"])).data
             except ObjectDoesNotExist:
-                pass
+                continue
             with transaction.atomic():
-                case_api = AutomationCaseApi(automationTestCase=obj,
-                                             name=api_data["name"], httpType=api_data["httpType"],
-                                             requestType=api_data["requestType"],
-                                             address=api_data["apiAddress"],
-                                             requestParameterType=api_data["requestParameterType"],
-                                             httpCode=api_data["mockCode"], responseData=api_data["data"])
-                case_api.save()
-                if api_data["requestParameterType"] == "form-data":
-                    if api_data["requestParameter"]:
-                        for j in api_data["requestParameter"]:
-                            if j["name"]:
-                                AutomationParameter(automationCaseApi=AutomationCaseApi.objects.get(id=case_api.pk),
-                                                    name=j["name"], value=j["value"], interrelate=False).save()
-                else:
-                    if api_data["requestParameterRaw"]:
-                        # data = json.loads(serializers.serialize("json",data["requestParameterRaw"]))
-                        AutomationParameterRaw(automationCaseApi=AutomationCaseApi.objects.get(id=case_api.pk),
-                                               data=json.loads(api_data["requestParameterRaw"][0]["data"])).save()
-                if api_data["headers"]:
-                    for n in api_data["headers"]:
-                        if n["name"]:
-                            AutomationHead(automationCaseApi=AutomationCaseApi.objects.get(id=case_api.pk),
-                                           name=n["name"], value=n["value"], interrelate=False).save()
-                case_name = AutomationTestCaseSerializer(obj).data["caseName"]
-                record_dynamic(project=data["project_id"],
-                               _type="新增", operationObject="用例接口", user=request.user.pk,
-                               data="用例“%s”新增接口\"%s\"" % (case_name, case_api.name))
+                api_data["automationTestCase_id"] = obj.pk
+                api_serialize = AutomationCaseApiDeserializer(data=api_data)
+                if api_serialize.is_valid():
+                    api_serialize.save(automationTestCase=obj)
+                    case_api = api_serialize.data.get("id")
+                    if api_data["requestParameterType"] == "form-data":
+                        if api_data["requestParameter"]:
+                            for j in api_data["requestParameter"]:
+                                if j["name"]:
+                                    AutomationParameter(automationCaseApi=AutomationCaseApi.objects.get(id=case_api),
+                                                        name=j["name"], value=j["value"], interrelate=False).save()
+                    else:
+                        if api_data["requestParameterRaw"]:
+                            # data = json.loads(serializers.serialize("json",data["requestParameterRaw"]))
+                            AutomationParameterRaw(automationCaseApi=AutomationCaseApi.objects.get(id=case_api),
+                                                   data=json.loads(api_data["requestParameterRaw"][0]["data"])).save()
+                    if api_data["headers"]:
+                        for n in api_data["headers"]:
+                            if n["name"]:
+                                AutomationHead(automationCaseApi=AutomationCaseApi.objects.get(id=case_api),
+                                               name=n["name"], value=n["value"], interrelate=False).save()
+                    case_name = AutomationTestCaseSerializer(obj).data["caseName"]
+                    record_dynamic(project=data["project_id"],
+                                   _type="新增", operationObject="用例接口", user=request.user.pk,
+                                   data="用例“%s”新增接口\"%s\"" % (case_name, api_serialize.data.get("name")))
 
         return JsonResponse(code_msg=GlobalStatusCode.success())
 
@@ -604,7 +606,7 @@ class AddNewApi(APIView):
             if data["examineType"] not in ["no_check", "only_check_status", "json", "entirely_check", "Regular_check"]:
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             if data["httpCode"]:
-                if data["http_code"] not in ["200", "404", "400", "502", "500", "302"]:
+                if data["httpCode"] not in ["200", "404", "400", "502", "500", "302"]:
                     return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
         except KeyError:
             return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
@@ -683,7 +685,7 @@ class AddNewApi(APIView):
                         return JsonResponse(code_msg=GlobalStatusCode.fail())
                 record_dynamic(project=data["project_id"],
                                _type="新增", operationObject="用例接口", user=request.user.pk,
-                               data="用例“%s”新增接口\"%s\"" % (obj.name, data["name"]))
+                               data="用例“%s”新增接口\"%s\"" % (obj.caseName, data["name"]))
                 return JsonResponse(data={"api_id": api_id}, code_msg=GlobalStatusCode.success())
             return JsonResponse(code_msg=GlobalStatusCode.fail())
 
@@ -743,7 +745,7 @@ class UpdateApi(APIView):
             if data["examineType"] not in ["no_check", "only_check_status", "json", "entirely_check", "Regular_check"]:
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             if data["httpCode"]:
-                if data["http_code"] not in ["200", "404", "400", "502", "500", "302"]:
+                if data["httpCode"] not in ["200", "404", "400", "502", "500", "302"]:
                     return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
         except KeyError:
             return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
@@ -763,7 +765,7 @@ class UpdateApi(APIView):
         except ObjectDoesNotExist:
             return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
         try:
-            AutomationTestCase.objects.get(id=data["automationTestCase_id"], project=data["project_id"])
+            obi = AutomationTestCase.objects.get(id=data["automationTestCase_id"], project=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
         try:
@@ -793,8 +795,8 @@ class UpdateApi(APIView):
                                 return JsonResponse(GlobalStatusCode.parameter_wrong())
                 except KeyError:
                     pass
-                AutomationParameter.objects.filter(api=data["id"]).delete()
-                AutomationParameterRaw.objects.filter(api=data["id"]).delete()
+                AutomationParameter.objects.filter(automationCaseApi=data["id"]).delete()
+                AutomationParameterRaw.objects.filter(automationCaseApi=data["id"]).delete()
                 if data["requestParameterType"] == "form-data":
                     try:
                         if len(data["requestList"]):
@@ -818,7 +820,7 @@ class UpdateApi(APIView):
                                                    data=data["requestList"]).save()
                     except KeyError:
                         pass
-                AutomationResponseJson.objects.filter(automationCaseApi=data["api_id"]).delete()
+                AutomationResponseJson.objects.filter(automationCaseApi=data["id"]).delete()
                 if data["examineType"] == "json":
                     try:
                         response = eval(data["responseData"].replace("true", "True").replace("false", "False"))
@@ -829,7 +831,7 @@ class UpdateApi(APIView):
                         return JsonResponse(code_msg=GlobalStatusCode.fail())
                 record_dynamic(project=data["project_id"],
                                _type="修改", operationObject="用例接口", user=request.user.pk,
-                               data="用例“%s”修改接口\"%s\"" % (obj.name, data["name"]))
+                               data="用例“%s”修改接口\"%s\"" % (obi.caseName, data["name"]))
                 return JsonResponse(code_msg=GlobalStatusCode.success())
             return JsonResponse(code_msg=GlobalStatusCode.fail())
 
@@ -850,7 +852,7 @@ class DelApi(APIView):
                     or not isinstance(data["ids"], list):
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             for i in data["ids"]:
-                if isinstance(i, int):
+                if not isinstance(i, int):
                     return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
         except KeyError:
             return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
@@ -870,11 +872,11 @@ class DelApi(APIView):
         except ObjectDoesNotExist:
             return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
         try:
-            obj = AutomationTestCase.objects.get(id=data["automationTestCase_id"], project=data["project_id"])
+            obj = AutomationTestCase.objects.get(id=data["case_id"], project=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
         for j in data["ids"]:
-            obi = AutomationCaseApi.objects.filter(id=j, automationTestCase=data["automationTestCase_id"])
+            obi = AutomationCaseApi.objects.filter(id=j, automationTestCase=data["case_id"])
             if len(obi) != 0:
                 name = obi[0].name
                 obi.delete()
@@ -929,7 +931,11 @@ class StartTest(APIView):
         except ObjectDoesNotExist:
             return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
         AutomationTestResult.objects.filter(automationCaseApi=data["id"]).delete()
-        result = test_api(host_id=data["host_id"], case_id=data["case_id"], _id=data["id"], project_id=data["project_id"])
+        try:
+            result = test_api(host_id=data["host_id"], case_id=data["case_id"],
+                              _id=data["id"], project_id=data["project_id"])
+        except:
+            return JsonResponse(code_msg=GlobalStatusCode.fail())
         record_dynamic(project=data["project_id"],
                        _type="测试", operationObject="用例接口",
                        user=request.user.pk, data="测试用例“%s”接口\"%s\"" % (obi.caseName, obj.name))
@@ -1069,24 +1075,38 @@ class GetTask(APIView):
 
 class DelTask(APIView):
 
-    def get(self, request):
+    def parameter_check(self, data):
         """
-        删除任务
+        校验参数
+        :param data:
+        :return:
+        """
+        try:
+            # 校验project_id, id类型为int
+            if not data["project_id"]:
+                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+        except KeyError:
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+
+    def post(self, request):
+        """
+        执行测试用例
         :param request:
         :return:
         """
-        project_id = request.POST.get("project_id")
-        if not project_id.isdecimal():
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+        data = JSONParser().parse(request)
+        result = self.parameter_check(data)
+        if result:
+            return result
         try:
-            Project.objects.get(id=project_id)
+            Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
-        obm = AutomationTestTask.objects.filter(project=project_id)
+        obm = AutomationTestTask.objects.filter(project=data["project_id"])
         if obm:
             obm.delete()
-            del_task_crontab(project_id)
-            record_dynamic(project=project_id,
+            del_task_crontab(data["project_id"])
+            record_dynamic(project=data["project_id"],
                            _type="删除", operationObject="任务",
                            user=request.user.pk, data="删除任务")
             return JsonResponse(code_msg=GlobalStatusCode.success())

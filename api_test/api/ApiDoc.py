@@ -343,9 +343,9 @@ class AddApi(APIView):
                         record_dynamic(project=data["project_id"],
                                        _type="新增", operationObject="接口", user=request.user.pk,
                                        data="新增接口“%s”" % data["name"])
-                        api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=api_id),
+                        api_record = ApiOperationHistory(api=ApiInfo.objects.get(id=api_id),
                                                          user=User.objects.get(id=request.user.pk),
-                                                         description="新增接口\"%s\"" % data["name"])
+                                                         description="新增接口“%s”" % data["name"])
                         api_record.save()
                         return JsonResponse(code_msg=GlobalStatusCode.success(), data={"api_id": api_id})
                     return JsonResponse(code_msg=GlobalStatusCode.fail())
@@ -513,7 +513,7 @@ class UpdateApi(APIView):
                     record_dynamic(project=data["project_id"],
                                    _type="新增", operationObject="接口", user=request.user.pk,
                                    data="新增接口“%s”" % data["name"])
-                    api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=data['id']),
+                    api_record = ApiOperationHistory(api=ApiInfo.objects.get(id=data['id']),
                                                      user=User.objects.get(id=request.user.pk),
                                                      description="新增接口\"%s\"" % data["name"])
                     api_record.save()
@@ -656,13 +656,13 @@ class AddHistory(APIView):
         try:
             # 校验project_id, id类型为int
             if not data["project_id"] or not data["api_id"] or not data["requestType"] \
-                    or not data["url"] or not data["httpStatus"]:
+                    or not data["requestAddress"] or not data["httpCode"]:
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             if not isinstance(data["project_id"], int) or not isinstance(data["api_id"], int):
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
             if data["requestType"] not in ["POST", "GET", "PUT", "DELETE"]:
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-            if data["httpStatus"] not in ["200", "404", "400", "502", "500", "302"]:
+            if data["httpCode"] not in ["200", "404", "400", "502", "500", "302"]:
                 return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
         except KeyError:
             return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
@@ -753,7 +753,7 @@ class DelHistory(APIView):
             obj = ApiInfo.objects.get(id=data["api_id"], project=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
-        obm = APIRequestHistory.objects.filter(id=data["id"], apiInfo=data["api_id"])
+        obm = APIRequestHistory.objects.filter(id=data["id"], api=data["api_id"])
         if obm:
             obm.delete()
             api_record = ApiOperationHistory(api=obj,
@@ -780,6 +780,8 @@ class OperationHistory(APIView):
             return JsonResponse(code_msg=GlobalStatusCode.page_not_int())
         project_id = request.GET.get("project_id")
         api_id = request.GET.get("api_id")
+        if not project_id or not api_id:
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
         if not project_id.isdecimal() or not api_id.isdecimal():
             return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
         try:
