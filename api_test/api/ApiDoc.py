@@ -457,8 +457,8 @@ class UpdateApi(APIView):
                         User.objects.get(id=request.user.pk)
                         serialize.update(instance=obi, validated_data=data)
                     try:
+                        ApiHead.objects.filter(api=data["id"]).delete()
                         if len(data["headDict"]):
-                            ApiHead.objects.filter(api=data["id"]).delete()
                             for i in data["headDict"]:
                                 try:
                                     if i["name"]:
@@ -470,11 +470,11 @@ class UpdateApi(APIView):
                                     return JsonResponse(GlobalStatusCode.parameter_wrong())
                     except KeyError:
                         pass
+                    ApiParameter.objects.filter(api=data["id"]).delete()
+                    ApiParameterRaw.objects.filter(api=data["id"]).delete()
                     if data["requestParameterType"] == "form-data":
                         try:
                             if len(data["requestList"]):
-                                ApiParameter.objects.filter(api=data["id"]).delete()
-                                ApiParameterRaw.objects.filter(api=data["id"]).delete()
                                 for i in data["requestList"]:
                                     try:
                                         if i["name"]:
@@ -491,14 +491,12 @@ class UpdateApi(APIView):
                     else:
                         try:
                             if len(data["requestList"]):
-                                ApiParameter.objects.filter(api=data["id"]).delete()
-                                ApiParameterRaw.objects.filter(api=data["id"]).delete()
                                 ApiParameterRaw(api=ApiInfo.objects.get(id=data['id']), data=data["requestList"]).save()
                         except KeyError:
                             pass
                     try:
+                        ApiResponse.objects.filter(api=data["id"]).delete()
                         if len(data["responseList"]):
-                            ApiResponse.objects.filter(api=data["id"]).delete()
                             for i in data["responseList"]:
                                 try:
                                     if i["name"]:
@@ -631,6 +629,8 @@ class ApiInfoDetail(APIView):
         """
         project_id = request.GET.get("project_id")
         api_id = request.GET.get("api_id")
+        if not project_id or not api_id:
+            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
         if not project_id.isdecimal() or not api_id.isdecimal():
             return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
         try:

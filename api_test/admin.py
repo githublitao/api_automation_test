@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 from api_test.models import Project, GlobalHost, ApiGroupLevelFirst, ApiInfo, \
     APIRequestHistory, ApiOperationHistory, ProjectDynamic, ProjectMember, \
-    AutomationGroupLevelSecond, AutomationGroupLevelFirst, AutomationTestCase, AutomationParameter, AutomationCaseApi, \
+    AutomationGroupLevelFirst, AutomationTestCase, AutomationParameter, AutomationCaseApi, \
     AutomationTestResult, AutomationTestTask, AutomationHead, UserProfile, ApiHead, ApiParameter, ApiResponse, \
     ApiParameterRaw, AutomationParameterRaw, AutomationResponseJson, AutomationTaskRunTime, AutomationReportSendConfig
 
@@ -230,12 +230,7 @@ class ApiOperationHistoryForm(ReadOnlyModelAdmin):
 admin.site.register(ApiOperationHistory, ApiOperationHistoryForm)
 
 
-class AutomationGroupLevelSecondInFirst(admin.TabularInline):
-    model = AutomationGroupLevelSecond
-
-
 class AutomationGroupLevelFirstForm(admin.ModelAdmin):
-    inlines = [AutomationGroupLevelSecondInFirst]
     search_fields = ('project', 'name')
     list_display = ('id', 'project', 'name')
     list_display_links = ('id', 'project', 'name')
@@ -260,7 +255,7 @@ class AutomationTestCaseForm(admin.ModelAdmin):
     ordering = ('id',)
     fieldsets = ([
         '用例接口列表', {
-            'fields': ('project', 'automationGroupLevelFirst', 'automationGroupLevelSecond',
+            'fields': ('project', 'automationGroupLevelFirst',
                        'caseName', 'user', 'description')
         }],)
 
@@ -286,15 +281,15 @@ class AutomationResponseJsonInCase(admin.TabularInline):
 
 class AutomationCaseApiForm(admin.ModelAdmin):
     inlines = [AutomationHeadInCase, AutomationParameterInCase, AutomationRawInCase, AutomationResponseJsonInCase]
-    search_fields = ('automationTestCase', 'name', 'address')
-    list_display = ('id', 'automationTestCase', 'name', 'httpType', 'requestType', 'address', 'examineType')
+    search_fields = ('automationTestCase', 'name', 'apiAddress')
+    list_display = ('id', 'automationTestCase', 'name', 'httpType', 'requestType', 'apiAddress', 'examineType')
     list_display_links = ('id', 'automationTestCase', 'name', 'httpType')
     list_filter = ('httpType', 'requestType', 'requestParameterType', 'examineType')
     list_per_page = 20
     ordering = ('id',)
     fieldsets = ([
         '接口详情', {
-            'fields': ('automationTestCase', 'name', 'httpType', 'requestType', 'address',
+            'fields': ('automationTestCase', 'name', 'httpType', 'requestType', 'apiAddress',
                        'requestParameterType', 'examineType', 'httpCode', 'responseData')
         }],)
 

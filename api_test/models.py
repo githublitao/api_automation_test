@@ -398,25 +398,25 @@ class AutomationGroupLevelFirst(models.Model):
         verbose_name_plural = '用例分组管理'
 
 
-class AutomationGroupLevelSecond(models.Model):
-    """
-    自动化用例二级分组
-    """
-    id = models.AutoField(primary_key=True)
-    automationGroupLevelFirst = models.ForeignKey(AutomationGroupLevelFirst,
-                                                  related_name='secondGroup',
-                                                  on_delete=models.CASCADE, verbose_name='一级分组')
-    name = models.CharField(max_length=50, verbose_name='用例二级分组名称')
-
-    def __unicode__(self):
-        return self.name
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = '用例二级分组'
-        verbose_name_plural = '用例二级分组管理'
+# class AutomationGroupLevelSecond(models.Model):
+#     """
+#     自动化用例二级分组
+#     """
+#     id = models.AutoField(primary_key=True)
+#     automationGroupLevelFirst = models.ForeignKey(AutomationGroupLevelFirst,
+#                                                   related_name='secondGroup',
+#                                                   on_delete=models.CASCADE, verbose_name='一级分组')
+#     name = models.CharField(max_length=50, verbose_name='用例二级分组名称')
+#
+#     def __unicode__(self):
+#         return self.name
+#
+#     def __str__(self):
+#         return self.name
+#
+#     class Meta:
+#         verbose_name = '用例二级分组'
+#         verbose_name_plural = '用例二级分组管理'
 
 
 class AutomationTestCase(models.Model):
@@ -427,8 +427,8 @@ class AutomationTestCase(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='所属项目')
     automationGroupLevelFirst = models.ForeignKey(AutomationGroupLevelFirst, blank=True, null=True,
                                                   on_delete=models.SET_NULL, verbose_name='所属用例一级分组')
-    automationGroupLevelSecond = models.ForeignKey(AutomationGroupLevelSecond, blank=True, null=True,
-                                                   on_delete=models.SET_NULL, verbose_name='所属用例二级分组')
+    # automationGroupLevelSecond = models.ForeignKey(AutomationGroupLevelSecond, blank=True, null=True,
+    #                                                on_delete=models.SET_NULL, verbose_name='所属用例二级分组')
     caseName = models.CharField(max_length=50, verbose_name='用例名称')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, verbose_name="创建人",
                              related_name="createUser")
@@ -456,7 +456,7 @@ class AutomationCaseApi(models.Model):
     name = models.CharField(max_length=50, verbose_name='接口名称')
     httpType = models.CharField(max_length=50, default='HTTP', verbose_name='HTTP/HTTPS', choices=HTTP_CHOICE)
     requestType = models.CharField(max_length=50, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)
-    address = models.CharField(max_length=1024, verbose_name='接口地址')
+    apiAddress = models.CharField(max_length=1024, verbose_name='接口地址')
     requestParameterType = models.CharField(max_length=50, verbose_name='参数请求格式', choices=REQUEST_PARAMETER_TYPE_CHOICE)
     examineType = models.CharField(default='no_check', max_length=50, verbose_name='校验方式', choices=EXAMINE_TYPE_CHOICE)
     httpCode = models.CharField(max_length=50, blank=True, null=True, verbose_name='HTTP状态', choices=HTTP_CODE_CHOICE)
