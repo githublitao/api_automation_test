@@ -57,7 +57,7 @@ python manage.py runserver 0.0.0.0:8000
 ```
 ### 12.现在就可以访问 http://127.0.0.1:8000/login 进行登录， http://127.0.0.1:8000/admin 为后台管理平台<br>
 ## 微信打赏：<br>
-![微信打赏](https://github.com/githublitao/api_automation_test/blob/master/img/%E6%94%B6%E6%AC%BE%E7%A0%81.JPG)<br>
+![微信打赏](https://github.com/githublitao/api_automation_test/blob/master/img/%E6%94%B6%E6%AC%BE%E7%A0%81.png)<br>
 <br>
 项目讲解：
 ----
