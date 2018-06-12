@@ -57,30 +57,30 @@ export default {
           	  type: "post",
           	  url: test+"/api/user/login",
           	  async: true,
-          	  data: {'username': this.ruleForm2.account, 'password': this.ruleForm2.checkPass},
-          	  timeout: 5000,
-          	  success: function(data) {
-          	  	_this.logining = false
-          	  	if (data.code === '999999') {
-          	  	  sessionStorage.setItem('username', JSON.stringify(data.data.first_name))
-          	  		sessionStorage.setItem('token', JSON.stringify(data.data.key))
-          	  		console.log(_this.$route)
-          	  		if (_this.$route.query.url) {
-          	  		  _this.$router.push(_this.$route.query.url);
-          	  		} else {
-          	  		  _this.$router.push('/projectList');
-          	  		}
-          	  	}
-          	  	else {
-          	  		_this.$message.error({
-          	  			message: data.msg,
-          	  			center: true
-          	  		})
-          	  	}
-          	  },
+              data: {'username': this.ruleForm2.account, 'password': this.ruleForm2.checkPass},
+              timeout: 5000,
+              success: function(data) {
+                  _this.logining = false
+                  if (data.code === '999999') {
+                      sessionStorage.setItem('username', JSON.stringify(data.data.first_name));
+                      sessionStorage.setItem('token', JSON.stringify(data.data.key));
+                      console.log(_this.$route)
+                      if (_this.$route.query.url) {
+                          _this.$router.push(_this.$route.query.url);
+                      } else {
+                          _this.$router.push('/projectList');
+                      }
+                  }
+                  else {
+                      _this.$message.error({
+                          message: data.msg,
+                          center: true
+                      })
+                  }
+              },
           })
         } else {
-          console.log('error submit!!')
+            console.log('error submit!!');
           return false
         }
       })

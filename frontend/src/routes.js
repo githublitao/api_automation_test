@@ -75,7 +75,7 @@ let routes = [
                     child: true,
                     children: [
                         {   path: '/apiList/project=:project_id', component: ApiList, name: '接口列表'},
-                        {   path: '/apiList/project=:project_id/first=:firstGroup/seconde=:secondGroup', component: ApiListGroup, name: '分组接口列表'},
+                        {   path: '/apiList/project=:project_id/first=:firstGroup', component: ApiListGroup, name: '分组接口列表'},
                         {   path: '/fastTest/project=:project_id', component: FestTest, name: '快速测试'},
                         {   path: '/addApi/project=:project_id', component: addApi, name: '新增接口'},
                         {   path: '/detail/project=:project_id/api=:api_id',
@@ -96,7 +96,7 @@ let routes = [
                     child: true,
                     children: [
                         {   path: '/caseList/project=:project_id', component: CaseList, name: '用例列表'},
-                        {   path: '/caseList/project=:project_id/first=:firstGroup/second=:secondGroup', component: CaseListGroup, name: '分组用例列表'},
+                        {   path: '/caseList/project=:project_id/first=:firstGroup', component: CaseListGroup, name: '分组用例列表'},
                         {   path: '/caseApiList/project=:project_id/case=:case_id', component: CaseApiList, name: '用例接口列表'},
                         {   path: '/addCaseApi/project=:project_id/case=:case_id', component: AddCaseApi, name: '添加新接口'},
                         {   path: '/updateCaseApi/project=:project_id/case=:case_id/api=:api_id', component: UpdateCaseApi, name: '修改接口'},

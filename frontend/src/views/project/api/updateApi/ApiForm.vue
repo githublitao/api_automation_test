@@ -24,7 +24,7 @@
                     <div style="width: 80px">修改</div>
                 </el-radio-button>
             </router-link>
-            <el-radio-button label="删除">
+            <el-radio-button label="删除" @click.native="handleDel">
                 <div style="width: 80px">删除</div>
             </el-radio-button>
         </el-radio-group>
@@ -55,8 +55,9 @@
                         type: "post",
                         url: test+"/api/api/del_api",
                         async: true,
-                        data: { project_id: this.$route.params.project_id, api_ids: this.$route.params.api_id },
+                        data: JSON.stringify({ project_id: Number(this.$route.params.project_id), ids: [this.$route.params.api_id] }),
                         headers: {
+                            "Content-Type": "application/json",
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
                         timeout: 5000,
@@ -83,13 +84,6 @@
             showNavi(title) {
                 this.radio = title
             }
-        },
-        watch: {
-            radio() {
-                if ( this.radio === '删除') {
-                    this.handleDel()
-                }
-            },
         },
         mounted() {
             this.radio = this.$route.name

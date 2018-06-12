@@ -317,21 +317,23 @@
                     },
                 })
             },
-            AddHistroy() {
+            AddHistroy(code) {
                 let self = this;
                 this.listLoading = true;
-                let param = { project_id: this.$route.params.project_id,
-                    api_id: self.$route.params.api_id,
+                let param = JSON.stringify({ project_id: Number(this.$route.params.project_id),
+                    api_id: Number(self.$route.params.api_id),
                     requestType :self.form.request4,
-                    url: self.form.Http4 + "://" + self.form.url + self.form.addr,
-                    httpStatus: 200
-                };
+                    requestAddress: self.form.Http4 + "://" + self.form.url + self.form.addr,
+                    httpCode: code
+                });
+                console.log(param)
                 $.ajax({
                     type: "POST",
                     url: test+"/api/api/add_history",
                     async: true,
                     data: param,
                     headers: {
+                        "Content-Type": "application/json",
                         Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                     },
                     timeout: 5000,
@@ -351,23 +353,28 @@
             },
             delHistory(row) {
                 let self = this;
-                let param = {
-                    project_id: self.$route.params.project_id,
-                    api_id: self.$route.params.api_id,
-                    history_id: row.id
-                };
+                let param = JSON.stringify({
+                    project_id: Number(self.$route.params.project_id),
+                    api_id: Number(self.$route.params.api_id),
+                    id: Number(row.id)
+                });
                 $.ajax({
                     type: "POST",
                     url: test+"/api/api/del_history",
                     async: true,
                     data: param,
                     headers: {
+                        "Content-Type": "application/json",
                         Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                     },
                     timeout: 5000,
                     success: (data) => {
                         if (data.code === '999999') {
-                            this.getHistory()
+                            this.getHistory();
+                            self.$message.success({
+                                message: "删除成功！",
+                                center: true,
+                            })
                         }
                         else {
                             self.$message.error({
@@ -455,29 +462,33 @@
                         } else {
                             _parameter = self.form.parameterRaw;
                         }
-                        $.ajax({
-                            type: self.form.request4,
-                            url: url,
-                            async: true,
-                            data: _parameter,
-                            headers: headers,
-                            timeout: 5000,
-                            success: function (data, status, jqXHR) {
-                                self.loadingSend = false;
-                                self.form.statusCode = jqXHR.status;
-                                self.form.resultData = data;
-                                self.form.resultHead = jqXHR.getAllResponseHeaders();
-                                self.AddHistroy()
-                            },
-                            error: function (jqXHR, error, errorThrown) {
-                                console.log(jqXHR);
-                                self.loadingSend = false;
-                                self.form.statusCode = jqXHR.status;
-                                self.form.resultData = jqXHR.responseJSON;
-                                self.form.resultHead = jqXHR.getAllResponseHeaders();
-                                self.AddHistroy()
-                            }
-                        })
+                        try {
+                            $.ajax({
+                                type: self.form.request4,
+                                url: url,
+                                async: true,
+                                data: _parameter,
+                                headers: headers,
+                                timeout: 5000,
+                                success: function (data, status, jqXHR) {
+                                    self.loadingSend = false;
+                                    self.form.statusCode = jqXHR.status;
+                                    self.form.resultData = data;
+                                    self.form.resultHead = jqXHR.getAllResponseHeaders();
+                                    self.AddHistroy(jqXHR.status)
+                                },
+                                error: function (jqXHR, error, errorThrown) {
+                                    console.log(jqXHR);
+                                    self.loadingSend = false;
+                                    self.form.statusCode = jqXHR.status;
+                                    self.form.resultData = jqXHR.responseJSON;
+                                    self.form.resultHead = jqXHR.getAllResponseHeaders();
+                                    self.AddHistroy(jqXHR.status)
+                                }
+                            })
+                        } catch (e) {
+                            self.AddHistroy(400)
+                        }
                     }
                 })
             },

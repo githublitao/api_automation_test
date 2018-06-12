@@ -290,10 +290,10 @@ class AddApi(APIView):
         pro_data = ProjectSerializer(obj)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
-        try:
-            ApiInfo.objects.get(name=data["name"], project=data["project_id"])
+        api_name = ApiInfo.objects.filter(name=data["name"], project=data["project_id"])
+        if len(api_name):
             return JsonResponse(code="999997", msg="存在相同名称！")
-        except ObjectDoesNotExist:
+        else:
             with transaction.atomic():
                 try:
                     serialize = ApiInfoDeserializer(data=data)
@@ -456,11 +456,9 @@ class UpdateApi(APIView):
         pro_data = ProjectSerializer(pro_data)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
-        try:
-            ApiInfo.objects.get(name=data["name"], project=data["project_id"])
+        api_name = ApiInfo.objects.filter(name=data["name"], project=data["project_id"]).exclude(id=data["id"])
+        if len(api_name):
             return JsonResponse(code="999997", msg="存在相同名称！")
-        except ObjectDoesNotExist:
-            pass
         try:
             obi = ApiInfo.objects.get(id=data["id"])
         except ObjectDoesNotExist:
@@ -694,7 +692,7 @@ class AddHistory(APIView):
                 return JsonResponse(code="999996", msg="参数有误！")
             if data["requestType"] not in ["POST", "GET", "PUT", "DELETE"]:
                 return JsonResponse(code="999996", msg="参数有误！")
-            if data["httpCode"] not in ["200", "404", "400", "502", "500", "302"]:
+            if data["httpCode"] not in [200, 404, 400, 502, 500, 302]:
                 return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
             return JsonResponse(code="999996", msg="参数有误！")
@@ -877,22 +875,20 @@ class DownLoad(APIView):
         return JsonResponse(code="999999", msg="成功！", data=url)
 
 
-class DownLoadDoc(APIView):
+def download_doc(request):
+    url = request.GET.get("url")
+    file_name = str(int(time.time())) + ".doc"
 
-    def get(self, request):
-        url = request.GET.get("url")
-        file_name = str(int(time.time())) + ".doc"
+    def file_iterator(_file, chunk_size=512):
+        while True:
+            c = _file.read(chunk_size)
+            if c:
+                yield c
+            else:
+                break
 
-        def file_iterator(_file, chunk_size=512):
-            while True:
-                c = _file.read(chunk_size)
-                if c:
-                    yield c
-                else:
-                    break
-
-        _file = open(url, "rb")
-        response = StreamingHttpResponse(file_iterator(_file))
-        response["Content-Type"] = "application/octet-stream"
-        response["Content-Disposition"] = "attachment;filename=\"{0}\"".format(file_name)
-        return response
+    _file = open(url, "rb")
+    response = StreamingHttpResponse(file_iterator(_file))
+    response["Content-Type"] = "application/octet-stream"
+    response["Content-Disposition"] = "attachment;filename=\"{0}\"".format(file_name)
+    return response

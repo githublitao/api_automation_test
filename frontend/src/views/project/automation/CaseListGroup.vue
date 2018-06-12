@@ -17,27 +17,16 @@
                 </el-form-item>
             </el-form>
         </el-col>
-        <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
+        <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
             <el-form :model="editForm"  :rules="editFormRules" ref="editForm" label-width="80px">
                 <el-form-item label="名称" prop="caseName">
                     <el-input v-model="editForm.caseName" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-row :span="24">
-                    <el-col :span="8">
-                        <el-form-item label="接口分组:" label-width="83px" prop="automationGroupLevelFirst">
-                            <el-select v-model="editForm.automationGroupLevelFirst" placeholder="父分组" @change="changeSecondGroup">
-                                <el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="item.id"></el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="16">
-                        <el-form-item prop="automationGroupLevelSecond">
-                            <el-select v-model="editForm.automationGroupLevelSecond" placeholder="子分组">
-                                <el-option v-for="(item,index) in secondGroup" :key="index+''" :label="item.name" :value="item.id"></el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
+                <el-form-item label="接口分组:" label-width="83px" prop="automationGroupLevelFirst">
+                    <el-select v-model="editForm.automationGroupLevelFirst" placeholder="分组">
+                        <el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="描述" prop='description'>
                     <el-input type="textarea" :rows="7" v-model="editForm.description"></el-input>
                 </el-form-item>
@@ -49,27 +38,16 @@
         </el-dialog>
 
         <!--新增界面-->
-        <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
+        <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
             <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
                 <el-form-item label="名称" prop="caseName">
                     <el-input v-model="addForm.caseName" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-row :span="24">
-                    <el-col :span="8">
-                        <el-form-item label="接口分组:" label-width="83px" prop="firstGroup">
-                            <el-select v-model="addForm.firstGroup" placeholder="父分组" @change="changeSecondGroup">
-                                <el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="item.id"></el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="16">
-                        <el-form-item prop="secondGroup">
-                            <el-select v-model="addForm.secondGroup" placeholder="子分组">
-                                <el-option v-for="(item,index) in secondGroup" :key="index+''" :label="item.name" :value="item.id"></el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
+                <el-form-item label="接口分组:" label-width="83px" prop="firstGroup">
+                    <el-select v-model="addForm.firstGroup" placeholder="分组">
+                        <el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="描述" prop='description'>
                     <el-input type="textarea" :rows="7" v-model="addForm.description"></el-input>
                 </el-form-item>
@@ -79,25 +57,14 @@
                 <el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
             </div>
         </el-dialog>
-        <el-dialog title="修改所属分组" v-model="updateGroupFormVisible" :close-on-click-modal="false">
+        <el-dialog title="修改所属分组" v-model="updateGroupFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
             <el-form :model="updateGroupForm" label-width="80px"  :rules="updateGroupFormRules" ref="updateGroupForm">
-                <el-row :gutter="10">
-                    <el-col :span="12">
-                        <el-form-item label="父分组" prop="firstGroup">
-                            <el-select v-model="updateGroupForm.firstGroup" placeholder="请选择" @change="changeSecondGroup">
-                                <el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="item.id">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="子分组" prop='secondGroup'>
-                            <el-select v-model="updateGroupForm.secondGroup" placeholder="请选择">
-                                <el-option v-for="(item,index) in secondGroup" :key="index+''" :label="item.name" :value="item.id"></el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
+                <el-form-item label="分组" prop="firstGroup">
+                    <el-select v-model="updateGroupForm.firstGroup" placeholder="请选择分组">
+                        <el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click.native="updateGroupFormVisible = false">取消</el-button>
@@ -141,6 +108,7 @@
 <script>
     import { test } from '../../../api/api'
     import $ from 'jquery'
+    import moment from "moment"
     export default {
         data() {
             return {
@@ -152,17 +120,16 @@
                 page: 1,
                 listLoading: false,
                 sels: [],//列表选中列
+                delLoading: false,
+                disDel: true,
                 updateGroupFormVisible: false,
                 updateGroupForm: {
                     firstGroup: "",
-                    secondGroup: "",
                 },
                 updateGroupFormRules: {
                     firstGroup : [{ type: 'number', required: true, message: '请选择父分组', trigger: 'blur'}],
-                    secondGroup : [{ type: 'number', required: true, message: '请选择子分组', trigger: 'blur'}]
                 },
                 group: [],
-                secondGroup: [],
                 updateGroupLoading: false,
                 update: true,
                 editFormVisible: false,//编辑界面是否显示
@@ -173,10 +140,7 @@
                         { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
                     ],
                     automationGroupLevelFirst: [
-                        { type: 'number', required: true, message: '请选择父分组', trigger: 'blur'}
-                    ],
-                    automationGroupLevelSecond: [
-                        { type: 'number', required: true, message: '请选择字分组', trigger: 'blur'}
+                        { type: 'number', required: true, message: '请选择分组', trigger: 'blur'}
                     ],
                     description: [
                         { required: false, message: '请输入描述', trigger: 'blur' },
@@ -187,7 +151,6 @@
                 editForm: {
                     caseName: '',
                     automationGroupLevelFirst: '',
-                    automationGroupLevelSecond: '',
                     description: ''
                 },
 
@@ -201,9 +164,6 @@
                     firstGroup: [
                         { type: 'number', required: true, message: '请选择父分组', trigger: 'blur'}
                     ],
-                    secondGroup: [
-                        { type: 'number', required: true, message: '请选择字分组', trigger: 'blur'}
-                    ],
                     description: [
                         { required: false, message: '请输入版本号', trigger: 'blur' },
                         { max: 1024, message: '不能超过1024个字符', trigger: 'blur' }
@@ -213,7 +173,6 @@
                 addForm: {
                     caseName: '',
                     firstGroup: '',
-                    secondGroup: '',
                     description: ''
                 }
             }
@@ -257,21 +216,25 @@
             },
             // 修改用例所属分组
             updateGroupSubmit() {
-                let ids = this.sels.map(item => item.id).toString();
+                let ids = this.sels.map(item => item.id);
                 let self = this;
                 this.$confirm('确认修改所属分组吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
                     self.updateGroupLoading = true;
                     //NProgress.start();
-                    let params = { project_id:this.$route.params.project_id, first_group_id: self.updateGroupForm.firstGroup, second_group_id: self.updateGroupForm.secondGroup};
-                    params['api_ids'] = ids;
+                    let params = JSON.stringify({
+                        project_id: Number(this.$route.params.project_id),
+                        automationGroupLevelFirst_id: self.updateGroupForm.firstGroup,
+                        ids:ids
+                    });
                     $.ajax({
                         type: "post",
                         url: test+"/api/automation/update_case_group",
                         async: true,
                         data: params,
                         headers: {
+                            "Content-Type": "application/json",
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
                         timeout: 5000,
@@ -282,7 +245,8 @@
                                     message: '修改成功',
                                     center: true,
                                     type: 'success'
-                                })
+                                });
+                                self.$router.push({ name: '分组用例列表', params: { project_id: self.$route.params.project_id, firstGroup: self.updateGroupForm.firstGroup}});
                             }
                             else {
                                 self.$message.error({
@@ -325,20 +289,6 @@
                     },
                 })
             },
-            changeSecondGroup(val) {
-                this.secondGroup = [];
-                this.updateGroupForm.secondGroup = "";
-                this.editForm.secondGroup = "";
-                this.addForm.secondGroup = "";
-                console.log(1)
-                for (let i=0; i<this.group.length; i++) {
-                    let id = this.group[i]['id'];
-                    if ( val === id) {
-                        this.secondGroup = this.group[i].secondGroup
-                        console.log(this.secondGroup)
-                    }
-                }
-            },
             changeGroup() {
                 this.getCaseGroup();
                 this.updateGroupFormVisible = true
@@ -356,8 +306,11 @@
                         type: "post",
                         url: test+"/api/automation/del_case",
                         async: true,
-                        data: { project_id: this.$route.params.project_id, case_ids: row.id },
+                        data: JSON.stringify({
+                                project_id: Number(this.$route.params.project_id),
+                                ids: [row.id] }),
                         headers: {
+                            "Content-Type": "application/json",
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
                         timeout: 5000,
@@ -395,7 +348,7 @@
             },
             //批量删除
             batchRemove: function () {
-                let ids = this.sels.map(item => item.id).toString();
+                let ids = this.sels.map(item => item.id);
                 let self = this;
                 this.$confirm('确认删除选中记录吗？', '提示', {
                     type: 'warning'
@@ -406,8 +359,9 @@
                         type: "post",
                         url: test+"/api/automation/del_case",
                         async: true,
-                        data:{ project_id: this.$route.params.project_id, case_ids: ids},
+                        data:JSON.stringify({ project_id: Number(this.$route.params.project_id), ids: ids}),
                         headers: {
+                            "Content-Type": "application/json",
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
                         timeout: 5000,
@@ -452,16 +406,17 @@
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             self.editLoading = true;
                             //NProgress.start();
+                            let param = JSON.stringify({
+                                project_id: Number(this.$route.params.project_id),
+                                id: Number(self.editForm.id),
+                                caseName: self.editForm.caseName,
+                                automationGroupLevelFirst_id: Number(this.editForm.automationGroupLevelFirst),
+                                description: self.editForm.description });
                             $.ajax({
                                 type: "post",
                                 url: test+"/api/automation/update_case",
                                 async: true,
-                                data: { project_id: this.$route.params.project_id,
-                                    case_id: self.editForm.id,
-                                    name: self.editForm.caseName,
-                                    first_group_id: this.editForm.automationGroupLevelFirst,
-                                    second_group_id: this.editForm.automationGroupLevelSecond,
-                                    description: self.editForm.description },
+                                data: param,
                                 headers: {
                                     Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                                 },
@@ -502,15 +457,16 @@
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             self.addLoading = true;
                             //NProgress.start();
+                            let param = JSON.stringify({
+                                project_id: Number(this.$route.params.project_id),
+                                automationGroupLevelFirst_id: this.addForm.firstGroup,
+                                caseName: self.addForm.caseName,
+                                description: self.addForm.description });
                             $.ajax({
                                 type: "post",
                                 url: test+"/api/automation/add_case",
                                 async: true,
-                                data: { project_id: this.$route.params.project_id,
-                                    first_group_id: this.addForm.firstGroup,
-                                    second_group_id: this.addForm.secondGroup,
-                                    name: self.addForm.caseName,
-                                    description: self.addForm.description },
+                                data: param,
                                 headers: {
                                     Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                                 },
@@ -546,10 +502,6 @@
                     }
                 });
             },
-        },
-        mounted() {
-            this.getCaseList();
-
         },
         watch: {
             '$route': function (to, from) {

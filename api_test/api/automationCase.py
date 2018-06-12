@@ -243,7 +243,7 @@ class UpdateGroup(APIView):
             case_list.update(automationGroupLevelFirst=obj)
             name_list = []
             for j in case_list:
-                name_list.append(str(j.name))
+                name_list.append(str(j.caseName))
             record_dynamic(project=data["project_id"],
                            _type="修改", operationObject="用例", user=request.user.pk, data="修改用例分组，列表“%s”" % name_list)
             return JsonResponse(code="999999", msg="成功！")
@@ -341,10 +341,10 @@ class AddCase(APIView):
         pro_data = ProjectSerializer(obj)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
-        try:
-            AutomationTestCase.objects.get(caseName=data["caseName"], project=data["project_id"])
+        case_name = AutomationTestCase.objects.filter(caseName=data["caseName"], project=data["project_id"])
+        if len(case_name):
             return JsonResponse(code="999997", msg="存在相同名称！")
-        except ObjectDoesNotExist:
+        else:
             with transaction.atomic():
                 try:
                     serialize = AutomationTestCaseDeserializer(data=data)
@@ -376,9 +376,11 @@ class UpdateCase(APIView):
         """
         try:
             # 校验project_id, id类型为int
-            if not data["project_id"] or not data["caseName"] or not data["id"]:
+            if not data["project_id"] or not data["caseName"] or not data["id"] \
+                    or not data["automationGroupLevelFirst_id"]:
                 return JsonResponse(code="999996", msg="参数有误！")
-            if not isinstance(data["project_id"], int) or not isinstance(data["id"], int):
+            if not isinstance(data["project_id"], int) or not isinstance(data["id"], int) \
+                    or not isinstance(data["automationGroupLevelFirst_id"], int):
                 return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
             return JsonResponse(code="999996", msg="参数有误！")
@@ -405,9 +407,13 @@ class UpdateCase(APIView):
         except ObjectDoesNotExist:
             return JsonResponse(code="999987", msg="用例不存在！")
         try:
-            AutomationTestCase.objects.get(caseName=data["caseName"], project=data["project_id"]).exclude(id=data["id"])
-            return JsonResponse(code="999997", msg="存在相同名称！")
+            AutomationGroupLevelFirst.objects.get(id=data["automationGroupLevelFirst_id"], project=data["project_id"])
         except ObjectDoesNotExist:
+            return JsonResponse(code="999991", msg="分组不存在！")
+        case_name = AutomationTestCase.objects.filter(caseName=data["caseName"], project=data["project_id"]).exclude(id=data["id"])
+        if len(case_name):
+            return JsonResponse(code="999997", msg="存在相同名称！")
+        else:
             serialize = AutomationTestCaseDeserializer(data=data)
             if serialize.is_valid():
                 serialize.update(instance=obj, validated_data=data)
@@ -666,11 +672,9 @@ class AddNewApi(APIView):
             obj = AutomationTestCase.objects.get(id=data["automationTestCase_id"], project=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999987", msg="用例不存在！")
-        try:
-            AutomationCaseApi.objects.get(name=data["name"], automationTestCase=data["automationTestCase_id"])
+        api_name = AutomationCaseApi.objects.filter(name=data["name"], automationTestCase=data["automationTestCase_id"])
+        if len(api_name):
             return JsonResponse(code="999997", msg="存在相同名称！")
-        except ObjectDoesNotExist:
-            pass
         with transaction.atomic():
             serialize = AutomationCaseApiDeserializer(data=data)
             if serialize.is_valid():
@@ -815,11 +819,9 @@ class UpdateApi(APIView):
             obj = AutomationCaseApi.objects.get(id=data["id"], automationTestCase=data["automationTestCase_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999990", msg="接口不存在！")
-        try:
-            AutomationCaseApi.objects.get(name=data["name"], automationTestCase=data["automationTestCase_id"])
+        api_name = AutomationCaseApi.objects.filter(name=data["name"], automationTestCase=data["automationTestCase_id"])
+        if len(api_name):
             return JsonResponse(code="999997", msg="存在相同名称！")
-        except ObjectDoesNotExist:
-            pass
         with transaction.atomic():
             serialize = AutomationCaseApiDeserializer(data=data)
             if serialize.is_valid():
@@ -1050,10 +1052,10 @@ class AddTimeTask(APIView):
                 return JsonResponse(code="999996", msg="参数有误！")
             if data["unit"] not in ["m", "h", "d", "w"]:
                 return JsonResponse(code="999996", msg="参数有误！")
-            try:
-                AutomationTestTask.objects.get(name=data["name"]).exclude(project=data["project_id"])
+            task_name = AutomationTestTask.objects.filter(name=data["name"]).exclude(project=data["project_id"])
+            if len(task_name):
                 return JsonResponse(code="999997", msg="存在相同名称！")
-            except ObjectDoesNotExist:
+            else:
                 try:
                     rt = AutomationTestTask.objects.get(project=data["project_id"])
                     serialize = AutomationTestTaskDeserializer(data=data)
@@ -1076,10 +1078,10 @@ class AddTimeTask(APIView):
                 start_time=data["startTime"], end_time=data["endTime"])
 
         else:
-            try:
-                AutomationTestTask.objects.get(name=data["name"]).exclude(project=data["project_id"])
+            task_name = AutomationTestTask.objects.filter(name=data["name"]).exclude(project=data["project_id"])
+            if len(task_name):
                 return JsonResponse(code="999997", msg="存在相同名称！")
-            except ObjectDoesNotExist:
+            else:
                 try:
                     rt = AutomationTestTask.objects.get(project=data["project_id"])
                     serialize = AutomationTestTaskDeserializer(data=data)

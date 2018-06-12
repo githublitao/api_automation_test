@@ -93,7 +93,7 @@
                 this.page = val;
                 this.getProjectMember()
             },
-            // 获取HOST列表
+            // 获取成员列表
             getProjectMember() {
                 this.listLoading = true;
                 let self = this;
@@ -137,9 +137,10 @@
                     success: function(data) {
                         self.listLoading = false;
                         if (data.code === '999999') {
-                            if (data.data.length) {
-                                self.reportFrom = data.data[0].reportFrom;
-                                self.editForm = data.data[0]
+                            console.log(data.data)
+                            if (data.data) {
+                                self.reportFrom = data.data.reportFrom;
+                                self.editForm = data.data
                             } else {
                                 self.reportFrom = "";
                                 self.editForm = {}
@@ -197,8 +198,8 @@
                                 async: true,
                                 data: JSON.stringify({
                                     project_id: Number(this.$route.params.project_id),
-                                    from: this.editForm.reportFrom,
-                                    user: this.editForm.mailUser,
+                                    reportFrom: this.editForm.reportFrom,
+                                    mailUser: this.editForm.mailUser,
                                     mailPass: this.editForm.mailPass,
                                     mailSmtp: this.editForm.mailSmtp,
                                 }),

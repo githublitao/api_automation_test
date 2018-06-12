@@ -142,7 +142,7 @@ def test_api(host_id, case_id, project_id, _id):
     except ReadTimeout:
         record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter, host=host.name,
                        status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
-                       _result='TimeOut', code="", response_data="")
+                       _result='TimeOut', code="408", response_data="")
         return 'timeout'
     if examine_type == 'no_check':
         record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter, host=host.name,
@@ -245,7 +245,7 @@ def post(header, address, request_parameter_type, data):
     """
     if request_parameter_type == 'raw':
         data = json.dumps(data)
-    response = requests.post(url=address, data=data, headers=header, timeout=5)
+    response = requests.post(url=address, data=data, headers=header, timeout=8)
     try:
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:
@@ -269,7 +269,7 @@ def get(header, address, request_parameter_type, data):
     """
     if request_parameter_type == 'raw':
         data = json.dumps(data)
-    response = requests.get(url=address, params=data, headers=header, timeout=5)
+    response = requests.get(url=address, params=data, headers=header, timeout=8)
     try:
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:
@@ -293,7 +293,7 @@ def put(header, address, request_parameter_type, data):
     """
     if request_parameter_type == 'raw':
         data = json.dumps(data)
-    response = requests.put(url=address, data=data, headers=header, timeout=5)
+    response = requests.put(url=address, data=data, headers=header, timeout=8)
     try:
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:
@@ -317,7 +317,7 @@ def delete(header, address, request_parameter_type, data):
     """
     if request_parameter_type == 'raw':
         data = json.dumps(data)
-    response = requests.delete(url=address, data=data, headers=header, timeout=5)
+    response = requests.delete(url=address, data=data, headers=header, timeout=8)
     try:
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:

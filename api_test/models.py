@@ -552,7 +552,7 @@ class AutomationTestResult(models.Model):
     host = models.CharField(max_length=1024, verbose_name='测试地址', null=True, blank=True)
     header = models.CharField(max_length=1024, blank=True, null=True, verbose_name='请求头')
     parameter = models.TextField(blank=True, null=True, verbose_name='请求参数')
-    statusCode = models.CharField(max_length=1024, verbose_name='期望HTTP状态', choices=HTTP_CODE_CHOICE)
+    statusCode = models.CharField(blank=True, null=True, max_length=1024, verbose_name='期望HTTP状态', choices=HTTP_CODE_CHOICE)
     examineType = models.CharField(max_length=1024, verbose_name='匹配规则')
     data = models.TextField(blank=True, null=True, verbose_name='规则内容')
     result = models.CharField(max_length=50, verbose_name='测试结果', choices=RESULT_CHOICE)

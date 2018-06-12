@@ -154,10 +154,10 @@ class UpdateProject(APIView):
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         # 查找是否相同名称的项目
-        try:
-            Project.objects.get(name=data["name"]).exclude(id=data["project_id"])
+        pro_name = Project.objects.filter(name=data["name"]).exclude(id=data["project_id"])
+        if len(pro_name):
             return JsonResponse(code="999997", msg="存在相同名称")
-        except ObjectDoesNotExist:
+        else:
             serializer = ProjectDeserializer(data=data)
             with transaction.atomic():
                 if serializer.is_valid():
@@ -234,13 +234,13 @@ class DisableProject(APIView):
         if result:
             return result
         # 查找项目是否存在
-        obj = Project.objects.filter(id=data["project_id"])
-        if obj:
-            obj.update(status=False)
+        try:
+            obj = Project.objects.get(id=data["project_id"])
+            obj.status = False
             record_dynamic(project=data["project_id"],
-                           _type="禁用", operationObject="项目", user=request.user.pk, data=obj[0].name)
+                           _type="禁用", operationObject="项目", user=request.user.pk, data=obj.name)
             return JsonResponse(code="999999", msg="成功")
-        else:
+        except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
 
 
@@ -270,13 +270,13 @@ class EnableProject(APIView):
         if result:
             return result
         # 查找项目是否存在
-        obj = Project.objects.filter(id=data["project_id"])
-        if obj:
-            obj.update(status=True)
+        try:
+            obj = Project.objects.get(id=data["project_id"])
+            obj.status = True
             record_dynamic(project=data["project_id"],
-                           _type="启用", operationObject="项目", user=request.user.pk, data=obj[0].name)
+                           _type="禁用", operationObject="项目", user=request.user.pk, data=obj.name)
             return JsonResponse(code="999999", msg="成功")
-        else:
+        except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
 
 

@@ -1,6 +1,8 @@
 <template>
     <section>
-        <el-button class="return-list" @click="back"><i class="el-icon-d-arrow-left" style="margin-right: 5px"></i>用例列表</el-button>
+        <router-link :to="{ name: '用例列表', params: {project_id: this.$route.params.project_id}}" style='text-decoration: none;color: aliceblue;'>
+            <el-button class="return-list"><i class="el-icon-d-arrow-left" style="margin-right: 5px"></i>用例列表</el-button>
+        </router-link>
         <el-button type="primary" @click.native="addOldApi"><i class="el-icon-plus" style="margin-right: 5px"></i>已有接口</el-button>
         <router-link :to="{ name: '添加新接口'}" style='text-decoration: none;color: #000000;'>
             <el-button type="primary"><i class="el-icon-plus" style="margin-right: 5px"></i>新建接口</el-button>
@@ -14,17 +16,12 @@
                 <el-col :span="6">
                     <div style="height:400px;line-height:100px;overflow:auto;overflow-x:hidden;border: 1px solid #e6e6e6">
                         <el-menu default-active="2" class="el-menu-vertical-demo" active-text-color="rgb(32, 160, 255)" :unique-opened="true">
-                            <el-menu-item index="-1" @click.native="getApiList([])"><i class="el-icon-menu"></i>所有接口</el-menu-item>
+                            <el-menu-item index="-1" @click.native="getApiList()"><i class="el-icon-menu"></i>所有接口</el-menu-item>
                             <template v-for="(item,index) in groupData">
-                                <el-submenu :index="index+''" :key="item.id" class="group">
+                                <el-menu-item :index="index+''" :key="item.id" @click.native="getApiList(item.id)" class="group">
                                     <template slot="title">{{item.name}}
                                     </template>
-                                    <template v-for="child in item.secondGroup">
-                                        <el-menu-item class="group" style="padding-right: 10px;" :index="child.id+''" @click.native="getApiList([item.id, child.id])">
-                                            {{child.name }}
-                                        </el-menu-item>
-                                    </template>
-                                </el-submenu>
+                                </el-menu-item>
                             </template>
                         </el-menu>
                     </div>
@@ -64,7 +61,7 @@
             </el-table-column>
             <el-table-column prop="address" label="接口地址" min-width="50%" sortable show-overflow-tooltip>
                 <template slot-scope="scope">
-                    <span class="HttpStatus">{{scope.row.requestType}}</span><span style="font-size: 16px">{{scope.row.address}}</span>
+                    <span class="HttpStatus">{{scope.row.requestType}}</span><span style="font-size: 16px">{{scope.row.apiAddress}}</span>
                 </template>
             </el-table-column>
             <el-table-column prop="result" label="测试结果" min-width="10%" sortable show-overflow-tooltip>
@@ -145,53 +142,11 @@
                 sels: [],//列表选中列
                 TestResult: false,
                 result: {},
-                taskVShow: false,
-                editLoading: false,
-                delLoading: false,
-                disDel: true,
-                pickerOptions1: {
-                    disabledDate(time) {
-                        return time.getTime() < Date.now() - 8.64e7;
-                    }
-                },
-                pickerOptions2: {
-                    disabledDate(time) {
-                        return time.getTime() < Date.now() - 8.64e7;
-                    },
-                    shortcuts: [{
-                        text: '最近一周',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            end.setTime(end.getTime() + 3600 * 1000 * 24 * 7);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近一个月',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            end.setTime(end.getTime() + 3600 * 1000 * 24 * 30);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近三个月',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            end.setTime(end.getTime() + 3600 * 1000 * 24 * 90);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }]
-                },
                 ApiListLen: "",
                 ApiListIndex: 0,
             }
         },
         methods: {
-            back(){
-                this.$router.go(-1); // 返回上一层
-            },
             getCaseApiList() {
                 this.listLoading = true;
                 let self = this;
@@ -235,12 +190,14 @@
                         type: "post",
                         url: test+"/api/automation/start_test",
                         async: true,
-                        data: { project_id: this.$route.params.project_id,
-                            case_id: this.$route.params.case_id,
-                            host_id: this.url,
-                            id: row.id
-                        },
+                        data: JSON.stringify({
+                            project_id: Number(this.$route.params.project_id),
+                            case_id: Number(this.$route.params.case_id),
+                            host_id: Number(this.url),
+                            id: Number(row.id)
+                        }),
                         headers: {
+                            "Content-Type": "application/json",
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
                         timeout: 8000,
@@ -257,11 +214,6 @@
                         },
                         error: function () {
                         },
-                        // complete: function(XMLHttpRequest,status){
-                        //     if( status ==='timeout'){
-                        //         row.result = "timeout"
-                        //     }
-                        // }
                     })
                 } else {
                     this.$message({
@@ -281,15 +233,16 @@
                             type: "post",
                             url: test+"/api/automation/start_test",
                             async: true,
-                            data: { project_id: this.$route.params.project_id,
-                                case_id: this.$route.params.case_id,
-                                host_id: this.url,
-                                id: this.ApiList[this.ApiListIndex].id
-                            },
+                            data: JSON.stringify({
+                                project_id: Number(this.$route.params.project_id),
+                                case_id: Number(this.$route.params.case_id),
+                                host_id: Number(this.url),
+                                id: Number(this.ApiList[this.ApiListIndex].id)
+                            }),
                             headers: {
+                                "Content-Type": "application/json",
                                 Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                             },
-                            timeout: 5000,
                             success: function(data) {
                                 if (data.code === '999999') {
                                     self.ApiList[self.ApiListIndex].result = data.data.result;
@@ -313,42 +266,6 @@
                             type: 'warning'
                         })
                     }
-                // this.ApiList.forEach((item,index) =>{
-                //     if (this.url) {
-                //         let self = this;
-                //         $.ajax({
-                //             type: "post",
-                //             url: test+"/api/automation/start_test",
-                //             async: true,
-                //             data: { project_id: this.$route.params.project_id,
-                //                 case_id: this.$route.params.case_id,
-                //                 host_id: this.url,
-                //                 id: item.id
-                //             },
-                //             headers: {
-                //                 Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                //             },
-                //             timeout: 5000,
-                //             success: function(data) {
-                //                 if (data.code === '999999') {
-                //                     self.ApiList[index].result = data.data.result
-                //                 }
-                //                 else {
-                //                     self.$message.error({
-                //                         message: data.msg,
-                //                         center: true,
-                //                     })
-                //                 }
-                //             },
-                //         })
-                //     } else {
-                //         this.$message({
-                //             message: '请选择测试环境',
-                //             center: true,
-                //             type: 'warning'
-                //         })
-                //     }
-                // })
             },
             handleDel(index, row){
                 this.$confirm('确认删除该记录吗?', '提示', {
@@ -361,8 +278,12 @@
                         type: "post",
                         url: test+"/api/automation/del_api",
                         async: true,
-                        data: { project_id: this.$route.params.project_id, case_id: this.$route.params.case_id, ids: row.id },
+                        data: JSON.stringify({
+                            project_id: Number(this.$route.params.project_id),
+                            case_id: Number(this.$route.params.case_id),
+                            ids: [row.id] }),
                         headers: {
+                            "Content-Type": "application/json",
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
                         timeout: 5000,
@@ -414,10 +335,9 @@
             getApiList(_list) {
                 this.apiListLoading = true;
                 let self = this;
-                let param = { project_id: this.$route.params.project_id, page: self.page};
+                let param = { project_id: Number(this.$route.params.project_id), page: self.page};
                 if (_list) {
-                    param['first_group_id'] = _list[0];
-                    param['second_group_id'] = _list[1];
+                    param['apiGroupLevelFirst_id'] = Number(_list);
                 }
                 $.ajax({
                     type: "get",
@@ -491,166 +411,6 @@
                     }
                 })
             },
-            getTask(){
-                let self = this;
-                $.ajax({
-                    type: "get",
-                    url: test+"/api/automation/get_time_task",
-                    async: true,
-                    data: {
-                        project_id: self.$route.params.project_id,
-                        case_id: self.$route.params.case_id
-                    },
-                    headers: {
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: (data) => {
-                        if (data.code === '999999') {
-                            try {
-                                self.form.name = data.data.name;
-                                self.form.type = data.data.type;
-                                self.form.frequency = data.data.frequency;
-                                if (self.form.type === 'timing') {
-                                    self.form.unit = 's'
-                                } else {
-                                    self.form.unit = data.data.unit;
-                                }
-                                self.form.time = data.data.startTime;
-                                self.form.timeArray = [data.data.startTime, data.data.endTime];
-                                self.form.Host = data.data.Host;
-                                self.disDel = false
-                            } catch (e){
-                                self.form.name = "";
-                                self.form.type = "circulation";
-                                self.form.frequency = "";
-                                self.form.unit = "s";
-                                self.form.time = "";
-                                self.form.timeArray = [];
-                                self.form.Host = "";
-                                self.disDel = true
-                            }
-                            self.taskVShow = true
-                        }
-                        else {
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                    },
-                    error: function () {
-                        self.editLoading = false;
-                        self.$message.error({
-                            message: "失败",
-                            center: true,
-                        })
-                    }
-                })
-            },
-            addTask(){
-                let self = this;
-                this.$refs.form.validate((valid) => {if (valid) {
-                    this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                            console.log(self.form);
-                            self.editLoading = true;
-                            let param = {
-                                project_id: self.$route.params.project_id,
-                                case_id: self.$route.params.case_id,
-                                host_id: self.form.Host,
-                                name: self.form.name,
-                                type: self.form.type,
-                                frequency: self.form.frequency,
-                                unit: self.form.unit,
-                            };
-                            if (self.form.type === 'circulation') {
-                                param['startTime'] = moment(self.form.timeArray[0]).format("YYYY-MM-DD HH:mm:ss");
-                                param['endTime'] = moment(self.form.timeArray[1]).format("YYYY-MM-DD HH:mm:ss")
-                            } else {
-                                param['startTime'] = moment(self.form.time).format("YYYY-MM-DD HH:mm:ss");
-                                param['endTime'] = moment(self.form.time).format("YYYY-MM-DD HH:mm:ss")
-                            }
-                            $.ajax({
-                                type: "post",
-                                url: test+"/api/automation/add_time_task",
-                                async: true,
-                                data: param,
-                                headers: {
-                                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                                },
-                                timeout: 5000,
-                                success: (data) => {
-                                    if (data.code === '999999') {
-                                        self.editLoading = false;
-                                        self.taskVShow = false;
-                                        self.$message({
-                                            message: '添加成功',
-                                            center: true,
-                                            type: "success",
-                                        })
-                                    }
-                                    else {
-                                        self.editLoading = false;
-                                        self.$message.error({
-                                            message: data.msg,
-                                            center: true,
-                                        })
-                                    }
-                                },
-                                error: function () {
-                                    self.editLoading = false;
-                                    self.$message.error({
-                                        message: "失败",
-                                        center: true,
-                                    })
-                                }
-                            })
-                        }
-                    )}
-                })
-            },
-            delTask(){
-                let self = this;
-                self.delLoading = true;
-                $.ajax({
-                    type: "post",
-                    url: test+"/api/automation/del_task",
-                    async: true,
-                    data: {
-                        project_id: self.$route.params.project_id,
-                        case_id: self.$route.params.case_id
-                    },
-                    headers: {
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: (data) => {
-                        if (data.code === '999999') {
-                            self.delLoading = false;
-                            self.taskVShow = false;
-                            self.$message({
-                                message: "删除成功",
-                                center: true,
-                                type: "success"
-                            })
-                        }
-                        else {
-                            self.delLoading = false;
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                    },
-                    error: function () {
-                        self.delLoading = false;
-                        self.$message.error({
-                            message: "失败",
-                            center: true,
-                        })
-                    }
-                })
-            },
             // 添加已有接口弹出
             addOldApi() {
                 this.searchApiListVisible = true;
@@ -658,22 +418,22 @@
                 this.getApiList()
             },
             addOldApiSubmit() {
-                let ids = this.sels.map(item => item.id).toString();
+                let ids = this.sels.map(item => item.id);
                 let self = this;
                 this.$confirm('确认添加选中记录吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
                     //NProgress.start();
+                    let param = JSON.stringify({
+                            project_id: Number(this.$route.params.project_id),
+                            case_id: Number(this.$route.params.case_id),
+                            api_ids: ids,
+                        });
                     $.ajax({
                         type: "post",
                         url: test+"/api/automation/add_old_api",
                         async: true,
-                        data:{
-                            project_id: this.$route.params.project_id,
-                            case_id: this.$route.params.case_id,
-                            api_ids: ids,
-                            head: JSON.stringify({value: "1", label: '是'}),
-                        },
+                        data:param,
                         headers: {
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },

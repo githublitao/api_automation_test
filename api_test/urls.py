@@ -37,7 +37,7 @@ urlpatterns = [
     url(r'api/del_history', ApiDoc.DelHistory.as_view()),
     url(r'api/operation_history', ApiDoc.OperationHistory.as_view()),
     url(r'api/Download', ApiDoc.DownLoad.as_view()),
-    url(r'api/download_doc', ApiDoc.DownLoadDoc.as_view()),
+    url(r'api/download_doc', ApiDoc.download_doc),
     url(r'automation/group', Case.Group.as_view()),
     url(r'automation/add_group', Case.AddGroup.as_view()),
     url(r'automation/del_group', Case.DelGroup.as_view()),

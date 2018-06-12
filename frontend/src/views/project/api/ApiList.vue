@@ -30,25 +30,14 @@
 				</el-form-item>
 			</el-form>
 		</el-col>
-		<el-dialog title="修改所属分组" v-model="updateGroupFormVisible" :close-on-click-modal="false">
-			<el-form :model="updateGroupForm" label-width="80px"  :rules="updateGroupFormRules" ref="updateGroupForm">
-				<el-row :gutter="10">
-					<el-col :span="12">
-						<el-form-item label="父分组" prop="firstGroup">
-							<el-select v-model="updateGroupForm.firstGroup" placeholder="请选择" @change="changeSecondGroup">
-								<el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="item.id">
-								</el-option>
-							</el-select>
-						</el-form-item>
-					</el-col>
-					<el-col :span="12">
-						<el-form-item label="子分组" prop='secondGroup'>
-							<el-select v-model="updateGroupForm.secondGroup" placeholder="请选择">
-								<el-option v-for="(item,index) in secondGroup" :key="index+''" :label="item.name" :value="item.id"></el-option>
-							</el-select>
-						</el-form-item>
-					</el-col>
-				</el-row>
+		<el-dialog title="修改所属分组" v-model="updateGroupFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
+			<el-form :model="updateGroupForm" label-width="80px" :rules="updateGroupFormRules" ref="updateGroupForm">
+				<el-form-item label="分组名称" prop="firstGroup">
+					<el-select v-model="updateGroupForm.firstGroup" placeholder="请选择">
+						<el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="item.id">
+						</el-option>
+					</el-select>
+				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click.native="updateGroupFormVisible = false">取消</el-button>
@@ -77,7 +66,7 @@
 			<el-table-column label="操作" min-width="19%">
 				<template slot-scope="scope">
 					<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-					<router-link :to="{ name: '基础信息', params: {api_id: scope.row.id}}" style='text-decoration: none;color: aliceblue;'>
+					<router-link :to="{ name: '修改', params: {api_id: scope.row.id}}" style='text-decoration: none;color: aliceblue;'>
 						<el-button type="info" size="small">修改</el-button>
 					</router-link>
 				</template>
@@ -110,14 +99,11 @@
                 updateGroupFormVisible: false,
                 updateGroupForm: {
                     firstGroup: "",
-                    secondGroup: "",
                 },
                 updateGroupFormRules: {
-                    firstGroup : [{ type: 'number', required: true, message: '请选择父分组', trigger: 'blur'}],
-                    secondGroup : [{ type: 'number', required: true, message: '请选择子分组', trigger: 'blur'}]
+                    firstGroup : [{ type: 'number', required: true, message: '请选择分组', trigger: 'blur'}],
                 },
                 group: [],
-                secondGroup: [],
                 updateGroupLoading: false,
                 update: true,
                 loadSwaggerApi: false,
@@ -132,13 +118,6 @@
                 this.listLoading = true;
                 let self = this;
                 let param = { project_id: this.$route.params.project_id, page: self.page, name: self.filters.name};
-                if (this.$route.params.firstGroup) {
-                    param['first_group_id'] = this.$route.params.firstGroup;
-                    if (this.$route.params.secondGroup) {
-                        param['second_group_id'] = this.$route.params.secondGroup
-                    }
-                }
-
                 $.ajax({
                     type: "get",
                     url: test+"/api/api/api_list",
@@ -165,21 +144,25 @@
             },
             // 修改接口所属分组
             updateGroupSubmit() {
-                let ids = this.sels.map(item => item.id).toString();
+                let ids = this.sels.map(item => item.id);
                 let self = this;
                 this.$confirm('确认修改所属分组吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
                     self.updateGroupLoading = true;
                     //NProgress.start();
-                    let params = { project_id:this.$route.params.project_id, first_group_id: self.updateGroupForm.firstGroup, second_group_id: self.updateGroupForm.secondGroup};
-                    params['api_ids'] = ids;
+                    let params = JSON.stringify({
+						project_id:Number(this.$route.params.project_id),
+						apiGroupLevelFirst_id: Number(self.updateGroupForm.firstGroup),
+						ids: ids,
+                    });
                     $.ajax({
                         type: "post",
                         url: test+"/api/api/update_group",
                         async: true,
                         data: params,
                         headers: {
+                            "Content-Type": "application/json",
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
                         timeout: 5000,
@@ -190,7 +173,8 @@
                                     message: '修改成功',
                                     center: true,
                                     type: 'success'
-                                })
+                                });
+								self.$router.push({ name: '分组接口列表', params: { project_id: self.$route.params.project_id, firstGroup: self.updateGroupForm.firstGroup}});
                             }
                             else {
                                 self.$message.error({
@@ -232,20 +216,10 @@
                     },
                 })
             },
-            changeSecondGroup(val) {
-                this.secondGroup = [];
-                this.updateGroupForm.secondGroup = "";
-                for (let i=0; i<this.group.length; i++) {
-                    let id = this.group[i]['id'];
-                    if ( val === id) {
-                        this.secondGroup = this.group[i].secondGroup
-                    }
-                }
-            },
+			// 修改分组弹窗
             changeGroup() {
                 this.getApiGroup();
                 this.updateGroupFormVisible = true
-
             },
             //删除
             handleDel: function (index, row) {
@@ -259,8 +233,9 @@
                         type: "post",
                         url: test+"/api/api/del_api",
                         async: true,
-                        data: { project_id: this.$route.params.project_id, api_ids: row.id },
+                        data: JSON.stringify({ project_id: Number(this.$route.params.project_id), ids: [row.id] }),
                         headers: {
+                            "Content-Type": "application/json",
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
                         timeout: 5000,
@@ -284,6 +259,7 @@
                 }).catch(() => {
                 });
             },
+			// 下载接口文档
             DownloadApi() {
                 $.ajax({
                     type: "get",
@@ -301,6 +277,7 @@
                     },
                 })
             },
+			// 翻页
             handleCurrentChange(val) {
                 this.page = val;
                 this.getApiList()
@@ -315,7 +292,7 @@
             },
             //批量删除
             batchRemove: function () {
-                let ids = this.sels.map(item => item.id).toString();
+                let ids = this.sels.map(item => item.id);
                 let self = this;
                 this.$confirm('确认删除选中记录吗？', '提示', {
                     type: 'warning'
@@ -326,8 +303,9 @@
                         type: "post",
                         url: test+"/api/api/del_api",
                         async: true,
-                        data:{ project_id: this.$route.params.project_id, api_ids: ids},
+                        data:JSON.stringify({ project_id: Number(this.$route.params.project_id), ids: ids}),
                         headers: {
+                            "Content-Type": "application/json",
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
                         timeout: 5000,
@@ -356,14 +334,15 @@
 			addSubmit(){
                 let self = this;
 				this.addLoading = true;
-				console.log(this.swaggerUrl)
+				console.log(this.swaggerUrl);
 				if (this.swaggerUrl){
 				    $.ajax({
                         type: "post",
                         url: test+"/api/api/lead_swagger",
                         async: true,
-                        data:{ project_id: this.$route.params.project_id, url: this.swaggerUrl},
+                        data:JSON.stringify({ project_id: Number(this.$route.params.project_id), url: this.swaggerUrl}),
                         headers: {
+                            "Content-Type": "application/json",
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
                         timeout: 5000,

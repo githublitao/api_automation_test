@@ -236,7 +236,7 @@
                                     message: '禁用成功',
                                     center: true,
                                     type: 'success'
-                                })
+                                });
                                 row.status = !row.status;
                             }
                             else {
@@ -300,7 +300,7 @@
                             self.editLoading = true;
                             //NProgress.start();
                             let data = JSON.stringify({ project_id: Number(this.$route.params.project_id),
-                                    host_id: Number(self.editForm.id),
+                                    id: Number(self.editForm.id),
                                     name: self.editForm.name,
                                     host: self.editForm.host,
                                     description: self.editForm.description });

@@ -71,14 +71,14 @@
     export default {
         data() {
             return {
-                type: 'Web',
-                version: 'V1.2.30',
-                updateDate: '2017-12-12 12:17:55',
+                type: '',
+                version: '',
+                updateDate: '',
                 apiCount: 0,
                 statusCount: 0,
                 dynamicCount: 0,
                 memberCount: 0,
-                createDate: '2017-12-12 12:17:55',
+                createDate: '',
             }
         },
         methods: {

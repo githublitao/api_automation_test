@@ -5,22 +5,11 @@
         <el-button class="return-list" type="primary" style="float: right; margin-right: 15px" @click.native="updateApi">保存</el-button>
         <el-form :model="form" ref="form" :rules="FormRules">
             <div style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px">
-                <el-row :gutter="10">
-                    <el-col :span="6">
-                        <el-form-item label="接口分组:" label-width="83px" prop="firstGroup">
-                            <el-select v-model="form.firstGroup" placeholder="父分组" @change="changeSecondGroup">
-                                <el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="item.id"></el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="4">
-                        <el-form-item prop="secondGroup">
-                            <el-select v-model="form.secondGroup" placeholder="子分组">
-                                <el-option v-for="(item,index) in secondGroup" :key="index+''" :label="item.name" :value="item.id"></el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
+                <el-form-item label="接口分组:" label-width="83px" prop="firstGroup">
+                    <el-select v-model="form.firstGroup" placeholder="请选择分组">
+                        <el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-row :gutter="10">
                     <el-col :span='8'>
                         <el-form-item label="接口名称:" label-width="83px" prop="name">
@@ -254,9 +243,8 @@
                 ParameterTyep: true,
                 group: [],
                 radio: "form-data",
-                secondGroup: [],
-                status: [{value: 'True', label: '启用'},
-                    {value: 'False', label: '禁用'}],
+                status: [{value: true, label: '启用'},
+                    {value: false, label: '禁用'}],
                 header: [{value: 'Accept', label: 'Accept'},
                     {value: 'Accept-Charset', label: 'Accept-Charset'},
                     {value: 'Accept-Encoding', label: 'Accept-Encoding'},
@@ -304,9 +292,9 @@
                 result: true,
                 activeNames: ['1', '2', '3', '4'],
                 id: "",
+                parameterRaw: "",
                 form: {
                     firstGroup: '',
-                    secondGroup: '',
                     name: '',
                     status: 'True',
                     request4: 'GET',
@@ -314,7 +302,6 @@
                     addr: '',
                     head: [{name: "", value: ""},
                         {name: "", value: ""}],
-                    parameterRaw: "",
                     parameter: [{name: "", value: "", _type:"String", required:true, restrict: "", description: ""},
                         {name: "", value: "", _type:"String", required:true, restrict: "", description: ""}],
                     parameterType: "",
@@ -328,8 +315,7 @@
                         { max: 50, message: '不能超过50个字', trigger: 'blur' }],
                     addr : [{ required: true, message: '请输入地址', trigger: 'blur' }],
                     required : [{ required: true, message: '是否必须', trigger: 'blur' }],
-                    firstGroup : [{ type: 'number', required: true, message: '请选择父分组', trigger: 'blur'},],
-                    secondGroup : [{ type: 'number', required: true, message: '请选择子分组', trigger: 'blur'}]
+                    firstGroup : [{ type: 'number', required: true, message: '请选择分组', trigger: 'blur'},],
                 },
                 editForm: {
                     name: "",
@@ -361,9 +347,9 @@
                             self.form.firstGroup = data.apiGroupLevelFirst;
                             self.form.name = data.name;
                             if (data.status) {
-                                self.form.status = 'True';
+                                self.form.status = true;
                             } else {
-                                self.form.status = 'False'
+                                self.form.status = false
                             }
                             self.form.request4 = data.requestType;
                             self.form.Http4 = data.httpType;
@@ -418,7 +404,7 @@
                                     _parameter = self.form.parameter;
                                 }
                             } else {
-                                _parameter = self.form.parameterRaw
+                                _parameter = self.parameterRaw
                             }
                             // console.log(_parameter)
                             // console.log(typeof _parameter)
@@ -428,23 +414,23 @@
                                 async: true,
                                 data: JSON.stringify({
                                     project_id: Number(self.$route.params.project_id),
-                                    api_id: Number(self.$route.params.api_id),
-                                    first_group_id: Number(self.form.firstGroup),
-                                    second_group_id: Number(self.form.secondGroup),
+                                    id: Number(self.$route.params.api_id),
+                                    apiGroupLevelFirst_id: Number(self.form.firstGroup),
                                     name: self.form.name,
                                     httpType: self.form.Http4,
                                     requestType: self.form.request4,
-                                    address: self.form.addr,
+                                    apiAddress: self.form.addr,
                                     status: self.form.status,
                                     headDict: self.form.head,
                                     requestParameterType: _type,
                                     requestList: _parameter,
                                     responseList: self.form.response,
-                                    mockStatus: self.form.mockCode,
-                                    code: self.form.mockData,
+                                    mockCode: self.form.mockCode,
+                                    data: self.form.mockData,
                                     description: ''
                                 }),
                                 headers: {
+                                    "Content-Type": "application/json",
                                     Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                                 },
                                 timeout: 5000,
@@ -556,16 +542,6 @@
                 this.form.response.splice(index, 1);
                 if (this.form.response.length === 0) {
                     this.form.response.push({name: "", value: "", _type:"String", required:true, description: ""})
-                }
-            },
-            changeSecondGroup(val) {
-                this.secondGroup = [];
-                this.form.secondGroup = "";
-                for (let i=0; i<this.group.length; i++) {
-                    let id = this.group[i]['id'];
-                    if ( val === id) {
-                        this.secondGroup = this.group[i].secondGroup
-                    }
                 }
             },
             changeParameterType() {

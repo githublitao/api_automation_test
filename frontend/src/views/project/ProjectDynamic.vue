@@ -45,8 +45,9 @@
                     type: "get",
                     url: test+"/api/dynamic/dynamic",
                     async: true,
-                    data: { project_id: this.$route.params.project_id, page: self.page},
+                    data: { project_id: Number(this.$route.params.project_id), page: self.page},
                     headers: {
+                        // "Content-Type": "application/json",
                         Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                     },
                     timeout: 5000,

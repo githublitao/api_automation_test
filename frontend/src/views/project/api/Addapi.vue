@@ -3,23 +3,17 @@
         <router-link :to="{ name: '接口列表', params: {project_id: this.$route.params.project_id}}" style='text-decoration: none;color: aliceblue;'>
             <el-button class="return-list"><i class="el-icon-d-arrow-left" style="margin-right: 5px"></i>接口列表</el-button>
         </router-link>
-        <!--<el-button class="return-list el-icon-d-arrow-left" @click="back">接口列表</el-button>-->
-        <el-button class="return-list" style="float: right" @click="back">取消</el-button>
+        <router-link :to="{ name: '接口列表', params: {project_id: this.$route.params.project_id}}" style='text-decoration: none;color: aliceblue;'>
+            <el-button class="return-list" style="float: right">取消</el-button>
+        </router-link>
         <el-button class="return-list" type="primary" style="float: right; margin-right: 15px" @click.native="addApi">保存</el-button>
         <el-form :model="form" ref="form" :rules="FormRules">
             <div style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px">
                 <el-row :gutter="10">
                     <el-col :span="6">
-                        <el-form-item label="接口分组:" label-width="83px" prop="firstGroup">
-                            <el-select v-model="form.firstGroup" placeholder="父分组" @change="changeSecondGroup">
+                        <el-form-item label="接口分组:" label-width="83px" prop="apiGroupLevelFirst_id">
+                            <el-select v-model="form.apiGroupLevelFirst_id" placeholder="请选择分组">
                                 <el-option v-for="(item,index) in group" :key="index+''" :label="item.name" :value="item.id"></el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="4">
-                        <el-form-item>
-                            <el-select v-model="form.secondGroup" placeholder="子分组">
-                                <el-option v-for="(item,index) in secondGroup" :key="index+''" :label="item.name" :value="item.id"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -41,21 +35,21 @@
                 <el-row :gutter="10">
                     <el-col :span="4">
                         <el-form-item label="URL:" label-width="83px">
-                            <el-select v-model="form.request4"  placeholder="请求方式">
+                            <el-select v-model="form.requestType"  placeholder="请求方式">
                                 <el-option v-for="(item,index) in request" :key="index+''" :label="item.label" :value="item.value"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col :span="2">
                         <el-form-item>
-                            <el-select v-model="form.Http4" placeholder="HTTP协议">
+                            <el-select v-model="form.httpType" placeholder="HTTP协议">
                                 <el-option v-for="(item,index) in Http" :key="index+''" :label="item.label" :value="item.value"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col :span='18'>
-                        <el-form-item prop="addr">
-                            <el-input v-model="form.addr" placeholder="地址" auto-complete></el-input>
+                        <el-form-item prop="apiAddress">
+                            <el-input v-model="form.apiAddress" placeholder="地址" auto-complete></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -63,7 +57,7 @@
             <el-row :span="24">
                 <el-collapse v-model="activeNames" @change="handleChange">
                     <el-collapse-item title="请求头部" name="1">
-                        <el-table :data="form.head" highlight-current-row>
+                        <el-table :data="form.headDict" highlight-current-row>
                             <el-table-column prop="name" label="标签" min-width="20%" sortable>
                                 <template slot-scope="scope">
                                     <el-select placeholder="head标签" filterable v-model="scope.row.name">
@@ -84,7 +78,7 @@
                             </el-table-column>
                             <el-table-column label="" min-width="10%">
                                 <template slot-scope="scope">
-                                    <el-button v-if="scope.$index===(form.head.length-1)" size="mini" class="el-icon-plus" @click="addHead"></el-button>
+                                    <el-button v-if="scope.$index===(form.headDict.length-1)" size="mini" class="el-icon-plus" @click="addHead"></el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -97,7 +91,7 @@
                                 <el-col :span="16"><el-checkbox v-model="radioType" label="3" v-show="ParameterTyep">表单转源数据</el-checkbox></el-col>
                             </el-row>
                         </div>
-                        <el-table :data="form.parameter" highlight-current-row :class="ParameterTyep? 'parameter-a': 'parameter-b'">
+                        <el-table :data="form.requestList" highlight-current-row :class="ParameterTyep? 'parameter-a': 'parameter-b'">
                             <el-table-column prop="name" label="参数名" min-width="15%" sortable>
                                 <template slot-scope="scope">
                                     <el-input v-model="scope.row.name" :value="scope.row.name" placeholder="请输入参数值"></el-input>
@@ -128,12 +122,12 @@
                             </el-table-column>
                             <el-table-column label="" min-width="5%">
                                 <template slot-scope="scope">
-                                    <el-button v-if="scope.$index===(form.parameter.length-1)" size="mini" class="el-icon-plus" @click="addParameter"></el-button>
+                                    <el-button v-if="scope.$index===(form.requestList.length-1)" size="mini" class="el-icon-plus" @click="addParameter"></el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
                         <template>
-                            <el-input :class="ParameterTyep? 'parameter-b': 'parameter-a'" type="textarea" :rows="5" placeholder="请输入内容" v-model="form.parameterRaw"></el-input>
+                            <el-input :class="ParameterTyep? 'parameter-b': 'parameter-a'" type="textarea" :rows="5" placeholder="请输入内容" v-model="parameterRaw"></el-input>
                         </template>
                     </el-collapse-item>
                     <el-dialog title="更多设置" v-model="addParameterFormVisible" :close-on-click-modal="false">
@@ -162,7 +156,7 @@
                         </div>
                     </el-dialog>
                     <el-collapse-item title="返回参数" name="3">
-                        <el-table :data="form.response" highlight-current-row>
+                        <el-table :data="form.responseList" highlight-current-row>
                             <el-table-column prop="name" label="参数名" min-width="15%" sortable>
                                 <template slot-scope="scope">
                                     <el-input v-model="scope.row.name" :value="scope.row.name" placeholder="请输入参数值"></el-input>
@@ -193,7 +187,7 @@
                             </el-table-column>
                             <el-table-column label="" min-width="5%">
                                 <template slot-scope="scope">
-                                    <el-button v-if="scope.$index===(form.response.length-1)" size="mini" class="el-icon-plus" @click="addResponse"></el-button>
+                                    <el-button v-if="scope.$index===(form.responseList.length-1)" size="mini" class="el-icon-plus" @click="addResponse"></el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -227,7 +221,7 @@
                                     <el-option v-for="(item,index) in httpCode" :key="index+''" :label="item.label" :value="item.value"></el-option>
                                 </el-select>
                             </div>
-                            <el-input v-model="form.mockData" type="textarea" :rows="8" placeholder="请输入mock内容"></el-input>
+                            <el-input v-model="form.data" type="textarea" :rows="8" placeholder="请输入mock内容"></el-input>
                         </el-card>
                     </el-collapse-item>
                 </el-collapse>
@@ -255,8 +249,8 @@
                 group: [],
                 radio: "form-data",
                 secondGroup: [],
-                status: [{value: 'True', label: '启用'},
-                    {value: 'False', label: '禁用'}],
+                status: [{value: true, label: '启用'},
+                    {value: false, label: '禁用'}],
                 header: [{value: 'Accept', label: 'Accept'},
                     {value: 'Accept-Charset', label: 'Accept-Charset'},
                     {value: 'Accept-Encoding', label: 'Accept-Encoding'},
@@ -304,32 +298,30 @@
                 result: true,
                 activeNames: ['1', '2', '3', '4'],
                 id: "",
+                parameterRaw: "",
                 form: {
-                    firstGroup: '',
-                    secondGroup: '',
+                    apiGroupLevelFirst_id: '',
                     name: '',
-                    status: 'True',
-                    request4: 'GET',
-                    Http4: 'HTTP',
-                    addr: '',
-                    head: [{name: "", value: ""},
+                    status: true,
+                    requestType: 'GET',
+                    httpType: 'HTTP',
+                    apiAddress: '',
+                    headDict: [{name: "", value: ""},
                         {name: "", value: ""}],
-                    parameterRaw: "",
-                    parameter: [{name: "", value: "", _type:"String", required: true, restrict: "", description: ""},
+                    requestList: [{name: "", value: "", _type:"String", required: true, restrict: "", description: ""},
                         {name: "", value: "", _type:"String", required: true, restrict: "", description: ""}],
-                    parameterType: "",
-                    response: [{name: "", value: "", _type:"String", required:true, description: ""},
+                    requestParameterType: "",
+                    responseList: [{name: "", value: "", _type:"String", required:true, description: ""},
                         {name: "", value: "", _type:"String", required:true, description: ""}],
                     mockCode: '',
-                    mockData: '',
+                    data: '',
                 },
                 FormRules: {
                     name : [{ required: true, message: '请输入名称', trigger: 'blur' },
                         { max: 50, message: '不能超过50个字', trigger: 'blur' }],
-                    addr : [{ required: true, message: '请输入地址', trigger: 'blur' }],
-                    required : [{ type: 'boolean', required: true, message: '请输入地址', trigger: 'blur' }],
-                    firstGroup : [{ type: 'number', required: true, message: '请选择父分组', trigger: 'blur'}],
-                    secondGroup : [{ type: 'number', required: true, message: '请选择子分组', trigger: 'blur'}]
+                    apiAddress : [{ required: true, message: '请输入地址', trigger: 'blur' }],
+                    required : [{ type: 'boolean', required: true, message: '请选择状态', trigger: 'blur' }],
+                    apiGroupLevelFirst_id : [{ type: 'number', required: true, message: '请选择分组', trigger: 'blur'}],
                 },
                 editForm: {
                     name: "",
@@ -342,9 +334,9 @@
             }
         },
         methods: {
-            back(){
-                this.$router.go(-1); // 返回上一层
-            },
+            // back(){
+            //     this.$router.go(-1); // 返回上一层
+            // },
             addApi: function () {
                 this.$refs.form.validate((valid) => {
                     if (valid) {
@@ -356,47 +348,49 @@
                             if ( _type === 'form-data') {
                                 if ( self.radioType === true) {
                                     _type = 'raw';
-                                    self.form.parameter.forEach((item) => {
+                                    self.form.requestList.forEach((item) => {
                                         _parameter[item.name] = item.value
                                     });
                                 } else {
-                                    _parameter = self.form.parameter;
+                                    _parameter = self.parameter;
                                 }
                             } else {
-                                _parameter = self.form.parameterRaw
+                                _parameter = self.parameterRaw
                             }
+
+                            let param = JSON.stringify({
+                                project_id: Number(self.$route.params.project_id),
+                                apiGroupLevelFirst_id: Number(self.form.apiGroupLevelFirst_id),
+                                name: self.form.name,
+                                httpType: self.form.httpType,
+                                requestType: self.form.requestType,
+                                apiAddress: self.form.apiAddress,
+                                status: self.form.status,
+                                headDict: self.form.headDict,
+                                requestParameterType: _type,
+                                requestList: _parameter,
+                                responseList: self.form.responseList,
+                                mockCode: self.form.mockCode,
+                                data: self.form.data,
+                                description: "",
+                            });
+                            console.log(param);
                             $.ajax({
                                 type: "post",
                                 url: test+"/api/api/add_api",
                                 async: true,
                                 contentType : "application/json",
                                 dataType : "json",
-                                data: JSON.stringify({
-                                    project_id: Number(self.$route.params.project_id),
-                                    first_group_id: Number(self.form.firstGroup),
-                                    second_group_id: Number(self.form.secondGroup),
-                                    name: self.form.name,
-                                    httpType: self.form.Http4,
-                                    requestType: self.form.request4,
-                                    address: self.form.addr,
-                                    status: self.form.status,
-                                    headDict: self.form.head,
-                                    requestParameterType: _type,
-                                    requestList: _parameter,
-                                    responseList: self.form.response,
-                                    mockStatus: self.form.mockCode,
-                                    code: self.form.mockData,
-                                    desc: "",
-                                }),
+                                data: param,
                                 headers: {
+                                    "Content-Type": "application/json",
                                     Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
 
                                 },
                                 timeout: 5000,
                                 success: function(data) {
                                     if (data.code === '999999') {
-                                        // self.$router.push({ name: "接口列表"});
-                                        self.back();
+                                        self.$router.push({ name: '分组接口列表', params: { project_id: self.$route.params.project_id, firstGroup: self.form.apiGroupLevelFirst_id}});
                                         self.$message({
                                             message: '保存成功',
                                             center: true,
@@ -418,7 +412,7 @@
             editParameterSubmit: function () {
                 this.$refs.editForm.validate((valid) => {
                     if (valid) {
-                        this.form.parameter[this.id] = this.editForm;
+                        this.form.requestList[this.id] = this.editForm;
                         this.addParameterFormVisible = false
                     }
                 })
@@ -431,7 +425,7 @@
             editResponseSubmit: function () {
                 this.$refs.editForm.validate((valid) => {
                     if (valid) {
-                        this.form.response[this.id] = this.editForm;
+                        this.form.responseList[this.id] = this.editForm;
                         this.addResponseFormVisible = false
                     }
                 })
@@ -457,7 +451,7 @@
                     success: function(data) {
                         if (data.code === '999999') {
                             self.group = data.data;
-                            self.form.firstGroup = self.group[0].id
+                            self.form.apiGroupLevelFirst_id = self.group[0].id
                         }
                         else {
                             self.$message.error({
@@ -470,42 +464,32 @@
             },
             addHead() {
                 let headers = {name: "", value: ""};
-                this.form.head.push(headers)
+                this.form.headDict.push(headers)
             },
             delHead(index) {
-                this.form.head.splice(index, 1);
-                if (this.form.head.length === 0) {
-                    this.form.head.push({name: "", value: ""})
+                this.form.headDict.splice(index, 1);
+                if (this.form.headDict.length === 0) {
+                    this.form.headDict.push({name: "", value: ""})
                 }
             },
             addParameter() {
                 let headers = {name: "", value: "", _type:"String", required:true, restrict: "", description: ""};
-                this.form.parameter.push(headers)
+                this.form.requestList.push(headers)
             },
             delParameter(index) {
-                this.form.parameter.splice(index, 1);
-                if (this.form.parameter.length === 0) {
-                    this.form.parameter.push({name: "", value: "", _type:"String", required:true, restrict: "", description: ""})
+                this.form.requestList.splice(index, 1);
+                if (this.form.requestList.length === 0) {
+                    this.form.requestList.push({name: "", value: "", _type:"String", required:true, restrict: "", description: ""})
                 }
             },
             addResponse() {
                 let headers = {name: "", value: "", _type:"String", required:true, description: ""};
-                this.form.response.push(headers)
+                this.form.responseList.push(headers)
             },
             delResponse(index) {
-                this.form.response.splice(index, 1);
-                if (this.form.response.length === 0) {
-                    this.form.response.push({name: "", value: "", _type:"String", required:true, description: ""})
-                }
-            },
-            changeSecondGroup(val) {
-                this.secondGroup = [];
-                this.form.secondGroup = "";
-                for (let i=0; i<this.group.length; i++) {
-                    let id = this.group[i]['id'];
-                    if ( val === id) {
-                        this.secondGroup = this.group[i].secondGroup
-                    }
+                this.form.responseList.splice(index, 1);
+                if (this.form.responseList.length === 0) {
+                    this.form.responseList.push({name: "", value: "", _type:"String", required:true, description: ""})
                 }
             },
             changeParameterType() {
@@ -531,22 +515,22 @@
                 let _type = this.$route.params._type;
                 let _typeData = this.$route.params._typeData;
                 if (form) {
-                    this.form.parameter = [];
-                    this.form.request4 = form.request4.toUpperCase();
-                    this.form.Http4 = form.Http4;
-                    this.form.addr = form.addr;
-                    this.form.head = form.head;
+                    this.form.requestList = [];
+                    this.form.requestType = form.request4.toUpperCase();
+                    this.form.httpType = form.Http4;
+                    this.form.apiAddress = form.addr;
+                    this.form.headDict = form.head;
                     this.form.parameterRaw = form.parameterRaw;
                     form.parameter.forEach((item) => {
                         item['_type'] = 'String';
                         item['required'] = true;
                         item['restrict'] = '';
                         item['description'] = '';
-                        this.form.parameter.push(item)
+                        this.form.requestList.push(item)
                     });
                     // this.form.parameter = form.parameter;
                     this.form.mockCode = form.statusCode;
-                    this.form.mockData = JSON.stringify(form.resultData)
+                    this.form.data = JSON.stringify(form.resultData)
                 }
                 if (_type) {
                     this.radio = _type
