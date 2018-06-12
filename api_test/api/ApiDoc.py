@@ -19,7 +19,7 @@ from api_test.models import Project, ApiGroupLevelFirst, ApiInfo, \
 from api_test.serializers import ApiGroupLevelFirstSerializer, ApiInfoSerializer, APIRequestHistorySerializer, \
     ApiOperationHistorySerializer, ApiInfoListSerializer, ApiInfoDocSerializer, ApiGroupLevelFirstDeserializer, \
     ApiInfoDeserializer, ApiHeadDeserializer, ApiParameterDeserializer, \
-    ApiResponseDeserializer, APIRequestHistoryDeserializer
+    ApiResponseDeserializer, APIRequestHistoryDeserializer, ProjectSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -38,9 +38,12 @@ class Group(APIView):
         if not project_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         obi = ApiGroupLevelFirst.objects.filter(project=project_id).order_by("id")
         serialize = ApiGroupLevelFirstSerializer(obi, many=True)
         return JsonResponse(data=serialize.data, code="999999", msg="成功！")
@@ -78,6 +81,9 @@ class AddGroup(APIView):
             obj = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(obj)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         serializer = ApiGroupLevelFirstDeserializer(data=data)
         if serializer.is_valid():
             serializer.save(project=obj)
@@ -120,9 +126,12 @@ class UpdateNameGroup(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obj = ApiGroupLevelFirst.objects.get(id=data["id"], project=data["project_id"])
         except ObjectDoesNotExist:
@@ -164,9 +173,12 @@ class DelGroup(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         obi = ApiGroupLevelFirst.objects.filter(id=data["id"], project=data["project_id"])
         if obi:
             name = obi[0].name
@@ -199,9 +211,12 @@ class ApiList(APIView):
         if not project_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         if first_group_id:
             if not first_group_id.isdecimal():
                 return JsonResponse(code="999996", msg="参数有误！")
@@ -272,6 +287,9 @@ class AddApi(APIView):
             obj = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(obj)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             ApiInfo.objects.get(name=data["name"], project=data["project_id"])
             return JsonResponse(code="999997", msg="存在相同名称！")
@@ -380,9 +398,12 @@ class LeadSwagger(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             swagger_api(data["url"], data["project_id"], request.user)
             return JsonResponse(code="999999", msg="成功！")
@@ -429,9 +450,12 @@ class UpdateApi(APIView):
             return result
         data["userUpdate"] = request.user.pk
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             ApiInfo.objects.get(name=data["name"], project=data["project_id"])
             return JsonResponse(code="999997", msg="存在相同名称！")
@@ -553,9 +577,12 @@ class DelApi(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         id_list = Q()
         for i in data["ids"]:
             id_list = id_list | Q(id=i)
@@ -602,9 +629,12 @@ class UpdateGroup(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         id_list = Q()
         for i in data["ids"]:
             id_list = id_list | Q(id=i)
@@ -633,9 +663,12 @@ class ApiInfoDetail(APIView):
         if not project_id.isdecimal() or not api_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obi = ApiInfo.objects.get(id=api_id, project=project_id)
             serialize = ApiInfoSerializer(obi)
@@ -677,9 +710,12 @@ class AddHistory(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obj = ApiInfo.objects.get(id=data["api_id"], project=data["project_id"])
         except ObjectDoesNotExist:
@@ -705,9 +741,12 @@ class HistoryList(APIView):
         if not project_id.isdecimal() or not api_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obj = ApiInfo.objects.get(id=api_id, project=project_id)
         except ObjectDoesNotExist:
@@ -745,9 +784,12 @@ class DelHistory(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obj = ApiInfo.objects.get(id=data["api_id"], project=data["project_id"])
         except ObjectDoesNotExist:
@@ -782,11 +824,14 @@ class OperationHistory(APIView):
         if not project_id or not api_id:
             return JsonResponse(code="999996", msg="参数有误！")
         if not project_id.isdecimal() or not api_id.isdecimal():
-            return JsonResponse(code="999995", msg="项目不存在！")
+            return JsonResponse(code="999995", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             ApiInfo.objects.get(id=api_id, project=project_id)
         except ObjectDoesNotExist:
@@ -822,6 +867,9 @@ class DownLoad(APIView):
             obj = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(obj)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         obi = ApiGroupLevelFirst.objects.filter(project=project_id)
         data = ApiInfoDocSerializer(obi, many=True).data
         obn = ApiInfoSerializer(ApiInfo.objects.filter(project=project_id), many=True).data

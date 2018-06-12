@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from api_test.common.api_response import JsonResponse
 from api_test.common.common import record_dynamic
 from api_test.models import Project, GlobalHost
-from api_test.serializers import GlobalHostSerializer
+from api_test.serializers import GlobalHostSerializer, ProjectSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -31,9 +31,12 @@ class HostTotal(APIView):
         if not project_id.isdecimal():
             return JsonResponse(code="999995", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         name = request.GET.get("name")
         if name:
             obi = GlobalHost.objects.filter(name__contains=name, project=project_id).order_by("id")
@@ -86,6 +89,9 @@ class AddHost(APIView):
             obj = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(obj)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         obi = GlobalHost.objects.filter(name=data["name"], project=data["project_id"])
         if obi:
             return JsonResponse(code="999997", msg="存在相同名称！")
@@ -133,9 +139,12 @@ class UpdateHost(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obi = GlobalHost.objects.get(id=data["id"])
         except ObjectDoesNotExist:
@@ -185,9 +194,12 @@ class DelHost(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             for j in data["ids"]:
                 obj = GlobalHost.objects.filter(id=j)
@@ -218,7 +230,7 @@ class DisableHost(APIView):
 
     def post(self, request):
         """
-        禁用项目
+        禁用host
         :param request:
         :return:
         """
@@ -227,14 +239,21 @@ class DisableHost(APIView):
         if result:
             return result
         # 查找项目是否存在
-        obj = Project.objects.filter(id=data["project_id"])
-        if obj:
-            obj.update(status=False)
-            record_dynamic(project=data["project_id"],
-                           _type="禁用", operationObject="域名", user=request.user.pk, data=obj[0].name)
-            return JsonResponse(code="999999", msg="成功！")
-        else:
+        try:
+            pro_data = Project.objects.get(id=data["project_id"])
+        except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
+        try:
+            obj = GlobalHost.objects.get(id=data["host_id"], project=data["project_id"])
+        except ObjectDoesNotExist:
+            return JsonResponse(code="999992", msg="host不存在")
+        obj.update(status=False)
+        record_dynamic(project=data["project_id"],
+                       _type="禁用", operationObject="域名", user=request.user.pk, data=obj.name)
+        return JsonResponse(code="999999", msg="成功！")
 
 
 class EnableHost(APIView):
@@ -263,11 +282,18 @@ class EnableHost(APIView):
         if result:
             return result
         # 查找项目是否存在
-        obj = Project.objects.filter(id=data["project_id"])
-        if obj:
-            obj.update(status=True)
-            record_dynamic(project=data["project_id"],
-                           _type="启用", operationObject="域名", user=request.user.pk, data=obj[0].name)
-            return JsonResponse(code="999999", msg="成功！")
-        else:
+        try:
+            pro_data = Project.objects.filter(id=data["project_id"])
+        except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
+        try:
+            obj = GlobalHost.objects.get(id=data["host_id"], project=data["project_id"])
+        except ObjectDoesNotExist:
+            return JsonResponse(code="999992", msg="host不存在")
+        obj.update(status=True)
+        record_dynamic(project=data["project_id"],
+                       _type="启用", operationObject="域名", user=request.user.pk, data=obj.name)
+        return JsonResponse(code="999999", msg="成功！")

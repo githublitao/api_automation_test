@@ -1,5 +1,6 @@
 import logging
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from rest_framework.views import APIView
 
@@ -26,21 +27,23 @@ class Dynamic(APIView):
         project_id = request.GET.get("project_id")
         if not project_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
-        obi = Project.objects.filter(id=project_id)
-        if obi:
-            obj = ProjectDynamic.objects.filter(project=project_id).order_by("-time")
-            paginator = Paginator(obj, page_size)  # paginator对象
-            total = paginator.num_pages  # 总页数
-            try:
-                obm = paginator.page(page)
-            except PageNotAnInteger:
-                obm = paginator.page(1)
-            except EmptyPage:
-                obm = paginator.page(paginator.num_pages)
-            serialize = ProjectDynamicSerializer(obm, many=True)
-            return JsonResponse(data={"data": serialize.data,
-                                      "page": page,
-                                      "total": total
-                                      }, code="999999", msg="成功！")
-        else:
+        try:
+            pro_data = Project.objects.filter(id=project_id)
+        except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
+        obj = ProjectDynamic.objects.filter(project=project_id).order_by("-time")
+        paginator = Paginator(obj, page_size)  # paginator对象
+        total = paginator.num_pages  # 总页数
+        try:
+            obm = paginator.page(page)
+        except PageNotAnInteger:
+            obm = paginator.page(1)
+        except EmptyPage:
+            obm = paginator.page(paginator.num_pages)
+        serialize = ProjectDynamicSerializer(obm, many=True)
+        return JsonResponse(data={"data": serialize.data,
+                                  "page": page,
+                                  "total": total
+                                  }, code="999999", msg="成功！")

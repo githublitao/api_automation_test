@@ -23,7 +23,7 @@ from api_test.serializers import AutomationGroupLevelFirstSerializer, Automation
     AutomationCaseApiSerializer, AutomationCaseApiListSerializer, AutomationTestTaskSerializer, \
     AutomationTestResultSerializer, ApiInfoSerializer, CorrelationDataSerializer, AutomationTestReportSerializer, \
     AutomationTestCaseDeserializer, AutomationCaseApiDeserializer, AutomationHeadDeserializer, \
-    AutomationParameterDeserializer, AutomationTestTaskDeserializer
+    AutomationParameterDeserializer, AutomationTestTaskDeserializer, ProjectSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -41,9 +41,12 @@ class Group(APIView):
         if not project_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         obi = AutomationGroupLevelFirst.objects.filter(project=project_id)
         serialize = AutomationGroupLevelFirstSerializer(obi, many=True)
         return JsonResponse(data=serialize.data, code="999999", msg="成功！")
@@ -81,6 +84,9 @@ class AddGroup(APIView):
             obj = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(obj)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         serializer = AutomationGroupLevelFirstSerializer(data=data)
         if serializer.is_valid():
             serializer.save(project=obj)
@@ -120,9 +126,12 @@ class DelGroup(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         obi = AutomationGroupLevelFirst.objects.filter(id=data["id"], project=data["project_id"])
         if obi:
             name = obi[0].name
@@ -163,9 +172,12 @@ class UpdateNameGroup(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obj = AutomationGroupLevelFirst.objects.get(id=data["id"], project=data["project_id"])
         except ObjectDoesNotExist:
@@ -213,9 +225,12 @@ class UpdateGroup(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obj = AutomationGroupLevelFirst.objects.get(id=data["automationGroupLevelFirst_id"])
         except ObjectDoesNotExist:
@@ -255,9 +270,12 @@ class CaseList(APIView):
         if not project_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         if first_group_id:
             if not first_group_id.isdecimal():
                 return JsonResponse(code="999996", msg="参数有误！")
@@ -320,6 +338,9 @@ class AddCase(APIView):
             obj = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(obj)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             AutomationTestCase.objects.get(caseName=data["caseName"], project=data["project_id"])
             return JsonResponse(code="999997", msg="存在相同名称！")
@@ -373,9 +394,12 @@ class UpdateCase(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obj = AutomationTestCase.objects.get(id=data["id"], project=data["project_id"])
         except ObjectDoesNotExist:
@@ -422,9 +446,12 @@ class DelCase(AddCase):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         for j in data["ids"]:
             obi = AutomationTestCase.objects.filter(id=j, project=data['project_id'])
             if len(obi) != 0:
@@ -453,9 +480,12 @@ class ApiList(APIView):
         if not project_id.isdecimal() or not case_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             AutomationTestCase.objects.get(id=case_id, project=project_id)
         except ObjectDoesNotExist:
@@ -490,9 +520,12 @@ class CaseApiInfo(APIView):
         if not project_id.isdecimal() or not api_id.isdecimal() or not case_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             AutomationTestCase.objects.get(id=case_id, project=project_id)
         except ObjectDoesNotExist:
@@ -537,9 +570,12 @@ class AddOldApi(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obj = AutomationTestCase.objects.get(id=data["case_id"], project=data["project_id"])
         except ObjectDoesNotExist:
@@ -620,9 +656,12 @@ class AddNewApi(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obj = AutomationTestCase.objects.get(id=data["automationTestCase_id"], project=data["project_id"])
         except ObjectDoesNotExist:
@@ -702,9 +741,12 @@ class GetCorrelationResponse(APIView):
         if not project_id.isdecimal() or not case_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             AutomationTestCase.objects.get(id=case_id, project=project_id)
         except ObjectDoesNotExist:
@@ -759,9 +801,12 @@ class UpdateApi(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obi = AutomationTestCase.objects.get(id=data["automationTestCase_id"], project=data["project_id"])
         except ObjectDoesNotExist:
@@ -866,9 +911,12 @@ class DelApi(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obj = AutomationTestCase.objects.get(id=data["case_id"], project=data["project_id"])
         except ObjectDoesNotExist:
@@ -913,9 +961,12 @@ class StartTest(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obi = AutomationTestCase.objects.get(id=data["case_id"], project=data["project_id"])
         except ObjectDoesNotExist:
@@ -980,9 +1031,12 @@ class AddTimeTask(APIView):
         if result:
             return result
         try:
-            pro_id = Project.objects.get(id=data["project_id"])
+            pro_data = pro_id = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         data["startTime"] = datetime.strftime(data["startTime"], "%Y-%m-%dT%H:%M:%S")
         data["endTime"] = datetime.strftime(data["endTime"], "%Y-%m-%dT%H:%M:%S")
         try:
@@ -1061,9 +1115,12 @@ class GetTask(APIView):
         if not project_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obj = AutomationTestTaskSerializer(AutomationTestTask.objects.get(project=project_id)).data
             return JsonResponse(code="999999", msg="成功！", data=obj)
@@ -1097,9 +1154,12 @@ class DelTask(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         obm = AutomationTestTask.objects.filter(project=data["project_id"])
         if obm:
             obm.delete()
@@ -1126,9 +1186,12 @@ class LookResult(APIView):
         if not project_id.isdecimal() or not api_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             AutomationTestCase.objects.get(id=case_id, project=project_id)
         except ObjectDoesNotExist:
@@ -1157,9 +1220,12 @@ class TestReport(APIView):
         if not project_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         obj = AutomationTestCase.objects.filter(project=project_id)
         if obj:
             case = Q()

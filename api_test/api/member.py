@@ -9,7 +9,7 @@ from api_test.common.api_response import JsonResponse
 from api_test.common.common import record_dynamic
 from api_test.models import Project, ProjectMember, AutomationReportSendConfig
 from api_test.serializers import ProjectMemberSerializer, AutomationReportSendConfigSerializer, \
-    AutomationReportSendConfigDeserializer
+    AutomationReportSendConfigDeserializer, ProjectSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -28,9 +28,12 @@ class ProjectMemberList(APIView):
         if not project_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         obi = ProjectMember.objects.filter(project=project_id).order_by("id")
         paginator = Paginator(obi, page_size)  # paginator对象
         total = paginator.num_pages  # 总页数
@@ -79,8 +82,10 @@ class EmailConfig(APIView):
             obi = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(obi)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         serialize = AutomationReportSendConfigDeserializer(data=data)
-
         if serialize.is_valid():
             try:
                 obj = AutomationReportSendConfig.objects.get(project=data["project_id"])
@@ -120,9 +125,12 @@ class DelEmail(APIView):
         if result:
             return result
         try:
-            Project.objects.get(id=data["project_id"])
+            pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         AutomationReportSendConfig.objects.filter(project=data["project_id"]).delete()
         # 记录动态
         record_dynamic(project=data["project_id"],
@@ -144,9 +152,12 @@ class GetEmail(APIView):
         if not project_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obj = AutomationReportSendConfig.objects.get(project=project_id)
         except ObjectDoesNotExist:

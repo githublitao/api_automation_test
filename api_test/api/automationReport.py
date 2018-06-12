@@ -6,7 +6,7 @@ from api_test.common.api_response import JsonResponse
 from api_test.models import Project, AutomationTaskRunTime, AutomationTestCase, AutomationCaseApi, \
     AutomationCaseTestResult
 from api_test.serializers import AutomationAutoTestResultSerializer, \
-    AutomationTestLatelyTenTimeSerializer, AutomationTaskRunTimeSerializer
+    AutomationTestLatelyTenTimeSerializer, AutomationTaskRunTimeSerializer, ProjectSerializer
 
 
 class TestTime(APIView):
@@ -23,9 +23,12 @@ class TestTime(APIView):
         if not project_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             data = AutomationTaskRunTimeSerializer(
                 AutomationTaskRunTime.objects.filter(project=project_id).order_by("-startTime")[:10],
@@ -52,9 +55,12 @@ class AutoTestReport(APIView):
         if not project_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         obj = AutomationTestCase.objects.filter(project=project_id)
         if obj:
             case = Q()
@@ -109,9 +115,12 @@ class AutoLatelyTenTime(APIView):
         if not project_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误！")
         try:
-            Project.objects.get(id=project_id)
+            pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             data = AutomationTestLatelyTenTimeSerializer(
                 AutomationTaskRunTime.objects.filter(project=project_id).order_by("-startTime")[:10],

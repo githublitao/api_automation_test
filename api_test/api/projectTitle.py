@@ -29,5 +29,7 @@ class ProjectInfo(APIView):
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         serialize = ProjectSerializer(obj)
-        print(serialize.data["status"])
-        return JsonResponse(data=serialize.data, code="999999", msg="成功！")
+        if serialize.data["status"]:
+            return JsonResponse(data=serialize.data, code="999999", msg="成功！")
+        else:
+            return JsonResponse(code="999985", msg="该项目已禁用")
