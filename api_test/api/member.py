@@ -5,7 +5,6 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 
-from api_test.common import GlobalStatusCode
 from api_test.common.api_response import JsonResponse
 from api_test.common.common import record_dynamic
 from api_test.models import Project, ProjectMember, AutomationReportSendConfig
@@ -22,16 +21,16 @@ class ProjectMemberList(APIView):
             page_size = int(request.GET.get("page_size", 20))
             page = int(request.GET.get("page", 1))
         except (TypeError, ValueError):
-            return JsonResponse(code_msg=GlobalStatusCode.page_not_int())
+            return JsonResponse(code="999985", msg="page and page_size must be integer！")
         project_id = request.GET.get("project_id")
         if not project_id:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         if not project_id.isdecimal():
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         try:
             Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         obi = ProjectMember.objects.filter(project=project_id).order_by("id")
         paginator = Paginator(obi, page_size)  # paginator对象
         total = paginator.num_pages  # 总页数
@@ -45,7 +44,7 @@ class ProjectMemberList(APIView):
         return JsonResponse(data={"data": serialize.data,
                                   "page": page,
                                   "total": total
-                                  }, code_msg=GlobalStatusCode.success())
+                                  }, code="999999", msg="成功！")
 
 
 class EmailConfig(APIView):
@@ -59,12 +58,12 @@ class EmailConfig(APIView):
         try:
             # 校验project_id类型为int
             if not isinstance(data["project_id"], int):
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             # 必传参数 name, host
             if not data["reportFrom"] or not data["mailUser"] or not data["mailPass"] or not data["mailSmtp"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
 
     def post(self, request):
         """
@@ -79,7 +78,7 @@ class EmailConfig(APIView):
         try:
             obi = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         serialize = AutomationReportSendConfigDeserializer(data=data)
 
         if serialize.is_valid():
@@ -91,8 +90,8 @@ class EmailConfig(APIView):
             # 记录动态
             record_dynamic(project=data["project_id"],
                            _type="添加", operationObject="邮箱", user=request.user.pk, data="添加邮箱配置")
-            return JsonResponse(code_msg=GlobalStatusCode.success())
-        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999999", msg="成功！")
+        return JsonResponse(code="999996", msg="参数有误！")
 
 
 class DelEmail(APIView):
@@ -106,9 +105,9 @@ class DelEmail(APIView):
         try:
             # 校验project_id类型为int
             if not isinstance(data["project_id"], int):
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
 
     def post(self, request):
         """
@@ -123,12 +122,12 @@ class DelEmail(APIView):
         try:
             Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         AutomationReportSendConfig.objects.filter(project=data["project_id"]).delete()
         # 记录动态
         record_dynamic(project=data["project_id"],
                        _type="删除", operationObject="邮箱", user=request.user.pk, data="删除邮箱配置")
-        return JsonResponse(code_msg=GlobalStatusCode.success())
+        return JsonResponse(code="999999", msg="成功！")
 
 
 class GetEmail(APIView):
@@ -141,16 +140,16 @@ class GetEmail(APIView):
         """
         project_id = request.GET.get("project_id")
         if not project_id:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         if not project_id.isdecimal():
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         try:
             Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         try:
             obj = AutomationReportSendConfig.objects.get(project=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.success())
+            return JsonResponse(code="999999", msg="成功！")
         data = AutomationReportSendConfigSerializer(obj).data
-        return JsonResponse(code_msg=GlobalStatusCode.success(), data=data)
+        return JsonResponse(code="999999", msg="成功！", data=data)

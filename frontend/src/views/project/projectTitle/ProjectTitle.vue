@@ -95,7 +95,7 @@
                     },
                     timeout: 5000,
                     success: function(data) {
-                        self.listLoading = false
+                        self.listLoading = false;
                         if (data.code === '999999') {
                             data = data.data;
                             self.type = data.type;

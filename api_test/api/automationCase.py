@@ -8,14 +8,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
 from django.db.models import Q
-from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 
-from api_test.common import GlobalStatusCode
 from api_test.common.addTask import add
 from api_test.common.api_response import JsonResponse
-from api_test.common.common import verify_parameter, record_dynamic, create_json, del_task_crontab
+from api_test.common.common import record_dynamic, create_json, del_task_crontab
 from api_test.common.confighttp import test_api
 from api_test.models import Project, AutomationGroupLevelFirst, \
     AutomationTestCase, AutomationCaseApi, AutomationParameter, GlobalHost, AutomationHead, AutomationTestTask, \
@@ -24,7 +22,7 @@ from api_test.models import Project, AutomationGroupLevelFirst, \
 from api_test.serializers import AutomationGroupLevelFirstSerializer, AutomationTestCaseSerializer, \
     AutomationCaseApiSerializer, AutomationCaseApiListSerializer, AutomationTestTaskSerializer, \
     AutomationTestResultSerializer, ApiInfoSerializer, CorrelationDataSerializer, AutomationTestReportSerializer, \
-    AutomationTestCaseDeserializer, AutomationCaseApiDeserializer, AutomationHeadDeserializer, ApiParameterDeserializer, \
+    AutomationTestCaseDeserializer, AutomationCaseApiDeserializer, AutomationHeadDeserializer, \
     AutomationParameterDeserializer, AutomationTestTaskDeserializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
@@ -39,16 +37,16 @@ class Group(APIView):
         """
         project_id = request.GET.get("project_id")
         if not project_id:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         if not project_id.isdecimal():
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         try:
             Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         obi = AutomationGroupLevelFirst.objects.filter(project=project_id)
         serialize = AutomationGroupLevelFirstSerializer(obi, many=True)
-        return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
+        return JsonResponse(data=serialize.data, code="999999", msg="成功！")
 
 
 class AddGroup(APIView):
@@ -62,12 +60,12 @@ class AddGroup(APIView):
         try:
             # 校验project_id类型为int
             if not isinstance(data["project_id"], int):
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             # 必传参数 name, host
             if not data["name"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
 
     def post(self, request):
         """
@@ -82,18 +80,18 @@ class AddGroup(APIView):
         try:
             obj = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         serializer = AutomationGroupLevelFirstSerializer(data=data)
         if serializer.is_valid():
             serializer.save(project=obj)
         else:
-            return JsonResponse(code_msg=GlobalStatusCode.fail())
+            return JsonResponse(code="999998", msg="失败！")
         record_dynamic(project=serializer.data.get("id"),
                        _type="添加", operationObject="用例分组", user=request.user.pk,
                        data="新增用例分组“%s”" % data["name"])
         return JsonResponse(data={
             "group_id": serializer.data.get("id")
-        }, code_msg=GlobalStatusCode.success())
+        }, code="999999", msg="成功！")
 
 
 class DelGroup(APIView):
@@ -107,9 +105,9 @@ class DelGroup(APIView):
         try:
             # 校验project_id, id类型为int
             if not isinstance(data["project_id"], int) or not isinstance(data["id"], int):
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
 
     def post(self, request):
         """
@@ -124,16 +122,16 @@ class DelGroup(APIView):
         try:
             Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         obi = AutomationGroupLevelFirst.objects.filter(id=data["id"], project=data["project_id"])
         if obi:
             name = obi[0].name
             obi.delete()
         else:
-            return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
+            return JsonResponse(code="999991", msg="分组不存在！")
         record_dynamic(project=data["project_id"],
                        _type="删除", operationObject="用例分组", user=request.user.pk, data="删除用例分组“%s”" % name)
-        return JsonResponse(code_msg=GlobalStatusCode.success())
+        return JsonResponse(code="999999", msg="成功！")
 
 
 class UpdateNameGroup(APIView):
@@ -147,12 +145,12 @@ class UpdateNameGroup(APIView):
         try:
             # 校验project_id, id类型为int
             if not isinstance(data["project_id"], int) or not isinstance(data["id"], int):
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             # 必传参数 name, host
             if not data["name"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
 
     def post(self, request):
         """
@@ -167,20 +165,20 @@ class UpdateNameGroup(APIView):
         try:
             Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         try:
             obj = AutomationGroupLevelFirst.objects.get(id=data["id"], project=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
+            return JsonResponse(code="999991", msg="分组不存在！")
         serializer = AutomationGroupLevelFirstSerializer(data=data)
         if serializer.is_valid():
             serializer.update(instance=obj, validated_data=data)
         else:
-            return JsonResponse(code_msg=GlobalStatusCode.fail())
+            return JsonResponse(code="999998", msg="失败！")
         record_dynamic(project=serializer.data.get("id"),
                        _type="修改", operationObject="用例分组", user=request.user.pk,
                        data="修改用例分组“%s”" % data["name"])
-        return JsonResponse(code_msg=GlobalStatusCode.success())
+        return JsonResponse(code="999999", msg="成功！")
 
 
 class UpdateGroup(APIView):
@@ -194,15 +192,15 @@ class UpdateGroup(APIView):
         try:
             # 校验project_id, id类型为int
             if not data["project_id"] or not data["ids"] or not data["automationGroupLevelFirst_id"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if not isinstance(data["project_id"], int) or not isinstance(data["ids"], list) \
                     or not isinstance(data["automationGroupLevelFirst_id"], int):
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             for i in data["ids"]:
                 if not isinstance(i, int):
-                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                    return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
 
     def post(self, request):
         """
@@ -217,11 +215,11 @@ class UpdateGroup(APIView):
         try:
             Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         try:
             obj = AutomationGroupLevelFirst.objects.get(id=data["automationGroupLevelFirst_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.group_not_exist())
+            return JsonResponse(code="999991", msg="分组不存在！")
         id_list = Q()
         for i in data["ids"]:
             id_list = id_list | Q(id=i)
@@ -233,7 +231,7 @@ class UpdateGroup(APIView):
                 name_list.append(str(j.name))
             record_dynamic(project=data["project_id"],
                            _type="修改", operationObject="用例", user=request.user.pk, data="修改用例分组，列表“%s”" % name_list)
-            return JsonResponse(code_msg=GlobalStatusCode.success())
+            return JsonResponse(code="999999", msg="成功！")
 
 
 class CaseList(APIView):
@@ -248,21 +246,21 @@ class CaseList(APIView):
             page_size = int(request.GET.get("page_size", 20))
             page = int(request.GET.get("page", 1))
         except (TypeError, ValueError):
-            return JsonResponse(code_msg=GlobalStatusCode.page_not_int())
+            return JsonResponse(code="999985", msg="page and page_size must be integer！")
         project_id = request.GET.get("project_id")
         first_group_id = request.GET.get("first_group_id")
         name = request.GET.get("name")
         if not project_id:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         if not project_id.isdecimal():
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         try:
             Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         if first_group_id:
             if not first_group_id.isdecimal():
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if name:
                 obi = AutomationTestCase.objects.filter(project=project_id, caseName__contains=name,
                                                         automationGroupLevelFirst=first_group_id).order_by("id")
@@ -287,7 +285,7 @@ class CaseList(APIView):
         return JsonResponse(data={"data": serialize.data,
                                   "page": page,
                                   "total": total
-                                  }, code_msg=GlobalStatusCode.success())
+                                  }, code="999999", msg="成功！")
 
 
 class AddCase(APIView):
@@ -301,11 +299,11 @@ class AddCase(APIView):
         try:
             # 校验project_id, id类型为int
             if not data["project_id"] or not data["caseName"] or not data["automationGroupLevelFirst_id"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if not isinstance(data["project_id"], int) or not isinstance(data["automationGroupLevelFirst_id"], int):
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
 
     def post(self, request):
         """
@@ -321,10 +319,10 @@ class AddCase(APIView):
         try:
             obj = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         try:
             AutomationTestCase.objects.get(caseName=data["caseName"], project=data["project_id"])
-            return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
+            return JsonResponse(code="999997", msg="存在相同名称！")
         except ObjectDoesNotExist:
             with transaction.atomic():
                 try:
@@ -332,7 +330,7 @@ class AddCase(APIView):
                     if serialize.is_valid():
                         try:
                             if not isinstance(data["automationGroupLevelFirst_id"], int):
-                                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                                return JsonResponse(code="999996", msg="参数有误！")
                             obi = AutomationGroupLevelFirst.objects.get(id=data["automationGroupLevelFirst_id"], project=data["project_id"])
                             serialize.save(project=obj, automationGroupLevelFirst=obi, user=User.objects.get(id=data["user"]))
                         except KeyError:
@@ -341,10 +339,10 @@ class AddCase(APIView):
                                        _type="新增", operationObject="用例", user=request.user.pk,
                                        data="新增用例\"%s\"" % data["caseName"])
                         return JsonResponse(data={"case_id": serialize.data.get("id")},
-                                            code_msg=GlobalStatusCode.success())
-                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                                            code="999999", msg="成功！")
+                    return JsonResponse(code="999996", msg="参数有误！")
                 except:
-                    return JsonResponse(code_msg=GlobalStatusCode.fail())
+                    return JsonResponse(code="999998", msg="失败！")
 
 
 class UpdateCase(APIView):
@@ -358,11 +356,11 @@ class UpdateCase(APIView):
         try:
             # 校验project_id, id类型为int
             if not data["project_id"] or not data["caseName"] or not data["id"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if not isinstance(data["project_id"], int) or not isinstance(data["id"], int):
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
 
     def post(self, request):
         """
@@ -377,20 +375,20 @@ class UpdateCase(APIView):
         try:
             Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         try:
             obj = AutomationTestCase.objects.get(id=data["id"], project=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
+            return JsonResponse(code="999987", msg="用例不存在！")
         try:
             AutomationTestCase.objects.get(caseName=data["caseName"], project=data["project_id"]).exclude(id=data["id"])
-            return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
+            return JsonResponse(code="999997", msg="存在相同名称！")
         except ObjectDoesNotExist:
             serialize = AutomationTestCaseDeserializer(data=data)
             if serialize.is_valid():
                 serialize.update(instance=obj, validated_data=data)
-                return JsonResponse(code_msg=GlobalStatusCode.success())
-            return JsonResponse(code_msg=GlobalStatusCode.fail())
+                return JsonResponse(code="999999", msg="成功！")
+            return JsonResponse(code="999998", msg="失败！")
 
 
 class DelCase(AddCase):
@@ -404,14 +402,14 @@ class DelCase(AddCase):
         try:
             # 校验project_id, id类型为int
             if not data["project_id"] or not data["ids"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if not isinstance(data["project_id"], int) or not isinstance(data["ids"], list):
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             for i in data["ids"]:
                 if not isinstance(i, int):
-                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                    return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
 
     def post(self, request):
         """
@@ -426,7 +424,7 @@ class DelCase(AddCase):
         try:
             Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         for j in data["ids"]:
             obi = AutomationTestCase.objects.filter(id=j, project=data['project_id'])
             if len(obi) != 0:
@@ -434,7 +432,7 @@ class DelCase(AddCase):
                 obi.delete()
                 record_dynamic(project=data["project_id"],
                                _type="删除", operationObject="用例", user=request.user.pk, data="删除用例\"%s\"" % name)
-        return JsonResponse(code_msg=GlobalStatusCode.success())
+        return JsonResponse(code="999999", msg="成功！")
 
 
 class ApiList(APIView):
@@ -449,19 +447,19 @@ class ApiList(APIView):
             page_size = int(request.GET.get("page_size", 20))
             page = int(request.GET.get("page", 1))
         except (TypeError, ValueError):
-            return JsonResponse(code_msg=GlobalStatusCode.page_not_int())
+            return JsonResponse(code="999985", msg="page and page_size must be integer！")
         project_id = request.GET.get("project_id")
         case_id = request.GET.get("case_id")
         if not project_id.isdecimal() or not case_id.isdecimal():
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         try:
             Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         try:
             AutomationTestCase.objects.get(id=case_id, project=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
+            return JsonResponse(code="999987", msg="用例不存在！")
         data = AutomationCaseApi.objects.filter(automationTestCase=case_id).order_by("id")
         paginator = Paginator(data, page_size)  # paginator对象
         total = paginator.num_pages  # 总页数
@@ -475,7 +473,7 @@ class ApiList(APIView):
         return JsonResponse(data={"data": serialize.data,
                                   "page": page,
                                   "total": total
-                                  }, code_msg=GlobalStatusCode.success())
+                                  }, code="999999", msg="成功！")
 
 
 class CaseApiInfo(APIView):
@@ -490,21 +488,21 @@ class CaseApiInfo(APIView):
         case_id = request.GET.get("case_id")
         api_id = request.GET.get("api_id")
         if not project_id.isdecimal() or not api_id.isdecimal() or not case_id.isdecimal():
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         try:
             Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         try:
             AutomationTestCase.objects.get(id=case_id, project=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
+            return JsonResponse(code="999987", msg="用例不存在！")
         try:
             obm = AutomationCaseApi.objects.get(id=api_id, automationTestCase=case_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
+            return JsonResponse(code="999990", msg="接口不存在！")
         data = AutomationCaseApiSerializer(obm).data
-        return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
+        return JsonResponse(data=data, code="999999", msg="成功！")
 
 
 class AddOldApi(APIView):
@@ -518,15 +516,15 @@ class AddOldApi(APIView):
         try:
             # 校验project_id, id类型为int
             if not data["project_id"] or not data["case_id"] or not data["api_ids"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if not isinstance(data["project_id"], int) or \
                     not isinstance(data["api_ids"], list) or not isinstance(data["case_id"], int):
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             for i in data["api_ids"]:
                 if not isinstance(i, int):
-                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                    return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
 
     def post(self, request):
         """
@@ -541,11 +539,11 @@ class AddOldApi(APIView):
         try:
             Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         try:
             obj = AutomationTestCase.objects.get(id=data["case_id"], project=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
+            return JsonResponse(code="999987", msg="用例不存在！")
         for i in data["api_ids"]:
             try:
                 api_data = ApiInfoSerializer(ApiInfo.objects.get(id=i, project=data["project_id"])).data
@@ -578,7 +576,7 @@ class AddOldApi(APIView):
                                    _type="新增", operationObject="用例接口", user=request.user.pk,
                                    data="用例“%s”新增接口\"%s\"" % (case_name, api_serialize.data.get("name")))
 
-        return JsonResponse(code_msg=GlobalStatusCode.success())
+        return JsonResponse(code="999999", msg="成功！")
 
 
 class AddNewApi(APIView):
@@ -594,22 +592,22 @@ class AddNewApi(APIView):
             if not data["project_id"] or not data["automationTestCase_id"] or not data["name"] or not data["httpType"]\
                     or not data["requestType"] or not data["apiAddress"] or not data["requestParameterType"]\
                     or not data["examineType"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if not isinstance(data["project_id"], int) or not isinstance(data["automationTestCase_id"], int):
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if data["httpType"] not in ["HTTP", "HTTPS"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if data["requestType"] not in ["POST", "GET", "PUT", "DELETE"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if data["requestParameterType"] not in ["form-data", "raw", "Restful"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if data["examineType"] not in ["no_check", "only_check_status", "json", "entirely_check", "Regular_check"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if data["httpCode"]:
                 if data["httpCode"] not in ["200", "404", "400", "502", "500", "302"]:
-                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                    return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
 
     def post(self, request):
         """
@@ -624,14 +622,14 @@ class AddNewApi(APIView):
         try:
             Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         try:
             obj = AutomationTestCase.objects.get(id=data["automationTestCase_id"], project=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
+            return JsonResponse(code="999987", msg="用例不存在！")
         try:
             AutomationCaseApi.objects.get(name=data["name"], automationTestCase=data["automationTestCase_id"])
-            return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
+            return JsonResponse(code="999997", msg="存在相同名称！")
         except ObjectDoesNotExist:
             pass
         with transaction.atomic():
@@ -649,7 +647,7 @@ class AddNewApi(APIView):
                                     if head_serialize.is_valid():
                                         head_serialize.save(api=AutomationCaseApi.objects.get(id=api_id))
                             except KeyError:
-                                return JsonResponse(GlobalStatusCode.parameter_wrong())
+                                return JsonResponse(code="999996", msg="参数有误!")
                 except KeyError:
                     pass
                 if data["requestParameterType"] == "form-data":
@@ -663,9 +661,9 @@ class AddNewApi(APIView):
                                         if param_serialize.is_valid():
                                             param_serialize.save(api=AutomationCaseApi.objects.get(id=api_id))
                                         else:
-                                            return JsonResponse(code_msg=GlobalStatusCode.fail())
+                                            return JsonResponse(code="999998", msg="失败！")
                                 except KeyError:
-                                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                                    return JsonResponse(code="999996", msg="参数有误！")
                     except KeyError:
                         pass
                 else:
@@ -682,12 +680,12 @@ class AddNewApi(APIView):
                         api_id = AutomationCaseApi.objects.get(id=api_id)
                         create_json(api_id, api, response)
                     except KeyError:
-                        return JsonResponse(code_msg=GlobalStatusCode.fail())
+                        return JsonResponse(code="999998", msg="失败！")
                 record_dynamic(project=data["project_id"],
                                _type="新增", operationObject="用例接口", user=request.user.pk,
                                data="用例“%s”新增接口\"%s\"" % (obj.caseName, data["name"]))
-                return JsonResponse(data={"api_id": api_id}, code_msg=GlobalStatusCode.success())
-            return JsonResponse(code_msg=GlobalStatusCode.fail())
+                return JsonResponse(data={"api_id": api_id}, code="999999", msg="成功！")
+            return JsonResponse(code="999998", msg="失败！")
 
 
 class GetCorrelationResponse(APIView):
@@ -702,22 +700,22 @@ class GetCorrelationResponse(APIView):
         case_id = request.GET.get("case_id")
         api_id = request.GET.get("api_id")
         if not project_id.isdecimal() or not case_id.isdecimal():
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         try:
             Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         try:
             AutomationTestCase.objects.get(id=case_id, project=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
+            return JsonResponse(code="999987", msg="用例不存在！")
         if api_id:
             data = CorrelationDataSerializer(AutomationCaseApi.objects.filter(automationTestCase=case_id,
                                                                               id__lt=api_id), many=True).data
         else:
             data = CorrelationDataSerializer(AutomationCaseApi.objects.filter(automationTestCase=case_id),
                                              many=True).data
-        return JsonResponse(code_msg=GlobalStatusCode.success(), data=data)
+        return JsonResponse(code="999999", msg="成功！", data=data)
 
 
 class UpdateApi(APIView):
@@ -733,22 +731,22 @@ class UpdateApi(APIView):
             if not data["project_id"] or not data["automationTestCase_id"] or not data["name"] or not data["httpType"]\
                     or not data["requestType"] or not data["apiAddress"] or not data["requestParameterType"]\
                     or not data["examineType"] or not data["id"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if not isinstance(data["project_id"], int) or not isinstance(data["automationTestCase_id"], int):
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if data["httpType"] not in ["HTTP", "HTTPS"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if data["requestType"] not in ["POST", "GET", "PUT", "DELETE"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if data["requestParameterType"] not in ["form-data", "raw", "Restful"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if data["examineType"] not in ["no_check", "only_check_status", "json", "entirely_check", "Regular_check"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if data["httpCode"]:
                 if data["httpCode"] not in ["200", "404", "400", "502", "500", "302"]:
-                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                    return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
 
     def post(self, request):
         """
@@ -763,18 +761,18 @@ class UpdateApi(APIView):
         try:
             Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         try:
             obi = AutomationTestCase.objects.get(id=data["automationTestCase_id"], project=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
+            return JsonResponse(code="999987", msg="用例不存在！")
         try:
             obj = AutomationCaseApi.objects.get(id=data["id"], automationTestCase=data["automationTestCase_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
+            return JsonResponse(code="999990", msg="接口不存在！")
         try:
             AutomationCaseApi.objects.get(name=data["name"], automationTestCase=data["automationTestCase_id"])
-            return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
+            return JsonResponse(code="999997", msg="存在相同名称！")
         except ObjectDoesNotExist:
             pass
         with transaction.atomic():
@@ -792,7 +790,7 @@ class UpdateApi(APIView):
                                     if head_serialize.is_valid():
                                         head_serialize.save(api=AutomationCaseApi.objects.get(id=data["id"]))
                             except KeyError:
-                                return JsonResponse(GlobalStatusCode.parameter_wrong())
+                                return JsonResponse(code="999996", msg="参数有误！")
                 except KeyError:
                     pass
                 AutomationParameter.objects.filter(automationCaseApi=data["id"]).delete()
@@ -808,9 +806,9 @@ class UpdateApi(APIView):
                                         if param_serialize.is_valid():
                                             param_serialize.save(api=AutomationCaseApi.objects.get(id=data["id"]))
                                         else:
-                                            return JsonResponse(code_msg=GlobalStatusCode.fail())
+                                            return JsonResponse(code="999998", msg="失败！")
                                 except KeyError:
-                                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                                    return JsonResponse(code="999996", msg="参数有误！")
                     except KeyError:
                         pass
                 else:
@@ -828,12 +826,12 @@ class UpdateApi(APIView):
                         api_id = AutomationCaseApi.objects.get(id=data["id"])
                         create_json(api_id, api, response)
                     except KeyError:
-                        return JsonResponse(code_msg=GlobalStatusCode.fail())
+                        return JsonResponse(code="999998", msg="失败！")
                 record_dynamic(project=data["project_id"],
                                _type="修改", operationObject="用例接口", user=request.user.pk,
                                data="用例“%s”修改接口\"%s\"" % (obi.caseName, data["name"]))
-                return JsonResponse(code_msg=GlobalStatusCode.success())
-            return JsonResponse(code_msg=GlobalStatusCode.fail())
+                return JsonResponse(code="999999", msg="成功！")
+            return JsonResponse(code="999998", msg="失败！")
 
 
 class DelApi(APIView):
@@ -847,15 +845,15 @@ class DelApi(APIView):
         try:
             # 校验project_id, id类型为int
             if not data["project_id"] or not data["case_id"] or not data["ids"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if not isinstance(data["project_id"], int) or not isinstance(data["case_id"], int) \
                     or not isinstance(data["ids"], list):
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             for i in data["ids"]:
                 if not isinstance(i, int):
-                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                    return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
 
     def post(self, request):
         """
@@ -870,11 +868,11 @@ class DelApi(APIView):
         try:
             Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         try:
             obj = AutomationTestCase.objects.get(id=data["case_id"], project=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
+            return JsonResponse(code="999987", msg="用例不存在！")
         for j in data["ids"]:
             obi = AutomationCaseApi.objects.filter(id=j, automationTestCase=data["case_id"])
             if len(obi) != 0:
@@ -883,7 +881,7 @@ class DelApi(APIView):
                 record_dynamic(project=data["project_id"],
                                _type="删除", operationObject="用例接口",
                                user=request.user.pk, data="删除用例\"%s\"的接口\"%s\"" % (obj.caseName, name))
-        return JsonResponse(code_msg=GlobalStatusCode.success())
+        return JsonResponse(code="999999", msg="成功！")
 
 
 class StartTest(APIView):
@@ -897,12 +895,12 @@ class StartTest(APIView):
         try:
             # 校验project_id, id类型为int
             if not data["project_id"] or not data["case_id"] or not data["id"] or not data["host_id"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if not isinstance(data["project_id"], int) or not isinstance(data["case_id"], int) \
                     or not isinstance(data["id"], int) or not isinstance(data["host_id"], int):
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
 
     def post(self, request):
         """
@@ -917,31 +915,31 @@ class StartTest(APIView):
         try:
             Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         try:
             obi = AutomationTestCase.objects.get(id=data["case_id"], project=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
+            return JsonResponse(code="999987", msg="用例不存在！")
         try:
             GlobalHost.objects.get(id=data["host_id"], project=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.host_not_exist())
+            return JsonResponse(code="999992", msg="host不存在！")
         try:
             obj = AutomationCaseApi.objects.get(id=data["id"], automationTestCase=data["case_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
+            return JsonResponse(code="999990", msg="接口不存在！")
         AutomationTestResult.objects.filter(automationCaseApi=data["id"]).delete()
         try:
             result = test_api(host_id=data["host_id"], case_id=data["case_id"],
                               _id=data["id"], project_id=data["project_id"])
         except:
-            return JsonResponse(code_msg=GlobalStatusCode.fail())
+            return JsonResponse(code="999998", msg="失败！")
         record_dynamic(project=data["project_id"],
                        _type="测试", operationObject="用例接口",
                        user=request.user.pk, data="测试用例“%s”接口\"%s\"" % (obi.caseName, obj.name))
         return JsonResponse(data={
             "result": result
-        }, code_msg=GlobalStatusCode.success())
+        }, code="999999", msg="成功！")
 
 
 class AddTimeTask(APIView):
@@ -956,20 +954,20 @@ class AddTimeTask(APIView):
             # 校验project_id, id类型为int
             if not data["project_id"] or not data["name"] or not data["type"] or \
                     not data["host_id"] or data["startTime"] or not data["endTime"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if not isinstance(data["project_id"], int) or not isinstance(data["host_id"], int):
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if data["type"] not in ["circulation", "timing"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             try:
                 start_time = datetime.strptime(data["startTime"], "%Y-%m-%d %H:%M:%S")
                 end_time = datetime.strptime(data["endTime"], "%Y-%m-%d %H:%M:%S")
                 if start_time > end_time:
-                    return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                    return JsonResponse(code="999996", msg="参数有误！")
             except ValueError:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
 
     def post(self, request):
         """
@@ -984,23 +982,23 @@ class AddTimeTask(APIView):
         try:
             pro_id = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         data["startTime"] = datetime.strftime(data["startTime"], "%Y-%m-%dT%H:%M:%S")
         data["endTime"] = datetime.strftime(data["endTime"], "%Y-%m-%dT%H:%M:%S")
         try:
             GlobalHost.objects.get(id=data["host_id"], project=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.host_not_exist())
+            return JsonResponse(code="999992", msg="host不存在！")
         if data["obm"] == "circulation":
             if not data["frequency"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if not data["frequency"].isdecimal():
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             if data["unit"] not in ["m", "h", "d", "w"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
             try:
                 AutomationTestTask.objects.get(name=data["name"]).exclude(project=data["project_id"])
-                return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
+                return JsonResponse(code="999997", msg="存在相同名称！")
             except ObjectDoesNotExist:
                 try:
                     rt = AutomationTestTask.objects.get(project=data["project_id"])
@@ -1009,14 +1007,14 @@ class AddTimeTask(APIView):
                         serialize.update(instance=rt, validated_data=data)
                         task_id = serialize.data.get("id")
                     else:
-                        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                        return JsonResponse(code="999996", msg="参数有误！")
                 except ObjectDoesNotExist:
                     serialize = AutomationTestTaskDeserializer(data=data)
                     if serialize.is_valid():
                         serialize.save(project=pro_id)
                         task_id = serialize.data.get("id")
                     else:
-                        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                        return JsonResponse(code="999996", msg="参数有误！")
             record_dynamic(project=data["project"],
                            _type="新增", operationObject="任务",
                            user=request.user.pk, data="新增定时任务\"%s\"" % data["name"])
@@ -1026,7 +1024,7 @@ class AddTimeTask(APIView):
         else:
             try:
                 AutomationTestTask.objects.get(name=data["name"]).exclude(project=data["project_id"])
-                return JsonResponse(code_msg=GlobalStatusCode.name_repetition())
+                return JsonResponse(code="999997", msg="存在相同名称！")
             except ObjectDoesNotExist:
                 try:
                     rt = AutomationTestTask.objects.get(project=data["project_id"])
@@ -1035,20 +1033,20 @@ class AddTimeTask(APIView):
                         serialize.update(instance=rt, validated_data=data)
                         task_id = serialize.data.get("id")
                     else:
-                        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                        return JsonResponse(code="999996", msg="参数有误！")
                 except ObjectDoesNotExist:
                     serialize = AutomationTestTaskDeserializer(data=data)
                     if serialize.is_valid():
                         serialize.save(project=pro_id)
                         task_id = serialize.data.get("id")
                     else:
-                        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                        return JsonResponse(code="999996", msg="参数有误！")
             record_dynamic(project=data["project_id"],
                            _type="新增", operationObject="任务",
                            user=request.user.pk, data="新增定时任务\"%s\"" % data["name"])
             add(host_id=data["host_id"], _type=data["type"], project=data["project_id"],
                 start_time=data["startTime"], end_time=data["endTime"])
-        return JsonResponse(data={"task_id": task_id}, code_msg=GlobalStatusCode.success())
+        return JsonResponse(data={"task_id": task_id}, code="999999", msg="成功！")
 
 
 class GetTask(APIView):
@@ -1061,16 +1059,16 @@ class GetTask(APIView):
         """
         project_id = request.GET.get("project_id")
         if not project_id.isdecimal():
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         try:
             Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         try:
             obj = AutomationTestTaskSerializer(AutomationTestTask.objects.get(project=project_id)).data
-            return JsonResponse(code_msg=GlobalStatusCode.success(), data=obj)
+            return JsonResponse(code="999999", msg="成功！", data=obj)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.success())
+            return JsonResponse(code="999999", msg="成功！")
 
 
 class DelTask(APIView):
@@ -1084,9 +1082,9 @@ class DelTask(APIView):
         try:
             # 校验project_id, id类型为int
             if not data["project_id"]:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+                return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
 
     def post(self, request):
         """
@@ -1101,7 +1099,7 @@ class DelTask(APIView):
         try:
             Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         obm = AutomationTestTask.objects.filter(project=data["project_id"])
         if obm:
             obm.delete()
@@ -1109,9 +1107,9 @@ class DelTask(APIView):
             record_dynamic(project=data["project_id"],
                            _type="删除", operationObject="任务",
                            user=request.user.pk, data="删除任务")
-            return JsonResponse(code_msg=GlobalStatusCode.success())
+            return JsonResponse(code="999999", msg="成功！")
         else:
-            return JsonResponse(code_msg=GlobalStatusCode.task_not_exist())
+            return JsonResponse(code="999986", msg="任务不存在！")
 
 
 class LookResult(APIView):
@@ -1126,25 +1124,25 @@ class LookResult(APIView):
         case_id = request.GET.get("case_id")
         api_id = request.GET.get("api_id")
         if not project_id.isdecimal() or not api_id.isdecimal():
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         try:
             Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         try:
             AutomationTestCase.objects.get(id=case_id, project=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
+            return JsonResponse(code="999987", msg="用例不存在！")
         try:
             AutomationCaseApi.objects.get(id=api_id, automationTestCase=case_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.api_not_exist())
+            return JsonResponse(code="999990", msg="接口不存在！")
         try:
             data = AutomationTestResult.objects.get(automationCaseApi=api_id)
             serialize = AutomationTestResultSerializer(data)
-            return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
+            return JsonResponse(data=serialize.data, code="999999", msg="成功！")
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.success())
+            return JsonResponse(code="999999", msg="成功！")
 
 
 class TestReport(APIView):
@@ -1157,11 +1155,11 @@ class TestReport(APIView):
         """
         project_id = request.GET.get("project_id")
         if not project_id.isdecimal():
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         try:
             Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         obj = AutomationTestCase.objects.filter(project=project_id)
         if obj:
             case = Q()
@@ -1182,12 +1180,12 @@ class TestReport(APIView):
                     error = error + 1
                 else:
                     not_run = not_run + 1
-            return JsonResponse(code_msg=GlobalStatusCode.success(), data={"data": data,
-                                                                           "total": len(data),
-                                                                           "pass": success,
-                                                                           "fail": fail,
-                                                                           "error": error,
-                                                                           "NotRun": not_run
-                                                                           })
+            return JsonResponse(code="999999", msg="成功！", data={"data": data,
+                                                                "total": len(data),
+                                                                "pass": success,
+                                                                "fail": fail,
+                                                                "error": error,
+                                                                "NotRun": not_run
+                                                                })
         else:
-            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
+            return JsonResponse(code="999987", msg="用例不存在！")

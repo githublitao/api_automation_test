@@ -22,7 +22,10 @@
 			<el-table-column prop="name" label="项目名称" min-width="30%" sortable show-overflow-tooltip>
                 <template slot-scope="scope">
                     <el-icon name="name"></el-icon>
-                    <router-link :to="{ name: '项目概况', params: {project_id: scope.row.id}}" style='text-decoration: none;color: #000000;'>{{ scope.row.name }}</router-link>
+                    <router-link v-if="scope.row.status" :to="{ name: '项目概况', params: {project_id: scope.row.id}}" style='text-decoration: none;color: #000000;'>
+                        {{ scope.row.name }}
+                    </router-link>
+                    {{ !scope.row.status?scope.row.name:""}}
                 </template>
 			</el-table-column>
 			<el-table-column prop="version" label="项目版本" min-width="12%" sortable>

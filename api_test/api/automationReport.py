@@ -2,7 +2,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from rest_framework.views import APIView
 
-from api_test.common import GlobalStatusCode
 from api_test.common.api_response import JsonResponse
 from api_test.models import Project, AutomationTaskRunTime, AutomationTestCase, AutomationCaseApi, \
     AutomationCaseTestResult
@@ -20,13 +19,13 @@ class TestTime(APIView):
         """
         project_id = request.GET.get("project_id")
         if not project_id:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         if not project_id.isdecimal():
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         try:
             Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         try:
             data = AutomationTaskRunTimeSerializer(
                 AutomationTaskRunTime.objects.filter(project=project_id).order_by("-startTime")[:10],
@@ -35,7 +34,7 @@ class TestTime(APIView):
             data = AutomationTaskRunTimeSerializer(
                 AutomationTaskRunTime.objects.filter(project=project_id).order_by("-startTime"),
                 many=True).data
-        return JsonResponse(code_msg=GlobalStatusCode.success(), data=data)
+        return JsonResponse(code="999999", msg="成功！", data=data)
 
 
 class AutoTestReport(APIView):
@@ -49,13 +48,13 @@ class AutoTestReport(APIView):
         project_id = request.GET.get("project_id")
         time = request.GET.get('time')
         if not project_id or not time:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         if not project_id.isdecimal():
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         try:
             Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         obj = AutomationTestCase.objects.filter(project=project_id)
         if obj:
             case = Q()
@@ -82,17 +81,17 @@ class AutoTestReport(APIView):
                         error = error + 1
                     else:
                         not_run = not_run + 1
-                return JsonResponse(code_msg=GlobalStatusCode.success(), data={"data": data,
-                                                                               "total": len(data),
-                                                                               "pass": success,
-                                                                               "fail": fail,
-                                                                               "error": error,
-                                                                               "NotRun": not_run
-                                                                               })
+                return JsonResponse(code="999999", msg="成功！", data={"data": data,
+                                                                    "total": len(data),
+                                                                    "pass": success,
+                                                                    "fail": fail,
+                                                                    "error": error,
+                                                                    "NotRun": not_run
+                                                                    })
             else:
-                return JsonResponse(code_msg=GlobalStatusCode.success())
+                return JsonResponse(code="999999", msg="成功！")
         else:
-            return JsonResponse(code_msg=GlobalStatusCode.case_not_exist())
+            return JsonResponse(code="999987", msg="用例不存在！")
 
 
 class AutoLatelyTenTime(APIView):
@@ -106,13 +105,13 @@ class AutoLatelyTenTime(APIView):
         """
         project_id = request.GET.get("project_id")
         if not project_id:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         if not project_id.isdecimal():
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         try:
             Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         try:
             data = AutomationTestLatelyTenTimeSerializer(
                 AutomationTaskRunTime.objects.filter(project=project_id).order_by("-startTime")[:10],
@@ -138,4 +137,4 @@ class AutoLatelyTenTime(APIView):
             data[data.index(i)]["error"] = "%.4f" % (error / total)
             data[data.index(i)]["pass"] = "%.4f" % (1 - fail / total - error / total)
         data.reverse()
-        return JsonResponse(code_msg=GlobalStatusCode.success(), data=data)
+        return JsonResponse(code="999999", msg="成功！", data=data)

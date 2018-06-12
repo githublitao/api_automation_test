@@ -4,7 +4,6 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.views import APIView
 from api_test.serializers import TokenSerializer
 from api_test.common.api_response import JsonResponse
-from api_test.common import GlobalStatusCode
 
 
 class ObtainAuthToken(APIView):
@@ -22,7 +21,7 @@ class ObtainAuthToken(APIView):
         # token, created = Token.objects.get_or_create(user=user)
         data = TokenSerializer(Token.objects.get(user=user)).data
         data["userphoto"] = '/file/userphoto.jpg'
-        return JsonResponse(data=data, code_msg=GlobalStatusCode.success())
+        return JsonResponse(data=data, code="999999", msg="成功")
 
 
 obtain_auth_token = ObtainAuthToken.as_view()

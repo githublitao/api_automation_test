@@ -9,7 +9,7 @@ class JsonResponse(Response):
     arbitrary media types.
     """
 
-    def __init__(self, data=None, code_msg=None,
+    def __init__(self, data=None, code=None, msg=None,
                  status=None,
                  template_name=None, headers=None,
                  exception=False, content_type=None):
@@ -20,7 +20,6 @@ class JsonResponse(Response):
         For example being set automatically by the `APIView`.
         """
         super(Response, self).__init__(None, status=status)
-        code, msg = code_msg
         if isinstance(data, Serializer):
             msg = (
                 'You passed a Serializer instance as data, but '

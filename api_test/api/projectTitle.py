@@ -3,7 +3,6 @@ import logging
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
 
-from api_test.common import GlobalStatusCode
 from api_test.common.api_response import JsonResponse
 from api_test.models import Project
 from api_test.serializers import ProjectSerializer
@@ -21,13 +20,14 @@ class ProjectInfo(APIView):
         """
         project_id = request.GET.get("project_id")
         if not project_id:
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         if not project_id.isdecimal():
-            return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
+            return JsonResponse(code="999996", msg="参数有误！")
         # 查找项目是否存在
         try:
             obj = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code_msg=GlobalStatusCode.project_not_exist())
+            return JsonResponse(code="999995", msg="项目不存在！")
         serialize = ProjectSerializer(obj)
-        return JsonResponse(data=serialize.data, code_msg=GlobalStatusCode.success())
+        print(serialize.data["status"])
+        return JsonResponse(data=serialize.data, code="999999", msg="成功！")
