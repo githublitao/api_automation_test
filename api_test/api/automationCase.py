@@ -1146,6 +1146,8 @@ class DelTask(APIView):
             # 校验project_id, id类型为int
             if not data["project_id"]:
                 return JsonResponse(code="999996", msg="参数有误！")
+            if not isinstance(data["project_id"], int):
+                return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
             return JsonResponse(code="999996", msg="参数有误！")
 
@@ -1168,12 +1170,13 @@ class DelTask(APIView):
             return JsonResponse(code="999985", msg="该项目已禁用")
         obm = AutomationTestTask.objects.filter(project=data["project_id"])
         if obm:
-            obm.delete()
-            del_task_crontab(data["project_id"])
-            record_dynamic(project=data["project_id"],
-                           _type="删除", operationObject="任务",
-                           user=request.user.pk, data="删除任务")
-            return JsonResponse(code="999999", msg="成功！")
+            with transaction.atomic():
+                obm.delete()
+                del_task_crontab(str(data["project_id"]))
+                record_dynamic(project=data["project_id"],
+                               _type="删除", operationObject="任务",
+                               user=request.user.pk, data="删除任务")
+                return JsonResponse(code="999999", msg="成功！")
         else:
             return JsonResponse(code="999986", msg="任务不存在！")
 
