@@ -37,9 +37,7 @@
             <el-row :span="24">
                 <el-collapse v-model="activeNames" @change="handleChange">
                     <el-collapse-item title="请求头部" name="1">
-                        <el-table :data="form.head" highlight-current-row @selection-change="selsChangeHead" ref="multipleHeadTable">
-                            <el-table-column type="selection" min-width="5%" label="头部">
-                            </el-table-column>
+                        <el-table :data="form.head" highlight-current-row>
                             <el-table-column prop="name" label="标签" min-width="20%" sortable>
                                 <template slot-scope="scope">
                                     <el-select placeholder="head标签" filterable v-model="scope.row.name">
@@ -131,9 +129,9 @@
                             </el-table-column>
                             <el-table-column prop="requestType" label="请求方式" min-width="10%">
                             </el-table-column>
-                            <el-table-column prop="requestAddress" label="请求地址" min-width="50%">
+                            <el-table-column prop="requestAddress" label="请求地址" min-width="49%">
                             </el-table-column>
-                            <el-table-column prop="httpCode" label="HTTP状态" min-width="10%">
+                            <el-table-column prop="httpCode" label="HTTP状态" min-width="11%">
                             </el-table-column>
                             <el-table-column min-width="10%" label="操作">
                                 <template slot-scope="scope">
@@ -574,17 +572,17 @@
         display: none;
     }
     .selectInput {
-        position:absolute;
-        margin-left:7px;
-        padding-left:10px;
-        width:52%;
-        height:25px;
-        left:1px;
-        top:1px;
-        border-bottom:0px;
-        border-right:0px;
-        border-left:0px;
-        border-top:0px;
+        position: absolute;
+        margin-left: 7px;
+        padding-left: 10px;
+        width: 180px;
+        height: 25px;
+        left: 1px;
+        top: 1px;
+        border-bottom: 0px;
+        border-right: 0px;
+        border-left: 0px;
+        border-top: 0px;
     }
     .HOST {
         position: absolute;

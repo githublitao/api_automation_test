@@ -56,7 +56,7 @@
                     <el-input v-model.trim="editForm.host" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="描述" prop='description'>
-                    <el-input type="textarea" :rows="7" v-model.trim="editForm.description"></el-input>
+                    <el-input type="textarea" :rows="5" v-model.trim="editForm.description"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -75,7 +75,7 @@
                     <el-input v-model.trim="addForm.host" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="描述" prop='description'>
-                    <el-input type="textarea" :rows="7" v-model.trim="addForm.description"></el-input>
+                    <el-input type="textarea" :rows="5" v-model.trim="addForm.description"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">

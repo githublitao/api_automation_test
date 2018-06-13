@@ -57,13 +57,13 @@
                 </el-table-column>
                 <el-table-column type="index" label="#" width="100">
                 </el-table-column>
-                <el-table-column prop="name" label="接口名称" min-width="29" sortable show-overflow-tooltip>
+                <el-table-column prop="name" label="接口名称" min-width="27%" sortable show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="automationTestCase" label="用例名称" min-width="29%" sortable show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="address" label="请求地址" min-width="20%" sortable show-overflow-tooltip>
+                <el-table-column prop="apiAddress" label="请求地址" min-width="20%" sortable show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="examineType" label="校验方式" min-width="12%" sortable show-overflow-tooltip>
+                <el-table-column prop="examineType" label="校验方式" min-width="13%" sortable show-overflow-tooltip>
                     <template slot-scope="scope">
                         <a v-if="scope.row.examineType === 'no_check'">不校验</a>
                         <a v-if="scope.row.examineType === 'only_check_status'">校验http状态</a>
@@ -72,7 +72,7 @@
                         <a v-if="scope.row.examineType === 'Regular_check'">正则校验</a>
                     </template>
                 </el-table-column>
-                <el-table-column prop="result" label="结果" min-width="10%" :filters="resultFilter" :filter-method="filterHandler">
+                <el-table-column prop="result" label="结果" min-width="11%" :filters="resultFilter" :filter-method="filterHandler">
                     <template slot-scope="scope">
                         {{scope.row.result? scope.row.result: "NotRun"}}
                     </template>
@@ -165,9 +165,9 @@
         color: #fff;
         font-size: 25px;
         text-align: center;
-        width: 6%;
+        width: 100px;
         top: -70px;
-        right: 19.5%;
+        right: 350px;
     }
     .number-fail {
         border-radius: 25px;
@@ -178,9 +178,9 @@
         /*color: #fff;*/
         font-size: 25px;
         text-align: center;
-        width: 6%;
+        width: 100px;
         top: -70px;
-        right: 13%;
+        right: 240px;
     }
     .number-error {
         border-radius: 25px;
@@ -190,9 +190,9 @@
         color: #fff;
         font-size: 25px;
         text-align: center;
-        width: 6%;
+        width: 100px;
         top: -70px;
-        right: 6.5%;
+        right: 130px;
     }
     .number-total {
         border-radius: 25px;
@@ -203,9 +203,9 @@
         /*color: #fff;*/
         font-size: 25px;
         text-align: center;
-        width: 6%;
+        width: 100px;
         top: -70px;
-        right: 0px;
+        right: 20px;
     }
     .demo-table-expand {
         font-size: 0;

@@ -40,9 +40,7 @@
             <el-row :span="24">
                 <el-collapse v-model="activeNames" @change="handleChange">
                     <el-collapse-item title="请求头部" name="1">
-                        <el-table :data="form.head" highlight-current-row @selection-change="selsChangeHead" ref="multipleHeadTable">
-                            <el-table-column type="selection" min-width="5%" label="头部">
-                            </el-table-column>
+                        <el-table :data="form.head" highlight-current-row>
                             <el-table-column prop="name" label="标签" min-width="20%" sortable>
                                 <template slot-scope="scope">
                                     <el-select placeholder="head标签" filterable v-model="scope.row.name">
@@ -58,7 +56,7 @@
                             </el-table-column>
                             <el-table-column label="操作" min-width="10%">
                                 <template slot-scope="scope">
-                                    <i class="el-icon-delete" style="font-size:30px" @click="delHead(scope.$index)"></i>
+                                    <i class="el-icon-delete" style="font-size:30px;cursor:pointer;" @click="delHead(scope.$index)"></i>
                                 </template>
                             </el-table-column>
                             <el-table-column label="" min-width="10%">

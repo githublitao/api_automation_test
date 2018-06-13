@@ -8,11 +8,11 @@
                 <el-col :span="2" style="padding-left: 6px;">
                     <div class="httpStyle" v-model="requestType">{{requestType}}</div>
                 </el-col>
-                <el-col :span="16" class="apiInfo">
+                <el-col :span="15" class="apiInfo">
                     <div><strong v-model="addr">{{addr}}</strong></div>
                     <div><strong v-model="apiName">{{apiName}}</strong></div>
                 </el-col>
-                <el-col :span="4">
+                <el-col :span="5">
                     <i v-show="status" class="el-icon-check statusIcon"></i>
                     <i v-show="!status" class="el-icon-close statusIcon"></i>
                     <div class="apiDate" v-model="updateTime">{{updateTime}}</div>
@@ -292,7 +292,7 @@
         height: 74px;
         box-sizing: border-box;
         color: #fff;
-        font-size: 25px;
+        font-size: 160%;
         background-color: #409eff;
         text-align: center;
     }

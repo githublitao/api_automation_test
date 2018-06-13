@@ -19,7 +19,7 @@
                 <el-button type="primary" @click.native="TestReport"><div>查看报告</div></el-button>
             </el-form>
         </el-col>
-        <el-dialog title="定时任务" v-model="taskVShow"  :close-on-click-modal="false" style="width: 50%; left: 20%">
+        <el-dialog title="定时任务" v-model="taskVShow"  :close-on-click-modal="false" style="width: 70%; left: 15%">
             <el-form ref="form" :model="form" label-width="100px" :rules="formRules">
                 <el-form-item label="任务名称：" prop="name">
                     <el-input v-model.trim="form.name" placeholder="请输入任务名称"></el-input>
@@ -59,7 +59,7 @@
                 </el-form-item>
             </el-form>
         </el-dialog>
-        <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
+        <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false" style="width: 65%; left: 17.5%">
             <el-form :model="editForm"  :rules="editFormRules" ref="editForm" label-width="80px">
                 <el-form-item label="名称" prop="caseName">
                     <el-input v-model.trim="editForm.caseName" auto-complete="off"></el-input>
@@ -70,7 +70,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="描述" prop='description'>
-                    <el-input type="textarea" :rows="7" v-model.trim="editForm.description"></el-input>
+                    <el-input type="textarea" :rows="4" v-model.trim="editForm.description"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -80,7 +80,7 @@
         </el-dialog>
 
         <!--新增界面-->
-        <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
+        <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false" style="width: 65%; left: 17.5%">
             <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
                 <el-form-item label="名称" prop="caseName">
                     <el-input v-model.trim="addForm.caseName" auto-complete="off"></el-input>
@@ -91,7 +91,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="描述" prop='description'>
-                    <el-input type="textarea" :rows="7" v-model.trim="addForm.description"></el-input>
+                    <el-input type="textarea" :rows="4" v-model.trim="addForm.description"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -124,13 +124,13 @@
                     <router-link :to="{ name: '用例接口列表', params: {case_id: scope.row.id}}" style='text-decoration: none;'>{{ scope.row.caseName }}</router-link>
                 </template>
             </el-table-column>
-            <el-table-column prop="description" label="描述" min-width="40%" sortable show-overflow-tooltip>
+            <el-table-column prop="description" label="描述" min-width="35%" sortable show-overflow-tooltip>
             </el-table-column>
             <el-table-column prop="createUser" label="创建人" min-width="10%" sortable show-overflow-tooltip>
             </el-table-column>
             <el-table-column prop="updateTime" label="更新日期" min-width="15%" sortable show-overflow-tooltip>
             </el-table-column>
-            <el-table-column label="操作" min-width="10%">
+            <el-table-column label="操作" min-width="15%">
                 <template slot-scope="scope">
                     <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
                     <el-button type="info" size="small" @click="handleEdit(scope.$index, scope.row)">修改</el-button>

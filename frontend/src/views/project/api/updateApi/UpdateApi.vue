@@ -1,8 +1,12 @@
 <template>
     <section>
-        <el-button class="return-list el-icon-d-arrow-left" @click="back">接口详情</el-button>
-        <el-button class="return-list" style="float: right" @click="back">取消</el-button>
-        <el-button class="return-list" type="primary" style="float: right; margin-right: 15px" @click.native="updateApi">保存</el-button>
+        <router-link :to="{ name: '基础信息', params: {project_id: this.$route.params.project_id,api_id:this.$route.params.api_id}}" style='text-decoration: none;color: aliceblue;'>
+            <el-button class="return-list"><i class="el-icon-d-arrow-left" style="margin-right: 5px"></i>接口详情</el-button>
+        </router-link>
+        <router-link :to="{ name: '基础信息', params: {project_id: this.$route.params.project_id,api_id:this.$route.params.api_id}}" style='text-decoration: none;color: aliceblue;'>
+            <el-button class="return-list" style="float: right">取消</el-button>
+        </router-link>
+        <el-button class="return-list" type="primary" style="float: right; margin-right: 15px" @click.native="updateApiInfo">保存</el-button>
         <el-form :model="form" ref="form" :rules="FormRules">
             <div style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px">
                 <el-form-item label="接口分组:" label-width="83px" prop="firstGroup">
@@ -84,35 +88,35 @@
                             </el-row>
                         </div>
                         <el-table :data="form.parameter" highlight-current-row :class="ParameterTyep? 'parameter-a': 'parameter-b'">
-                            <el-table-column prop="name" label="参数名" min-width="15%" sortable>
+                            <el-table-column prop="name" label="参数名" min-width="25%" sortable>
                                 <template slot-scope="scope">
                                     <el-input v-model.trim="scope.row.name" :value="scope.row.name" placeholder="请输入参数值"></el-input>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="value" label="参数值" min-width="25%" sortable>
+                            <el-table-column prop="value" label="参数值" min-width="30%" sortable>
                                 <template slot-scope="scope">
                                     <el-input v-model.trim="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="_type" label="参数类型" min-width="10%" sortable>
+                            <el-table-column prop="_type" label="参数类型" min-width="14%" sortable>
                                 <template slot-scope="scope">
                                     <el-select v-model="scope.row._type"  placeholder="请求方式">
                                         <el-option v-for="(item,index) in paramTyep" :key="index+''" :label="item.label" :value="item.value"></el-option>
                                     </el-select>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="description" label="参数说明" min-width="15%" sortable>
+                            <el-table-column prop="description" label="参数说明" min-width="14%" sortable>
                                 <template slot-scope="scope">
                                     <el-input v-model.trim="scope.row.description" :value="scope.row.desc" placeholder="请输入参数说明"></el-input>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="操作" min-width="8%">
+                            <el-table-column label="操作" min-width="13%">
                                 <template slot-scope="scope">
                                     <i class="el-icon-delete" style="font-size:30px" @click="delParameter(scope.$index)"></i>
                                     <el-button type="primary" size="mini" style="margin-bottom: 5px" @click="handleParameterEdit(scope.$index, scope.row)">更多设置</el-button>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="" min-width="5%">
+                            <el-table-column label="" min-width="4%">
                                 <template slot-scope="scope">
                                     <el-button v-if="scope.$index===(form.parameter.length-1)" size="mini" class="el-icon-plus" @click="addParameter"></el-button>
                                 </template>
@@ -149,35 +153,35 @@
                     </el-dialog>
                     <el-collapse-item title="返回参数" name="3">
                         <el-table :data="form.response" highlight-current-row>
-                            <el-table-column prop="name" label="参数名" min-width="15%" sortable>
+                            <el-table-column prop="name" label="参数名" min-width="25%" sortable>
                                 <template slot-scope="scope">
                                     <el-input v-model.trim="scope.row.name" :value="scope.row.name" placeholder="请输入参数值"></el-input>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="value" label="参数值" min-width="25%" sortable>
+                            <el-table-column prop="value" label="参数值" min-width="30%" sortable>
                                 <template slot-scope="scope">
                                     <el-input v-model.trim="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="_type" label="参数类型" min-width="10%" sortable>
+                            <el-table-column prop="_type" label="参数类型" min-width="14%" sortable>
                                 <template slot-scope="scope">
                                     <el-select v-model.trim="scope.row._type"  placeholder="请求方式">
                                         <el-option v-for="(item,index) in paramTyep" :key="index+''" :label="item.label" :value="item.value"></el-option>
                                     </el-select>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="description" label="参数说明" min-width="15%" sortable>
+                            <el-table-column prop="description" label="参数说明" min-width="14%" sortable>
                                 <template slot-scope="scope">
                                     <el-input v-model.trim="scope.row.description" :value="scope.row.desc" placeholder="请输入参数说明"></el-input>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="操作" min-width="8%">
+                            <el-table-column label="操作" min-width="13%">
                                 <template slot-scope="scope">
                                     <i class="el-icon-delete" style="font-size:30px" @click="delResponse(scope.$index)"></i>
                                     <el-button type="primary" size="mini" style="margin-bottom: 5px" @click="handleResponseEdit(scope.$index, scope.row)">更多设置</el-button>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="" min-width="5%">
+                            <el-table-column label="" min-width="4%">
                                 <template slot-scope="scope">
                                     <el-button v-if="scope.$index===(form.response.length-1)" size="mini" class="el-icon-plus" @click="addResponse"></el-button>
                                 </template>
@@ -328,6 +332,15 @@
             }
         },
         methods: {
+            isJsonString(str) {
+                try {
+                    if (typeof JSON.parse(str) === "object") {
+                        return true;
+                    }
+                } catch(e) {
+                }
+                return false;
+            },
             getApiInfo() {
                 let self = this;
                 let param = {project_id: self.$route.params.project_id, api_id: self.$route.params.api_id};
@@ -384,6 +397,27 @@
                         }
                     },
                 });
+            },
+            updateApiInfo(){
+                if (this.form.data&&this.form.mockCode) {
+                    if (!this.isJsonString(this.form.data)) {
+                        this.$message({
+                            message: 'mock格式错误',
+                            center: true,
+                            type: 'error'
+                        })
+                    } else {
+                        this.updateApi()
+                    }
+                } else if(this.form.data||this.form.mockCode){
+                    this.$message({
+                        message: 'HTTP状态或mock为空',
+                        center: true,
+                        type: 'warning'
+                    })
+                } else {
+                    this.updateApi()
+                }
             },
             updateApi: function () {
                 this.$refs.form.validate((valid) => {
@@ -593,7 +627,7 @@
         position: absolute;
         margin-left: 7px;
         padding-left: 10px;
-        width: 51%;
+        width: 180px;
         height: 25px;
         left: 1px;
         top: 1px;

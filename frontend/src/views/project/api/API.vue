@@ -16,7 +16,7 @@
                     <!--导航菜单-->
                     <el-menu default-active="2" class="el-menu-vertical-demo" active-text-color="rgb(32, 160, 255)" :unique-opened="true">
                         <template v-for="(item,index) in groupData">
-                            <router-link :to="{ name: '分组用例列表', params: {project_id: project, firstGroup: item.id}}" style="text-decoration:none;">
+                            <router-link :to="{ name: '分组接口列表', params: {project_id: project, firstGroup: item.id}}" style="text-decoration:none;">
                                 <el-menu-item :index="index+''" :key="item.id" class="group">
                                     <template slot="title">{{item.name}}
                                         <el-dropdown trigger="hover" class="editGroup" style="margin-right:10%">
