@@ -722,13 +722,13 @@ class AddNewApi(APIView):
                     try:
                         response = eval(data["responseData"].replace("true", "True").replace("false", "False"))
                         api = "<response[%s]>" % api_id
-                        api_id = AutomationCaseApi.objects.get(id=api_id)
-                        create_json(api_id, api, response)
+                        api_ids = AutomationCaseApi.objects.get(id=api_id)
+                        create_json(api_ids, api, response)
                     except KeyError:
                         return JsonResponse(code="999998", msg="失败！")
-                record_dynamic(project=data["project_id"],
-                               _type="新增", operationObject="用例接口", user=request.user.pk,
-                               data="用例“%s”新增接口\"%s\"" % (obj.caseName, data["name"]))
+                # record_dynamic(project=data["project_id"],
+                #                _type="新增", operationObject="用例接口", user=request.user.pk,
+                #                data="用例“%s”新增接口\"%s\"" % (obj.caseName, data["name"]))
                 return JsonResponse(data={"api_id": api_id}, code="999999", msg="成功！")
             return JsonResponse(code="999998", msg="失败！")
 
@@ -1008,9 +1008,9 @@ class AddTimeTask(APIView):
         try:
             # 校验project_id, id类型为int
             if not data["project_id"] or not data["name"] or not data["type"] or \
-                    not data["host_id"] or data["startTime"] or not data["endTime"]:
+                    not data["Host_id"] or not data["startTime"] or not data["endTime"]:
                 return JsonResponse(code="999996", msg="参数有误！")
-            if not isinstance(data["project_id"], int) or not isinstance(data["host_id"], int):
+            if not isinstance(data["project_id"], int) or not isinstance(data["Host_id"], int):
                 return JsonResponse(code="999996", msg="参数有误！")
             if data["type"] not in ["circulation", "timing"]:
                 return JsonResponse(code="999996", msg="参数有误！")
@@ -1035,22 +1035,24 @@ class AddTimeTask(APIView):
         if result:
             return result
         try:
-            pro_data = pro_id = Project.objects.get(id=data["project_id"])
+            pro_id = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
-        pro_data = ProjectSerializer(pro_data)
+        pro_data = ProjectSerializer(pro_id)
+        start_time = data["startTime"]
+        end_time = data["endTime"]
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
-        data["startTime"] = datetime.strftime(data["startTime"], "%Y-%m-%dT%H:%M:%S")
-        data["endTime"] = datetime.strftime(data["endTime"], "%Y-%m-%dT%H:%M:%S")
+        data["startTime"] = datetime.strptime(data["startTime"], "%Y-%m-%d %H:%M:%S")
+        data["endTime"] = datetime.strptime(data["endTime"], "%Y-%m-%d %H:%M:%S")
         try:
-            GlobalHost.objects.get(id=data["host_id"], project=data["project_id"])
+            host_data = GlobalHost.objects.get(id=data["Host_id"], project=data["project_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999992", msg="host不存在！")
-        if data["obm"] == "circulation":
+        if data["type"] == "circulation":
             if not data["frequency"]:
                 return JsonResponse(code="999996", msg="参数有误！")
-            if not data["frequency"].isdecimal():
+            if not isinstance(data["frequency"], int):
                 return JsonResponse(code="999996", msg="参数有误！")
             if data["unit"] not in ["m", "h", "d", "w"]:
                 return JsonResponse(code="999996", msg="参数有误！")
@@ -1069,15 +1071,15 @@ class AddTimeTask(APIView):
                 except ObjectDoesNotExist:
                     serialize = AutomationTestTaskDeserializer(data=data)
                     if serialize.is_valid():
-                        serialize.save(project=pro_id)
+                        serialize.save(project=pro_id, Host=host_data)
                         task_id = serialize.data.get("id")
                     else:
                         return JsonResponse(code="999996", msg="参数有误！")
-            record_dynamic(project=data["project"],
+            record_dynamic(project=data["project_id"],
                            _type="新增", operationObject="任务",
                            user=request.user.pk, data="新增定时任务\"%s\"" % data["name"])
-            add(host_id=data["host_id"], _type=data["type"], project=data["project_id"],
-                start_time=data["startTime"], end_time=data["endTime"])
+            add(host_id=data["Host_id"], _type=data["type"], project=str(data["project_id"]),
+                start_time=start_time, end_time=end_time)
 
         else:
             task_name = AutomationTestTask.objects.filter(name=data["name"]).exclude(project=data["project_id"])
@@ -1095,15 +1097,15 @@ class AddTimeTask(APIView):
                 except ObjectDoesNotExist:
                     serialize = AutomationTestTaskDeserializer(data=data)
                     if serialize.is_valid():
-                        serialize.save(project=pro_id)
+                        serialize.save(project=pro_id, Host=host_data)
                         task_id = serialize.data.get("id")
                     else:
                         return JsonResponse(code="999996", msg="参数有误！")
             record_dynamic(project=data["project_id"],
                            _type="新增", operationObject="任务",
                            user=request.user.pk, data="新增定时任务\"%s\"" % data["name"])
-            add(host_id=data["host_id"], _type=data["type"], project=data["project_id"],
-                start_time=data["startTime"], end_time=data["endTime"])
+            add(host_id=data["Host_id"], _type=data["type"], project=str(data["project_id"]),
+                start_time=start_time, end_time=end_time)
         return JsonResponse(data={"task_id": task_id}, code="999999", msg="成功！")
 
 

@@ -478,7 +478,7 @@ class AutomationTestTaskDeserializer(serializers.ModelSerializer):
 
     class Meta:
         model = AutomationTestTask
-        fields = ('id', 'project', 'Host', 'name', 'type', 'frequency', 'unit', 'startTime', 'endTime')
+        fields = ('id', 'project_id', 'Host_id', 'name', 'type', 'frequency', 'unit', 'startTime', 'endTime')
 
 
 class AutomationTestReportSerializer(serializers.ModelSerializer):

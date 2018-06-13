@@ -397,10 +397,10 @@
                             self.editLoading = true;
                             let param = {
                                 project_id: Number(self.$route.params.project_id),
-                                host_id: Number(self.form.Host),
+                                Host_id: Number(self.form.Host),
                                 name: self.form.name,
                                 type: self.form.type,
-                                frequency: self.form.frequency,
+                                frequency: Number(self.form.frequency),
                                 unit: self.form.unit,
                             };
                             if (self.form.type === 'circulation') {

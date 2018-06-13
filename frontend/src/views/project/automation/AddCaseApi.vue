@@ -344,7 +344,7 @@
                                 requestList: _parameter,
                                 examineType: self.form.check,
                                 httpCode: self.form.checkHttp,
-                                responseData: self.form.checkData
+                                responseData: self.form.checkData.toString()
                             });
                             $.ajax({
                                 type: "post",
