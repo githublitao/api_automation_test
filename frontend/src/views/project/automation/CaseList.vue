@@ -4,7 +4,7 @@
         <el-col :span="24" style="height: 46px">
             <el-form :inline="true" :model="filters">
                 <el-form-item>
-                    <el-input v-model="filters.name" placeholder="名称" @keyup.enter.native="getCaseList"></el-input>
+                    <el-input v-model.trim="filters.name" placeholder="名称" @keyup.enter.native="getCaseList"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="getCaseList">查询</el-button>
@@ -22,7 +22,7 @@
         <el-dialog title="定时任务" v-model="taskVShow"  :close-on-click-modal="false" style="width: 50%; left: 20%">
             <el-form ref="form" :model="form" label-width="100px" :rules="formRules">
                 <el-form-item label="任务名称：" prop="name">
-                    <el-input v-model="form.name" placeholder="请输入任务名称"></el-input>
+                    <el-input v-model.trim="form.name" placeholder="请输入任务名称"></el-input>
                 </el-form-item>
                 <el-form-item label="类型：" prop="type">
                     <el-select v-model="form.type" placeholder="请选择">
@@ -62,7 +62,7 @@
         <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
             <el-form :model="editForm"  :rules="editFormRules" ref="editForm" label-width="80px">
                 <el-form-item label="名称" prop="caseName">
-                    <el-input v-model="editForm.caseName" auto-complete="off"></el-input>
+                    <el-input v-model.trim="editForm.caseName" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="接口分组:" label-width="83px" prop="automationGroupLevelFirst">
                     <el-select v-model="editForm.automationGroupLevelFirst" placeholder="分组">
@@ -70,7 +70,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="描述" prop='description'>
-                    <el-input type="textarea" :rows="7" v-model="editForm.description"></el-input>
+                    <el-input type="textarea" :rows="7" v-model.trim="editForm.description"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -83,7 +83,7 @@
         <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
             <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
                 <el-form-item label="名称" prop="caseName">
-                    <el-input v-model="addForm.caseName" auto-complete="off"></el-input>
+                    <el-input v-model.trim="addForm.caseName" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="接口分组:" label-width="83px" prop="firstGroup">
                     <el-select v-model="addForm.firstGroup" placeholder="分组">
@@ -91,7 +91,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="描述" prop='description'>
-                    <el-input type="textarea" :rows="7" v-model="addForm.description"></el-input>
+                    <el-input type="textarea" :rows="7" v-model.trim="addForm.description"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">

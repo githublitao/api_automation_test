@@ -34,7 +34,7 @@
             <el-dialog title="新增分组" v-model="addGroupFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
                 <el-form :model="addGroupForm" label-width="80px"  :rules="addGroupFormRules" ref="addGroupForm">
                     <el-form-item label="分组名称" prop='firstgroup'>
-                        <el-input v-model="addGroupForm.firstgroup" auto-complete="off" style="width: 90%"></el-input>
+                        <el-input v-model.trim="addGroupForm.firstgroup" auto-complete="off" style="width: 90%"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -46,7 +46,7 @@
             <el-dialog title="编辑分组" v-model="editFirstGroupFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
                 <el-form :model="editFirstGroupForm" label-width="80px"  :rules="editFirstGroupFormRules" ref="editFirstGroupForm">
                     <el-form-item label="分组名称" prop='secondFirstGroup'>
-                        <el-input v-model="editFirstGroupForm.secondFirstGroup" auto-complete="off"></el-input>
+                        <el-input v-model.trim="editFirstGroupForm.secondFirstGroup" auto-complete="off"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">

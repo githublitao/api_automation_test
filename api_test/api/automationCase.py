@@ -506,6 +506,8 @@ class ApiList(APIView):
         except EmptyPage:
             obm = paginator.page(paginator.num_pages)
         serialize = AutomationCaseApiListSerializer(obm, many=True)
+        for i in range(0, len(serialize.data)-1):
+            serialize.data[i]["testStatus"] = False
         return JsonResponse(data={"data": serialize.data,
                                   "page": page,
                                   "total": total
@@ -688,7 +690,7 @@ class AddNewApi(APIView):
                                     i["automationCaseApi_id"] = api_id
                                     head_serialize = AutomationHeadDeserializer(data=i)
                                     if head_serialize.is_valid():
-                                        head_serialize.save(api=AutomationCaseApi.objects.get(id=api_id))
+                                        head_serialize.save(automationCaseApi=AutomationCaseApi.objects.get(id=api_id))
                             except KeyError:
                                 return JsonResponse(code="999996", msg="参数有误!")
                 except KeyError:
@@ -702,7 +704,7 @@ class AddNewApi(APIView):
                                         i["automationCaseApi_id"] = api_id
                                         param_serialize = AutomationParameterDeserializer(data=i)
                                         if param_serialize.is_valid():
-                                            param_serialize.save(api=AutomationCaseApi.objects.get(id=api_id))
+                                            param_serialize.save(automationCaseApi=AutomationCaseApi.objects.get(id=api_id))
                                         else:
                                             return JsonResponse(code="999998", msg="失败！")
                                 except KeyError:
@@ -712,7 +714,7 @@ class AddNewApi(APIView):
                 else:
                     try:
                         if len(data["requestList"]):
-                            AutomationParameterRaw(api=AutomationCaseApi.objects.get(id=api_id),
+                            AutomationParameterRaw(automationCaseApi=AutomationCaseApi.objects.get(id=api_id),
                                                    data=data["requestList"]).save()
                     except KeyError:
                         pass
@@ -819,7 +821,7 @@ class UpdateApi(APIView):
             obj = AutomationCaseApi.objects.get(id=data["id"], automationTestCase=data["automationTestCase_id"])
         except ObjectDoesNotExist:
             return JsonResponse(code="999990", msg="接口不存在！")
-        api_name = AutomationCaseApi.objects.filter(name=data["name"], automationTestCase=data["automationTestCase_id"])
+        api_name = AutomationCaseApi.objects.filter(name=data["name"], automationTestCase=data["automationTestCase_id"]).exclude(id=data["id"])
         if len(api_name):
             return JsonResponse(code="999997", msg="存在相同名称！")
         with transaction.atomic():
@@ -835,7 +837,7 @@ class UpdateApi(APIView):
                                     i["automationCaseApi_id"] = data["id"]
                                     head_serialize = AutomationHeadDeserializer(data=i)
                                     if head_serialize.is_valid():
-                                        head_serialize.save(api=AutomationCaseApi.objects.get(id=data["id"]))
+                                        head_serialize.save(automationCaseApi=AutomationCaseApi.objects.get(id=data["id"]))
                             except KeyError:
                                 return JsonResponse(code="999996", msg="参数有误！")
                 except KeyError:
@@ -851,7 +853,7 @@ class UpdateApi(APIView):
                                         i["automationCaseApi_id"] = data["id"]
                                         param_serialize = AutomationParameterDeserializer(data=i)
                                         if param_serialize.is_valid():
-                                            param_serialize.save(api=AutomationCaseApi.objects.get(id=data["id"]))
+                                            param_serialize.save(automationCaseApi=AutomationCaseApi.objects.get(id=data["id"]))
                                         else:
                                             return JsonResponse(code="999998", msg="失败！")
                                 except KeyError:
@@ -861,7 +863,7 @@ class UpdateApi(APIView):
                 else:
                     try:
                         if len(data["requestList"]):
-                            AutomationParameterRaw(api=AutomationCaseApi.objects.get(id=data["id"]),
+                            AutomationParameterRaw(automationCaseApi=AutomationCaseApi.objects.get(id=data["id"]),
                                                    data=data["requestList"]).save()
                     except KeyError:
                         pass

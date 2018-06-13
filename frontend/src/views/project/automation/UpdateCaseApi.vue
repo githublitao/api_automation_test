@@ -1,12 +1,16 @@
 <template>
     <section>
-        <el-button class="return-list" @click.native="back"><i class="el-icon-d-arrow-left" style="margin-right: 5px"></i>返回列表</el-button>
-        <el-button class="return-list" style="float: right" @click="back">取消</el-button>
+        <router-link :to="{ name: '用例接口列表', params: {project_id: this.$route.params.project_id,case_id: this.$route.params.case_id}}" style='text-decoration: none;color: aliceblue;'>
+            <el-button class="return-list"><i class="el-icon-d-arrow-left" style="margin-right: 5px"></i>返回列表</el-button>
+        </router-link>
+        <router-link :to="{ name: '用例接口列表', params: {project_id: this.$route.params.project_id,case_id: this.$route.params.case_id}}" style='text-decoration: none;color: aliceblue;'>
+            <el-button class="return-list" style="float: right">取消</el-button>
+        </router-link>
         <el-button class="return-list" type="primary" style="float: right; margin-right: 15px" @click.native="updateApi">保存</el-button>
         <el-form :model="form" ref="form" :rules="FormRules">
             <div style="border: 1px solid #e6e6e6;margin-bottom: 10px;padding:15px">
                 <el-form-item label="接口名称:" label-width="83px" prop="name">
-                    <el-input v-model="form.name" placeholder="名称" auto-complete></el-input>
+                    <el-input v-model.trim="form.name" placeholder="名称" auto-complete></el-input>
                 </el-form-item>
                 <el-row :gutter="10">
                     <el-col :span="4">
@@ -25,7 +29,7 @@
                     </el-col>
                     <el-col :span='18'>
                         <el-form-item prop="addr">
-                            <el-input v-model="form.addr" placeholder="地址" auto-complete></el-input>
+                            <el-input v-model.trim="form.addr" placeholder="地址" auto-complete></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -39,12 +43,12 @@
                                     <el-select placeholder="head标签" filterable v-model="scope.row.name" style="width: 100%">
                                         <el-option v-for="(item,index) in header" :key="index+''" :label="item.label" :value="item.value"></el-option>
                                     </el-select>
-                                    <el-input class="selectInput" v-model="scope.row.name" :value="scope.row.name" placeholder="请输入内容"></el-input>
+                                    <el-input class="selectInput" v-model.trim="scope.row.name" :value="scope.row.name" placeholder="请输入内容"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="value" label="内容" min-width="40%" sortable>
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.value" :value="scope.row.value" placeholder="请输入内容"></el-input>
+                                    <el-input v-model.trim="scope.row.value" :value="scope.row.value" placeholder="请输入内容"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="interrelate" label="是否关联" min-width="10%" sortable>
@@ -81,12 +85,12 @@
                         <el-table :data="form.parameter" highlight-current-row :class="ParameterTyep? 'parameter-a': 'parameter-b'">
                             <el-table-column prop="name" label="参数名" min-width="30%" sortable>
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.name" :value="scope.row.name" placeholder="请输入参数值"></el-input>
+                                    <el-input v-model.trim="scope.row.name" :value="scope.row.name" placeholder="请输入参数值"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="value" label="参数值" min-width="40%" sortable>
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
+                                    <el-input v-model.trim="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="interrelate" label="是否关联" min-width="10%" sortable>
@@ -112,7 +116,7 @@
                             </el-table-column>
                         </el-table>
                         <template>
-                            <el-input :class="ParameterTyep? 'parameter-b': 'parameter-a'" type="textarea" :rows="5" placeholder="请输入内容" v-model="form.parameterRaw"></el-input>
+                            <el-input :class="ParameterTyep? 'parameter-b': 'parameter-a'" type="textarea" :rows="5" placeholder="请输入内容" v-model.trim="form.parameterRaw"></el-input>
                         </template>
                     </el-collapse-item>
                     <el-dialog title="关联" v-model="searchApiVisible" :close-on-click-modal="false">
@@ -154,7 +158,7 @@
                                 <el-select v-model="form.checkHttp" placeholder="HTTP状态">
                                     <el-option v-for="(item,index) in httpCode" :key="index+''" :label="item.label" :value="item.value"></el-option>
                                 </el-select>
-                                <el-input style="margin-top: 10px" v-model="form.checkData" type="textarea" :rows="8" placeholder="请输入mock内容"></el-input>
+                                <el-input style="margin-top: 10px" v-model.trim="form.checkData" type="textarea" :rows="8" placeholder="请输入mock内容"></el-input>
                             </div>
                         </el-card>
                     </el-collapse-item>
@@ -250,9 +254,6 @@
             }
         },
         methods: {
-            back(){
-                this.$router.go(-1); // 返回上一层
-            },
             handleCurrentChange(val) {
                 this.currentRow = val;
             },
@@ -335,12 +336,12 @@
                             }
                             let param = JSON.stringify({
                                 project_id: Number(self.$route.params.project_id),
-                                case_id: Number(self.$route.params.case_id),
-                                api_id: Number(self.$route.params.api_id),
+                                automationTestCase_id: Number(self.$route.params.case_id),
+                                id: Number(self.$route.params.api_id),
                                 name: self.form.name,
                                 httpType: self.form.Http4,
                                 requestType: self.form.request4,
-                                address: self.form.addr,
+                                apiAddress: self.form.addr,
                                 headDict: self.form.head,
                                 requestParameterType: _type,
                                 requestList: _parameter,
@@ -359,7 +360,7 @@
                                 timeout: 5000,
                                 success: function(data) {
                                     if (data.code === '999999') {
-                                        self.back();
+                                        self.$router.push({ name: '用例接口列表', params: { project_id: self.$route.params.project_id, case_id: self.$route.params.case_id}});
                                         self.$message({
                                             message: '修改成功',
                                             center: true,
@@ -427,7 +428,7 @@
                             self.form.name = data.name;
                             self.form.request4 = data.requestType;
                             self.form.Http4 = data.httpType;
-                            self.form.addr = data.address;
+                            self.form.addr = data.apiAddress;
                             if (data.header.length) {
                                 self.form.head = [];
                                 data.header.forEach((item) => {

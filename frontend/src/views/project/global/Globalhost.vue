@@ -4,7 +4,7 @@
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
             <el-form :inline="true" :model="filters">
                 <el-form-item>
-                    <el-input v-model="filters.name" placeholder="名称" @keyup.enter.native="getGlobalHost"></el-input>
+                    <el-input v-model.trim="filters.name" placeholder="名称" @keyup.enter.native="getGlobalHost"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="getGlobalHost">查询</el-button>
@@ -50,13 +50,13 @@
         <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
             <el-form :model="editForm"  :rules="editFormRules" ref="editForm" label-width="80px">
                 <el-form-item label="名称" prop="name">
-                    <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                    <el-input v-model.trim="editForm.name" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="Host" prop='host'>
-                    <el-input v-model="editForm.host" auto-complete="off"></el-input>
+                    <el-input v-model.trim="editForm.host" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="描述" prop='description'>
-                    <el-input type="textarea" :rows="7" v-model="editForm.description"></el-input>
+                    <el-input type="textarea" :rows="7" v-model.trim="editForm.description"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -69,13 +69,13 @@
         <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
             <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
                 <el-form-item label="名称" prop="name">
-                    <el-input v-model="addForm.name" auto-complete="off"></el-input>
+                    <el-input v-model.trim="addForm.name" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="Host" prop='host'>
-                    <el-input v-model="addForm.host" auto-complete="off"></el-input>
+                    <el-input v-model.trim="addForm.host" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="描述" prop='description'>
-                    <el-input type="textarea" :rows="7" v-model="addForm.description"></el-input>
+                    <el-input type="textarea" :rows="7" v-model.trim="addForm.description"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -92,6 +92,13 @@
     import $ from 'jquery'
     export default {
         data() {
+            var checkIp = (rule, value, callback) => {
+                if (!this.isValidIP(value)) {
+                    return callback(new Error('IP地址格式错误'));
+                } else {
+                    return callback()
+                }
+            };
             return {
                 filters: {
                     name: ''
@@ -123,7 +130,6 @@
                     host: '',
                     description: ''
                 },
-
                 addFormVisible: false,//新增界面是否显示
                 addLoading: false,
                 addFormRules: {
@@ -133,6 +139,7 @@
                     ],
                     host: [
                         { required: true, message: '请输入host', trigger: 'blur' },
+                        { validator: checkIp, trigger: 'blur' }
                     ],
                     description: [
                         { required: false, message: '请输入版本号', trigger: 'blur' },
@@ -149,6 +156,13 @@
             }
         },
         methods: {
+            // IP格式验证
+            isValidIP(ip) {
+                var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+                var regPort = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5]):([0-9]|[1-9]\d|[1-9]\d{2}|[1-9]\d{3}|[1-5]\d{4}|6[0-4]\d{3}|65[0-4]\d{2}|655[0-2]\d|6553[0-5])$$/;
+
+                return regPort.test(ip) || reg.test(ip);
+            },
             // 获取HOST列表
             getGlobalHost() {
                 this.listLoading = true;
@@ -344,7 +358,15 @@
             },
             //新增
             addSubmit: function () {
+                let host = this.addForm.host.toLowerCase();
+                if (host.indexOf("http://") ===0){
+                    this.addForm.host = host.slice(7)
+                }
+                if (host.indexOf("https://") ===0){
+                    this.form.addr = host.slice(8)
+                }
                 this.$refs.addForm.validate((valid) => {
+                    console.log(valid)
                     if (valid) {
                         let self = this;
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
@@ -356,7 +378,7 @@
                                 async: true,
                                 data: JSON.stringify({ project_id: Number(this.$route.params.project_id),
                                     name: self.addForm.name,
-                                    host: self.addForm.host,
+                                    host: host,
                                     description: self.addForm.description }),
                                 headers: {
                                     "Content-Type": "application/json",

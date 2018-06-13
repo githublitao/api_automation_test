@@ -66,7 +66,8 @@
             </el-table-column>
             <el-table-column prop="result" label="测试结果" min-width="10%" sortable show-overflow-tooltip>
                 <template slot-scope="scope">
-                    <span v-show="!scope.row.result">尚无测试结果</span>
+                    <span v-show="!scope.row.result&&!scope.row.testStatus">尚无测试结果</span>
+                    <span v-show="scope.row.testStatus">测试中...</span>
                     <span v-show="scope.row.result==='success'" style="color: #11b95c;cursor:pointer;" @click="resultShow(scope.row)">成功,查看详情</span>
                     <span v-show="scope.row.result==='fail'" style="color: #cc0000;cursor:pointer;" @click="resultShow(scope.row)">失败,查看详情</span>
                     <span v-show="scope.row.result==='timeout'" style="color: #cc0000;cursor:pointer;" @click="resultShow(scope.row)">请求超时</span>
@@ -185,6 +186,7 @@
             },
             Test(index, row) {
                 if (this.url) {
+                    row.testStatus = true;
                     let self = this;
                     $.ajax({
                         type: "post",
@@ -200,7 +202,6 @@
                             "Content-Type": "application/json",
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
-                        timeout: 8000,
                         success: function(data) {
                             if (data.code === '999999') {
                                 row.result = data.data.result
@@ -211,8 +212,10 @@
                                     center: true,
                                 })
                             }
+                            row.testStatus = false;
                         },
                         error: function () {
+                            row.testStatus = false;
                         },
                     })
                 } else {
@@ -229,6 +232,7 @@
             TestAll() {
                 if (this.url) {
                         let self = this;
+                        this.ApiList[this.ApiListIndex].testStatus = true;
                         $.ajax({
                             type: "post",
                             url: test+"/api/automation/start_test",
@@ -245,6 +249,7 @@
                             },
                             success: function(data) {
                                 if (data.code === '999999') {
+                                    self.ApiList[self.ApiListIndex].testStatus = false;
                                     self.ApiList[self.ApiListIndex].result = data.data.result;
                                     self.ApiListIndex = self.ApiListIndex + 1;
                                     if (self.ApiListIndex !== self.ApiList.length) {
@@ -252,6 +257,7 @@
                                     }
                                 }
                                 else {
+                                    self.ApiList[self.ApiListIndex].testStatus = false;
                                     self.$message.error({
                                         message: data.msg,
                                         center: true,

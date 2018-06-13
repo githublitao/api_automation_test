@@ -91,7 +91,7 @@
 		<el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
 		    <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
                 <el-form-item label="项目名称" prop="name">
-                    <el-input v-model="addForm.name" auto-complete="off"></el-input>
+                    <el-input v-model.trim="addForm.name" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-row :gutter="24">
                     <el-col :span="12">
@@ -104,7 +104,7 @@
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="版本号" prop='version'>
-                            <el-input v-model="addForm.version" auto-complete="off"></el-input>
+                            <el-input v-model.trim="addForm.version" auto-complete="off"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>

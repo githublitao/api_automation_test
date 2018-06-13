@@ -4,7 +4,7 @@
 		<el-col :span="24" style="height: 46px">
 			<el-form :inline="true" :model="filters">
 				<el-form-item>
-					<el-input v-model="filters.name" placeholder="名称" @keyup.enter.native="getApiList"></el-input>
+					<el-input v-model.trim="filters.name" placeholder="名称" @keyup.enter.native="getApiList"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="getApiList">查询</el-button>
@@ -23,7 +23,7 @@
 				<el-form-item>
 					<el-button type="primary" @click.native="loadSwaggerApi = true">导入接口</el-button>
 					<el-dialog title="导入swagger接口" v-model="loadSwaggerApi" :close-on-click-modal="false">
-						<el-input v-model="swaggerUrl" placeholder="请输入swagger接口地址" style="width:90%"></el-input>
+						<el-input v-model.trim="swaggerUrl" placeholder="请输入swagger接口地址" style="width:90%"></el-input>
 						<el-button type="primary" @click="addSubmit" :loading="addLoading">导入</el-button>
 						<P v-if="!swaggerUrl" style="color: red; margin: 0px">不能为空</P>
 					</el-dialog>

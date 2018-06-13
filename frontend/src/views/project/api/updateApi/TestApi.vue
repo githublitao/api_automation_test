@@ -26,7 +26,7 @@
                     </el-col>
                     <el-col :span='16'>
                         <el-form-item prop="addr">
-                            <el-input v-model="form.addr" placeholder="地址" auto-complete></el-input>
+                            <el-input v-model.trim="form.addr" placeholder="地址" auto-complete></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span='2'>
@@ -45,12 +45,12 @@
                                     <el-select placeholder="head标签" filterable v-model="scope.row.name">
                                         <el-option v-for="(item,index) in header" :key="index+''" :label="item.label" :value="item.value"></el-option>
                                     </el-select>
-                                    <el-input class="selectInput" v-model="scope.row.name" :value="scope.row.name" placeholder="请输入内容"></el-input>
+                                    <el-input class="selectInput" v-model.trim="scope.row.name" :value="scope.row.name" placeholder="请输入内容"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="value" label="内容" min-width="40%" sortable>
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.value" :value="scope.row.value" placeholder="请输入内容"></el-input>
+                                    <el-input v-model.trim="scope.row.value" :value="scope.row.value" placeholder="请输入内容"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" min-width="10%">
@@ -78,12 +78,12 @@
                             </el-table-column>
                             <el-table-column prop="name" label="参数名" min-width="20%" sortable>
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.name" :value="scope.row.name" placeholder="请输入参数值"></el-input>
+                                    <el-input v-model.trim="scope.row.name" :value="scope.row.name" placeholder="请输入参数值"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="value" label="参数值" min-width="40%" sortable>
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
+                                    <el-input v-model.trim="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" min-width="10%">
@@ -98,7 +98,7 @@
                             </el-table-column>
                         </el-table>
                         <template>
-                            <el-input :class="ParameterTyep? 'parameter-b': 'parameter-a'" type="textarea" :rows="5" placeholder="请输入内容" v-model="form.parameterRaw"></el-input>
+                            <el-input :class="ParameterTyep? 'parameter-b': 'parameter-a'" type="textarea" :rows="5" placeholder="请输入内容" v-model.trim="form.parameterRaw"></el-input>
                         </template>
                     </el-collapse-item>
                     <el-collapse-item title="响应结果" name="4">

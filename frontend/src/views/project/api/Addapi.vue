@@ -21,7 +21,7 @@
                 <el-row :gutter="10">
                     <el-col :span='8'>
                         <el-form-item label="接口名称:" label-width="83px" prop="name">
-                            <el-input v-model="form.name" placeholder="名称" auto-complete></el-input>
+                            <el-input v-model.trim="form.name" placeholder="名称" auto-complete></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="10">
@@ -49,7 +49,7 @@
                     </el-col>
                     <el-col :span='18'>
                         <el-form-item prop="apiAddress">
-                            <el-input v-model="form.apiAddress" placeholder="地址" auto-complete></el-input>
+                            <el-input v-model.trim="form.apiAddress" placeholder="地址" auto-complete></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -63,12 +63,12 @@
                                     <el-select placeholder="head标签" filterable v-model="scope.row.name">
                                         <el-option v-for="(item,index) in header" :key="index+''" :label="item.label" :value="item.value"></el-option>
                                     </el-select>
-                                    <el-input class="selectInput" v-model="scope.row.name" :value="scope.row.name" placeholder="请输入内容"></el-input>
+                                    <el-input class="selectInput" v-model.trim="scope.row.name" :value="scope.row.name" placeholder="请输入内容"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="value" label="内容" min-width="40%" sortable>
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.value" :value="scope.row.value" placeholder="请输入内容"></el-input>
+                                    <el-input v-model.trim="scope.row.value" :value="scope.row.value" placeholder="请输入内容"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" min-width="10%">
@@ -94,12 +94,12 @@
                         <el-table :data="form.requestList" highlight-current-row :class="ParameterTyep? 'parameter-a': 'parameter-b'">
                             <el-table-column prop="name" label="参数名" min-width="15%" sortable>
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.name" :value="scope.row.name" placeholder="请输入参数值"></el-input>
+                                    <el-input v-model.trim="scope.row.name" :value="scope.row.name" placeholder="请输入参数值"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="value" label="参数值" min-width="25%" sortable>
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
+                                    <el-input v-model.trim="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="_type" label="参数类型" min-width="10%" sortable>
@@ -111,7 +111,7 @@
                             </el-table-column>
                             <el-table-column prop="description" label="参数说明" min-width="15%" sortable>
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.description" :value="scope.row.desc" placeholder="请输入参数说明"></el-input>
+                                    <el-input v-model.trim="scope.row.description" :value="scope.row.desc" placeholder="请输入参数说明"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" min-width="8%">
@@ -127,16 +127,16 @@
                             </el-table-column>
                         </el-table>
                         <template>
-                            <el-input :class="ParameterTyep? 'parameter-b': 'parameter-a'" type="textarea" :rows="5" placeholder="请输入内容" v-model="parameterRaw"></el-input>
+                            <el-input :class="ParameterTyep? 'parameter-b': 'parameter-a'" type="textarea" :rows="5" placeholder="请输入内容" v-model.trim="parameterRaw"></el-input>
                         </template>
                     </el-collapse-item>
                     <el-dialog title="更多设置" v-model="addParameterFormVisible" :close-on-click-modal="false">
                         <el-form :model="editForm" label-width="60px" :rules="FormRules" ref="editForm" >
                             <el-form-item label="参数名" label-width="83px">
-                                <el-input v-model="editForm.name" auto-complete="off" placeholder="请输入参数名称"></el-input>
+                                <el-input v-model.trim="editForm.name" auto-complete="off" placeholder="请输入参数名称"></el-input>
                             </el-form-item>
                             <el-form-item label="参数值" label-width="83px">
-                                <el-input v-model="editForm.value" auto-complete="off" placeholder="请输入参数值"></el-input>
+                                <el-input v-model.trim="editForm.value" auto-complete="off" placeholder="请输入参数值"></el-input>
                             </el-form-item>
                             <el-form-item label="必填?" label-width="83px" prop="required">
                                 <el-select v-model="editForm.required" placeholder="必填？">
@@ -144,10 +144,10 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="输入限制" prop='version' label-width="83px">
-                                <el-input v-model="editForm.restrict" auto-complete="off" placeholder="请输入输入限制"></el-input>
+                                <el-input v-model.trim="editForm.restrict" auto-complete="off" placeholder="请输入输入限制"></el-input>
                             </el-form-item>
                             <el-form-item label="描述" prop='description' label-width="83px">
-                                <el-input type="textarea" :rows="7" v-model="editForm.description" placeholder="请输入描述"></el-input>
+                                <el-input type="textarea" :rows="7" v-model.trim="editForm.description" placeholder="请输入描述"></el-input>
                             </el-form-item>
                         </el-form>
                         <div slot="footer" class="dialog-footer">
@@ -159,12 +159,12 @@
                         <el-table :data="form.responseList" highlight-current-row>
                             <el-table-column prop="name" label="参数名" min-width="15%" sortable>
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.name" :value="scope.row.name" placeholder="请输入参数值"></el-input>
+                                    <el-input v-model.trim="scope.row.name" :value="scope.row.name" placeholder="请输入参数值"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="value" label="参数值" min-width="25%" sortable>
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
+                                    <el-input v-model.trim="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="_type" label="参数类型" min-width="10%" sortable>
@@ -176,7 +176,7 @@
                             </el-table-column>
                             <el-table-column prop="description" label="参数说明" min-width="15%" sortable>
                                 <template slot-scope="scope">
-                                    <el-input v-model="scope.row.description" :value="scope.row.desc" placeholder="请输入参数说明"></el-input>
+                                    <el-input v-model.trim="scope.row.description" :value="scope.row.desc" placeholder="请输入参数说明"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" min-width="8%">
@@ -195,10 +195,10 @@
                     <el-dialog title="更多设置" v-model="addResponseFormVisible" :close-on-click-modal="false">
                         <el-form :model="editForm" label-width="60px" :rules="FormRules" ref="editForm" >
                             <el-form-item label="参数名" prop="name" label-width="83px">
-                                <el-input v-model="editForm.name" auto-complete="off" placeholder="请输入参数名称"></el-input>
+                                <el-input v-model.trim="editForm.name" auto-complete="off" placeholder="请输入参数名称"></el-input>
                             </el-form-item>
                             <el-form-item label="参数值" prop="name" label-width="83px">
-                                <el-input v-model="editForm.value" auto-complete="off" placeholder="请输入参数值"></el-input>
+                                <el-input v-model.trim="editForm.value" auto-complete="off" placeholder="请输入参数值"></el-input>
                             </el-form-item>
                             <el-form-item label="必填?" label-width="83px" prop="required">
                                 <el-select v-model="editForm.required" placeholder="必填？">
@@ -206,7 +206,7 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="描述" prop='description' label-width="83px">
-                                <el-input type="textarea" :rows="7" v-model="editForm.description" placeholder="请输入描述"></el-input>
+                                <el-input type="textarea" :rows="7" v-model.trim="editForm.description" placeholder="请输入描述"></el-input>
                             </el-form-item>
                         </el-form>
                         <div slot="footer" class="dialog-footer">
@@ -221,7 +221,7 @@
                                     <el-option v-for="(item,index) in httpCode" :key="index+''" :label="item.label" :value="item.value"></el-option>
                                 </el-select>
                             </div>
-                            <el-input v-model="form.data" type="textarea" :rows="8" placeholder="请输入mock内容"></el-input>
+                            <el-input v-model.trim="form.data" type="textarea" :rows="8" placeholder="请输入mock内容"></el-input>
                         </el-card>
                     </el-collapse-item>
                 </el-collapse>

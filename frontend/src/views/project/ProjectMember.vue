@@ -17,16 +17,16 @@
         <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
 		    <el-form :model="editForm" label-width="100px"  :rules="editFormRules" ref="editForm">
                 <el-form-item label="发送人邮箱:" prop="reportFrom">
-                    <el-input v-model="editForm.reportFrom" auto-complete="off"></el-input>
+                    <el-input v-model.trim="editForm.reportFrom" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="用户名:" prop="mailUser">
-                    <el-input v-model="editForm.mailUser" auto-complete="off"></el-input>
+                    <el-input v-model.trim="editForm.mailUser" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="口令:" prop="mailPass">
-                    <el-input v-model="editForm.mailPass" auto-complete="off"></el-input>
+                    <el-input v-model.trim="editForm.mailPass" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="邮箱服务器:" prop="mailSmtp">
-                    <el-input v-model="editForm.mailSmtp" auto-complete="off"></el-input>
+                    <el-input v-model.trim="editForm.mailSmtp" auto-complete="off"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">

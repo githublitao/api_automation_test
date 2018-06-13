@@ -4,7 +4,7 @@
 		<el-col :span="24" style="height: 46px">
 			<el-form :inline="true" :model="filters">
 				<el-form-item>
-					<el-input v-model="filters.name" placeholder="名称" @keyup.enter.native="getApiList"></el-input>
+					<el-input v-model.trim="filters.name" placeholder="名称" @keyup.enter.native="getApiList"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="getApiList">查询</el-button>
