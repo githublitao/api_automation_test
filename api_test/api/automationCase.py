@@ -1077,9 +1077,9 @@ class AddTimeTask(APIView):
                         return JsonResponse(code="999996", msg="参数有误！")
             record_dynamic(project=data["project_id"],
                            _type="新增", operationObject="任务",
-                           user=request.user.pk, data="新增定时任务\"%s\"" % data["name"])
+                           user=request.user.pk, data="新增循环任务\"%s\"" % data["name"])
             add(host_id=data["Host_id"], _type=data["type"], project=str(data["project_id"]),
-                start_time=start_time, end_time=end_time)
+                start_time=start_time, end_time=end_time, frequency=data["frequency"], unit=data["unit"])
 
         else:
             task_name = AutomationTestTask.objects.filter(name=data["name"]).exclude(project=data["project_id"])
