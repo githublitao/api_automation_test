@@ -12,7 +12,7 @@
                 <el-row :gutter="10">
                     <el-col :span="3">
                         <el-form-item >
-                            <el-select v-model="form.request4"  placeholder="请求方式">
+                            <el-select v-model="form.request4"  placeholder="请求方式" @change="checkRequest">
                                 <el-option v-for="(item,index) in request" :key="index+''" :label="item.label" :value="item.value"></el-option>
                             </el-select>
                         </el-form-item>
@@ -37,7 +37,9 @@
             <el-row :span="24">
                 <el-collapse v-model="activeNames" @change="handleChange">
                     <el-collapse-item title="请求头部" name="1">
-                        <el-table :data="form.head" highlight-current-row>
+                        <el-table :data="form.head" highlight-current-row ref="multipleHeadTable">
+                            <el-table-column type="selection" min-width="5%" label="头部">
+                            </el-table-column>
                             <el-table-column prop="name" label="标签" min-width="20%" sortable>
                                 <template slot-scope="scope">
                                     <el-select placeholder="head标签" filterable v-model="scope.row.name">
@@ -51,7 +53,7 @@
                                     <el-input v-model.trim="scope.row.value" :value="scope.row.value" placeholder="请输入内容"></el-input>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="操作" min-width="10%">
+                            <el-table-column label="操作" min-width="7%">
                                 <template slot-scope="scope">
                                     <i class="el-icon-delete" style="font-size:30px;cursor:pointer;" @click="delHead(scope.$index)"></i>
                                 </template>
@@ -61,14 +63,17 @@
                                     <el-button v-if="scope.$index===(form.head.length-1)" size="mini" class="el-icon-plus" @click="addHead"></el-button>
                                 </template>
                             </el-table-column>
+                            <el-table-column min-width="18%">
+
+                            </el-table-column>
                         </el-table>
                     </el-collapse-item>
                     <el-collapse-item title="请求参数" name="2">
                         <div style="margin: 5px">
                             <el-row :span="24">
                                 <el-col :span="4"><el-radio v-model="radio" label="form-data">表单(form-data)</el-radio></el-col>
-                                <el-col :span="4"><el-radio v-model="radio" label="raw">源数据(raw)</el-radio></el-col>
-                                <el-col :span="16"><el-checkbox v-model="radioType" label="3" v-show="ParameterTyep">表单转源数据</el-checkbox></el-col>
+                                <el-col v-if="request3" :span="4"><el-radio v-model="radio" label="raw">源数据(raw)</el-radio></el-col>
+                                <el-col v-if="request3" :span="16"><el-checkbox v-model="radioType" label="3" v-show="ParameterTyep">表单转源数据</el-checkbox></el-col>
                             </el-row>
                         </div>
                         <el-table :data="form.parameter" highlight-current-row :class="ParameterTyep? 'parameter-a': 'parameter-b'" @selection-change="selsChangeParameter" ref="multipleParameterTable">
@@ -84,7 +89,7 @@
                                     <el-input v-model.trim="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="操作" min-width="10%">
+                            <el-table-column label="操作" min-width="7%">
                                 <template slot-scope="scope">
                                     <i class="el-icon-delete" style="font-size:30px;cursor:pointer;" @click="delParameter(scope.$index)"></i>
                                 </template>
@@ -94,6 +99,7 @@
                                     <el-button v-if="scope.$index===(form.parameter.length-1)" size="mini" class="el-icon-plus" @click="addParameter"></el-button>
                                 </template>
                             </el-table-column>
+                            <el-table-column label="" min-width="18%"></el-table-column>
                         </el-table>
                         <template>
                             <el-input :class="ParameterTyep? 'parameter-b': 'parameter-a'" type="textarea" :rows="5" placeholder="请输入内容" v-model.trim="form.parameterRaw"></el-input>
@@ -198,6 +204,7 @@
                 activeNames: ['1', '2', '3', '4', '5'],
                 id: "",
                 Host: [],
+                request3:true,
                 form: {
                     url: "",
                     request4: 'POST',
@@ -228,6 +235,23 @@
             }
         },
         methods: {
+            checkRequest(){
+                let request = this.form.request4;
+                if (request==="GET"){
+                    this.request3=false
+                } else {
+                    this.request3=true
+                }
+            },
+            isJsonString(str) {
+                try {
+                    if (typeof JSON.parse(str) === "object") {
+                        return true;
+                    }
+                } catch(e) {
+                }
+                return false;
+            },
             getApiInfo() {
                 let self = this;
                 let param = {project_id: self.$route.params.project_id, api_id: self.$route.params.api_id};
@@ -428,6 +452,13 @@
                 this.parameters = sels
             },
             Test: function() {
+                let host = this.form.addr.toLowerCase();
+                if (host.indexOf("http://") ===0){
+                    this.form.addr = host.slice(7)
+                }
+                if (host.indexOf("https://") ===0){
+                    this.form.addr = host.slice(8)
+                }
                 this.$refs.form.validate((valid) => {
                     if (valid) {
                         this.loadingSend = true;
@@ -443,7 +474,7 @@
                                 headers[a] = self.headers[i]["value"]
                             }
                         }
-                        let url = self.form.Http4 + "://" + self.form.url + self.form.addr;
+                        let url = self.form.Http4 + "://" + self.form.url + host;
                         let _type = self.radio;
                         if (_type === 'form-data') {
                             if (self.radioType) {
@@ -458,9 +489,39 @@
                                 _parameter = self.form.parameter
                             }
                         } else {
+                            // POST(url, self.form.parameterRaw, headers)
                             _parameter = self.form.parameterRaw;
                         }
-                        try {
+                        if (self.form.parameterRaw && _type === "raw") {
+                            if (!self.isJsonString(self.form.parameterRaw)) {
+                                self.$message({
+                                    message: '源数据格式错误',
+                                    center: true,
+                                    type: 'error'
+                                })
+                            } else {
+                                $.ajax({
+                                    type: self.form.request4,
+                                    url: url,
+                                    async: true,
+                                    data: _parameter,
+                                    headers: headers,
+                                    timeout: 5000,
+                                    success: function (data, status, jqXHR) {
+                                        self.loadingSend = false;
+                                        self.form.statusCode = jqXHR.status;
+                                        self.form.resultData = data;
+                                        self.form.resultHead = jqXHR.getAllResponseHeaders()
+                                    },
+                                    error: function (jqXHR, error, errorThrown) {
+                                        self.loadingSend = false;
+                                        self.form.statusCode = jqXHR.status;
+                                        self.form.resultData = jqXHR.responseJSON;
+                                        self.form.resultHead = jqXHR.getAllResponseHeaders()
+                                    }
+                                })
+                            }
+                        } else {
                             $.ajax({
                                 type: self.form.request4,
                                 url: url,
@@ -472,20 +533,15 @@
                                     self.loadingSend = false;
                                     self.form.statusCode = jqXHR.status;
                                     self.form.resultData = data;
-                                    self.form.resultHead = jqXHR.getAllResponseHeaders();
-                                    self.AddHistroy(jqXHR.status)
+                                    self.form.resultHead = jqXHR.getAllResponseHeaders()
                                 },
                                 error: function (jqXHR, error, errorThrown) {
-                                    console.log(jqXHR);
                                     self.loadingSend = false;
                                     self.form.statusCode = jqXHR.status;
                                     self.form.resultData = jqXHR.responseJSON;
-                                    self.form.resultHead = jqXHR.getAllResponseHeaders();
-                                    self.AddHistroy(jqXHR.status)
+                                    self.form.resultHead = jqXHR.getAllResponseHeaders()
                                 }
                             })
-                        } catch (e) {
-                            self.AddHistroy(400)
                         }
                     }
                 })
@@ -575,7 +631,7 @@
         position: absolute;
         margin-left: 7px;
         padding-left: 10px;
-        width: 180px;
+        width: 63%;
         height: 25px;
         left: 1px;
         top: 1px;

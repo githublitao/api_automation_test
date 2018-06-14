@@ -251,6 +251,7 @@ class DisableHost(APIView):
         except ObjectDoesNotExist:
             return JsonResponse(code="999992", msg="host不存在")
         obj.status = False
+        obj.save()
         record_dynamic(project=data["project_id"],
                        _type="禁用", operationObject="域名", user=request.user.pk, data=obj.name)
         return JsonResponse(code="999999", msg="成功！")
@@ -294,6 +295,7 @@ class EnableHost(APIView):
         except ObjectDoesNotExist:
             return JsonResponse(code="999992", msg="host不存在")
         obj.status = True
+        obj.save()
         record_dynamic(project=data["project_id"],
                        _type="禁用", operationObject="域名", user=request.user.pk, data=obj.name)
         return JsonResponse(code="999999", msg="成功！")

@@ -15,7 +15,7 @@
                 <el-row :gutter="10">
                     <el-col :span="4">
                         <el-form-item label="URL:" label-width="83px">
-                            <el-select v-model="form.request4"  placeholder="请求方式">
+                            <el-select v-model="form.request4"  placeholder="请求方式" @change="checkRequest">
                                 <el-option v-for="(item,index) in request" :key="index+''" :label="item.label" :value="item.value"></el-option>
                             </el-select>
                         </el-form-item>
@@ -78,8 +78,8 @@
                         <div style="margin: 5px">
                             <el-row :span="24">
                                 <el-col :span="4"><el-radio v-model="radio" label="form-data">表单(form-data)</el-radio></el-col>
-                                <el-col :span="4"><el-radio v-model="radio" label="raw">源数据(raw)</el-radio></el-col>
-                                <el-col :span="16"><el-checkbox v-model="radioType" label="3" v-show="ParameterTyep">表单转源数据</el-checkbox></el-col>
+                                <el-col v-if="request3" :span="4"><el-radio v-model="radio" label="raw">源数据(raw)</el-radio></el-col>
+                                <el-col v-if="request3" :span="16"><el-checkbox v-model="radioType" label="3" v-show="ParameterTyep">表单转源数据</el-checkbox></el-col>
                             </el-row>
                         </div>
                         <el-table :data="form.parameter" highlight-current-row :class="ParameterTyep? 'parameter-a': 'parameter-b'">
@@ -232,6 +232,7 @@
                 showCheck: false,
                 sels: [],//列表选中列
                 interrelateObjects: "",
+                request3:true,
                 form: {
                     name: '',
                     request4: 'GET',
@@ -254,6 +255,14 @@
             }
         },
         methods: {
+            checkRequest(){
+                let request = this.form.request4;
+                if (request==="GET"){
+                    this.request3=false
+                } else {
+                    this.request3=true
+                }
+            },
             handleCurrentChange(val) {
                 this.currentRow = val;
             },
@@ -451,6 +460,7 @@
                             self.form.checkHttp = data.httpCode;
                             self.form.checkData = data.responseData;
                             self.radio = data.requestParameterType
+                            self.checkRequest()
                         }
                         else {
                             self.$message.error({

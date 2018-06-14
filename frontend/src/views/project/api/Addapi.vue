@@ -31,7 +31,7 @@
                 <el-row :gutter="10">
                     <el-col :span="4">
                         <el-form-item label="URL:" label-width="83px">
-                            <el-select v-model="form.requestType"  placeholder="请求方式">
+                            <el-select v-model="form.requestType"  placeholder="请求方式" @change="checkRequest">
                                 <el-option v-for="(item,index) in request" :key="index+''" :label="item.label" :value="item.value"></el-option>
                             </el-select>
                         </el-form-item>
@@ -83,8 +83,8 @@
                         <div style="margin: 5px">
                             <el-row :span="24">
                                 <el-col :span="4"><el-radio v-model="radio" label="form-data">表单(form-data)</el-radio></el-col>
-                                <el-col :span="4"><el-radio v-model="radio" label="raw">源数据(raw)</el-radio></el-col>
-                                <el-col :span="16"><el-checkbox v-model="radioType" label="3" v-show="ParameterTyep">表单转源数据</el-checkbox></el-col>
+                                <el-col v-if="request3" :span="4"><el-radio v-model="radio" label="raw">源数据(raw)</el-radio></el-col>
+                                <el-col v-if="request3" :span="16"><el-checkbox v-model="radioType" label="3" v-show="ParameterTyep">表单转源数据</el-checkbox></el-col>
                             </el-row>
                         </div>
                         <el-table :data="form.requestList" highlight-current-row :class="ParameterTyep? 'parameter-a': 'parameter-b'">
@@ -112,7 +112,7 @@
                             </el-table-column>
                             <el-table-column label="操作" min-width="13%">
                                 <template slot-scope="scope">
-                                    <i class="el-icon-delete" style="font-size:30px" @click="delParameter(scope.$index)"></i>
+                                    <i class="el-icon-delete" style="font-size:30px;cursor:pointer;" @click="delParameter(scope.$index)"></i>
                                     <el-button type="primary" size="mini" style="margin-bottom: 5px" @click="handleParameterEdit(scope.$index, scope.row)">更多设置</el-button>
                                 </template>
                             </el-table-column>
@@ -177,7 +177,7 @@
                             </el-table-column>
                             <el-table-column label="操作" min-width="13%">
                                 <template slot-scope="scope">
-                                    <i class="el-icon-delete" style="font-size:30px" @click="delResponse(scope.$index)"></i>
+                                    <i class="el-icon-delete" style="font-size:30px;cursor:pointer;" @click="delResponse(scope.$index)"></i>
                                     <el-button type="primary" size="mini" style="margin-bottom: 5px" @click="handleResponseEdit(scope.$index, scope.row)">更多设置</el-button>
                                 </template>
                             </el-table-column>
@@ -296,11 +296,12 @@
                 activeNames: ['1', '2', '3', '4'],
                 id: "",
                 parameterRaw: "",
+                request3: true,
                 form: {
                     apiGroupLevelFirst_id: '',
                     name: '',
                     status: true,
-                    requestType: 'GET',
+                    requestType: 'POST',
                     httpType: 'HTTP',
                     apiAddress: '',
                     headDict: [{name: "", value: ""},
@@ -331,6 +332,14 @@
             }
         },
         methods: {
+            checkRequest(){
+                let request = this.form.requestType;
+                if (request==="GET"){
+                    this.request3=false
+                } else {
+                    this.request3=true
+                }
+            },
             isJsonString(str) {
                 try {
                     if (typeof JSON.parse(str) === "object") {
@@ -365,6 +374,7 @@
                 this.$refs.form.validate((valid) => {
                     if (valid) {
                         let self = this;
+                        console.log(this.form.requestList)
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             self.form.parameterType = self.radio;
                             let _type = self.form.parameterType;
@@ -376,12 +386,11 @@
                                         _parameter[item.name] = item.value
                                     });
                                 } else {
-                                    _parameter = self.parameter;
+                                    _parameter = self.form.requestList;
                                 }
                             } else {
                                 _parameter = self.parameterRaw
                             }
-
                             let param = JSON.stringify({
                                 project_id: Number(self.$route.params.project_id),
                                 apiGroupLevelFirst_id: Number(self.form.apiGroupLevelFirst_id),
@@ -398,37 +407,87 @@
                                 data: self.form.data,
                                 description: "",
                             });
-                            console.log(param);
-                            $.ajax({
-                                type: "post",
-                                url: test+"/api/api/add_api",
-                                async: true,
-                                contentType : "application/json",
-                                dataType : "json",
-                                data: param,
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                            if (self.parameterRaw&&_type==="raw"){
+                                if (!self.isJsonString(self.parameterRaw)) {
+                                    self.$message({
+                                        message: '源数据格式错误',
+                                        center: true,
+                                        type: 'error'
+                                    })
+                                } else {
+                                    $.ajax({
+                                        type: "post",
+                                        url: test + "/api/api/add_api",
+                                        async: true,
+                                        contentType: "application/json",
+                                        dataType: "json",
+                                        data: param,
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            Authorization: 'Token ' + JSON.parse(sessionStorage.getItem('token'))
 
-                                },
-                                timeout: 5000,
-                                success: function(data) {
-                                    if (data.code === '999999') {
-                                        self.$router.push({ name: '分组接口列表', params: { project_id: self.$route.params.project_id, firstGroup: self.form.apiGroupLevelFirst_id}});
-                                        self.$message({
-                                            message: '保存成功',
-                                            center: true,
-                                            type: 'success'
-                                        })
-                                    }
-                                    else {
-                                        self.$message.error({
-                                            message: data.msg,
-                                            center: true,
-                                        })
-                                    }
-                                },
-                            })
+                                        },
+                                        timeout: 5000,
+                                        success: function (data) {
+                                            if (data.code === '999999') {
+                                                self.$router.push({name: '分组接口列表',
+                                                    params: {
+                                                        project_id: self.$route.params.project_id,
+                                                        firstGroup: self.form.apiGroupLevelFirst_id
+                                                    }
+                                                });
+                                                self.$message({
+                                                    message: '保存成功',
+                                                    center: true,
+                                                    type: 'success'
+                                                })
+                                            }
+                                            else {
+                                                self.$message.error({
+                                                    message: data.msg,
+                                                    center: true,
+                                                })
+                                            }
+                                        },
+                                    })
+                                }
+                            } else {
+                                $.ajax({
+                                    type: "post",
+                                    url: test + "/api/api/add_api",
+                                    async: true,
+                                    contentType: "application/json",
+                                    dataType: "json",
+                                    data: param,
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        Authorization: 'Token ' + JSON.parse(sessionStorage.getItem('token'))
+
+                                    },
+                                    timeout: 5000,
+                                    success: function (data) {
+                                        if (data.code === '999999') {
+                                            self.$router.push({name: '分组接口列表',
+                                                params: {
+                                                    project_id: self.$route.params.project_id,
+                                                    firstGroup: self.form.apiGroupLevelFirst_id
+                                                }
+                                            });
+                                            self.$message({
+                                                message: '保存成功',
+                                                center: true,
+                                                type: 'success'
+                                            })
+                                        }
+                                        else {
+                                            self.$message.error({
+                                                message: data.msg,
+                                                center: true,
+                                            })
+                                        }
+                                    },
+                                })
+                            }
                         })
                     }
                 })

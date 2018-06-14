@@ -237,6 +237,7 @@ class DisableProject(APIView):
         try:
             obj = Project.objects.get(id=data["project_id"])
             obj.status = False
+            obj.save()
             record_dynamic(project=data["project_id"],
                            _type="禁用", operationObject="项目", user=request.user.pk, data=obj.name)
             return JsonResponse(code="999999", msg="成功")
@@ -273,6 +274,7 @@ class EnableProject(APIView):
         try:
             obj = Project.objects.get(id=data["project_id"])
             obj.status = True
+            obj.save()
             record_dynamic(project=data["project_id"],
                            _type="禁用", operationObject="项目", user=request.user.pk, data=obj.name)
             return JsonResponse(code="999999", msg="成功")

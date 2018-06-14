@@ -56,3 +56,7 @@ def task_not_exist():
 
 def page_not_int():
     return '999985', 'page and page_size must be integer!'
+
+
+def mock_error():
+    return '999984', '未匹配到mock地址或未开启!'

@@ -264,7 +264,7 @@ class ApiInfoListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ApiInfo
-        fields = ('id', 'name', 'requestType', 'apiAddress', 'lastUpdateTime', 'userUpdate')
+        fields = ('id', 'name', 'requestType', 'apiAddress', 'mockStatus', 'lastUpdateTime', 'userUpdate')
 
 
 class APIRequestHistorySerializer(serializers.ModelSerializer):

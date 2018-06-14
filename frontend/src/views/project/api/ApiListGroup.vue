@@ -36,9 +36,15 @@
 			</el-table-column>
 			<el-table-column prop="userUpdate" label="最近更新者" min-width="13%" sortable show-overflow-tooltip>
 			</el-table-column>
-			<el-table-column prop="lastUpdateTime" label="更新日期" min-width="16%" sortable show-overflow-tooltip>
+			<el-table-column prop="lastUpdateTime" label="更新日期" min-width="15%" sortable show-overflow-tooltip>
 			</el-table-column>
-			<el-table-column label="操作" min-width="19%">
+			<el-table-column label="Mock" min-width="7%">
+				<template slot-scope="scope">
+					<el-button v-if="scope.row.mockStatus" type="success" size="small" @click="checkMockStatus(scope.row)">关闭</el-button>
+					<el-button v-if="!scope.row.mockStatus" type="info" size="small"  @click="checkMockStatus(scope.row)">启动</el-button>
+				</template>
+			</el-table-column>
+			<el-table-column label="操作" min-width="13%">
 				<template slot-scope="scope">
 					<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
 					<router-link :to="{ name: '修改', params: {api_id: scope.row.id}}" style='text-decoration: none;color: aliceblue;'>
@@ -97,6 +103,36 @@
             }
         },
         methods: {
+            // 修改mock状态
+            checkMockStatus(row){
+				let self = this;
+				let param = JSON.stringify({
+					project_id:Number(this.$route.params.project_id),
+					id:Number(row.id)
+				});
+				$.ajax({
+                    type: "post",
+                    url: test+"/api/api/updateMock",
+                    async: true,
+                    data: param,
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: function(data) {
+                        self.listLoading = false;
+                        if (data.code === '999999') {
+                            self.getApiList()
+                        }
+                        else {
+                            self.$message.error({
+                                message: data.msg,
+                                center: true,
+                            })
+                        }
+                    },
+                })
+			},
             // 获取项目列表
             getApiList() {
                 this.listLoading = true;

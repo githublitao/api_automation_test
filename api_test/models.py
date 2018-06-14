@@ -257,6 +257,7 @@ class ApiInfo(models.Model):
     apiAddress = models.CharField(max_length=1024, verbose_name='接口地址')
     requestParameterType = models.CharField(max_length=50, verbose_name='请求参数格式', choices=REQUEST_PARAMETER_TYPE_CHOICE)
     status = models.BooleanField(default=True, verbose_name='状态')
+    mockStatus = models.BooleanField(default=False, verbose_name="mock状态")
     mockCode = models.CharField(max_length=50, blank=True, null=True, verbose_name='HTTP状态', choices=HTTP_CODE_CHOICE)
     data = models.TextField(blank=True, null=True, verbose_name='mock内容')
     lastUpdateTime = models.DateTimeField(auto_now=True, verbose_name='最近更新')

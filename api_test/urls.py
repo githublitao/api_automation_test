@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'api/del_group', ApiDoc.DelGroup.as_view()),
     url(r'api/api_list', ApiDoc.ApiList.as_view()),
     url(r'api/add_api', ApiDoc.AddApi.as_view()),
+    url(r'api/updateMock', ApiDoc.UpdateApiMockStatus.as_view()),
     url(r'api/lead_swagger', ApiDoc.LeadSwagger.as_view()),
     url(r'api/update_api', ApiDoc.UpdateApi.as_view()),
     url(r'api/del_api', ApiDoc.DelApi.as_view()),

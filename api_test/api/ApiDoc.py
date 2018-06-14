@@ -7,12 +7,15 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
 from django.db.models import Q
 from django.http import StreamingHttpResponse
+from rest_framework import parsers, renderers
 from rest_framework.parsers import JSONParser
+from rest_framework.response import Response
+from rest_framework.utils import json
 from rest_framework.views import APIView
 
 from api_test.common.WriteDocx import Write
 from api_test.common.api_response import JsonResponse
-from api_test.common.common import record_dynamic
+from api_test.common.common import record_dynamic, check_json
 from api_test.common.loadSwaggerApi import swagger_api
 from api_test.models import Project, ApiGroupLevelFirst, ApiInfo, \
     ApiOperationHistory, APIRequestHistory, ApiHead, ApiParameter, ApiResponse, ApiParameterRaw
@@ -34,19 +37,19 @@ class Group(APIView):
         """
         project_id = request.GET.get("project_id")
         if not project_id:
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
         if not project_id.isdecimal():
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
         try:
             pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code="999995", msg="项目不存在！")
+            return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
         obi = ApiGroupLevelFirst.objects.filter(project=project_id).order_by("id")
         serialize = ApiGroupLevelFirstSerializer(obi, many=True)
-        return JsonResponse(data=serialize.data, code="999999", msg="成功！")
+        return JsonResponse(data=serialize.data, code="999999", msg="成功!")
 
 
 class AddGroup(APIView):
@@ -60,12 +63,12 @@ class AddGroup(APIView):
         try:
             # 校验project_id类型为int
             if not isinstance(data["project_id"], int):
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             # 必传参数 name, host
             if not data["name"]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
         except KeyError:
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
 
     def post(self, request):
         """
@@ -80,7 +83,7 @@ class AddGroup(APIView):
         try:
             obj = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code="999995", msg="项目不存在！")
+            return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(obj)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
@@ -88,13 +91,13 @@ class AddGroup(APIView):
         if serializer.is_valid():
             serializer.save(project=obj)
         else:
-            return JsonResponse(code="999998", msg="失败！")
+            return JsonResponse(code="999998", msg="失败!")
         record_dynamic(project=serializer.data.get("id"),
                        _type="添加", operationObject="接口分组", user=request.user.pk,
                        data="新增接口分组“%s”" % data["name"])
         return JsonResponse(data={
             "group_id": serializer.data.get("id")
-        }, code="999999", msg="成功！")
+        }, code="999999", msg="成功!")
 
 
 class UpdateNameGroup(APIView):
@@ -108,12 +111,12 @@ class UpdateNameGroup(APIView):
         try:
             # 校验project_id, id类型为int
             if not isinstance(data["project_id"], int) or not isinstance(data["id"], int):
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             # 必传参数 name, host
             if not data["name"]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
         except KeyError:
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
 
     def post(self, request):
         """
@@ -128,23 +131,23 @@ class UpdateNameGroup(APIView):
         try:
             pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code="999995", msg="项目不存在！")
+            return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obj = ApiGroupLevelFirst.objects.get(id=data["id"], project=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code="999991", msg="分组不存在！")
+            return JsonResponse(code="999991", msg="分组不存在!")
         serializer = ApiGroupLevelFirstDeserializer(data=data)
         if serializer.is_valid():
             serializer.update(instance=obj, validated_data=data)
         else:
-            return JsonResponse(code="999998", msg="失败！")
+            return JsonResponse(code="999998", msg="失败!")
         record_dynamic(project=serializer.data.get("id"),
                        _type="修改", operationObject="接口分组", user=request.user.pk,
                        data="修改接口分组“%s”" % data["name"])
-        return JsonResponse(code="999999", msg="成功！")
+        return JsonResponse(code="999999", msg="成功!")
 
 
 class DelGroup(APIView):
@@ -158,9 +161,9 @@ class DelGroup(APIView):
         try:
             # 校验project_id, id类型为int
             if not isinstance(data["project_id"], int) or not isinstance(data["id"], int):
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
         except KeyError:
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
 
     def post(self, request):
         """
@@ -175,7 +178,7 @@ class DelGroup(APIView):
         try:
             pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code="999995", msg="项目不存在！")
+            return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
@@ -184,10 +187,10 @@ class DelGroup(APIView):
             name = obi[0].name
             obi.delete()
         else:
-            return JsonResponse(code="999991", msg="分组不存在！")
+            return JsonResponse(code="999991", msg="分组不存在!")
         record_dynamic(project=data["project_id"],
                        _type="删除", operationObject="接口分组", user=request.user.pk, data="删除接口分组“%s”" % name)
-        return JsonResponse(code="999999", msg="成功！")
+        return JsonResponse(code="999999", msg="成功!")
 
 
 class ApiList(APIView):
@@ -202,24 +205,24 @@ class ApiList(APIView):
             page_size = int(request.GET.get("page_size", 20))
             page = int(request.GET.get("page", 1))
         except (TypeError, ValueError):
-            return JsonResponse(code="999985", msg="page and page_size must be integer！")
+            return JsonResponse(code="999985", msg="page and page_size must be integer!")
         project_id = request.GET.get("project_id")
         first_group_id = request.GET.get("apiGroupLevelFirst_id")
         if not project_id:
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
         name = request.GET.get("name")
         if not project_id.isdecimal():
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
         try:
             pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code="999995", msg="项目不存在！")
+            return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
         if first_group_id:
             if not first_group_id.isdecimal():
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if name:
                 obi = ApiInfo.objects.filter(project=project_id, name__contains=name, apiGroupLevelFirst=first_group_id,
                                              ).order_by("id")
@@ -243,7 +246,7 @@ class ApiList(APIView):
         return JsonResponse(data={"data": serialize.data,
                                   "page": page,
                                   "total": total
-                                  }, code="999999", msg="成功！")
+                                  }, code="999999", msg="成功!")
 
 
 class AddApi(APIView):
@@ -258,19 +261,19 @@ class AddApi(APIView):
             # 校验project_id, id类型为int
             if not data["project_id"] or not data["name"] or not data["httpType"] or not \
                     data["requestType"] or not data["apiAddress"] or not data["requestParameterType"] or not data["status"]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if data["status"] not in [True, False]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if not isinstance(data["project_id"], int):
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if data["httpType"] not in ["HTTP", "HTTPS"]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if data["requestType"] not in ["POST", "GET", "PUT", "DELETE"]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if data["requestParameterType"] not in ["form-data", "raw", "Restful"]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
         except KeyError:
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
 
     def post(self, request):
         """
@@ -286,13 +289,13 @@ class AddApi(APIView):
         try:
             obj = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code="999995", msg="项目不存在！")
+            return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(obj)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
         api_name = ApiInfo.objects.filter(name=data["name"], project=data["project_id"])
         if len(api_name):
-            return JsonResponse(code="999997", msg="存在相同名称！")
+            return JsonResponse(code="999997", msg="存在相同名称!")
         else:
             with transaction.atomic():
                 try:
@@ -300,7 +303,7 @@ class AddApi(APIView):
                     if serialize.is_valid():
                         try:
                             if not isinstance(data["apiGroupLevelFirst_id"], int):
-                                return JsonResponse(code="999996", msg="参数有误！")
+                                return JsonResponse(code="999996", msg="参数有误!")
                             obi = ApiGroupLevelFirst.objects.get(id=data["apiGroupLevelFirst_id"], project=data["project_id"])
                             serialize.save(project=obj, apiGroupLevelFirst=obi)
                         except KeyError:
@@ -316,7 +319,7 @@ class AddApi(APIView):
                                             if head_serialize.is_valid():
                                                 head_serialize.save(api=ApiInfo.objects.get(id=api_id))
                                     except KeyError:
-                                        return JsonResponse(code="999996", msg="参数有误！")
+                                        return JsonResponse(code="999996", msg="参数有误!")
                         except KeyError:
                             pass
                         if data["requestParameterType"] == "form-data":
@@ -330,9 +333,9 @@ class AddApi(APIView):
                                                 if param_serialize.is_valid():
                                                     param_serialize.save(api=ApiInfo.objects.get(id=api_id))
                                                 else:
-                                                    return JsonResponse(code="999998", msg="失败！")
+                                                    return JsonResponse(code="999998", msg="失败!")
                                         except KeyError:
-                                            return JsonResponse(code="999996", msg="参数有误！")
+                                            return JsonResponse(code="999996", msg="参数有误!")
                             except KeyError:
                                 pass
                         else:
@@ -351,10 +354,10 @@ class AddApi(APIView):
                                             if response_serialize.is_valid():
                                                 response_serialize.save(api=ApiInfo.objects.get(id=api_id))
                                             else:
-                                                return JsonResponse(code="999998", msg="失败！")
+                                                return JsonResponse(code="999998", msg="失败!")
                                     except KeyError:
                                         logging.exception("Error")
-                                        return JsonResponse(code="999998", msg="失败！")
+                                        return JsonResponse(code="999998", msg="失败!")
                         except KeyError:
                             pass
                         record_dynamic(project=data["project_id"],
@@ -364,10 +367,135 @@ class AddApi(APIView):
                                                          user=User.objects.get(id=request.user.pk),
                                                          description="新增接口“%s”" % data["name"])
                         api_record.save()
-                        return JsonResponse(code="999999", msg="成功！", data={"api_id": api_id})
-                    return JsonResponse(code="999998", msg="失败！")
+                        return JsonResponse(code="999999", msg="成功!", data={"api_id": api_id})
+                    return JsonResponse(code="999998", msg="失败!")
                 except ObjectDoesNotExist:
-                    return JsonResponse(code="999991", msg="分组不存在！")
+                    return JsonResponse(code="999991", msg="分组不存在!")
+
+
+class UpdateApiMockStatus(APIView):
+
+    def parameter_check(self, data):
+        """
+        校验参数
+        :param data:
+        :return:
+        """
+        try:
+            # 校验project_id, id类型为int
+            if not data["project_id"] or not data["id"]:
+                return JsonResponse(code="999996", msg="参数有误!")
+            if not isinstance(data["project_id"], int) or not isinstance(data["id"], int):
+                return JsonResponse(code="999996", msg="参数有误!")
+        except KeyError:
+            return JsonResponse(code="999996", msg="参数有误!")
+
+    def post(self, request):
+        """
+        新增接口
+        :param request:
+        :return:
+        """
+        data = JSONParser().parse(request)
+        result = self.parameter_check(data)
+        if result:
+            return result
+        try:
+            pro_data = Project.objects.get(id=data["project_id"])
+        except ObjectDoesNotExist:
+            return JsonResponse(code="999995", msg="项目不存在!")
+        pro_data = ProjectSerializer(pro_data)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
+        try:
+            obi = ApiInfo.objects.get(id=data["id"])
+        except ObjectDoesNotExist:
+            return JsonResponse(code="999990", msg="接口不存在!")
+        obi.mockStatus = not obi.mockStatus
+        obi.save()
+        try:
+            if obi.mockStatus:
+                record_dynamic(project=data["project_id"],
+                               _type="mock", operationObject="接口", user=request.user.pk,
+                               data="关闭“%s”Mock" % obi.name)
+            else:
+                record_dynamic(project=data["project_id"],
+                               _type="mock", operationObject="接口", user=request.user.pk,
+                               data="启动“%s”Mock" % obi.name)
+            return JsonResponse(code="999999", msg="成功!")
+        except:
+            return JsonResponse(code="999998", msg="失败!")
+
+
+class MockRequest(APIView):
+    throttle_classes = ()
+    permission_classes = ()
+
+    def get(self, request, apiAdr=None):
+        url = "/"+apiAdr
+        for k, v in request.environ.items():
+            print(k, v)
+        try:
+            obj = ApiInfo.objects.get(apiAddress=url, mockStatus=True)
+        except ObjectDoesNotExist:
+            return JsonResponse(code="999984", data="未匹配到mock地址或未开启!")
+        head_data = ApiHead.objects.filter(api=obj)
+        if len(head_data):
+            for i in head_data:
+                head = i.name.upper().replace("-", "_")
+                try:
+                    if head == "CONTENT_TYPE":
+                        if request.environ[head] != i.value:
+                            return Response(status=400)
+                    else:
+                        if request.environ["HTTP_"+head] != i.value:
+                            return Response(status=400)
+                except KeyError:
+                    return Response(status=400)
+        param = ApiParameter.objects.filter(api=obj)
+        if len(param):
+            for j in param:
+                if j.required:
+                    if request.GET.get(j.name) is None:
+                        return Response(status=400)
+
+        return Response(json.loads(obj.data), status=obj.mockCode)
+
+    def post(self, request, apiAdr=None):
+        url = "/"+apiAdr
+        try:
+            obj = ApiInfo.objects.get(apiAddress=url, mockStatus=True)
+        except ObjectDoesNotExist:
+            return JsonResponse(code="999984", data="未匹配到mock地址或未开启!")
+        head_data = ApiHead.objects.filter(api=obj)
+        if len(head_data):
+            for i in head_data:
+                head = i.name.upper().replace("-", "_")
+                try:
+                    if head == "CONTENT_TYPE":
+                        if request.environ[head] != i.value:
+                            return Response(status=400)
+                    else:
+                        if request.environ["HTTP_"+head] != i.value:
+                            return Response(status=400)
+                except KeyError:
+                    return Response(status=400)
+        if obj.requestParameterType == "form-data":
+            param = ApiParameter.objects.filter(api=obj)
+            if len(param):
+                for j in param:
+                    if j.required:
+                        if request.POST.get(j.name) is None:
+                            return Response(status=400)
+        else:
+            param = ApiParameterRaw.objects.filter(api=obj)
+            if len(param):
+                data = JSONParser().parse(request)
+                result = check_json(data, json.loads(param[0].data))
+                if result == "fail":
+                    return Response(status=400)
+
+        return Response(json.loads(obj.data), status=obj.mockCode)
 
 
 class LeadSwagger(APIView):
@@ -381,11 +509,11 @@ class LeadSwagger(APIView):
         try:
             # 校验project_id, id类型为int
             if not data["project_id"] or not data["url"]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if not isinstance(data["project_id"], int):
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
         except KeyError:
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
 
     def post(self, request):
         """
@@ -400,15 +528,15 @@ class LeadSwagger(APIView):
         try:
             pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code="999995", msg="项目不存在！")
+            return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             swagger_api(data["url"], data["project_id"], request.user)
-            return JsonResponse(code="999999", msg="成功！")
+            return JsonResponse(code="999999", msg="成功!")
         except:
-            return JsonResponse(code="999998", msg="失败！")
+            return JsonResponse(code="999998", msg="失败!")
 
 
 class UpdateApi(APIView):
@@ -424,19 +552,19 @@ class UpdateApi(APIView):
             if not data["project_id"] or not data["name"] or not data["httpType"] or not \
                     data["requestType"] or not data["apiAddress"] or not data["requestParameterType"] \
                     or not data["status"] or not data["id"]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if data["status"] not in [True, False]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if not isinstance(data["project_id"], int) or not isinstance(data["id"], int):
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if data["httpType"] not in ["HTTP", "HTTPS"]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if data["requestType"] not in ["POST", "GET", "PUT", "DELETE"]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if data["requestParameterType"] not in ["form-data", "raw", "Restful"]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
         except KeyError:
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
 
     def post(self, request):
         """
@@ -452,17 +580,17 @@ class UpdateApi(APIView):
         try:
             pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code="999995", msg="项目不存在！")
+            return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
         api_name = ApiInfo.objects.filter(name=data["name"], project=data["project_id"]).exclude(id=data["id"])
         if len(api_name):
-            return JsonResponse(code="999997", msg="存在相同名称！")
+            return JsonResponse(code="999997", msg="存在相同名称!")
         try:
             obi = ApiInfo.objects.get(id=data["id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code="999990", msg="接口不存在！")
+            return JsonResponse(code="999990", msg="接口不存在!")
         with transaction.atomic():
             try:
                 serialize = ApiInfoDeserializer(data=data)
@@ -470,7 +598,7 @@ class UpdateApi(APIView):
                     data["userUpdate"] = request.user
                     try:
                         if not isinstance(data["apiGroupLevelFirst_id"], int):
-                            return JsonResponse(code="999996", msg="参数有误！")
+                            return JsonResponse(code="999996", msg="参数有误!")
                         ApiGroupLevelFirst.objects.get(id=data["apiGroupLevelFirst_id"], project=data["project_id"])
                         User.objects.get(id=request.user.pk)
                         serialize.update(instance=obi, validated_data=data)
@@ -488,7 +616,7 @@ class UpdateApi(APIView):
                                         if head_serialize.is_valid():
                                             head_serialize.save(api=ApiInfo.objects.get(id=data["id"]))
                                 except KeyError:
-                                    return JsonResponse(code="999996", msg="参数有误！")
+                                    return JsonResponse(code="999996", msg="参数有误!")
                     except KeyError:
                         pass
                     ApiParameter.objects.filter(api=data["id"]).delete()
@@ -504,9 +632,9 @@ class UpdateApi(APIView):
                                             if param_serialize.is_valid():
                                                 param_serialize.save(api=ApiInfo.objects.get(id=data["id"]))
                                             else:
-                                                return JsonResponse(code="999998", msg="失败！")
+                                                return JsonResponse(code="999998", msg="失败!")
                                     except KeyError:
-                                        return JsonResponse(code="999996", msg="参数有误！")
+                                        return JsonResponse(code="999996", msg="参数有误!")
                         except KeyError:
                             pass
                     else:
@@ -526,9 +654,9 @@ class UpdateApi(APIView):
                                         if response_serialize.is_valid():
                                             response_serialize.save(api=ApiInfo.objects.get(id=data['id']))
                                         else:
-                                            return JsonResponse(code="999998", msg="失败！")
+                                            return JsonResponse(code="999998", msg="失败!")
                                 except KeyError:
-                                    return JsonResponse(code="999998", msg="失败！")
+                                    return JsonResponse(code="999998", msg="失败!")
                     except KeyError:
                         pass
                     record_dynamic(project=data["project_id"],
@@ -538,10 +666,10 @@ class UpdateApi(APIView):
                                                      user=User.objects.get(id=request.user.pk),
                                                      description="新增接口\"%s\"" % data["name"])
                     api_record.save()
-                    return JsonResponse(code="999999", msg="成功！")
-                return JsonResponse(code="999998", msg="失败！")
+                    return JsonResponse(code="999999", msg="成功!")
+                return JsonResponse(code="999998", msg="失败!")
             except ObjectDoesNotExist:
-                return JsonResponse(code="999991", msg="分组不存在！")
+                return JsonResponse(code="999991", msg="分组不存在!")
 
 
 class DelApi(APIView):
@@ -555,14 +683,14 @@ class DelApi(APIView):
         try:
             # 校验project_id, id类型为int
             if not data["project_id"] or not data["ids"]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if not isinstance(data["project_id"], int) or not isinstance(data["ids"], list):
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             for i in data["ids"]:
                 if not isinstance(i, int):
-                    return JsonResponse(code="999996", msg="参数有误！")
+                    return JsonResponse(code="999996", msg="参数有误!")
         except KeyError:
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
 
     def post(self, request):
         """
@@ -577,7 +705,7 @@ class DelApi(APIView):
         try:
             pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code="999995", msg="项目不存在！")
+            return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
@@ -592,7 +720,7 @@ class DelApi(APIView):
             api_list.delete()
             record_dynamic(project=data["project_id"],
                            _type="删除", operationObject="接口", user=request.user.pk, data="删除接口分组，列表“%s”" % name_list)
-            return JsonResponse(code="999999", msg="成功！")
+            return JsonResponse(code="999999", msg="成功!")
 
 
 class UpdateGroup(APIView):
@@ -606,15 +734,15 @@ class UpdateGroup(APIView):
         try:
             # 校验project_id, id类型为int
             if not data["project_id"] or not data["ids"] or not data["apiGroupLevelFirst_id"]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if not isinstance(data["project_id"], int) or not isinstance(data["ids"], list) \
                     or not isinstance(data["apiGroupLevelFirst_id"], int):
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             for i in data["ids"]:
                 if not isinstance(i, int):
-                    return JsonResponse(code="999996", msg="参数有误！")
+                    return JsonResponse(code="999996", msg="参数有误!")
         except KeyError:
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
 
     def post(self, request):
         """
@@ -629,7 +757,7 @@ class UpdateGroup(APIView):
         try:
             pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code="999995", msg="项目不存在！")
+            return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
@@ -644,7 +772,7 @@ class UpdateGroup(APIView):
                 name_list.append(str(j.name))
             record_dynamic(project=data["project_id"],
                            _type="修改", operationObject="接口", user=request.user.pk, data="修改接口分组，列表“%s”" % name_list)
-            return JsonResponse(code="999999", msg="成功！")
+            return JsonResponse(code="999999", msg="成功!")
 
 
 class ApiInfoDetail(APIView):
@@ -657,22 +785,22 @@ class ApiInfoDetail(APIView):
         project_id = request.GET.get("project_id")
         api_id = request.GET.get("api_id")
         if not project_id or not api_id:
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
         if not project_id.isdecimal() or not api_id.isdecimal():
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
         try:
             pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code="999995", msg="项目不存在！")
+            return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obi = ApiInfo.objects.get(id=api_id, project=project_id)
             serialize = ApiInfoSerializer(obi)
-            return JsonResponse(data=serialize.data, code="999999", msg="成功！")
+            return JsonResponse(data=serialize.data, code="999999", msg="成功!")
         except ObjectDoesNotExist:
-            return JsonResponse(code="999990", msg="接口不存在！")
+            return JsonResponse(code="999990", msg="接口不存在!")
 
 
 class AddHistory(APIView):
@@ -687,15 +815,15 @@ class AddHistory(APIView):
             # 校验project_id, id类型为int
             if not data["project_id"] or not data["api_id"] or not data["requestType"] \
                     or not data["requestAddress"] or not data["httpCode"]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if not isinstance(data["project_id"], int) or not isinstance(data["api_id"], int):
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if data["requestType"] not in ["POST", "GET", "PUT", "DELETE"]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if data["httpCode"] not in [200, 404, 400, 502, 500, 302]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
         except KeyError:
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
 
     def post(self, request):
         """
@@ -710,19 +838,19 @@ class AddHistory(APIView):
         try:
             pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code="999995", msg="项目不存在！")
+            return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obj = ApiInfo.objects.get(id=data["api_id"], project=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code="999990", msg="接口不存在！")
+            return JsonResponse(code="999990", msg="接口不存在!")
         serialize = APIRequestHistoryDeserializer(data=data)
         if serialize.is_valid():
             serialize.save(api=obj)
-            return JsonResponse(code="999999", msg="成功！")
-        return JsonResponse(code="999998", msg="失败！")
+            return JsonResponse(code="999999", msg="成功!")
+        return JsonResponse(code="999998", msg="失败!")
 
 
 class HistoryList(APIView):
@@ -737,21 +865,21 @@ class HistoryList(APIView):
         project_id = request.GET.get("project_id")
         api_id = request.GET.get("api_id")
         if not project_id.isdecimal() or not api_id.isdecimal():
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
         try:
             pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code="999995", msg="项目不存在！")
+            return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obj = ApiInfo.objects.get(id=api_id, project=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code="999990", msg="接口不存在！")
+            return JsonResponse(code="999990", msg="接口不存在!")
         history = APIRequestHistory.objects.filter(api=obj).order_by("-requestTime")[:10]
         data = APIRequestHistorySerializer(history, many=True).data
-        return JsonResponse(data=data, code="999999", msg="成功！")
+        return JsonResponse(data=data, code="999999", msg="成功!")
 
 
 class DelHistory(APIView):
@@ -765,11 +893,11 @@ class DelHistory(APIView):
         try:
             # 校验project_id, id类型为int
             if not data["project_id"] or not data["api_id"] or not data["id"]:
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
             if not isinstance(data["project_id"], int) or not isinstance(data["api_id"], int) or not isinstance(data["id"], int):
-                return JsonResponse(code="999996", msg="参数有误！")
+                return JsonResponse(code="999996", msg="参数有误!")
         except KeyError:
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
 
     def post(self, request):
         """
@@ -784,14 +912,14 @@ class DelHistory(APIView):
         try:
             pro_data = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code="999995", msg="项目不存在！")
+            return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             obj = ApiInfo.objects.get(id=data["api_id"], project=data["project_id"])
         except ObjectDoesNotExist:
-            return JsonResponse(code="999990", msg="接口不存在！")
+            return JsonResponse(code="999990", msg="接口不存在!")
         obm = APIRequestHistory.objects.filter(id=data["id"], api=data["api_id"])
         if obm:
             obm.delete()
@@ -799,9 +927,9 @@ class DelHistory(APIView):
                                              user=User.objects.get(id=request.user.pk),
                                              description="删除请求历史记录")
             api_record.save()
-            return JsonResponse(code="999999", msg="成功！")
+            return JsonResponse(code="999999", msg="成功!")
         else:
-            return JsonResponse(code="999988", msg="请求历史不存在！")
+            return JsonResponse(code="999988", msg="请求历史不存在!")
 
 
 class OperationHistory(APIView):
@@ -816,24 +944,24 @@ class OperationHistory(APIView):
             page_size = int(request.GET.get("page_size", 20))
             page = int(request.GET.get("page", 1))
         except (TypeError, ValueError):
-            return JsonResponse(code="999985", msg="page and page_size must be integer！")
+            return JsonResponse(code="999985", msg="page and page_size must be integer!")
         project_id = request.GET.get("project_id")
         api_id = request.GET.get("api_id")
         if not project_id or not api_id:
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
         if not project_id.isdecimal() or not api_id.isdecimal():
-            return JsonResponse(code="999995", msg="参数有误！")
+            return JsonResponse(code="999995", msg="参数有误!")
         try:
             pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code="999995", msg="项目不存在！")
+            return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
         try:
             ApiInfo.objects.get(id=api_id, project=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code="999990", msg="接口不存在！")
+            return JsonResponse(code="999990", msg="接口不存在!")
         obn = ApiOperationHistory.objects.filter(api=api_id).order_by("-time")
         paginator = Paginator(obn, page_size)  # paginator对象
         total = paginator.num_pages  # 总页数
@@ -847,7 +975,7 @@ class OperationHistory(APIView):
         return JsonResponse(data={"data": serialize.data,
                                   "page": page,
                                   "total": total
-                                  }, code="999999", msg="成功！")
+                                  }, code="999999", msg="成功!")
 
 
 class DownLoad(APIView):
@@ -860,11 +988,11 @@ class DownLoad(APIView):
         """
         project_id = request.GET.get("project_id")
         if not project_id.isdecimal():
-            return JsonResponse(code="999996", msg="参数有误！")
+            return JsonResponse(code="999996", msg="参数有误!")
         try:
             obj = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
-            return JsonResponse(code="999995", msg="项目不存在！")
+            return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(obj)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
@@ -872,7 +1000,7 @@ class DownLoad(APIView):
         data = ApiInfoDocSerializer(obi, many=True).data
         obn = ApiInfoSerializer(ApiInfo.objects.filter(project=project_id), many=True).data
         url = Write().write_api(str(obj), group_data=data, data=obn)
-        return JsonResponse(code="999999", msg="成功！", data=url)
+        return JsonResponse(code="999999", msg="成功!", data=url)
 
 
 def download_doc(request):
