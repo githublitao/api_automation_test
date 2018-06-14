@@ -7,7 +7,7 @@ runtime = time.strftime('%Y-%m-%d', time.localtime(time.time()))
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)  # Log等级总开关
 # 第二步，创建一个handler，用于写入日志文件
-logfile = "/var/lib/jenkins/task" + runtime+'.log'
+logfile = "/var/lib/task" + runtime+'.log'
 fh = logging.FileHandler(logfile, mode='w+')
 fh.setLevel(logging.DEBUG)  # 输出到file的log等级的开关
 # 第三步，再创建一个handler，用于输出到控制台
@@ -28,7 +28,7 @@ def task_start_timing():
     logging.info('测试开始')
     job = my_user_cron.new(command='/usr/local/python3/bin/python3 /var/lib/api_automation_test/api_test/common/auto_test.py %s %s  >> /var/lib/task/%s.log'
                                    % (sys.argv[3], sys.argv[8], sys.argv[8]))
-    job.set_comment(sys.argv[5])
+    job.set_comment(sys.argv[8])
     if sys.argv[2] == 'm':
         _time = '*/%s * * * *' % sys.argv[1]
     elif sys.argv[2] == 'h':
@@ -43,7 +43,7 @@ def task_start_timing():
     end_task = CronTab(user=True)
     jobs = end_task.new(command='/usr/local/python3/bin/python3 /var/lib/api_automation_test/api_test/common/end_task.py %s >> /var/lib/task/%s.log'
                                 % (sys.argv[8], sys.argv[8]))
-    jobs.set_comment(sys.argv[5]+"_结束")
+    jobs.set_comment(sys.argv[8]+"_结束")
     _time = '%s %s %s %s *' % (
         sys.argv[4],
         sys.argv[5],

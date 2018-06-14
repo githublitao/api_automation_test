@@ -4,8 +4,6 @@ import sys
 import os
 import pytz
 
-from api_test.common.sendEmail import send_email
-
 curPath = os.path.abspath(os.path.dirname(__file__))
 rootPath = os.path.split(curPath)[0]
 PathProject = os.path.split(rootPath)[0]
@@ -14,6 +12,7 @@ sys.path.append(PathProject)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api_automation_test.settings")
 django.setup()
 
+from api_test.common.sendEmail import send_email
 from api_test.common.auto_task_test import test_api
 from api_test.models import AutomationCaseApi, AutomationTaskRunTime, AutomationTestCase, GlobalHost, Project
 
@@ -47,10 +46,15 @@ def automation_task():
                   "    成功： %s,  失败： %s, 执行错误： %s, 超时： %s\n" \
                   "    详情查看地址：http://apitest.60community.com/#/projectReport/project=%s" % (start_time, total,
                                                                                             _pass, fail, error, time_out
-                                                                                            , sys.argv[2])
-    send_email(sys.argv[2], result_data)
+                                                                                             , sys.argv[2])
+    if total != _pass:
+        if send_email(sys.argv[2], result_data):
+            print("邮件发送成功")
+        else:
+            print("邮件发送失败")
     elapsed_time = (datetime.datetime.now(tz) - start_time).seconds
-    AutomationTaskRunTime(project=Project.objects.get(id=sys.argv[2]), startTime=format_start_time, elapsedTime=elapsed_time, host=host.name).save()
+    AutomationTaskRunTime(project=Project.objects.get(id=sys.argv[2]), startTime=format_start_time,
+                          elapsedTime=elapsed_time, host=host.name).save()
 
 
 if __name__ == '__main__':

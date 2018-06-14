@@ -44,7 +44,8 @@ def send_email(project_id, data):
         to_member = ProjectMemberSerializer(ProjectMember.objects.filter(project=project_id), many=True).data
         receivers = []  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
         for i in to_member:
-            receivers.append(i["userEmail"])
+            # receivers.append(i["userEmail"])
+            receivers.append("943571775@qq.com")
         message = MIMEText(data, 'plain', 'utf-8')
         message['From'] = email_config[0].reportFrom
         message['To'] = receivers[0]
@@ -53,13 +54,13 @@ def send_email(project_id, data):
         message['Subject'] = Header(subject, 'utf-8')
 
         try:
-            smtpObj = smtplib.SMTP()
+            smtpObj = smtplib.SMTP(timeout=25)
             smtpObj.connect(mail_host, 25)  # 25 为 SMTP 端口号
             smtpObj.login(mail_user, mail_pass)
             smtpObj.sendmail(sender, receivers, message.as_string())
             return True
         except smtplib.SMTPException:
-            return
+            return False
 
 
 if __name__ == "__main__":

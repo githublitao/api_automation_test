@@ -142,8 +142,9 @@ class AutoLatelyTenTime(APIView):
                 elif j.result == "FAIL":
                     fail = fail + 1
             total = _pass + error + fail
-            data[data.index(i)]["fail"] = "%.4f" % (fail / total)
-            data[data.index(i)]["error"] = "%.4f" % (error / total)
-            data[data.index(i)]["pass"] = "%.4f" % (1 - fail / total - error / total)
+            if total:
+                data[data.index(i)]["fail"] = "%.4f" % (fail / total)
+                data[data.index(i)]["error"] = "%.4f" % (error / total)
+                data[data.index(i)]["pass"] = "%.4f" % (1 - fail / total - error / total)
         data.reverse()
         return JsonResponse(code="999999", msg="成功！", data=data)
