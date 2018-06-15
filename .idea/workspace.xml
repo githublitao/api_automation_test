@@ -4,23 +4,7 @@
     <list default="true" id="1bff3874-0f80-4ef6-957e-fc1f35d5523e" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api_automation_test/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_automation_test/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_automation_test/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_automation_test/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_test/api/ApiDoc.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_test/api/ApiDoc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_test/api/global_parameter.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_test/api/global_parameter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_test/api/projectList.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_test/api/projectList.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_test/common/GlobalStatusCode.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_test/common/GlobalStatusCode.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_test/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_test/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_test/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_test/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_test/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_test/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/api/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/Addapi.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/project/api/Addapi.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/ApiList.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/project/api/ApiList.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/ApiListGroup.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/project/api/ApiListGroup.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/FestTest.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/project/api/FestTest.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/updateApi/TestApi.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/project/api/updateApi/TestApi.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/updateApi/UpdateApi.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/project/api/updateApi/UpdateApi.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/automation/AddCaseApi.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/project/automation/AddCaseApi.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/automation/UpdateCaseApi.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/project/automation/UpdateCaseApi.vue" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -51,11 +35,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ApiDoc.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ApiDoc.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api_test/api/ApiDoc.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="335">
-              <caret line="483" column="56" lean-forward="true" selection-start-line="483" selection-start-column="56" selection-end-line="483" selection-end-column="56" />
+            <state relative-caret-position="389">
+              <caret line="489" column="13" selection-start-line="489" selection-start-column="13" selection-end-line="489" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -63,8 +47,8 @@
       <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api_automation_test/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="141" column="1" lean-forward="true" selection-start-line="141" selection-start-column="1" selection-end-line="141" selection-end-column="1" />
+            <state relative-caret-position="162">
+              <caret line="149" selection-start-line="149" selection-end-line="159" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -72,8 +56,17 @@
       <file leaf-file-name="api.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frontend/src/api/api.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+            <state relative-caret-position="126">
+              <caret line="7" column="22" lean-forward="true" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="addTask.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/api_test/common/addTask.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="486">
+              <caret line="29" column="26" lean-forward="true" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -200,9 +193,9 @@
         <option value="$PROJECT_DIR$/frontend/src/views/project/api/Addapi.vue" />
         <option value="$PROJECT_DIR$/frontend/src/views/project/api/updateApi/TestApi.vue" />
         <option value="$PROJECT_DIR$/frontend/src/views/project/api/FestTest.vue" />
-        <option value="$PROJECT_DIR$/frontend/src/api/api.js" />
-        <option value="$PROJECT_DIR$/api_automation_test/settings.py" />
         <option value="$PROJECT_DIR$/api_test/api/ApiDoc.py" />
+        <option value="$PROJECT_DIR$/api_automation_test/settings.py" />
+        <option value="$PROJECT_DIR$/frontend/src/api/api.js" />
       </list>
     </option>
   </component>
@@ -240,6 +233,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -343,7 +337,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -546,7 +539,21 @@
       <option name="project" value="LOCAL" />
       <updated>1528943253355</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="1.新增mock功能&#10;2.优化前端页面">
+      <created>1528971275777</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1528971275777</updated>
+    </task>
+    <task id="LOCAL-00019" summary="1.新增mock功能&#10;2.优化前端页面">
+      <created>1528971316536</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1528971316536</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TodoView">
@@ -560,23 +567,22 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.4989339" weight="0.3279396" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.39285713" side_tool="true" visible="true" weight="0.36030206" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.37739873" side_tool="true" visible="true" weight="0.30420712" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" sideWeight="0.49733475" weight="0.3279396" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.60714287" visible="true" weight="0.36030206" />
-      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.6242004" weight="0.30420712" />
-      <window_info anchor="bottom" id="TypeScript" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21055438" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.60714287" weight="0.36030206" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.6226013" visible="true" weight="0.30420712" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21268657" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="4" weight="0.32980332" />
       <window_info anchor="right" id="SciView" order="3" weight="0.32995737" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="TypeScript" order="8" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -589,24 +595,24 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18710022" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.4989339" weight="0.3279396" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.6183369" visible="true" weight="0.3462783" />
-      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49946696" visible="true" weight="0.32901832" />
+      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49840087" weight="0.3279396" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" id="Database" order="4" weight="0.32980332" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.67803836" weight="0.34951457" />
       <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.3816631" side_tool="true" visible="true" weight="0.3462783" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49946696" visible="true" weight="0.32901832" />
-      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49840087" weight="0.3279396" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info id="Favorites" order="2" side_tool="true" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -631,7 +637,8 @@
     <MESSAGE value="1.修改无法删除任务的bug" />
     <MESSAGE value="1.修改任务无法执行的bug，路径错误" />
     <MESSAGE value="1.修复发送邮件超时时间为25秒" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.修复发送邮件超时时间为25秒" />
+    <MESSAGE value="1.新增mock功能&#10;2.优化前端页面" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.新增mock功能&#10;2.优化前端页面" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -770,13 +777,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api_test/common/addTask.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="792">
-          <caret line="46" column="45" selection-start-line="46" selection-start-column="45" selection-end-line="46" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api_test/api/automationReport.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2250">
@@ -802,9 +802,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="15" column="43" selection-start-line="15" selection-start-column="28" selection-end-line="15" selection-end-column="43" />
-          <folding>
-            <element signature="e#0#45#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -812,9 +809,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="522">
           <caret line="31" column="38" lean-forward="true" selection-start-line="31" selection-start-column="38" selection-end-line="31" selection-end-column="38" />
-          <folding>
-            <element signature="e#643#675#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -822,9 +816,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="5" column="27" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -867,9 +858,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
           <caret line="237" column="35" selection-start-line="237" selection-start-column="35" selection-end-line="237" selection-end-column="35" />
-          <folding>
-            <element signature="n#style#0;n#el-button#0;n#template#0;n#el-table-column#3;n#el-table#0;n#el-collapse-item#0;n#el-collapse#0;n#el-row#0;n#el-form#0;n#section#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -877,9 +865,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="29" column="40" selection-start-line="29" selection-start-column="40" selection-end-line="29" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -890,23 +875,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api_test/api/projectList.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="276" column="22" selection-start-line="276" selection-start-column="22" selection-end-line="276" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api_test/api/global_parameter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
           <caret line="297" column="18" selection-start-line="297" selection-start-column="18" selection-end-line="297" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -921,11 +893,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2268">
           <caret line="298" column="33" lean-forward="true" selection-start-line="298" selection-start-column="33" selection-end-line="298" selection-end-column="33" />
-          <folding>
-            <element signature="n#style#0;n#i#0;n#template#0;n#el-table-column#2;n#el-table#0;n#el-collapse-item#0;n#el-collapse#0;n#el-row#0;n#el-form#0;n#section#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#template#0;n#el-table-column#4;n#el-table#0;n#el-collapse-item#1;n#el-collapse#0;n#el-row#0;n#el-form#0;n#section#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#template#0;n#el-table-column#4;n#el-table#0;n#el-collapse-item#2;n#el-collapse#0;n#el-row#0;n#el-form#0;n#section#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -933,10 +900,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="415">
           <caret line="387" column="40" lean-forward="true" selection-start-line="387" selection-start-column="40" selection-end-line="387" selection-end-column="40" />
-          <folding>
-            <element signature="n#style#0;n#i#0;n#template#0;n#el-table-column#4;n#el-table#0;n#el-collapse-item#1;n#el-collapse#0;n#el-row#0;n#el-form#0;n#section#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#template#0;n#el-table-column#4;n#el-table#0;n#el-collapse-item#2;n#el-collapse#0;n#el-row#0;n#el-form#0;n#section#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -958,16 +921,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="101" selection-start-line="101" selection-end-line="101" selection-end-column="88" />
-          <folding>
-            <element signature="e#13632#13857#0" />
-            <element signature="e#13889#14125#0" />
-            <element signature="e#16547#17745#0" />
-            <element signature="e#17776#19175#0" />
-            <element signature="e#19205#20535#0" />
-            <element signature="e#20559#21659#0" />
-            <element signature="e#22101#22152#0" />
-            <element signature="e#22203#22257#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -975,17 +928,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
           <caret line="88" column="46" selection-start-line="88" selection-start-column="46" selection-end-line="88" selection-end-column="46" />
-          <folding>
-            <element signature="n#style#0;n#i#0;n#template#0;n#el-table-column#2;n#el-table#0;n#el-collapse-item#0;n#el-collapse#0;n#el-row#0;n#el-form#0;n#section#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#template#0;n#el-table-column#3;n#el-table#0;n#el-collapse-item#1;n#el-collapse#0;n#el-row#0;n#el-form#0;n#section#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#12863#13088#0" />
-            <element signature="e#13120#13356#0" />
-            <element signature="e#13380#14480#0" />
-            <element signature="e#14520#14673#0" />
-            <element signature="e#14718#14876#0" />
-            <element signature="e#14922#14973#0" />
-            <element signature="e#15024#15078#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1024,24 +966,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/src/api/api.js">
+    <entry file="file://$PROJECT_DIR$/api_test/api/projectList.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api_automation_test/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="141" column="1" lean-forward="true" selection-start-line="141" selection-start-column="1" selection-end-line="141" selection-end-column="1" />
+        <state relative-caret-position="2293">
+          <caret line="272" column="18" lean-forward="true" selection-start-line="272" selection-start-column="18" selection-end-line="272" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/api_test/api/ApiDoc.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="483" column="56" lean-forward="true" selection-start-line="483" selection-start-column="56" selection-end-line="483" selection-end-column="56" />
+        <state relative-caret-position="389">
+          <caret line="489" column="13" selection-start-line="489" selection-start-column="13" selection-end-line="489" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api_automation_test/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="149" selection-start-line="149" selection-end-line="159" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/api/api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="22" lean-forward="true" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api_test/common/addTask.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="29" column="26" lean-forward="true" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
         </state>
       </provider>
     </entry>
