@@ -720,7 +720,7 @@ class AddNewApi(APIView):
                         pass
                 if data["examineType"] == "json":
                     try:
-                        response = eval(data["responseData"].replace("true", "True").replace("false", "False"))
+                        response = eval(data["responseData"].replace("true", "True").replace("false", "False").replace("null", None))
                         api = "<response[%s]>" % api_id
                         api_ids = AutomationCaseApi.objects.get(id=api_id)
                         create_json(api_ids, api, response)
@@ -870,7 +870,7 @@ class UpdateApi(APIView):
                 AutomationResponseJson.objects.filter(automationCaseApi=data["id"]).delete()
                 if data["examineType"] == "json":
                     try:
-                        response = eval(data["responseData"].replace("true", "True").replace("false", "False"))
+                        response = eval(data["responseData"].replace("true", "True").replace("false", "False").replace("null", "None"))
                         api = "<response[%s]>" % data["id"]
                         api_id = AutomationCaseApi.objects.get(id=data["id"])
                         create_json(api_id, api, response)

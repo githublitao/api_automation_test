@@ -68,7 +68,7 @@
                 </el-table-column>
                 <el-table-column prop="automationTestCase" label="用例名称" min-width="29%" sortable show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="address" label="请求地址" min-width="20%" sortable show-overflow-tooltip>
+                <el-table-column prop="apiAddress" label="请求地址" min-width="20%" sortable show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column prop="examineType" label="校验方式" min-width="12%" sortable show-overflow-tooltip>
                     <template slot-scope="scope">
