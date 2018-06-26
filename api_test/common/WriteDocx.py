@@ -17,6 +17,7 @@ class Write:
     def write_api(self, api_name, group_data=None, data=None):
         self.doc.add_paragraph(style="Title").add_run(api_name)
         index = 1
+        # print(group_data)
         if group_data:
             for item in group_data:
                 self.doc.add_paragraph(style="Heading 1").add_run(str(index)+"、"+item["name"]).font.size = 300000
@@ -90,14 +91,15 @@ class Write:
                     self.doc.add_paragraph("返回示例：", style="Body Text")
                     try:
                         if len(items['data']):
-                            data = eval(items['data'].replace("true", "True").replace("false", "False"))
+                            print(items["data"])
+                            data = eval(items['data'].replace("true", "True").replace("false", "False").replace("null", "None"))
                             self.doc.add_paragraph(style="Normal").add_run('{')
                             write_json(self.doc, data, 0.3)
                             self.doc.add_paragraph(style="Normal").add_run('}')
                     except:
                         logging.exception("Error")
                 index = index + 1
-        if data:
+        elif data:
             _id = 1
             for items in data:
                 self.doc.add_paragraph(style="Heading 2").add_run(str(_id) + "." + items['name'],
@@ -168,7 +170,8 @@ class Write:
                 self.doc.add_paragraph("返回示例：", style="Body Text")
                 try:
                     if len(items['data']):
-                        data = eval(items['data'].replace("true", "True").replace("false", "False"))
+                        # data = eval(items['data'].replace("true", "True").replace("false", "False"))
+                        data = json.loads(items["data"])
                         self.doc.add_paragraph(style="Normal").add_run('{')
                         write_json(self.doc, data, 0.3)
                         self.doc.add_paragraph(style="Normal").add_run('}')
@@ -189,7 +192,12 @@ def write_json(doc, data, num):
             if isinstance(data[n], dict):
                 write_json(doc, data[n], num+0.3)
             else:
-                if isinstance(data[n], bool):
+                print(data[n])
+                if data[n] is None:
+                    print("ls")
+                    run = p.add_run(' null,')
+                    run.font.color.rgb = RGBColor(186, 85, 211)
+                elif isinstance(data[n], bool):
                     run = p.add_run(' %s,' % data[n])
                     run.font.color.rgb = RGBColor(255, 0, 0)
                 elif isinstance(data[n], int):
