@@ -30,9 +30,9 @@ class Write:
                     self.doc.add_paragraph(items['description'], style="List Paragraph")
                     self.doc.add_paragraph("请求URL：", style="Body Text")
                     if items['httpType'] == 'HTTP':
-                        self.doc.add_paragraph("http://xxxx/"+items['apiAddress'], style="List Paragraph")
+                        self.doc.add_paragraph("http://xxxx"+items['apiAddress'], style="List Paragraph")
                     else:
-                        self.doc.add_paragraph("https://xxxx/" + items['apiAddress'], style="List Paragraph")
+                        self.doc.add_paragraph("https://xxxx" + items['apiAddress'], style="List Paragraph")
                     self.doc.add_paragraph("请求方式：", style="Body Text")
                     self.doc.add_paragraph(items['requestType'], style="List Paragraph")
                     self.doc.add_paragraph("参数：", style="Body Text")
