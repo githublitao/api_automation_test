@@ -67,12 +67,14 @@ def test_api(host_id, case_id, project_id, _id):
                     api_id = re.findall('(?<=<response\[).*?(?=\])', value)
                     a = re.findall('(?<=\[").*?(?="])', value)
                     try:
-                        value = eval(json.loads(serializers.serialize(
+                        param_data = eval(json.loads(serializers.serialize(
                             'json',
                             AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))
                                      [0]['fields']["responseData"])
                         for j in a:
-                            value = value[j]
+                            param_data = param_data[j]
+                        pattern = re.compile(r'<response\[.*]')
+                        parameter[key_] = re.sub(pattern, param_data, value)
                     except:
                         record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                        host=host.name,
@@ -86,7 +88,6 @@ def test_api(host_id, case_id, project_id, _id):
                                _result='ERROR', code="", response_data="")
                 return 'fail'
 
-            parameter[key_] = value
     else:
         parameter = AutomationParameterRawSerializer(AutomationParameterRaw.objects.filter(automationCaseApi=_id),
                                                      many=True).data
@@ -110,12 +111,13 @@ def test_api(host_id, case_id, project_id, _id):
             try:
                 api_id = re.findall('(?<=<response\[).*?(?=\])', value)
                 a = re.findall('(?<=\[").*?(?="])', value)
-
-                value = eval(json.loads(serializers.serialize(
+                head_data = eval(json.loads(serializers.serialize(
                     'json',
                     AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
                 for j in a:
-                    value = value[j]
+                    head_data = head_data[j]
+                pattern = re.compile(r'<response\[.*]')
+                header[key_] = re.sub(pattern, head_data, value)
             except Exception as e:
                 logging.exception("ERROR")
                 logging.error(e)
@@ -124,8 +126,6 @@ def test_api(host_id, case_id, project_id, _id):
                                status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                                _result='ERROR', code="", response_data="")
                 return 'fail'
-
-        header[key_] = value
 
     header["Content-Length"] = '%s' % len(str(parameter))
     try:
