@@ -153,7 +153,7 @@ DATABASES = {
         'NAME': 'api_test',
         'USER': 'root',
         'PASSWORD': '123456',
-        'HOST': '192.168.193.128',
+        'HOST': '192.168.193.129',
         # 'HOST': '192.168.1.10',
         'PORT': '3306',
     }
