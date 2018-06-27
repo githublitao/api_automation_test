@@ -5,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 
@@ -18,6 +19,8 @@ logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义
 
 
 class ProjectList(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """
@@ -51,6 +54,8 @@ class ProjectList(APIView):
 
 
 class AddProject(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -118,6 +123,8 @@ class AddProject(APIView):
 
 
 class UpdateProject(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -172,6 +179,8 @@ class UpdateProject(APIView):
 
 
 class DelProject(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -209,6 +218,8 @@ class DelProject(APIView):
 
 
 class DisableProject(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -246,6 +257,8 @@ class DisableProject(APIView):
 
 
 class EnableProject(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """

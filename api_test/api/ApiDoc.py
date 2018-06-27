@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
 from django.db.models import Q
 from django.http import StreamingHttpResponse
-from rest_framework import parsers, renderers
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.utils import json
@@ -28,6 +28,8 @@ logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义
 
 
 class Group(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """
@@ -53,6 +55,8 @@ class Group(APIView):
 
 
 class AddGroup(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -101,6 +105,8 @@ class AddGroup(APIView):
 
 
 class UpdateNameGroup(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -151,6 +157,8 @@ class UpdateNameGroup(APIView):
 
 
 class DelGroup(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -194,6 +202,8 @@ class DelGroup(APIView):
 
 
 class ApiList(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """
@@ -250,6 +260,8 @@ class ApiList(APIView):
 
 
 class AddApi(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -374,6 +386,8 @@ class AddApi(APIView):
 
 
 class UpdateApiMockStatus(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -428,17 +442,15 @@ class UpdateApiMockStatus(APIView):
 
 
 class MockRequest(APIView):
-    throttle_classes = ()
+    # throttle_classes = ()
     permission_classes = ()
 
     def get(self, request, apiAdr=None):
         url = "/"+apiAdr
-        for k, v in request.environ.items():
-            print(k, v)
         try:
             obj = ApiInfo.objects.get(apiAddress=url, mockStatus=True)
         except ObjectDoesNotExist:
-            return JsonResponse(code="999984", data="未匹配到mock地址或未开启!")
+            return JsonResponse(code="999984", msg="未匹配到mock地址或未开启!")
         head_data = ApiHead.objects.filter(api=obj)
         if len(head_data):
             for i in head_data:
@@ -499,6 +511,8 @@ class MockRequest(APIView):
 
 
 class LeadSwagger(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -540,6 +554,8 @@ class LeadSwagger(APIView):
 
 
 class UpdateApi(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -673,6 +689,8 @@ class UpdateApi(APIView):
 
 
 class DelApi(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -724,6 +742,8 @@ class DelApi(APIView):
 
 
 class UpdateGroup(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -776,6 +796,8 @@ class UpdateGroup(APIView):
 
 
 class ApiInfoDetail(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """
@@ -804,6 +826,8 @@ class ApiInfoDetail(APIView):
 
 
 class AddHistory(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -854,6 +878,8 @@ class AddHistory(APIView):
 
 
 class HistoryList(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """
@@ -883,6 +909,8 @@ class HistoryList(APIView):
 
 
 class DelHistory(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -933,6 +961,8 @@ class DelHistory(APIView):
 
 
 class OperationHistory(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """
@@ -979,6 +1009,8 @@ class OperationHistory(APIView):
 
 
 class DownLoad(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """

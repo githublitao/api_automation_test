@@ -8,6 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
 from django.db.models import Q
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 
@@ -29,6 +30,8 @@ logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义
 
 
 class Group(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """
@@ -53,6 +56,8 @@ class Group(APIView):
 
 
 class AddGroup(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -101,6 +106,8 @@ class AddGroup(APIView):
 
 
 class DelGroup(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -144,6 +151,8 @@ class DelGroup(APIView):
 
 
 class UpdateNameGroup(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -194,6 +203,8 @@ class UpdateNameGroup(APIView):
 
 
 class UpdateGroup(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -250,6 +261,8 @@ class UpdateGroup(APIView):
 
 
 class CaseList(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """
@@ -307,6 +320,8 @@ class CaseList(APIView):
 
 
 class AddCase(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -367,6 +382,8 @@ class AddCase(APIView):
 
 
 class UpdateCase(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -422,6 +439,8 @@ class UpdateCase(APIView):
 
 
 class DelCase(AddCase):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -469,6 +488,8 @@ class DelCase(AddCase):
 
 
 class ApiList(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """
@@ -515,6 +536,8 @@ class ApiList(APIView):
 
 
 class CaseApiInfo(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """
@@ -547,6 +570,8 @@ class CaseApiInfo(APIView):
 
 
 class AddOldApi(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -624,6 +649,8 @@ class AddOldApi(APIView):
 
 
 class AddNewApi(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -734,6 +761,8 @@ class AddNewApi(APIView):
 
 
 class GetCorrelationResponse(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """
@@ -767,6 +796,8 @@ class GetCorrelationResponse(APIView):
 
 
 class UpdateApi(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -884,6 +915,8 @@ class UpdateApi(APIView):
 
 
 class DelApi(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -937,6 +970,8 @@ class DelApi(APIView):
 
 
 class StartTest(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -998,6 +1033,8 @@ class StartTest(APIView):
 
 
 class AddTimeTask(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -1110,6 +1147,8 @@ class AddTimeTask(APIView):
 
 
 class GetTask(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """
@@ -1135,6 +1174,8 @@ class GetTask(APIView):
 
 
 class DelTask(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -1182,6 +1223,8 @@ class DelTask(APIView):
 
 
 class LookResult(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """
@@ -1218,6 +1261,8 @@ class LookResult(APIView):
 
 
 class TestReport(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """

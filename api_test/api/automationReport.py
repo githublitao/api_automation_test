@@ -1,5 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 
 from api_test.common.api_response import JsonResponse
@@ -10,6 +11,8 @@ from api_test.serializers import AutomationAutoTestResultSerializer, \
 
 
 class TestTime(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """
@@ -41,6 +44,8 @@ class TestTime(APIView):
 
 
 class AutoTestReport(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """
@@ -101,6 +106,8 @@ class AutoTestReport(APIView):
 
 
 class AutoLatelyTenTime(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """

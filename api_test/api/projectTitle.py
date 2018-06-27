@@ -1,6 +1,7 @@
 import logging
 
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 
 from api_test.common.api_response import JsonResponse
@@ -11,6 +12,8 @@ logger = logging.getLogger(__name__) # 这里使用 __name__ 动态搜索定义�
 
 
 class ProjectInfo(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """

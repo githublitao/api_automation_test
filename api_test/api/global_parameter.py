@@ -3,6 +3,7 @@ import logging
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 
@@ -15,6 +16,8 @@ logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义
 
 
 class HostTotal(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def get(self, request):
         """
@@ -58,6 +61,8 @@ class HostTotal(APIView):
 
 
 class AddHost(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -111,6 +116,8 @@ class AddHost(APIView):
 
 
 class UpdateHost(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -166,6 +173,8 @@ class UpdateHost(APIView):
 
 
 class DelHost(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -214,6 +223,8 @@ class DelHost(APIView):
 
 
 class DisableHost(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """
@@ -258,6 +269,8 @@ class DisableHost(APIView):
 
 
 class EnableHost(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
 
     def parameter_check(self, data):
         """

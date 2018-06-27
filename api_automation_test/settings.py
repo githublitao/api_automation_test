@@ -91,6 +91,19 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
 ]
 
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'basic': {
+            'type': 'basic',
+        }
+    },
+    'USE_SESSION_AUTH': True
+}
+
+LOGIN_URL = 'rest_framework:login'
+LOGOUT_URL = 'rest_framework:logout'
+
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
@@ -159,27 +172,27 @@ WSGI_APPLICATION = 'api_automation_test.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'api_test',
-        'USER': 'root',
-        'PASSWORD': 'lt19910301',
-        'HOST': '172.18.162.26',
-        'PORT': '3306',
-    }
-}
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'api_test',
 #         'USER': 'root',
 #         'PASSWORD': 'lt19910301',
-#         'HOST': '120.79.232.23',
+#         'HOST': '172.18.162.26',
 #         'PORT': '3306',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'api_test',
+        'USER': 'root',
+        'PASSWORD': 'lt19910301',
+        'HOST': '120.79.232.23',
+        'PORT': '3306',
+    }
+}
 
 # DATABASES = {
 #     'default': {

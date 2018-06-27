@@ -122,7 +122,11 @@
                     success: function(data) {
                         self.listLoading = false;
                         if (data.code === '999999') {
-                            self.getApiList()
+                            self.$message.success({
+                                message: data.msg,
+                                center: true,
+                            });
+                            self.getApiList();
                         }
                         else {
                             self.$message.error({
