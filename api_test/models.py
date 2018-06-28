@@ -648,3 +648,19 @@ class AutomationReportSendConfig(models.Model):
     class Meta:
         verbose_name = "邮件发送配置"
         verbose_name_plural = "邮件发送配置"
+
+
+class VisitorsRecord(models.Model):
+    """
+    访客记录
+    """
+    id = models.AutoField(primary_key=True)
+    host = models.CharField(max_length=50, blank=True, null=True, verbose_name="访客地址")
+    callTime = models.DateTimeField(auto_now_add=True, verbose_name="访问时间")
+
+    def __unicode__(self):
+        return self.host
+
+    class Meta:
+        verbose_name = "访客"
+        verbose_name_plural = "访客查看"

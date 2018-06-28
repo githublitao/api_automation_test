@@ -167,7 +167,6 @@ WSGI_APPLICATION = 'api_automation_test.wsgi.application'
 #         'USER': 'root',
 #         'PASSWORD': '123456',
 #         'HOST': '192.168.193.129',
-#         # 'HOST': '192.168.1.10',
 #         'PORT': '3306',
 #     }
 # }

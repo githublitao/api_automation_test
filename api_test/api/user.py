@@ -2,6 +2,8 @@ from rest_framework import parsers, renderers
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.views import APIView
+
+from api_test.models import VisitorsRecord
 from api_test.serializers import TokenSerializer
 from api_test.common.api_response import JsonResponse
 
@@ -19,6 +21,7 @@ class ObtainAuthToken(APIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
         # token, created = Token.objects.get_or_create(user=user)
+        VisitorsRecord(host=request.environ["REMOTE_ADDR"]).save()
         data = TokenSerializer(Token.objects.get(user=user)).data
         data["userphoto"] = '/file/userphoto.jpg'
         return JsonResponse(data=data, code="999999", msg="成功")

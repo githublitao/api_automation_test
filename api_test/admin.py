@@ -7,7 +7,8 @@ from api_test.models import Project, GlobalHost, ApiGroupLevelFirst, ApiInfo, \
     APIRequestHistory, ApiOperationHistory, ProjectDynamic, ProjectMember, \
     AutomationGroupLevelFirst, AutomationTestCase, AutomationParameter, AutomationCaseApi, \
     AutomationTestResult, AutomationTestTask, AutomationHead, UserProfile, ApiHead, ApiParameter, ApiResponse, \
-    ApiParameterRaw, AutomationParameterRaw, AutomationResponseJson, AutomationTaskRunTime, AutomationReportSendConfig
+    ApiParameterRaw, AutomationParameterRaw, AutomationResponseJson, AutomationTaskRunTime, AutomationReportSendConfig, \
+    VisitorsRecord
 
 from django.contrib import admin
 from django.utils.text import capfirst
@@ -389,3 +390,13 @@ class AutomationReportSendConfigForm(ReadOnlyModelAdmin):
 
 
 admin.site.register(AutomationReportSendConfig, AutomationReportSendConfigForm)
+
+
+class VisitorsRecordForm(ReadOnlyModelAdmin):
+    list_display = ('id', 'host', 'callTime')
+    list_display_links = ('id', 'host', 'callTime')
+    list_per_page = 20
+    ordering = ('-id',)
+
+
+admin.site.register(VisitorsRecord, VisitorsRecordForm)
