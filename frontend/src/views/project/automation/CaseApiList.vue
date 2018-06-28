@@ -68,9 +68,9 @@
                 <template slot-scope="scope">
                     <span v-show="!scope.row.result&&!scope.row.testStatus">尚无测试结果</span>
                     <span v-show="scope.row.testStatus">测试中...</span>
-                    <span v-show="scope.row.result==='success'" style="color: #11b95c;cursor:pointer;" @click="resultShow(scope.row)">成功,查看详情</span>
-                    <span v-show="scope.row.result==='fail'" style="color: #cc0000;cursor:pointer;" @click="resultShow(scope.row)">失败,查看详情</span>
-                    <span v-show="scope.row.result==='timeout'" style="color: #cc0000;cursor:pointer;" @click="resultShow(scope.row)">请求超时</span>
+                    <span v-show="scope.row.result==='success'&&!scope.row.testStatus" style="color: #11b95c;cursor:pointer;" @click="resultShow(scope.row)">成功,查看详情</span>
+                    <span v-show="scope.row.result==='fail'&&!scope.row.testStatus" style="color: #cc0000;cursor:pointer;" @click="resultShow(scope.row)">失败,查看详情</span>
+                    <span v-show="scope.row.result==='timeout'&&!scope.row.testStatus" style="color: #cc0000;cursor:pointer;" @click="resultShow(scope.row)">请求超时</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" min-width="20%">

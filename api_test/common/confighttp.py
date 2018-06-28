@@ -81,6 +81,8 @@ def test_api(host_id, case_id, project_id, _id):
                                        status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                                        _result='ERROR', code="", response_data="")
                         return 'fail'
+                else:
+                    parameter[key_] = value
             except KeyError:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                host=host.name,
@@ -126,7 +128,8 @@ def test_api(host_id, case_id, project_id, _id):
                                status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                                _result='ERROR', code="", response_data="")
                 return 'fail'
-
+        else:
+            header[key_] = value
     header["Content-Length"] = '%s' % len(str(parameter))
     try:
         if request_type == 'GET':
