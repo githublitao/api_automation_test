@@ -1,6 +1,6 @@
-export const test = 'http://127.0.0.1:8000';
+// export const test = 'http://127.0.0.1:8000';
 // export const test = 'http://192.168.193.129:8000';
-// export const test = 'http://120.79.232.23:8000';
+export const test = 'http://120.79.232.23:8000';
 
 /**
  * 真正的请求
