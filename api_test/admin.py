@@ -392,7 +392,7 @@ class AutomationReportSendConfigForm(ReadOnlyModelAdmin):
 admin.site.register(AutomationReportSendConfig, AutomationReportSendConfigForm)
 
 
-class VisitorsRecordForm(ReadOnlyModelAdmin):
+class VisitorsRecordForm(admin.ModelAdmin):
     list_display = ('id', 'host', 'callTime')
     list_display_links = ('id', 'host', 'callTime')
     list_per_page = 20
