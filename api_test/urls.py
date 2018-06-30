@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from api_test.api import ApiDoc, automationCase as Case, member, dynamic, user
+from api_test.api import ApiDoc, automationCase as Case, member, dynamic, user, VisitorRecord
 from api_test.api import automationReport as Report
 from api_test.api.global_parameter import HostTotal, AddHost, UpdateHost, DelHost, DisableHost, EnableHost
 from api_test.api.projectList import ProjectList, AddProject, DelProject, \
@@ -70,4 +70,5 @@ urlpatterns = [
     url(r'member/get_email', member.GetEmail.as_view()),
     url(r'dynamic/dynamic', dynamic.Dynamic.as_view()),
     url(r'user/login', user.obtain_auth_token),
+    url(r'user/VisitorRecord', VisitorRecord.Record.as_view()),
 ]

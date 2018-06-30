@@ -93,6 +93,28 @@ class ReadOnlyModelAdmin(admin.ModelAdmin):
         return False
 
 
+class ReadAndDeleteModelAdmin(admin.ModelAdmin):
+    """ModelAdmin class that prevents modifications through the admin.
+
+    The changelist and the detail view work, but a 403 is returned
+    if one actually tries to edit an object.
+    """
+
+    actions = None
+
+    def get_readonly_fields(self, request, obj=None):
+        return self.fields or [f.name for f in self.model._meta.fields]
+
+    def has_add_permission(self, request):
+        return False
+
+    # Allow viewing objects but not actually changing them
+    def has_change_permission(self, request, obj=None):
+        if request.method not in ('GET', 'HEAD'):
+            return True
+        return super(ReadAndDeleteModelAdmin, self).has_change_permission(request, obj)
+
+
 class MemberInProject(admin.TabularInline):
     model = ProjectMember
 
@@ -392,9 +414,10 @@ class AutomationReportSendConfigForm(ReadOnlyModelAdmin):
 admin.site.register(AutomationReportSendConfig, AutomationReportSendConfigForm)
 
 
-class VisitorsRecordForm(admin.ModelAdmin):
-    list_display = ('id', 'host', 'callTime')
-    list_display_links = ('id', 'host', 'callTime')
+class VisitorsRecordForm(ReadAndDeleteModelAdmin):
+    search_fields = ('province', 'city', 'district')
+    list_display = ('id', 'formattedAddress', "country", "province", "city", "district", 'callTime')
+    list_display_links = ('id', 'formattedAddress', "country", "province", "city", "district", 'callTime')
     list_per_page = 20
     ordering = ('-id',)
 

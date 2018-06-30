@@ -272,7 +272,9 @@ def get(header, address, request_parameter_type, data):
     """
     if request_parameter_type == 'raw':
         data = json.dumps(data)
-    response = requests.get(url=address, params=data, headers=header, timeout=8)
+    response = requests.get(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+    if response.status_code == 301:
+        response = requests.get(url=response.headers["location"])
     try:
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:

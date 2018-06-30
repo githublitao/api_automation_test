@@ -655,11 +655,20 @@ class VisitorsRecord(models.Model):
     访客记录
     """
     id = models.AutoField(primary_key=True)
-    host = models.CharField(max_length=50, blank=True, null=True, verbose_name="访客地址")
+    formattedAddress = models.CharField(max_length=1024, blank=True, null=True, verbose_name="访客地址")
+    country = models.CharField(max_length=50, blank=True, null=True, verbose_name="国家")
+    province = models.CharField(max_length=50, blank=True, null=True, verbose_name="省份")
+    city = models.CharField(max_length=50, blank=True, null=True, verbose_name="城市")
+    district = models.CharField(max_length=50, blank=True, null=True, verbose_name="县级")
+    township = models.CharField(max_length=50, blank=True, null=True, verbose_name="镇")
+    street = models.CharField(max_length=50, blank=True, null=True, verbose_name="街道")
+    number = models.CharField(max_length=50, blank=True, null=True, verbose_name="门牌号")
+    success = models.CharField(max_length=50, blank=True, null=True, verbose_name="成功")
+    reason = models.CharField(max_length=1024, blank=True, null=True, verbose_name="原因")
     callTime = models.DateTimeField(auto_now_add=True, verbose_name="访问时间")
 
     def __unicode__(self):
-        return self.host
+        return self.formattedAddress
 
     class Meta:
         verbose_name = "访客"
