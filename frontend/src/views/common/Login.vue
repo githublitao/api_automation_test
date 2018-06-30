@@ -118,7 +118,7 @@
                 }//如为IP精确定位结果则没有精度信息
                 str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
                 var param = {
-                    "success": 0,
+                    "success": 1,
                     "longitude": data.position.getLng(),
                     "latitude": data.position.getLat(),
                 };
