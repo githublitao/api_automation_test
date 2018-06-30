@@ -124,7 +124,7 @@
                 };
                 $.ajax({
                     type: "post",
-                    url: "http://127.0.0.1:8000"+"/api/user/VisitorRecord",
+                    url: test+"/api/user/VisitorRecord",
                     async: true,
                     data: JSON.stringify(param),
                     headers: {
@@ -156,7 +156,7 @@
                 };
                 $.ajax({
                     type: "post",
-                    url: "http://127.0.0.1:8000"+"/api/user/VisitorRecord",
+                    url: test+"/api/user/VisitorRecord",
                     async: true,
                     data: JSON.stringify(param),
                     headers: {
