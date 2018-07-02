@@ -139,10 +139,10 @@
                     ],
                     host: [
                         { required: true, message: '请输入host', trigger: 'blur' },
-                        { validator: checkIp, trigger: 'blur' }
+                        // { validator: checkIp, trigger: 'blur' }
                     ],
                     description: [
-                        { required: false, message: '请输入版本号', trigger: 'blur' },
+                        { required: false, message: '请输入描述', trigger: 'blur' },
                         { max: 1024, message: '不能超过1024个字符', trigger: 'blur' }
                     ]
                 },

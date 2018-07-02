@@ -2,6 +2,7 @@ import logging
 
 import requests
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 from api_test.common.common import record_dynamic
 from api_test.models import Project, ApiInfo, ApiHead, ApiParameter, ApiParameterRaw, ApiResponse, ApiOperationHistory
@@ -24,19 +25,30 @@ def swagger_api(url, project, user):
     req = requests.get(url)
     data = req.json()
     apis = data["paths"]
-    params = data["definitions"]
+    try:
+        params = data["definitions"]
+    except KeyError:
+        pass
     for api, m in apis.items():
-        requestApi = {"project_id": project, "status": True, "mockStatus": "200", "code": "", "desc": "", "httpType": "HTTP",
-                      "responseList": []}
+        requestApi = {
+            "project_id": project, "status": True, "mockStatus": "200", "code": "", "desc": "",
+            "httpType": "HTTP", "responseList": []
+        }
         requestApi["apiAddress"] = api
         for requestType, data in m.items():
             requestApi["requestType"] = requestType.upper()
-            requestApi["name"] = data["summary"]
-            if data["consumes"][0] == "application/json":
+            try:
+                requestApi["name"] = data["summary"]
+            except KeyError:
+                pass
+            try:
+                if data["consumes"][0] == "application/json":
+                    requestApi["requestParameterType"] = "raw"
+                else:
+                    requestApi["requestParameterType"] = "form-data"
+                requestApi["headDict"] = [{"name": "Content-Type", "value": data["consumes"][0]}]
+            except KeyError:
                 requestApi["requestParameterType"] = "raw"
-            else:
-                requestApi["requestParameterType"] = "form-data"
-            requestApi["headDict"] = [{"name": "Content-Type", "value": data["consumes"][0]}]
             for j in data["parameters"]:
                 if j["in"] == "header":
                     requestApi["headDict"].append({"name": j["name"].title(), "value": "String"})
@@ -55,9 +67,10 @@ def swagger_api(url, project, user):
                                                   "required": True, "restrict": "", "description": ""})
                             requestApi["requestList"] = parameter
                         # print(requestApi)
-                        add_swagger_api(requestApi, user)
                     except:
                         pass
+        requestApi["userUpdate"] = user.id
+        result = add_swagger_api(requestApi, user)
 
 
 def add_swagger_api(data, user):
@@ -67,8 +80,8 @@ def add_swagger_api(data, user):
     :param user:  用户model
     :return:
     """
-    obj = Project.objects.filter(id=data["project_id"])
-    if obj:
+    try:
+        obj = Project.objects.get(id=data["project_id"])
         try:
             with transaction.atomic():
                 serialize = ApiInfoDeserializer(data=data)
@@ -124,10 +137,14 @@ def add_swagger_api(data, user):
                     record_dynamic(project=data["project_id"],
                                    _type="新增", operationObject="接口", user=user.pk,
                                    data="新增接口“%s”" % data["name"])
-                    api_record = ApiOperationHistory(apiInfo=ApiInfo.objects.get(id=api_id),
+                    api_record = ApiOperationHistory(api=ApiInfo.objects.get(id=api_id),
                                                      user=User.objects.get(id=user.pk),
                                                      description="新增接口\"%s\"" % data["name"])
                     api_record.save()
+                return True
         except Exception as e:
             logging.exception("error")
             logging.error(e)
+            return False
+    except ObjectDoesNotExist:
+        return False

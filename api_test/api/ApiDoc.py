@@ -446,6 +446,12 @@ class MockRequest(APIView):
     permission_classes = ()
 
     def get(self, request, apiAdr=None):
+        """
+        get请求
+        :param request:
+        :param apiAdr:
+        :return:
+        """
         url = "/"+apiAdr
         try:
             obj = ApiInfo.objects.get(apiAddress=url, mockStatus=True)
@@ -474,6 +480,12 @@ class MockRequest(APIView):
         return Response(json.loads(obj.data), status=obj.mockCode)
 
     def post(self, request, apiAdr=None):
+        """
+        post请求
+        :param request:
+        :param apiAdr:
+        :return:
+        """
         url = "/"+apiAdr
         try:
             obj = ApiInfo.objects.get(apiAddress=url, mockStatus=True)
@@ -549,7 +561,8 @@ class LeadSwagger(APIView):
         try:
             swagger_api(data["url"], data["project_id"], request.user)
             return JsonResponse(code="999999", msg="成功!")
-        except:
+        except Exception as e:
+            logging.exception(e)
             return JsonResponse(code="999998", msg="失败!")
 
 

@@ -20,6 +20,11 @@ class ProjectMemberList(APIView):
     permission_classes = ()
 
     def get(self, request):
+        """
+        获取项目成员列表
+        :param request:
+        :return:
+        """
         try:
             page_size = int(request.GET.get("page_size", 20))
             page = int(request.GET.get("page", 1))

@@ -278,7 +278,7 @@
                 this.parameters = sels
             },
             fastTest: function() {
-                let host = this.form.addr.toLowerCase();
+                let host = this.form.addr;
                 if (host.indexOf("http://") ===0){
                     this.form.addr = host.slice(7)
                 }
@@ -294,12 +294,12 @@
                         self.form.statusCode = '';
                         self.form.resultData = '';
                         self.form.resultHead = '';
-                        for (let i = 0; i < self.headers.length; i++) {
-                            var a = self.headers[i]["name"];
+                        for (let i = 0; i < self.form.head.length; i++) {
+                            var a = self.form.head[i]["name"];
                             if (a) {
-                                headers[a] = self.headers[i]["value"]
+                                headers[a] = self.form.head[i]["value"]
                             }
-                        }
+                        }s
                         let url = self.form.Http4 + "://" + self.form.url + host;
                         let _type = self.radio;
                         if (_type === 'form-data') {
