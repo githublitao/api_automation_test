@@ -79,6 +79,8 @@ def test_api(host, case_id, _id, time):
                 return 'fail'
 
             parameter[key_] = value
+        if data["formatRaw"]:
+            request_parameter_type = "raw"
     else:
         parameter = AutomationParameterRawSerializer(AutomationParameterRaw.objects.filter(automationCaseApi=_id),
                                                      many=True).data

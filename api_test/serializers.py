@@ -436,7 +436,7 @@ class AutomationCaseApiSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AutomationCaseApi
-        fields = ('id', 'name', 'httpType', 'requestType', 'apiAddress', 'header', 'requestParameterType',
+        fields = ('id', 'name', 'httpType', 'requestType', 'apiAddress', 'header', 'requestParameterType', 'formatRaw',
                   'parameterList', 'parameterRaw', 'examineType', 'httpCode', 'responseData')
 
 
@@ -447,7 +447,7 @@ class AutomationCaseApiDeserializer(serializers.ModelSerializer):
     class Meta:
         model = AutomationCaseApi
         fields = ('id', 'automationTestCase_id', 'name', 'httpType', 'requestType', 'apiAddress', 'requestParameterType',
-                  'examineType', 'httpCode', 'responseData')
+                  'formatRaw', 'examineType', 'httpCode', 'responseData')
 
 
 class AutomationCaseApiListSerializer(serializers.ModelSerializer):

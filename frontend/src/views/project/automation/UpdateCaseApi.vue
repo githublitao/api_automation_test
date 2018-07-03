@@ -59,7 +59,7 @@
                             </el-table-column>
                             <el-table-column min-width="5%">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" size="mini" style="margin-bottom: 5px" v-show="scope.row.interrelate" @click="handleCorrelation(scope.row)">关联</el-button>
+                                    <el-button type="primary" size="mini" style="margin-bottom: 5px" v-show="scope.row.interrelate" @click="handleCorrelation(scope.$index, scope.row)">关联</el-button>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" min-width="15%">
@@ -269,7 +269,7 @@
             selsChange(sels){
                 this.sels = sels;
             },
-            handleCorrelation(row) {
+            handleCorrelation(index, row) {
                 let self = this;
                 $.ajax({
                     type: "get",
@@ -291,8 +291,10 @@
                                     self.ApiList.push(item)
                                 });
                                 self.searchApiVisible = true;
-                                self.handleResponse(0);
+                                // self.handleResponse(index);
                                 self.interrelateObjects = row
+                                console.log(self.interrelateObjects)
+                                // console.log(self.interrelateObjects)
                             } else {
                                 self.$message.warning({
                                     message: '无前置接口',
@@ -327,19 +329,24 @@
                 this.$refs.form.validate((valid) => {
                     if (valid) {
                         let self = this;
+                        let formatRaw = false;
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             self.form.parameterType = self.radio;
                             let _type = self.form.parameterType;
                             let _parameter = {};
                             if ( _type === 'form-data') {
+                                // if ( self.radioType === true) {
+                                //     _type = 'raw';
+                                //     self.form.parameter.forEach((item) => {
+                                //         _parameter[item.name] = item.value
+                                //     });
+                                // } else {
+                                //     _parameter = self.form.parameter;
+                                // }
                                 if ( self.radioType === true) {
-                                    _type = 'raw';
-                                    self.form.parameter.forEach((item) => {
-                                        _parameter[item.name] = item.value
-                                    });
-                                } else {
-                                    _parameter = self.form.parameter;
+                                    formatRaw = true;
                                 }
+                                _parameter = self.form.parameter;
                             } else {
                                 _parameter = self.form.parameterRaw
                             }
@@ -353,6 +360,7 @@
                                 apiAddress: self.form.addr,
                                 headDict: self.form.head,
                                 requestParameterType: _type,
+                                formatRaw: formatRaw,
                                 requestList: _parameter,
                                 examineType: self.form.check,
                                 httpCode: self.form.checkHttp,
@@ -438,6 +446,9 @@
                             self.form.request4 = data.requestType;
                             self.form.Http4 = data.httpType;
                             self.form.addr = data.apiAddress;
+                            if (data.formatRaw) {
+                                self.radioType = true
+                            }
                             if (data.header.length) {
                                 self.form.head = [];
                                 data.header.forEach((item) => {

@@ -89,6 +89,8 @@ def test_api(host_id, case_id, project_id, _id):
                                status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                                _result='ERROR', code="", response_data="")
                 return 'fail'
+        if data["formatRaw"]:
+            request_parameter_type = "raw"
 
     else:
         parameter = AutomationParameterRawSerializer(AutomationParameterRaw.objects.filter(automationCaseApi=_id),
@@ -155,9 +157,12 @@ def test_api(host_id, case_id, project_id, _id):
 
     elif examine_type == 'json':
         if int(http_code) == code:
+            if not response_parameter_list:
+                print(1)
+                response_parameter_list = "{}"
             try:
                 result = check_json(eval(response_parameter_list), response_data)
-            except:
+            except Exception:
                 result = check_json(eval(response_parameter_list.replace('true', 'True').replace('false', 'False')), response_data)
             if result:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,

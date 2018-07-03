@@ -290,7 +290,7 @@
                                     self.ApiList.push(item)
                                 });
                                 self.searchApiVisible = true;
-                                self.handleResponse(index);
+                                // self.handleResponse(index);
                                 self.interrelateObjects = row
                             } else {
                                 self.$message.warning({
@@ -325,19 +325,25 @@
                 this.$refs.form.validate((valid) => {
                     if (valid) {
                         let self = this;
+                        let formatRaw = false;
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             self.form.parameterType = self.radio;
                             let _type = self.form.parameterType;
                             let _parameter = {};
                             if ( _type === 'form-data') {
-                                if ( self.radioType === true) {
-                                    _type = 'raw';
-                                    self.form.parameter.forEach((item) => {
-                                        _parameter[item.name] = item.value
-                                    });
-                                } else {
-                                    _parameter = self.form.parameter;
+                                // if ( self.radioType === true) {
+                                //     _type = 'raw';
+                                //     self.form.parameter.forEach((item) => {
+                                //         _parameter[item.name] = item.value
+                                //     });
+                                // } else {
+                                //     _parameter = self.form.parameter;
+                                // }
+                                 if ( self.radioType === true) {
+                                    formatRaw = true;
                                 }
+                                _parameter = self.form.parameter;
+
                             } else {
                                 _parameter = self.form.parameterRaw
                             }
@@ -350,6 +356,7 @@
                                 apiAddress: self.form.addr,
                                 headDict: self.form.head,
                                 requestParameterType: _type,
+                                formatRaw: formatRaw,
                                 requestList: _parameter,
                                 examineType: self.form.check,
                                 httpCode: self.form.checkHttp,

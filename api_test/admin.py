@@ -313,7 +313,7 @@ class AutomationCaseApiForm(admin.ModelAdmin):
     fieldsets = ([
         '接口详情', {
             'fields': ('automationTestCase', 'name', 'httpType', 'requestType', 'apiAddress',
-                       'requestParameterType', 'examineType', 'httpCode', 'responseData')
+                       'requestParameterType', 'formatRaw', 'examineType', 'httpCode', 'responseData')
         }],)
 
 

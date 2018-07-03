@@ -172,7 +172,7 @@
             },
             // 修改接口所属分组
             updateGroupSubmit() {
-                let ids = this.sels.map(item => item.id).toString();
+                let ids = this.sels.map(item => item.id);
                 let self = this;
                 this.$confirm('确认修改所属分组吗？', '提示', {
                     type: 'warning'
@@ -190,6 +190,7 @@
                         async: true,
                         data: params,
                         headers: {
+                            "Content-Type": "application/json",
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
                         timeout: 5000,

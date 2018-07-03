@@ -204,7 +204,7 @@ def record_dynamic(project, _type, operationObject,  user, data):
     time = datetime.datetime.now()
     dynamic_serializer = ProjectDynamicDeserializer(data={
         "time": time,
-        "project": project, "type": "禁用",
+        "project": project, "type": _type,
         "operationObject": operationObject, "user": user,
         "description": data
     }

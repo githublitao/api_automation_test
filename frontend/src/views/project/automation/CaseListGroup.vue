@@ -510,6 +510,10 @@
                 }
             }
         },
+        mounted() {
+            this.getCaseList();
+
+        }
     }
 </script>
 

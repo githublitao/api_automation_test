@@ -677,6 +677,8 @@ class AddNewApi(APIView):
             if data["httpCode"]:
                 if data["httpCode"] not in ["200", "404", "400", "502", "500", "302"]:
                     return JsonResponse(code="999996", msg="参数有误！")
+            if not isinstance(data['formatRaw'], bool):
+                return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
             return JsonResponse(code="999996", msg="参数有误！")
 
@@ -824,6 +826,8 @@ class UpdateApi(APIView):
             if data["httpCode"]:
                 if data["httpCode"] not in ["200", "404", "400", "502", "500", "302"]:
                     return JsonResponse(code="999996", msg="参数有误！")
+            if not isinstance(data['formatRaw'], bool):
+                return JsonResponse(code="999996", msg="参数有误！")
         except KeyError:
             return JsonResponse(code="999996", msg="参数有误！")
 
@@ -900,13 +904,16 @@ class UpdateApi(APIView):
                         pass
                 AutomationResponseJson.objects.filter(automationCaseApi=data["id"]).delete()
                 if data["examineType"] == "json":
-                    try:
-                        response = eval(data["responseData"].replace("true", "True").replace("false", "False").replace("null", "None"))
-                        api = "<response[%s]>" % data["id"]
-                        api_id = AutomationCaseApi.objects.get(id=data["id"])
-                        create_json(api_id, api, response)
-                    except KeyError:
-                        return JsonResponse(code="999998", msg="失败！")
+                    if data["responseData"]:
+                        try:
+                            response = eval(data["responseData"].replace("true", "True").replace("false", "False").replace("null", "None"))
+                            api = "<response[%s]>" % data["id"]
+                            api_id = AutomationCaseApi.objects.get(id=data["id"])
+                            create_json(api_id, api, response)
+                        except KeyError:
+                            return JsonResponse(code="999998", msg="失败！")
+                    else:
+                        pass
                 record_dynamic(project=data["project_id"],
                                _type="修改", operationObject="用例接口", user=request.user.pk,
                                data="用例“%s”修改接口\"%s\"" % (obi.caseName, data["name"]))
@@ -1022,7 +1029,8 @@ class StartTest(APIView):
         try:
             result = test_api(host_id=data["host_id"], case_id=data["case_id"],
                               _id=data["id"], project_id=data["project_id"])
-        except:
+        except Exception as e:
+            logging.exception(e)
             return JsonResponse(code="999998", msg="失败！")
         record_dynamic(project=data["project_id"],
                        _type="测试", operationObject="用例接口",
