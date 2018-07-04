@@ -179,7 +179,7 @@ def create_json(api_id, api, data):
     if isinstance(data, dict):
         for i in data:
             m = (api+"[\"%s\"]" % i)
-            AutomationResponseJson(automationCaseApi=api_id, name=i, tier=m).save()
+            AutomationResponseJson(automationCaseApi=api_id, name=i, tier=m, type='json').save()
             create_json(api_id, m, data[i])
 
 

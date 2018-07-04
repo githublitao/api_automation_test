@@ -536,6 +536,10 @@ class AutomationResponseJson(models.Model):
                                           on_delete=models.CASCADE, verbose_name='接口')
     name = models.CharField(max_length=1024, verbose_name='JSON参数', blank=True, null=True)
     tier = models.CharField(max_length=1024, verbose_name='层级关系', blank=True, null=True)
+    type = models.CharField(max_length=1024, verbose_name="关联类型", default="json", choices=(('json', 'json'),('Regular', 'Regular')))
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = '结果JSON参数'

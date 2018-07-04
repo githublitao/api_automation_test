@@ -7,7 +7,7 @@
         <router-link :to="{ name: '添加新接口'}" style='text-decoration: none;color: #000000;'>
             <el-button type="primary"><i class="el-icon-plus" style="margin-right: 5px"></i>新建接口</el-button>
         </router-link>
-        <el-button type="primary" @click.native="TestAll"><div>测试全部</div></el-button>
+        <el-button type="primary" @click="TestAllApi()"><div>测试全部</div></el-button>
         <el-select v-model="url"  placeholder="测试环境" style="float: right">
             <el-option v-for="(item,index) in Host" :key="index+''" :label="item.name" :value="item.id"></el-option>
         </el-select>
@@ -15,7 +15,8 @@
             <el-row :gutter="10">
                 <el-col :span="6">
                     <div style="height:400px;line-height:100px;overflow:auto;overflow-x:hidden;border: 1px solid #e6e6e6">
-                        <el-menu default-active="2" class="el-menu-vertical-demo" active-text-color="rgb(32, 160, 255)" :unique-opened="true">
+                        <el-menu class="el-menu-vertical-demo"
+                                 active-text-color="rgb(32, 160, 255)" :unique-opened="true"  @select="handleSelect">
                             <el-menu-item index="-1" @click.native="getApiList()"><i class="el-icon-menu"></i>所有接口</el-menu-item>
                             <template v-for="(item,index) in groupData">
                                 <el-menu-item :index="index+''" :key="item.id" @click.native="getApiList(item.id)" class="group">
@@ -145,9 +146,14 @@
                 result: {},
                 ApiListLen: "",
                 ApiListIndex: 0,
+                activeIndex: "",
             }
         },
         methods: {
+            handleSelect(key, keyPath) {
+                this.activeIndex = key;
+                console.log(this.activeIndex)
+            },
             getCaseApiList() {
                 this.listLoading = true;
                 let self = this;
@@ -229,49 +235,57 @@
             ApiTotal() {
                 this.ApiListLen = this.ApiList.length
             },
+            TestAllApi(){
+                for(let i=0;i<this.ApiList.length;i++){
+                    this.ApiList[i].result = "";
+                }
+                this.TestAll()
+            },
             TestAll() {
                 if (this.url) {
-                        let self = this;
-                        this.ApiList[this.ApiListIndex].testStatus = true;
-                        $.ajax({
-                            type: "post",
-                            url: test+"/api/automation/start_test",
-                            async: true,
-                            data: JSON.stringify({
-                                project_id: Number(this.$route.params.project_id),
-                                case_id: Number(this.$route.params.case_id),
-                                host_id: Number(this.url),
-                                id: Number(this.ApiList[this.ApiListIndex].id)
-                            }),
-                            headers: {
-                                "Content-Type": "application/json",
-                                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                            },
-                            success: function(data) {
-                                if (data.code === '999999') {
-                                    self.ApiList[self.ApiListIndex].testStatus = false;
-                                    self.ApiList[self.ApiListIndex].result = data.data.result;
-                                    self.ApiListIndex = self.ApiListIndex + 1;
-                                    if (self.ApiListIndex !== self.ApiList.length) {
-                                        self.TestAll()
-                                    }
+                    let self = this;
+                    this.ApiList[this.ApiListIndex].testStatus = true;
+                    $.ajax({
+                        type: "post",
+                        url: test+"/api/automation/start_test",
+                        async: true,
+                        data: JSON.stringify({
+                            project_id: Number(this.$route.params.project_id),
+                            case_id: Number(this.$route.params.case_id),
+                            host_id: Number(this.url),
+                            id: Number(this.ApiList[this.ApiListIndex].id)
+                        }),
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                        },
+                        success: function(data) {
+                            if (data.code === '999999') {
+                                self.ApiList[self.ApiListIndex].testStatus = false;
+                                self.ApiList[self.ApiListIndex].result = data.data.result;
+                                self.ApiListIndex = self.ApiListIndex + 1;
+                                if (self.ApiListIndex !== self.ApiList.length) {
+                                    self.TestAll()
+                                } else {
+                                    self.ApiListIndex = 0
                                 }
-                                else {
-                                    self.ApiList[self.ApiListIndex].testStatus = false;
-                                    self.$message.error({
-                                        message: data.msg,
-                                        center: true,
-                                    })
-                                }
-                            },
-                        })
-                    } else {
-                        this.$message({
-                            message: '请选择测试环境',
-                            center: true,
-                            type: 'warning'
-                        })
-                    }
+                            }
+                            else {
+                                self.ApiList[self.ApiListIndex].testStatus = false;
+                                self.$message.error({
+                                    message: data.msg,
+                                    center: true,
+                                })
+                            }
+                        },
+                    })
+                } else {
+                    this.$message({
+                        message: '请选择测试环境',
+                        center: true,
+                        type: 'warning'
+                    })
+                }
             },
             handleDel(index, row){
                 this.$confirm('确认删除该记录吗?', '提示', {
@@ -357,7 +371,8 @@
                     success: function(data) {
                         self.apiListLoading = false;
                         if (data.code === '999999') {
-                            self.searchApiList = data.data.data
+                            self.searchApiList = data.data.data;
+                            self.total = data.data.total;
                         }
                         else {
                             self.$message.error({
@@ -471,7 +486,9 @@
                 this.getCaseApiList()
             },
             handleCurrentChangeApi(val) {
+                console.log(this.groupData[this.activeIndex]["id"]);
                 this.page = val;
+                this.getApiList(this.groupData[this.activeIndex]["id"])
             },
             selsChange(sels){
                 this.sels = sels;

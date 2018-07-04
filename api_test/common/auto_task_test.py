@@ -61,19 +61,35 @@ def test_api(host, case_id, _id, time):
 
             try:
                 if i['fields']['interrelate']:
-                    api_id = re.findall('(?<=<response\[).*?(?=\])', value)
-                    a = re.findall('(?<=\[").*?(?="])', value)
-                    try:
-                        value = eval(json.loads(serializers.serialize(
-                            'json', AutomationCaseTestResult.objects.filter(automationCaseApi=api_id[0],
-                                                                            testTime=time)))[0]['fields']["responseData"])
-                        for j in a:
-                            value = value[j]
-                    except:
+                    interrelate_type = re.findall('(?<=<response\[).*?(?=\])', value)
+                    if interrelate_type[0] == "JSON":
+                        api_id = re.findall('(?<=<response\[JSON]\[).*?(?=\])', value)
+                        a = re.findall('(?<=\[").*?(?="])', value)
+                        try:
+                            param_data = eval(json.loads(serializers.serialize(
+                                'json', AutomationCaseTestResult.objects.filter(automationCaseApi=api_id[0],
+                                                                                testTime=time)))[0]['fields']["responseData"])
+                            for j in a:
+                                param_data = param_data[j]
+                        except Exception as e:
+                            record_auto_results(_id=_id, header=header, parameter=parameter,
+                                                _result='ERROR', code="", response_data="", time=time)
+                            return 'fail'
+                    elif interrelate_type[0] == "Regular":
+                        api_id = re.findall('(?<=<response\[Regular]\[).*?(?=\])', value)
+                        pattern = re.findall('(?<=\[").*?(?="])', value)
+                        param_data = json.loads(serializers.serialize(
+                            'json',
+                            AutomationCaseTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"]
+                        param_data = re.findall(pattern[0], param_data.replace("\'", "\""))[0]
+                    else:
                         record_auto_results(_id=_id, header=header, parameter=parameter,
                                             _result='ERROR', code="", response_data="", time=time)
                         return 'fail'
-            except KeyError:
+                    pattern = re.compile(r'<response\[.*]')
+                    parameter[key_] = re.sub(pattern, param_data, value)
+            except Exception as e:
+                logging.exception(e)
                 record_auto_results(_id=_id, header=header, parameter=parameter,
                                     _result='ERROR', code="", response_data="", time=time)
                 return 'fail'
@@ -100,13 +116,34 @@ def test_api(host, case_id, _id, time):
         if i['fields']['interrelate']:
 
             try:
-                api_id = re.findall('(?<=<response\[).*?(?=\])', value)
-                a = re.findall('(?<=\[").*?(?="])', value)
-                value = eval(json.loads(serializers.serialize(
-                    'json', AutomationCaseTestResult.objects.filter(automationCaseApi=api_id[0],
-                                                                    testTime=time)))[0]['fields']["responseData"])
-                for j in a:
-                    value = value[j]
+                interrelate_type = re.findall('(?<=<response\[).*?(?=\])', value)
+                if interrelate_type[0] == "JSON":
+                    api_id = re.findall('(?<=<response\[JSON]\[).*?(?=\])', value)
+                    a = re.findall('(?<=\[").*?(?="])', value)
+                    try:
+                        param_data = eval(json.loads(serializers.serialize(
+                            'json', AutomationCaseTestResult.objects.filter(automationCaseApi=api_id[0],
+                                                                            testTime=time)))[0]['fields']["responseData"])
+                        for j in a:
+                            param_data = param_data[j]
+                    except Exception as e:
+                        record_auto_results(_id=_id, header=header, parameter=parameter,
+                                            _result='ERROR', code="", response_data="", time=time)
+                        return 'fail'
+                elif interrelate_type[0] == "Regular":
+                    api_id = re.findall('(?<=<response\[Regular]\[).*?(?=\])', value)
+                    pattern = re.findall('(?<=\[").*?(?="])', value)
+                    param_data = json.loads(serializers.serialize(
+                        'json',
+                        AutomationCaseTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"]
+                    param_data = re.findall(pattern[0], param_data.replace("\'", "\""))[0]
+                else:
+                    record_auto_results(_id=_id, header=header, parameter=parameter,
+                                        _result='ERROR', code="", response_data="", time=time)
+                    return 'fail'
+                pattern = re.compile(r'<response\[.*]')
+                header[key_] = re.sub(pattern, param_data, value)
+
             except Exception as e:
                 logging.exception("ERROR")
                 logging.error(e)
@@ -187,7 +224,7 @@ def test_api(host, case_id, _id, time):
     elif examine_type == 'Regular_check':
         if int(http_code) == code:
             try:
-                result = re.findall(response_parameter_list, str(response_data))
+                result = re.findall(response_parameter_list, json.dumps(response_data))
             except:
                 return "fail"
             if result:

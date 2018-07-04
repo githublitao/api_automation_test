@@ -64,26 +64,46 @@ def test_api(host_id, case_id, project_id, _id):
 
             try:
                 if i['fields']['interrelate']:
-                    api_id = re.findall('(?<=<response\[).*?(?=\])', value)
-                    a = re.findall('(?<=\[").*?(?="])', value)
-                    try:
-                        param_data = eval(json.loads(serializers.serialize(
+                    interrelate_type = re.findall('(?<=<response\[).*?(?=\])', value)
+                    if interrelate_type[0] == "JSON":
+                        api_id = re.findall('(?<=<response\[JSON]\[).*?(?=\])', value)
+                        a = re.findall('(?<=\[").*?(?="])', value)
+                        try:
+                            param_data = eval(json.loads(serializers.serialize(
+                                'json',
+                                AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))
+                                              [0]['fields']["responseData"])
+                            for j in a:
+                                param_data = param_data[j]
+                        except Exception as e:
+                            logging.exception(e)
+                            record_results(_id=_id, url=url, request_type=request_type, header=header,
+                                           parameter=parameter,
+                                           host=host.name,
+                                           status_code=http_code, examine_type=examine_type,
+                                           examine_data=response_parameter_list,
+                                           _result='ERROR', code="", response_data="")
+                            return 'fail'
+                    elif interrelate_type[0] == "Regular":
+                        api_id = re.findall('(?<=<response\[Regular]\[).*?(?=\])', value)
+                        pattern = re.findall('(?<=\[").*?(?="])', value)
+                        param_data = json.loads(serializers.serialize(
                             'json',
-                            AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))
-                                     [0]['fields']["responseData"])
-                        for j in a:
-                            param_data = param_data[j]
-                        pattern = re.compile(r'<response\[.*]')
-                        parameter[key_] = re.sub(pattern, param_data, value)
-                    except:
+                            AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"]
+                        param_data = re.findall(pattern[0], param_data.replace("\'", "\""))[0]
+                    else:
                         record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                        host=host.name,
                                        status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                                        _result='ERROR', code="", response_data="")
                         return 'fail'
+                    pattern = re.compile(r'<response\[.*]')
+                    parameter[key_] = re.sub(pattern, param_data, value)
+
                 else:
                     parameter[key_] = value
-            except KeyError:
+            except KeyError as e:
+                logging.exception(e)
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                host=host.name,
                                status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
@@ -95,17 +115,21 @@ def test_api(host_id, case_id, project_id, _id):
     else:
         parameter = AutomationParameterRawSerializer(AutomationParameterRaw.objects.filter(automationCaseApi=_id),
                                                      many=True).data
-        if len(parameter[0]["data"]):
-            try:
-                parameter = eval(parameter[0]["data"])
-            except:
-                record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
-                               host=host.name,
-                               status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
-                               _result='ERROR', code="", response_data="")
-                return 'fail'
+        if len(parameter):
+            if len(parameter[0]["data"]):
+                try:
+                    parameter = eval(parameter[0]["data"])
+                except Exception as e:
+                    logging.exception(e)
+                    record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
+                                   host=host.name,
+                                   status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
+                                   _result='ERROR', code="", response_data="")
+                    return 'fail'
+            else:
+                parameter = {}
         else:
-            parameter = []
+            parameter = {}
 
     for i in head:
         key_ = i['fields']['name']
@@ -113,18 +137,43 @@ def test_api(host_id, case_id, project_id, _id):
         if i['fields']['interrelate']:
 
             try:
-                api_id = re.findall('(?<=<response\[).*?(?=\])', value)
-                a = re.findall('(?<=\[").*?(?="])', value)
-                head_data = eval(json.loads(serializers.serialize(
-                    'json',
-                    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
-                for j in a:
-                    head_data = head_data[j]
+                interrelate_type = re.findall('(?<=<response\[).*?(?=\])', value)
+                if interrelate_type[0] == "JSON":
+                    api_id = re.findall('(?<=<response\[JSON]\[).*?(?=\])', value)
+                    a = re.findall('(?<=\[").*?(?="])', value)
+                    try:
+                        param_data = eval(json.loads(serializers.serialize(
+                            'json',
+                            AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
+                        for j in a:
+                            param_data = param_data[j]
+                    except Exception as e:
+                        logging.exception(e)
+                        record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
+                                       host=host.name,
+                                       status_code=http_code, examine_type=examine_type,
+                                       examine_data=response_parameter_list,
+                                       _result='ERROR', code="", response_data="")
+                        return 'fail'
+                elif interrelate_type[0] == "Regular":
+                    api_id = re.findall('(?<=<response\[Regular]\[).*?(?=\])', value)
+                    pattern = re.findall('(?<=\[").*?(?="])', value)
+                    param_data = json.loads(serializers.serialize(
+                        'json',
+                        AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"]
+                    param_data = re.findall(pattern[0], param_data.replace("\'", "\""))[0]
+                else:
+                    record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
+                                   host=host.name,
+                                   status_code=http_code, examine_type=examine_type,
+                                   examine_data=response_parameter_list,
+                                   _result='ERROR', code="", response_data="")
+                    return 'fail'
                 pattern = re.compile(r'<response\[.*]')
-                header[key_] = re.sub(pattern, head_data, value)
+                header[key_] = re.sub(pattern, param_data, value)
+
             except Exception as e:
-                logging.exception("ERROR")
-                logging.error(e)
+                logging.exception(e)
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                host=host.name,
                                status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
@@ -145,6 +194,7 @@ def test_api(host_id, case_id, project_id, _id):
         else:
             return 'ERROR'
     except ReadTimeout:
+        logging.exception(ReadTimeout)
         record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter, host=host.name,
                        status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
                        _result='TimeOut', code="408", response_data="")
@@ -158,11 +208,12 @@ def test_api(host_id, case_id, project_id, _id):
     elif examine_type == 'json':
         if int(http_code) == code:
             if not response_parameter_list:
-                print(1)
                 response_parameter_list = "{}"
             try:
-                result = check_json(eval(response_parameter_list), response_data)
-            except Exception:
+                result = check_json(json.loads(response_parameter_list), response_data)
+            except Exception as e:
+                print(response_parameter_list)
+                logging.exception(e)
                 result = check_json(eval(response_parameter_list.replace('true', 'True').replace('false', 'False')), response_data)
             if result:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
@@ -194,8 +245,9 @@ def test_api(host_id, case_id, project_id, _id):
     elif examine_type == 'entirely_check':
         if int(http_code) == code:
             try:
-                result = operator.eq(eval(response_parameter_list), response_data)
-            except:
+                result = operator.eq(json.loads(response_parameter_list), response_data)
+            except Exception as e:
+                logging.exception(e)
                 result = operator.eq(eval(response_parameter_list.replace('true', 'True').replace('false', 'False')), response_data)
             if result:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
@@ -216,8 +268,13 @@ def test_api(host_id, case_id, project_id, _id):
     elif examine_type == 'Regular_check':
         if int(http_code) == code:
             try:
-                result = re.findall(response_parameter_list, str(response_data))
-            except:
+                print(response_parameter_list)
+                print(json.dumps(response_data))
+                print(type(json.dumps(response_data)))
+                result = re.findall(response_parameter_list, json.dumps(response_data))
+                print(result)
+            except Exception as e:
+                logging.exception(e)
                 return "fail"
             if result:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,

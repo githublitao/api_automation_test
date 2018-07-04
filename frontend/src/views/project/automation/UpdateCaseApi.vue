@@ -153,6 +153,12 @@
                                     <el-radio-button label="entirely_check"><div>完全校验</div></el-radio-button>
                                     <el-radio-button label="Regular_check"><div>正则校验</div></el-radio-button>
                                 </el-radio-group>
+                                <el-input v-if="form.check==='Regular_check'"
+                                          style="width: 10%;padding-left: 5px;margin-top: 1px"
+                                          v-model="form.RegularParam"
+                                          placeholder="请输入绑定参数名"
+                                >
+                                </el-input>
                             </div>
                             <div v-show="showCheck">
                                 <el-select v-model="form.checkHttp" placeholder="HTTP状态">
@@ -245,6 +251,7 @@
                         {name: "", value: "", interrelate:0}],
                     parameterType: "",
                     check: "no_check",
+                    RegularParam: "",
                     checkHttp: "",
                     checkData: "",
                 },
@@ -363,9 +370,11 @@
                                 formatRaw: formatRaw,
                                 requestList: _parameter,
                                 examineType: self.form.check,
+                                RegularParam: self.form.RegularParam,
                                 httpCode: self.form.checkHttp,
                                 responseData: self.form.checkData
                             });
+                            console.log(param)
                             $.ajax({
                                 type: "post",
                                 url: test+"/api/automation/update_api",
@@ -469,8 +478,13 @@
                             self.form.parameterType = data.requestParameterType;
                             self.form.check = data.examineType;
                             self.form.checkHttp = data.httpCode;
+                            try {
+                                self.form.RegularParam = data.RegularParam
+                            } catch (e) {
+
+                            }
                             self.form.checkData = data.responseData;
-                            self.radio = data.requestParameterType
+                            self.radio = data.requestParameterType;
                             self.checkRequest()
                         }
                         else {

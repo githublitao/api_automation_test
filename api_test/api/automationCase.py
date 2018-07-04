@@ -566,6 +566,11 @@ class CaseApiInfo(APIView):
         except ObjectDoesNotExist:
             return JsonResponse(code="999990", msg="接口不存在！")
         data = AutomationCaseApiSerializer(obm).data
+        try:
+            name = AutomationResponseJson.objects.get(automationCaseApi=api_id, type="Regular")
+            data["RegularParam"] = name.name
+        except ObjectDoesNotExist:
+            pass
         return JsonResponse(data=data, code="999999", msg="成功！")
 
 
@@ -747,14 +752,23 @@ class AddNewApi(APIView):
                                                    data=data["requestList"]).save()
                     except KeyError:
                         pass
+                api_ids = AutomationCaseApi.objects.get(id=api_id)
                 if data["examineType"] == "json":
                     try:
                         response = eval(data["responseData"].replace("true", "True").replace("false", "False").replace("null", None))
-                        api = "<response[%s]>" % api_id
-                        api_ids = AutomationCaseApi.objects.get(id=api_id)
+                        api = "<response[JSON][%s]>" % api_id
                         create_json(api_ids, api, response)
                     except KeyError:
                         return JsonResponse(code="999998", msg="失败！")
+                elif data["examineType"] == 'Regular_check':
+                    try:
+                        if data["RegularParam"]:
+                            AutomationResponseJson(automationCaseApi=api_ids,
+                                                   name=data["RegularParam"],
+                                                   tier='<response[Regular][%s]["%s"]' % (api_id, data["responseData"]),
+                                                   type='Regular').save()
+                    except KeyError:
+                        pass
                 # record_dynamic(project=data["project_id"],
                 #                _type="新增", operationObject="用例接口", user=request.user.pk,
                 #                data="用例“%s”新增接口\"%s\"" % (obj.caseName, data["name"]))
@@ -890,7 +904,7 @@ class UpdateApi(APIView):
                                         if param_serialize.is_valid():
                                             param_serialize.save(automationCaseApi=AutomationCaseApi.objects.get(id=data["id"]))
                                         else:
-                                            return JsonResponse(code="999998", msg="失败！")
+                                            return JsonResponse(code="999998", msg="参数有误！")
                                 except KeyError:
                                     return JsonResponse(code="999996", msg="参数有误！")
                     except KeyError:
@@ -903,16 +917,26 @@ class UpdateApi(APIView):
                     except KeyError:
                         pass
                 AutomationResponseJson.objects.filter(automationCaseApi=data["id"]).delete()
+                api_id = AutomationCaseApi.objects.get(id=data["id"])
                 if data["examineType"] == "json":
                     if data["responseData"]:
                         try:
                             response = eval(data["responseData"].replace("true", "True").replace("false", "False").replace("null", "None"))
-                            api = "<response[%s]>" % data["id"]
-                            api_id = AutomationCaseApi.objects.get(id=data["id"])
+                            api = "<response[JSON][%s]>" % data["id"]
                             create_json(api_id, api, response)
                         except KeyError:
                             return JsonResponse(code="999998", msg="失败！")
                     else:
+                        pass
+                elif data["examineType"] == 'Regular_check':
+                    try:
+                        if data["RegularParam"]:
+                            AutomationResponseJson(automationCaseApi=api_id,
+                                                   name=data["RegularParam"],
+                                                   tier='<response[Regular][%s]["%s"]' % (api_id.id, data["responseData"]),
+                                                   type='Regular').save()
+                    except KeyError as e:
+                        logging.exception(e)
                         pass
                 record_dynamic(project=data["project_id"],
                                _type="修改", operationObject="用例接口", user=request.user.pk,
