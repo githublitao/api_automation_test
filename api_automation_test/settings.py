@@ -160,27 +160,27 @@ WSGI_APPLICATION = 'api_automation_test.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'api_test',
-        'USER': 'root',
-        'PASSWORD': '123456',
-        'HOST': '192.168.193.130',
-        'PORT': '3306',
-    }
-}
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'api_test',
 #         'USER': 'root',
-#         'PASSWORD': 'lt19910301',
-#         'HOST': '172.18.162.26',
+#         'PASSWORD': '123456',
+#         'HOST': '192.168.193.130',
 #         'PORT': '3306',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'api_test',
+        'USER': 'root',
+        'PASSWORD': 'lt19910301',
+        'HOST': '172.18.162.26',
+        'PORT': '3306',
+    }
+}
 
 # DATABASES = {
 #     'default': {
