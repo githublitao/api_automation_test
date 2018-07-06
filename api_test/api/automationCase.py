@@ -1,5 +1,6 @@
 import json
 import logging
+import platform
 
 from datetime import datetime
 
@@ -936,7 +937,7 @@ class UpdateApi(APIView):
                                                    tier='<response[Regular][%s]["%s"]' % (api_id.id, data["responseData"]),
                                                    type='Regular').save()
                     except KeyError as e:
-                        logging.exception(e)
+                        # logging.exception(e)
                         pass
                 record_dynamic(project=data["project_id"],
                                _type="修改", operationObject="用例接口", user=request.user.pk,
@@ -1095,10 +1096,13 @@ class AddTimeTask(APIView):
 
     def post(self, request):
         """
-        执行测试用例
+        添加测试任务
         :param request:
         :return:
         """
+        sys_name = platform.system()
+        if sys_name == "Windows" or sys_name == "Darwin":
+            return JsonResponse(code="999998", msg="该操作只能在Linux系统下进行！")
         data = JSONParser().parse(request)
         result = self.parameter_check(data)
         if result:

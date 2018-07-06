@@ -211,9 +211,8 @@ def test_api(host_id, case_id, project_id, _id):
                 response_parameter_list = "{}"
             try:
                 result = check_json(json.loads(response_parameter_list), response_data)
-            except Exception as e:
-                print(response_parameter_list)
-                logging.exception(e)
+            except Exception:
+                logging.info(response_parameter_list)
                 result = check_json(eval(response_parameter_list.replace('true', 'True').replace('false', 'False')), response_data)
             if result:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
@@ -268,11 +267,9 @@ def test_api(host_id, case_id, project_id, _id):
     elif examine_type == 'Regular_check':
         if int(http_code) == code:
             try:
-                print(response_parameter_list)
-                print(json.dumps(response_data))
-                print(type(json.dumps(response_data)))
+                logging.info(response_parameter_list)
                 result = re.findall(response_parameter_list, json.dumps(response_data))
-                print(result)
+                logging.info(result)
             except Exception as e:
                 logging.exception(e)
                 return "fail"

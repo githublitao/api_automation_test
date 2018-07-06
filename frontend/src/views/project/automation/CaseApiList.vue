@@ -272,6 +272,7 @@
                             }
                             else {
                                 self.ApiList[self.ApiListIndex].testStatus = false;
+                                self.ApiListIndex = 0;
                                 self.$message.error({
                                     message: data.msg,
                                     center: true,

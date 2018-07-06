@@ -31,7 +31,7 @@
                             <span>{{ props.row.host }}</span>
                           </el-form-item>
                           <el-form-item label="接口地址： ">
-                            <span>{{ props.row.address }}</span>
+                            <span>{{ props.row.apiAddress }}</span>
                           </el-form-item>
                           <el-form-item label="请求方式： ">
                             <span>{{ props.row.requestType }}</span>
