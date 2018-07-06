@@ -89,7 +89,7 @@ def test_api(host_id, case_id, project_id, _id):
                         pattern = re.findall('(?<=\[").*?(?="])', value)
                         param_data = json.loads(serializers.serialize(
                             'json',
-                            AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"]
+                            AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[-1]['fields']["responseData"]
                         param_data = re.findall(pattern[0], param_data.replace("\'", "\""))[0]
                     else:
                         record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
@@ -144,7 +144,7 @@ def test_api(host_id, case_id, project_id, _id):
                     try:
                         param_data = eval(json.loads(serializers.serialize(
                             'json',
-                            AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"])
+                            AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[-1]['fields']["responseData"])
                         for j in a:
                             param_data = param_data[j]
                     except Exception as e:
@@ -210,6 +210,8 @@ def test_api(host_id, case_id, project_id, _id):
             if not response_parameter_list:
                 response_parameter_list = "{}"
             try:
+                logging.info(response_parameter_list)
+                logging.info(response_data)
                 result = check_json(json.loads(response_parameter_list), response_data)
             except Exception:
                 logging.info(response_parameter_list)

@@ -44,8 +44,8 @@ def send_email(project_id, data):
         to_member = ProjectMemberSerializer(ProjectMember.objects.filter(project=project_id), many=True).data
         receivers = []  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
         for i in to_member:
-            # receivers.append(i["userEmail"])
-            receivers.append("943571775@qq.com")
+            # print(str(i.userEamil))
+            receivers.append(i["userEmail"])
         message = MIMEText(data, 'plain', 'utf-8')
         message['From'] = email_config[0].reportFrom
         message['To'] = receivers[0]

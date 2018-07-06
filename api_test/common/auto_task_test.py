@@ -80,7 +80,7 @@ def test_api(host, case_id, _id, time):
                         pattern = re.findall('(?<=\[").*?(?="])', value)
                         param_data = json.loads(serializers.serialize(
                             'json',
-                            AutomationCaseTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"]
+                            AutomationCaseTestResult.objects.filter(automationCaseApi=api_id[0])))[-1]['fields']["responseData"]
                         param_data = re.findall(pattern[0], param_data.replace("\'", "\""))[0]
                     else:
                         record_auto_results(_id=_id, header=header, parameter=parameter,
@@ -88,13 +88,13 @@ def test_api(host, case_id, _id, time):
                         return 'fail'
                     pattern = re.compile(r'<response\[.*]')
                     parameter[key_] = re.sub(pattern, param_data, value)
+                else:
+                    parameter[key_] = value
             except Exception as e:
                 logging.exception(e)
                 record_auto_results(_id=_id, header=header, parameter=parameter,
                                     _result='ERROR', code="", response_data="", time=time)
                 return 'fail'
-
-            parameter[key_] = value
         if data["formatRaw"]:
             request_parameter_type = "raw"
     else:
@@ -135,7 +135,7 @@ def test_api(host, case_id, _id, time):
                     pattern = re.findall('(?<=\[").*?(?="])', value)
                     param_data = json.loads(serializers.serialize(
                         'json',
-                        AutomationCaseTestResult.objects.filter(automationCaseApi=api_id[0])))[0]['fields']["responseData"]
+                        AutomationCaseTestResult.objects.filter(automationCaseApi=api_id[0])))[-1]['fields']["responseData"]
                     param_data = re.findall(pattern[0], param_data.replace("\'", "\""))[0]
                 else:
                     record_auto_results(_id=_id, header=header, parameter=parameter,
@@ -150,8 +150,8 @@ def test_api(host, case_id, _id, time):
                 record_auto_results(_id=_id, header=header, parameter=parameter,
                                     _result='ERROR', code="", response_data="", time=time)
                 return 'fail'
-
-        header[key_] = value
+        else:
+            header[key_] = value
 
     header["Content-Length"] = '%s' % len(str(parameter))
     try:
