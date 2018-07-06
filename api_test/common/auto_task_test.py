@@ -226,11 +226,11 @@ def test_api(host, case_id, _id, time):
             try:
                 result = re.findall(response_parameter_list, json.dumps(response_data))
             except:
-                return "fail"
+                result = re.findall(response_parameter_list, eval(response_data.replace('true', 'True').replace('false', 'False')))
             if result:
                 record_auto_results(_id=_id, header=header, parameter=parameter,
                                     _result='PASS', code=code, response_data=response_data, time=time)
-                return 'fail'
+                return 'success'
             else:
                 record_auto_results(_id=_id, header=header, parameter=parameter,
                                     _result='FAIL', code=code, response_data=response_data, time=time)

@@ -32,6 +32,7 @@ def automation_task():
         data = AutomationCaseApi.objects.filter(automationTestCase=j.pk)
         for i in data:
             result = test_api(host=host, case_id=j.pk, _id=i.pk, time=format_start_time)
+            print(result)
             if result == 'success':
                 _pass = _pass+1
             elif result == 'fail':
@@ -41,6 +42,7 @@ def automation_task():
             elif result == 'timeout':
                 time_out = time_out+1
     total = _pass+fail+error+time_out
+    print(total, _pass, fail, error, time_out)
     result_data = "Hi, all:\n    测试时间： %s\n" \
                   "    总执行测试接口数： %s:\n" \
                   "    成功： %s,  失败： %s, 执行错误： %s, 超时： %s\n" \
