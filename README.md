@@ -64,6 +64,9 @@ python manage.py runserver 0.0.0.0:8000
 ## 微信打赏：<br>
 ![微信打赏](https://github.com/githublitao/api_automation_test/blob/master/img/%E6%94%B6%E6%AC%BE%E7%A0%81.png)<br>
 <br>
+## 系统图解：<br>
+![系统图](https://github.com/githublitao/api_automation_test/blob/master/img/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E8%A7%A3.png)<br>
+<br>
 项目讲解：
 ----
 1、登录页面，只提供了登录方法，并没有注册和忘记密码功能，账号由后台管理系统直接创建分配<br>
