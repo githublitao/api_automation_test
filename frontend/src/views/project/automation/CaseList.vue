@@ -15,6 +15,9 @@
                 <el-form-item>
                     <el-button type="primary" :disabled="update" @click="changeGroup">修改分组</el-button>
                 </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click.native="DownloadApi">下载用例</el-button>
+                </el-form-item>
                 <el-button type="primary" @click.native="getTask"><div>设置定时任务</div></el-button>
                 <el-button type="primary" @click.native="TestReport"><div>查看报告</div></el-button>
             </el-form>
@@ -296,6 +299,24 @@
             }
         },
         methods: {
+            // 下载用例
+            DownloadApi() {
+                $.ajax({
+                    type: "get",
+                    url: test+"/api/automation/DownloadCase",
+                    async: true,
+                    data: { project_id: this.$route.params.project_id},
+                    headers: {
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    },
+                    timeout: 5000,
+                    success: function(data) {
+                        if (data.code === "999999") {
+                            window.open(test+"/api/api/download_doc?url="+data.data)
+                        }
+                    },
+                })
+            },
             TestReport(){
                 this.$router.push(
                     {

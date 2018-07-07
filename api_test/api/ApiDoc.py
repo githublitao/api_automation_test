@@ -1053,7 +1053,11 @@ class DownLoad(APIView):
 
 def download_doc(request):
     url = request.GET.get("url")
-    file_name = str(int(time.time())) + ".doc"
+    format_doc = url.split(".")
+    if format_doc[-1] == "doc":
+        file_name = str(int(time.time())) + ".doc"
+    else:
+        file_name = str(int(time.time())) + ".xlsx"
 
     def file_iterator(_file, chunk_size=512):
         while True:

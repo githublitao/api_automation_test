@@ -1375,14 +1375,11 @@ class DownLoadCase(APIView):
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
         obi = AutomationTestCase.objects.filter(project=project_id).order_by("id")
-        data = AutomationCaseDownloadSerializer(obi, many=True)
-        path = "./api_test/ApiDoc/%s.xlsx" % 1
-        print(data.data)
-        result = Write(path).write_case(data.data)
+        data = AutomationCaseDownloadSerializer(obi, many=True).data
+        path = "./api_test/ApiDoc/%s.xlsx" % str(obj.name)
+        result = Write(path).write_case(data)
         if result:
-            return JsonResponse(code="999999", msg="成功！", data=data.data)
+            return JsonResponse(code="999999", msg="成功！", data=path)
         else:
             return JsonResponse(code="999998", msg="失败")
-        # obn = ApiInfoSerializer(ApiInfo.objects.filter(project=project_id), many=True).data
-        # url = Write().write_api(str(obj), group_data=data, data=obn)
-        # return JsonResponse(code="999999", msg="成功!", data=url)
+
