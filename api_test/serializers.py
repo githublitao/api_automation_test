@@ -440,6 +440,27 @@ class AutomationCaseApiSerializer(serializers.ModelSerializer):
                   'parameterList', 'parameterRaw', 'examineType', 'httpCode', 'responseData')
 
 
+class AutomationCaseDownloadSerializer(serializers.ModelSerializer):
+    """
+    下载用例读取数据序列
+    """
+    # api = AutomationCaseApiSerializer(many=True, read_only=True)
+    updateTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    automationGroupLevelFirst = serializers.CharField(source='automationGroupLevelFirst.name')
+    user = serializers.CharField(source="user.first_name")
+    api = serializers.SerializerMethodField()
+
+    class Meta:
+        model = AutomationTestCase
+        fields = ('automationGroupLevelFirst', 'caseName', 'user', 'updateTime', 'api')
+
+    def get_api(self, obj):
+        return AutomationCaseApiSerializer(
+            AutomationCaseApi.objects.filter(automationTestCase=obj).order_by("id"),
+            many=True
+        ).data
+
+
 class AutomationCaseApiDeserializer(serializers.ModelSerializer):
     """
     自动化用例接口详细信息反序列化

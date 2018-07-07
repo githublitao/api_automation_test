@@ -1032,8 +1032,11 @@ class DownLoad(APIView):
         :return:
         """
         project_id = request.GET.get("project_id")
-        if not project_id.isdecimal():
-            return JsonResponse(code="999996", msg="参数有误!")
+        try:
+            if not project_id.isdecimal():
+                return JsonResponse(code="999996", msg="参数有误!")
+        except AttributeError:
+            return JsonResponse(code="999996", msg="参数有误！")
         try:
             obj = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:

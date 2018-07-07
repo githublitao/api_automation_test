@@ -453,7 +453,7 @@ class AutomationCaseApi(models.Model):
     """
     id = models.AutoField(primary_key=True)
     automationTestCase = models.ForeignKey(AutomationTestCase, on_delete=models.CASCADE,
-                                           verbose_name='用例', related_name="case_name")
+                                           verbose_name='用例', related_name="api")
     name = models.CharField(max_length=50, verbose_name='接口名称')
     httpType = models.CharField(max_length=50, default='HTTP', verbose_name='HTTP/HTTPS', choices=HTTP_CHOICE)
     requestType = models.CharField(max_length=50, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)

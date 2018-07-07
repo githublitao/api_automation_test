@@ -1,6 +1,7 @@
 import json
 import logging
 import platform
+import time
 
 from datetime import datetime
 
@@ -9,10 +10,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
 from django.db.models import Q
+from django.http import StreamingHttpResponse
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 
+from api_test.common.WriteExcel import Write
 from api_test.common.addTask import add
 from api_test.common.api_response import JsonResponse
 from api_test.common.common import record_dynamic, create_json, del_task_crontab
@@ -25,7 +28,8 @@ from api_test.serializers import AutomationGroupLevelFirstSerializer, Automation
     AutomationCaseApiSerializer, AutomationCaseApiListSerializer, AutomationTestTaskSerializer, \
     AutomationTestResultSerializer, ApiInfoSerializer, CorrelationDataSerializer, AutomationTestReportSerializer, \
     AutomationTestCaseDeserializer, AutomationCaseApiDeserializer, AutomationHeadDeserializer, \
-    AutomationParameterDeserializer, AutomationTestTaskDeserializer, ProjectSerializer
+    AutomationParameterDeserializer, AutomationTestTaskDeserializer, ProjectSerializer, ApiInfoDocSerializer, \
+    AutomationCaseDownloadSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -1345,3 +1349,40 @@ class TestReport(APIView):
                                                                 })
         else:
             return JsonResponse(code="999987", msg="用例不存在！")
+
+
+class DownLoadCase(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = ()
+
+    def get(self, request):
+        """
+        获取用例下载文档路径
+        :param request:
+        :return:
+        """
+        project_id = request.GET.get("project_id")
+        try:
+            if not project_id.isdecimal():
+                return JsonResponse(code="999996", msg="参数有误!")
+        except AttributeError:
+            return JsonResponse(code="999996", msg="参数有误！")
+        try:
+            obj = Project.objects.get(id=project_id)
+        except ObjectDoesNotExist:
+            return JsonResponse(code="999995", msg="项目不存在!")
+        pro_data = ProjectSerializer(obj)
+        if not pro_data.data["status"]:
+            return JsonResponse(code="999985", msg="该项目已禁用")
+        obi = AutomationTestCase.objects.filter(project=project_id).order_by("id")
+        data = AutomationCaseDownloadSerializer(obi, many=True)
+        path = "./api_test/ApiDoc/%s.xlsx" % 1
+        print(data.data)
+        result = Write(path).write_case(data.data)
+        if result:
+            return JsonResponse(code="999999", msg="成功！", data=data.data)
+        else:
+            return JsonResponse(code="999998", msg="失败")
+        # obn = ApiInfoSerializer(ApiInfo.objects.filter(project=project_id), many=True).data
+        # url = Write().write_api(str(obj), group_data=data, data=obn)
+        # return JsonResponse(code="999999", msg="成功!", data=url)

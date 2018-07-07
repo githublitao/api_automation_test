@@ -48,6 +48,7 @@ urlpatterns = [
     url(r'automation/add_case', Case.AddCase.as_view()),
     url(r'automation/update_case', Case.UpdateCase.as_view()),
     url(r'automation/del_case', Case.DelCase.as_view()),
+    url(r'automation/DownloadCase', Case.DownLoadCase.as_view()),
     url(r'automation/api_list', Case.ApiList.as_view()),
     url(r'automation/api_info', Case.CaseApiInfo.as_view()),
     url(r'automation/add_new_api', Case.AddNewApi.as_view()),
