@@ -17,7 +17,6 @@ class Write:
     def write_api(self, api_name, group_data=None, data=None):
         self.doc.add_paragraph(style="Title").add_run(api_name)
         index = 1
-        # print(group_data)
         if group_data:
             for item in group_data:
                 self.doc.add_paragraph(style="Heading 1").add_run(str(index)+"、"+item["name"]).font.size = 300000
@@ -91,7 +90,6 @@ class Write:
                     self.doc.add_paragraph("返回示例：", style="Body Text")
                     try:
                         if len(items['data']):
-                            print(items["data"])
                             data = eval(items['data'].replace("true", "True").replace("false", "False").replace("null", "None"))
                             self.doc.add_paragraph(style="Normal").add_run('{')
                             write_json(self.doc, data, 0.3)
@@ -192,9 +190,7 @@ def write_json(doc, data, num):
             if isinstance(data[n], dict):
                 write_json(doc, data[n], num+0.3)
             else:
-                print(data[n])
                 if data[n] is None:
-                    print("ls")
                     run = p.add_run(' null,')
                     run.font.color.rgb = RGBColor(186, 85, 211)
                 elif isinstance(data[n], bool):
