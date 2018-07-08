@@ -38,17 +38,22 @@ class Group(APIView):
         :return:
         """
         project_id = request.GET.get("project_id")
+        # 校验参数
         if not project_id:
             return JsonResponse(code="999996", msg="参数有误!")
         if not project_id.isdecimal():
             return JsonResponse(code="999996", msg="参数有误!")
+        # 验证项目是否存在
         try:
             pro_data = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在!")
+        # 序列化结果
         pro_data = ProjectSerializer(pro_data)
+        # 校验项目状态
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
+        # 查找项目下所有接口信息，并按id排序，序列化结果
         obi = ApiGroupLevelFirst.objects.filter(project=project_id).order_by("id")
         serialize = ApiGroupLevelFirstSerializer(obi, many=True)
         return JsonResponse(data=serialize.data, code="999999", msg="成功!")
@@ -68,7 +73,7 @@ class AddGroup(APIView):
             # 校验project_id类型为int
             if not isinstance(data["project_id"], int):
                 return JsonResponse(code="999996", msg="参数有误!")
-            # 必传参数 name, host
+            # 必传参数 name
             if not data["name"]:
                 return JsonResponse(code="999996", msg="参数有误!")
         except KeyError:
@@ -84,6 +89,7 @@ class AddGroup(APIView):
         result = self.parameter_check(data)
         if result:
             return result
+        # 校验项目状态
         try:
             obj = Project.objects.get(id=data["project_id"])
         except ObjectDoesNotExist:
@@ -91,11 +97,14 @@ class AddGroup(APIView):
         pro_data = ProjectSerializer(obj)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
+        # 反序列化
         serializer = ApiGroupLevelFirstDeserializer(data=data)
+        # 校验反序列化正确，正确则保存，外键为project
         if serializer.is_valid():
             serializer.save(project=obj)
         else:
             return JsonResponse(code="999998", msg="失败!")
+        # 新增接口操作
         record_dynamic(project=serializer.data.get("id"),
                        _type="添加", operationObject="接口分组", user=request.user.pk,
                        data="新增接口分组“%s”" % data["name"])
@@ -118,7 +127,7 @@ class UpdateNameGroup(APIView):
             # 校验project_id, id类型为int
             if not isinstance(data["project_id"], int) or not isinstance(data["id"], int):
                 return JsonResponse(code="999996", msg="参数有误!")
-            # 必传参数 name, host
+            # 必传参数 name
             if not data["name"]:
                 return JsonResponse(code="999996", msg="参数有误!")
         except KeyError:
@@ -190,6 +199,7 @@ class DelGroup(APIView):
         pro_data = ProjectSerializer(pro_data)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
+        # 根据项目id和host id查找，若存在则删除
         obi = ApiGroupLevelFirst.objects.filter(id=data["id"], project=data["project_id"])
         if obi:
             name = obi[0].name
@@ -230,9 +240,11 @@ class ApiList(APIView):
         pro_data = ProjectSerializer(pro_data)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
+        # 判断是否传分组id，则为所有接口列表
         if first_group_id:
             if not first_group_id.isdecimal():
                 return JsonResponse(code="999996", msg="参数有误!")
+            # 判断是否传name，这是根据name查找
             if name:
                 obi = ApiInfo.objects.filter(project=project_id, name__contains=name, apiGroupLevelFirst=first_group_id,
                                              ).order_by("id")
@@ -270,7 +282,7 @@ class AddApi(APIView):
         :return:
         """
         try:
-            # 校验project_id, id类型为int
+            # 校验必传参数
             if not data["project_id"] or not data["name"] or not data["httpType"] or not \
                     data["requestType"] or not data["apiAddress"] or not data["requestParameterType"] or not data["status"]:
                 return JsonResponse(code="999996", msg="参数有误!")
@@ -309,7 +321,7 @@ class AddApi(APIView):
         if len(api_name):
             return JsonResponse(code="999997", msg="存在相同名称!")
         else:
-            with transaction.atomic():
+            with transaction.atomic(): # 执行错误后，帮助事物回滚
                 try:
                     serialize = ApiInfoDeserializer(data=data)
                     if serialize.is_valid():
@@ -1054,8 +1066,8 @@ class DownLoad(APIView):
 def download_doc(request):
     url = request.GET.get("url")
     format_doc = url.split(".")
-    if format_doc[-1] == "doc":
-        file_name = str(int(time.time())) + ".doc"
+    if format_doc[-1] == "docx":
+        file_name = str(int(time.time())) + ".docx"
     else:
         file_name = str(int(time.time())) + ".xlsx"
 
