@@ -49,7 +49,7 @@ LOGGING = {
             'formatter': 'standard',
         },
         'console': {
-            'level': 'ERROR',
+            'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'standard'
         },
