@@ -1,0 +1,1075 @@
+2018-07-08 12:41:03,072,2484,root,ERROR,confighttp.py:197,<class 'requests.exceptions.ReadTimeout'>
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 258, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 357, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\packages\six.py", line 686, in reraise
+    raise value
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 389, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 309, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 187, in test_api
+    code, response_data = get(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 336, in get
+    response = requests.get(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 521, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+2018-07-08 12:42:14,037,2484,root,ERROR,confighttp.py:197,<class 'requests.exceptions.ReadTimeout'>
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 258, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 357, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\packages\six.py", line 686, in reraise
+    raise value
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 389, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 309, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 187, in test_api
+    code, response_data = get(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 336, in get
+    response = requests.get(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 521, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+2018-07-08 12:49:29,607,2484,root,ERROR,confighttp.py:197,<class 'requests.exceptions.ReadTimeout'>
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 258, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 357, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\packages\six.py", line 686, in reraise
+    raise value
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 389, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 309, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 187, in test_api
+    code, response_data = get(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 336, in get
+    response = requests.get(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 521, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+2018-07-08 12:50:01,452,2484,root,ERROR,confighttp.py:197,<class 'requests.exceptions.ReadTimeout'>
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 258, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 357, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\packages\six.py", line 686, in reraise
+    raise value
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 389, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 309, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 187, in test_api
+    code, response_data = get(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 336, in get
+    response = requests.get(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 521, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+2018-07-08 12:51:32,310,2484,root,ERROR,confighttp.py:197,<class 'requests.exceptions.ReadTimeout'>
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 258, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 357, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\packages\six.py", line 686, in reraise
+    raise value
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 389, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 309, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 187, in test_api
+    code, response_data = get(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 336, in get
+    response = requests.get(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 521, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+2018-07-08 12:54:21,763,2484,root,ERROR,confighttp.py:79,'NoneType' object is not subscriptable
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+TypeError: 'NoneType' object is not subscriptable
+2018-07-08 12:56:28,775,2484,root,ERROR,confighttp.py:79,unexpected EOF while parsing (<string>, line 0)
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 75, in test_api
+    [0]['fields']["responseData"])
+  File "<string>", line 0
+    
+    ^
+SyntaxError: unexpected EOF while parsing
+2018-07-08 12:59:39,896,6856,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/add_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 105, in post
+    Project.objects.get(name=data["name"])
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 403, in get
+    self.model._meta.object_name
+api_test.models.DoesNotExist: Project matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 117, in post
+    self.add_project_member(project_serializer.data.get("id"), request.user.pk)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 88, in add_project_member
+    user = User.objects.get(id=user)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 403, in get
+    self.model._meta.object_name
+django.contrib.auth.models.DoesNotExist: User matching query does not exist.
+2018-07-08 12:59:40,708,6856,django.server,ERROR,basehttp.py:124,"POST /api/project/add_project HTTP/1.1" 500 18524
+2018-07-08 12:59:42,874,6856,root,ERROR,confighttp.py:80,unexpected EOF while parsing (<string>, line 0)
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 76, in test_api
+    [0]['fields']["responseData"])
+  File "<string>", line 0
+    
+    ^
+SyntaxError: unexpected EOF while parsing
+2018-07-08 13:01:58,238,5544,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/add_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 105, in post
+    Project.objects.get(name=data["name"])
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 403, in get
+    self.model._meta.object_name
+api_test.models.DoesNotExist: Project matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 117, in post
+    self.add_project_member(project_serializer.data.get("id"), request.user.pk)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 88, in add_project_member
+    user = User.objects.get(id=user)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 403, in get
+    self.model._meta.object_name
+django.contrib.auth.models.DoesNotExist: User matching query does not exist.
+2018-07-08 13:01:58,578,5544,django.server,ERROR,basehttp.py:124,"POST /api/project/add_project HTTP/1.1" 500 18524
+2018-07-08 13:02:00,516,5544,root,ERROR,confighttp.py:80,unexpected EOF while parsing (<string>, line 0)
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 76, in test_api
+    [0]['fields']["responseData"])
+  File "<string>", line 0
+    
+    ^
+SyntaxError: unexpected EOF while parsing
+2018-07-08 13:02:43,421,5544,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/add_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 105, in post
+    Project.objects.get(name=data["name"])
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 403, in get
+    self.model._meta.object_name
+api_test.models.DoesNotExist: Project matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 117, in post
+    self.add_project_member(project_serializer.data.get("id"), request.user.pk)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 88, in add_project_member
+    user = User.objects.get(id=user)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 403, in get
+    self.model._meta.object_name
+django.contrib.auth.models.DoesNotExist: User matching query does not exist.
+2018-07-08 13:02:43,541,5544,django.server,ERROR,basehttp.py:124,"POST /api/project/add_project HTTP/1.1" 500 18524
+2018-07-08 13:05:57,877,12520,root,ERROR,confighttp.py:198,<class 'requests.exceptions.ReadTimeout'>
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 258, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 357, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\packages\six.py", line 686, in reraise
+    raise value
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 389, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 309, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 190, in test_api
+    code, response_data = post(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 313, in post
+    response = requests.post(url=address, data=data, headers=header, timeout=8)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 112, in post
+    return request('post', url, data=data, json=json, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 521, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+2018-07-08 13:05:59,919,12520,root,ERROR,confighttp.py:79,unexpected EOF while parsing (<string>, line 0)
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 75, in test_api
+    [0]['fields']["responseData"])
+  File "<string>", line 0
+    
+    ^
+SyntaxError: unexpected EOF while parsing
+2018-07-08 13:06:10,210,12520,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/add_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 105, in post
+    Project.objects.get(name=data["name"])
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 403, in get
+    self.model._meta.object_name
+api_test.models.DoesNotExist: Project matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1066, in _read_bytes
+    data = self._rfile.read(num_bytes)
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+TimeoutError: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1032, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1074, in _read_bytes
+    "Lost connection to MySQL server during query (%s)" % (e,))
+pymysql.err.OperationalError: (2013, 'Lost connection to MySQL server during query ([WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 115, in post
+    _type="添加", operationObject="项目", user=request.user.pk, data=data["name"])
+  File "E:\project\api_automation_test\api_test\common\common.py", line 213, in record_dynamic
+    dynamic_serializer.save()
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 214, in save
+    self.instance = self.create(validated_data)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 917, in create
+    instance = ModelClass.objects.create(**validated_data)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 417, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\sql\compiler.py", line 1281, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1032, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1074, in _read_bytes
+    "Lost connection to MySQL server during query (%s)" % (e,))
+django.db.utils.OperationalError: (2013, 'Lost connection to MySQL server during query ([WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)')
+2018-07-08 13:06:10,750,12520,django.server,ERROR,basehttp.py:124,"POST /api/project/add_project HTTP/1.1" 500 24655
+2018-07-08 13:06:39,639,10628,django.request,ERROR,exception.py:118,Internal Server Error: /api/project/add_project
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 105, in post
+    Project.objects.get(name=data["name"])
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 403, in get
+    self.model._meta.object_name
+api_test.models.DoesNotExist: Project matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 117, in post
+    self.add_project_member(project_serializer.data.get("id"), request.user.pk)
+  File "E:\project\api_automation_test\api_test\api\projectList.py", line 88, in add_project_member
+    user = User.objects.get(id=user)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 403, in get
+    self.model._meta.object_name
+django.contrib.auth.models.DoesNotExist: User matching query does not exist.
+2018-07-08 13:06:39,964,10628,django.server,ERROR,basehttp.py:124,"POST /api/project/add_project HTTP/1.1" 500 18523
+2018-07-08 13:06:41,971,10628,root,ERROR,confighttp.py:79,unexpected EOF while parsing (<string>, line 0)
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 75, in test_api
+    [0]['fields']["responseData"])
+  File "<string>", line 0
+    
+    ^
+SyntaxError: unexpected EOF while parsing
+2018-07-08 13:07:16,694,10628,root,ERROR,confighttp.py:151,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 147, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[-1]['fields']["responseData"])
+IndexError: list index out of range
+2018-07-08 13:07:18,763,10628,root,ERROR,confighttp.py:79,unexpected EOF while parsing (<string>, line 0)
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 75, in test_api
+    [0]['fields']["responseData"])
+  File "<string>", line 0
+    
+    ^
+SyntaxError: unexpected EOF while parsing
+2018-07-08 13:07:24,645,10628,root,ERROR,automationCase.py:1062,decoding to str: need a bytes-like object, int found
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1060, in post
+    _id=data["id"], project_id=data["project_id"])
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 101, in test_api
+    parameter[key_] = re.sub(pattern, param_data, value)
+  File "D:\Program Files (x86)\python\lib\re.py", line 191, in sub
+    return _compile(pattern, flags).sub(repl, string, count)
+  File "D:\Program Files (x86)\python\lib\re.py", line 326, in _subx
+    template = _compile_repl(template, pattern)
+  File "D:\Program Files (x86)\python\lib\re.py", line 317, in _compile_repl
+    return sre_parse.parse_template(repl, pattern)
+  File "D:\Program Files (x86)\python\lib\sre_parse.py", line 879, in parse_template
+    s = Tokenizer(source)
+  File "D:\Program Files (x86)\python\lib\sre_parse.py", line 227, in __init__
+    string = str(string, 'latin1')
+TypeError: decoding to str: need a bytes-like object, int found
+2018-07-08 13:07:27,354,10628,root,ERROR,automationCase.py:1062,decoding to str: need a bytes-like object, int found
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1060, in post
+    _id=data["id"], project_id=data["project_id"])
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 101, in test_api
+    parameter[key_] = re.sub(pattern, param_data, value)
+  File "D:\Program Files (x86)\python\lib\re.py", line 191, in sub
+    return _compile(pattern, flags).sub(repl, string, count)
+  File "D:\Program Files (x86)\python\lib\re.py", line 326, in _subx
+    template = _compile_repl(template, pattern)
+  File "D:\Program Files (x86)\python\lib\re.py", line 317, in _compile_repl
+    return sre_parse.parse_template(repl, pattern)
+  File "D:\Program Files (x86)\python\lib\sre_parse.py", line 879, in parse_template
+    s = Tokenizer(source)
+  File "D:\Program Files (x86)\python\lib\sre_parse.py", line 227, in __init__
+    string = str(string, 'latin1')
+TypeError: decoding to str: need a bytes-like object, int found
+2018-07-08 13:08:23,805,3924,root,ERROR,confighttp.py:79,'NoneType' object is not subscriptable
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+TypeError: 'NoneType' object is not subscriptable
+2018-07-08 13:09:36,414,10804,root,ERROR,confighttp.py:79,'NoneType' object is not subscriptable
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+TypeError: 'NoneType' object is not subscriptable
+2018-07-08 13:09:56,836,10804,root,ERROR,automationCase.py:1062,decoding to str: need a bytes-like object, int found
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1060, in post
+    _id=data["id"], project_id=data["project_id"])
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 101, in test_api
+    parameter[key_] = re.sub(pattern, param_data, value)
+  File "D:\Program Files (x86)\python\lib\re.py", line 191, in sub
+    return _compile(pattern, flags).sub(repl, string, count)
+  File "D:\Program Files (x86)\python\lib\re.py", line 326, in _subx
+    template = _compile_repl(template, pattern)
+  File "D:\Program Files (x86)\python\lib\re.py", line 317, in _compile_repl
+    return sre_parse.parse_template(repl, pattern)
+  File "D:\Program Files (x86)\python\lib\sre_parse.py", line 879, in parse_template
+    s = Tokenizer(source)
+  File "D:\Program Files (x86)\python\lib\sre_parse.py", line 227, in __init__
+    string = str(string, 'latin1')
+TypeError: decoding to str: need a bytes-like object, int found
+2018-07-08 13:11:34,986,10144,root,ERROR,confighttp.py:79,'NoneType' object is not subscriptable
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+TypeError: 'NoneType' object is not subscriptable
+2018-07-08 13:12:06,823,8308,root,ERROR,automationCase.py:1062,decoding to str: need a bytes-like object, int found
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1060, in post
+    _id=data["id"], project_id=data["project_id"])
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 103, in test_api
+    parameter[key_] = re.sub(pattern, param_data, value)
+  File "D:\Program Files (x86)\python\lib\re.py", line 191, in sub
+    return _compile(pattern, flags).sub(repl, string, count)
+  File "D:\Program Files (x86)\python\lib\re.py", line 326, in _subx
+    template = _compile_repl(template, pattern)
+  File "D:\Program Files (x86)\python\lib\re.py", line 317, in _compile_repl
+    return sre_parse.parse_template(repl, pattern)
+  File "D:\Program Files (x86)\python\lib\sre_parse.py", line 879, in parse_template
+    s = Tokenizer(source)
+  File "D:\Program Files (x86)\python\lib\sre_parse.py", line 227, in __init__
+    string = str(string, 'latin1')
+TypeError: decoding to str: need a bytes-like object, int found
+2018-07-08 13:13:23,098,6352,root,ERROR,confighttp.py:79,'NoneType' object is not subscriptable
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+TypeError: 'NoneType' object is not subscriptable
+2018-07-08 13:18:49,928,6352,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/update_name_group
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1066, in _read_bytes
+    data = self._rfile.read(num_bytes)
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+TimeoutError: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1032, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1074, in _read_bytes
+    "Lost connection to MySQL server during query (%s)" % (e,))
+pymysql.err.OperationalError: (2013, 'Lost connection to MySQL server during query ([WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 193, in post
+    if not pro_data.data["status"]:
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 537, in data
+    ret = super(Serializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 504, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\fields.py", line 1816, in to_representation
+    return method(value)
+  File "E:\project\api_automation_test\api_test\serializers.py", line 63, in get_dynamicCount
+    return obj.dynamic_project.all().count()
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 387, in count
+    return self.query.get_count(using=self.db)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\sql\query.py", line 491, in get_count
+    number = obj.get_aggregation(using, ['__count'])['__count']
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\sql\query.py", line 476, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\sql\compiler.py", line 1064, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1032, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1074, in _read_bytes
+    "Lost connection to MySQL server during query (%s)" % (e,))
+django.db.utils.OperationalError: (2013, 'Lost connection to MySQL server during query ([WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)')
+2018-07-08 13:18:50,236,6352,django.server,ERROR,basehttp.py:124,"POST /api/automation/update_name_group HTTP/1.1" 500 23659
+2018-07-08 13:21:30,546,4840,root,ERROR,confighttp.py:197,<class 'requests.exceptions.ReadTimeout'>
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 258, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 357, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\packages\six.py", line 686, in reraise
+    raise value
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 389, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 309, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 187, in test_api
+    code, response_data = get(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 336, in get
+    response = requests.get(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 521, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+2018-07-08 13:22:01,291,4840,root,ERROR,confighttp.py:197,<class 'requests.exceptions.ReadTimeout'>
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 258, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 357, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\packages\six.py", line 686, in reraise
+    raise value
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 389, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 309, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 187, in test_api
+    code, response_data = get(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 336, in get
+    response = requests.get(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 521, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+2018-07-08 13:25:28,598,4840,root,ERROR,confighttp.py:197,<class 'requests.exceptions.ReadTimeout'>
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 258, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 357, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\packages\six.py", line 686, in reraise
+    raise value
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 389, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 309, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 187, in test_api
+    code, response_data = get(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 336, in get
+    response = requests.get(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 521, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+2018-07-08 13:29:10,972,3076,root,ERROR,confighttp.py:151,'data'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 149, in test_api
+    param_data = param_data[j]
+KeyError: 'data'
+2018-07-08 13:29:30,606,3076,root,ERROR,confighttp.py:151,'data'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 149, in test_api
+    param_data = param_data[j]
+KeyError: 'data'
+2018-07-08 13:31:44,683,116,root,ERROR,confighttp.py:151,'data'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 149, in test_api
+    param_data = param_data[j]
+KeyError: 'data'
+2018-07-08 13:31:44,944,116,root,ERROR,confighttp.py:151,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 147, in test_api
+    AutomationTestResult.objects.filter(automationCaseApi=api_id[0])))[-1]['fields']["responseData"])
+IndexError: list index out of range
+2018-07-08 13:31:45,177,116,root,ERROR,confighttp.py:151,'data'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 149, in test_api
+    param_data = param_data[j]
+KeyError: 'data'
+2018-07-08 13:31:45,497,116,root,ERROR,confighttp.py:151,'data'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 149, in test_api
+    param_data = param_data[j]
+KeyError: 'data'
+2018-07-08 13:31:45,963,116,root,ERROR,confighttp.py:151,'data'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 149, in test_api
+    param_data = param_data[j]
+KeyError: 'data'
+2018-07-08 13:31:46,154,116,root,ERROR,confighttp.py:151,'data'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 149, in test_api
+    param_data = param_data[j]
+KeyError: 'data'
+2018-07-08 13:31:52,195,116,root,ERROR,confighttp.py:151,'data'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 149, in test_api
+    param_data = param_data[j]
+KeyError: 'data'
+2018-07-08 13:31:52,790,116,root,ERROR,confighttp.py:151,'data'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 149, in test_api
+    param_data = param_data[j]
+KeyError: 'data'
+2018-07-08 13:31:52,960,116,root,ERROR,confighttp.py:151,'data'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 149, in test_api
+    param_data = param_data[j]
+KeyError: 'data'
+2018-07-08 13:32:05,736,116,root,ERROR,confighttp.py:151,'data'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 149, in test_api
+    param_data = param_data[j]
+KeyError: 'data'
+2018-07-08 13:32:06,152,116,root,ERROR,confighttp.py:151,'data'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 149, in test_api
+    param_data = param_data[j]
+KeyError: 'data'
+2018-07-08 13:32:06,359,116,root,ERROR,confighttp.py:151,'data'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 149, in test_api
+    param_data = param_data[j]
+KeyError: 'data'
