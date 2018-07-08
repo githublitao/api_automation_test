@@ -98,7 +98,7 @@ def test_api(host_id, case_id, project_id, _id):
                                        _result='ERROR', code="", response_data="")
                         return 'fail'
                     pattern = re.compile(r'<response\[.*]')
-                    parameter[key_] = re.sub(pattern, param_data, value)
+                    parameter[key_] = re.sub(pattern, str(param_data), value)
 
                 else:
                     parameter[key_] = value
@@ -107,7 +107,7 @@ def test_api(host_id, case_id, project_id, _id):
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                host=host.name,
                                status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
-                               _result='ERROR', code="", response_data="")
+                               _result='ERROR', code="", response_data="关联有误！")
                 return 'fail'
         if data["formatRaw"]:
             request_parameter_type = "raw"
@@ -153,7 +153,7 @@ def test_api(host_id, case_id, project_id, _id):
                                        host=host.name,
                                        status_code=http_code, examine_type=examine_type,
                                        examine_data=response_parameter_list,
-                                       _result='ERROR', code="", response_data="")
+                                       _result='ERROR', code="", response_data="关联有误！")
                         return 'fail'
                 elif interrelate_type[0] == "Regular":
                     api_id = re.findall('(?<=<response\[Regular]\[).*?(?=\])', value)
@@ -170,14 +170,14 @@ def test_api(host_id, case_id, project_id, _id):
                                    _result='ERROR', code="", response_data="")
                     return 'fail'
                 pattern = re.compile(r'<response\[.*]')
-                header[key_] = re.sub(pattern, param_data, value)
+                header[key_] = re.sub(pattern, str(param_data), value)
 
             except Exception as e:
                 logging.exception(e)
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                host=host.name,
                                status_code=http_code, examine_type=examine_type, examine_data=response_parameter_list,
-                               _result='ERROR', code="", response_data="")
+                               _result='ERROR', code="", response_data="关联有误！")
                 return 'fail'
         else:
             header[key_] = value
