@@ -38,7 +38,7 @@
                 <el-collapse v-model="activeNames" @change="handleChange">
                     <el-collapse-item title="请求头部" name="1">
                         <el-table :data="form.head" highlight-current-row>
-                            <el-table-column prop="name" label="标签" min-width="30%" sortable>
+                            <el-table-column prop="name" label="标签" min-width="28%" sortable>
                                 <template slot-scope="scope">
                                     <el-select placeholder="head标签" filterable v-model="scope.row.name" style="width: 100%">
                                         <el-option v-for="(item,index) in header" :key="index+''" :label="item.label" :value="item.value"></el-option>
@@ -51,18 +51,18 @@
                                     <el-input v-model.trim="scope.row.value" :value="scope.row.value" placeholder="请输入内容"></el-input>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="interrelate" label="是否关联" min-width="10%" sortable>
+                            <el-table-column prop="interrelate" label="是否关联" min-width="13%" sortable>
                                 <template slot-scope="scope">
                                     <el-switch v-model="scope.row.interrelate">
                                     </el-switch>
                                 </template>
                             </el-table-column>
-                            <el-table-column min-width="5%">
+                            <el-table-column min-width="7%">
                                 <template slot-scope="scope">
                                     <el-button type="primary" size="mini" style="margin-bottom: 5px" v-show="scope.row.interrelate" @click="handleCorrelation(scope.$index, scope.row)">关联</el-button>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="操作" min-width="15%">
+                            <el-table-column label="操作" min-width="7%">
                                 <template slot-scope="scope">
                                     <i class="el-icon-delete" style="font-size:30px;cursor:pointer;" @click="delHead(scope.$index)"></i>
                                 </template>
@@ -83,7 +83,7 @@
                             </el-row>
                         </div>
                         <el-table :data="form.parameter" highlight-current-row :class="ParameterTyep? 'parameter-a': 'parameter-b'">
-                            <el-table-column prop="name" label="参数名" min-width="30%" sortable>
+                            <el-table-column prop="name" label="参数名" min-width="28%" sortable>
                                 <template slot-scope="scope">
                                     <el-input v-model.trim="scope.row.name" :value="scope.row.name" placeholder="请输入参数值"></el-input>
                                 </template>
@@ -93,18 +93,18 @@
                                     <el-input v-model.trim="scope.row.value" :value="scope.row.value" placeholder="请输入参数值"></el-input>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="interrelate" label="是否关联" min-width="10%" sortable>
+                            <el-table-column prop="interrelate" label="是否关联" min-width="13%" sortable>
                                 <template slot-scope="scope">
                                     <el-switch v-model="scope.row.interrelate">
                                     </el-switch>
                                 </template>
                             </el-table-column>
-                            <el-table-column min-width="5%">
+                            <el-table-column min-width="7%">
                                 <template slot-scope="scope">
                                     <el-button type="primary" size="mini" style="margin-bottom: 5px" v-show="scope.row.interrelate" @click="handleCorrelation(scope.$index, scope.row)">关联</el-button>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="操作" min-width="15%">
+                            <el-table-column label="操作" min-width="7%">
                                 <template slot-scope="scope">
                                     <i class="el-icon-delete" style="font-size:30px;cursor:pointer;" @click="delParameter(scope.$index)"></i>
                                 </template>
@@ -538,7 +538,7 @@
         position: absolute;
         margin-left: 7px;
         padding-left: 10px;
-        width: 85%;
+        width: 77%;
         height: 25px;
         left: 1px;
         top: 1px;
