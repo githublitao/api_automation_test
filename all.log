@@ -1073,3 +1073,15 @@ Traceback (most recent call last):
   File "E:\project\api_automation_test\api_test\common\confighttp.py", line 149, in test_api
     param_data = param_data[j]
 KeyError: 'data'
+2018-07-09 10:47:29,273,6608,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/download_doc
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 1082, in download_doc
+    _file = open(url, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: '[object Object]'
+2018-07-09 10:47:29,875,6608,django.server,ERROR,basehttp.py:124,"GET /api/api/download_doc?url=[object%20Object] HTTP/1.1" 500 70333

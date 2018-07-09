@@ -1,3 +1,4 @@
+import datetime
 import time
 from crontab import CronTab
 import sys
@@ -23,6 +24,9 @@ logger.addHandler(ch)
 
 
 def task_start_timing():
+    now_minute = datetime.datetime.now().minute
+    now_hour = datetime.datetime.now().hour
+    # now_day = datetime.datetime.now().day
     my_user_cron = CronTab(user=True)
     my_user_cron.remove_all(comment=sys.argv[8])
     logging.info('测试开始')
@@ -34,11 +38,11 @@ def task_start_timing():
     if sys.argv[2] == 'm':
         _time = '*/%s * * * *' % sys.argv[1]
     elif sys.argv[2] == 'h':
-        _time = '* */%s * * *' % sys.argv[1]
+        _time = '%s */%s * * *' % (now_minute, sys.argv[1])
     elif sys.argv[2] == 'd':
-        _time = '* * */%s * *' % sys.argv[1]
+        _time = '%s %s */%s * *' % (now_minute, now_hour, sys.argv[1])
     else:
-        _time = '* * * * */%s' % sys.argv[1]
+        _time = '%s %s * * */%s' % (now_minute, now_hour, sys.argv[1])
     job.setall(_time)
     my_user_cron.write()
     logging.info('添加测试结束时间')
