@@ -4,6 +4,7 @@
   "description": "vue admin project",
   "author": "litao <943571775@qq.com>",
   "license": "MIT",
+  "analyz": "NODE_ENV=production npm_config_report=true npm run build",
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",

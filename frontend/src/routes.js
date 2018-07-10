@@ -1,32 +1,31 @@
-import NotFound from './views/common/404.vue'
-import Login from './views/common/Login.vue'
-import Home from './views/Home.vue'
-// import robot from './views/robot/robot.vue'
-import About from './views/About.vue'
-import projectList from './views/Projectlist.vue'
-import ProjectInfo from './views/project.vue'
-import globalHost from './views/project/global/Globalhost.vue'
-import API from './views/project/api/API.vue'
-import ApiList from './views/project/api/ApiList.vue'
-import ApiListGroup from './views/project/api/ApiListGroup.vue'
-import FestTest from './views/project/api/FestTest.vue'
-import addApi from './views/project/api/Addapi.vue'
-import detail from './views/project/api/updateApi/ApiForm.vue'
-import ApiInfo from './views/project/api/updateApi/ApiInfo.vue'
-import testApi from './views/project/api/updateApi/TestApi.vue'
-import UpdateApi from './views/project/api/updateApi/UpdateApi.vue'
-import ApiDynamic from './views/project/api/updateApi/ApiDynamic.vue'
-import AutomationTest from './views/project/automation/AutomationTest.vue'
-import CaseList from './views/project/automation/CaseList.vue'
-import CaseListGroup from './views/project/automation/CaseListGroup.vue'
-import CaseApiList from './views/project/automation/CaseApiList.vue'
-import AddCaseApi from './views/project/automation/AddCaseApi.vue'
-import UpdateCaseApi from './views/project/automation/UpdateCaseApi.vue'
-import TestReport from './views/project/automation/TestReport.vue'
-import ProjectMember from './views/project/ProjectMember.vue'
-import ProjectDynamic from './views/project/ProjectDynamic.vue'
-import ProjectTitle from './views/project/projectTitle/ProjectTitle.vue'
-import ProjectReport from './views/project/projectReport'
+const NotFound = () => import('./views/common/404.vue');
+const Login = () => import('./views/common/Login.vue');
+const Home = () => import('./views/Home.vue');
+const About = () => import('./views/About.vue');
+const projectList = () => import('./views/Projectlist.vue');
+const ProjectInfo = () => import('./views/project.vue');
+const globalHost = () => import('./views/project/global/Globalhost.vue');
+const API = () => import('./views/project/api/API.vue');
+const ApiList = () => import('./views/project/api/ApiList.vue');
+const ApiListGroup = () => import('./views/project/api/ApiListGroup.vue');
+const FestTest = () => import('./views/project/api/FestTest.vue');
+const addApi = () => import('./views/project/api/Addapi.vue');
+const detail = () => import('./views/project/api/updateApi/ApiForm.vue');
+const ApiInfo = () => import('./views/project/api/updateApi/ApiInfo.vue');
+const testApi = () => import('./views/project/api/updateApi/TestApi.vue');
+const UpdateApi = () => import('./views/project/api/updateApi/UpdateApi.vue');
+const ApiDynamic = () => import('./views/project/api/updateApi/ApiDynamic.vue');
+const AutomationTest = () => import('./views/project/automation/AutomationTest.vue');
+const CaseList = () => import('./views/project/automation/CaseList.vue');
+const CaseListGroup = () => import('./views/project/automation/CaseListGroup.vue');
+const CaseApiList = () => import('./views/project/automation/CaseApiList.vue');
+const AddCaseApi = () => import('./views/project/automation/AddCaseApi.vue');
+const UpdateCaseApi = () => import('./views/project/automation/UpdateCaseApi.vue');
+const TestReport = () => import('./views/project/automation/TestReport.vue');
+const ProjectMember = () => import('./views/project/ProjectMember.vue');
+const ProjectDynamic = () => import('./views/project/ProjectDynamic.vue');
+const ProjectTitle = () => import('./views/project/projectTitle/ProjectTitle.vue');
+const ProjectReport = () => import('./views/project/projectReport');
 
 let routes = [
     {
