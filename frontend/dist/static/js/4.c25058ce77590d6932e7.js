@@ -1,4 +1,4 @@
-webpackJsonp([4],{169:function(e,t,n){n(805);var r=n(71)(n(500),n(837),"data-v-0774f948",null);e.exports=r.exports},190:function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});t.test="http://120.79.232.23:8000"},191:function(e,t,n){var r,o;/*!
+webpackJsonp([4],{169:function(e,t,n){n(805);var r=n(71)(n(500),n(837),"data-v-0774f948",null);e.exports=r.exports},190:function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});t.test="http://192.168.193.130:8000"},191:function(e,t,n){var r,o;/*!
  * jQuery JavaScript Library v3.3.1
  * https://jquery.com/
  *
