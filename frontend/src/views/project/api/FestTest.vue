@@ -299,7 +299,7 @@
                             if (a) {
                                 headers[a] = self.form.head[i]["value"]
                             }
-                        }s
+                        }
                         let url = self.form.Http4 + "://" + self.form.url + host;
                         let _type = self.radio;
                         if (_type === 'form-data') {

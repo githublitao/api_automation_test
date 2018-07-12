@@ -760,7 +760,7 @@ class AddNewApi(APIView):
                 api_ids = AutomationCaseApi.objects.get(id=api_id)
                 if data["examineType"] == "json":
                     try:
-                        response = eval(data["responseData"].replace("true", "True").replace("false", "False").replace("null", None))
+                        response = eval(data["responseData"].replace("true", "True").replace("false", "False").replace("null", "None"))
                         api = "<response[JSON][%s]>" % api_id
                         create_json(api_ids, api, response)
                     except KeyError:
@@ -774,9 +774,6 @@ class AddNewApi(APIView):
                                                    type='Regular').save()
                     except KeyError:
                         pass
-                # record_dynamic(project=data["project_id"],
-                #                _type="新增", operationObject="用例接口", user=request.user.pk,
-                #                data="用例“%s”新增接口\"%s\"" % (obj.caseName, data["name"]))
                 return JsonResponse(data={"api_id": api_id}, code="999999", msg="成功！")
             return JsonResponse(code="999998", msg="失败！")
 
