@@ -165,7 +165,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'api_test',
         'USER': 'root',
-        'PASSWORD': 'lt1910301',
+        'PASSWORD': 'lt19910301',
         'HOST': '172.18.162.26',
         'PORT': '3306',
     }
