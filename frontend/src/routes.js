@@ -3,7 +3,7 @@ const Login = () => import('./views/common/Login.vue');
 const Home = () => import('./views/Home.vue');
 const About = () => import('./views/About.vue');
 const projectList = () => import('./views/Projectlist.vue');
-const ProjectInfo = () => import('./views/project.vue');
+const ProjectInfo = () => import('./views/Project.vue');
 const globalHost = () => import('./views/project/global/Globalhost.vue');
 const API = () => import('./views/project/api/API.vue');
 const ApiList = () => import('./views/project/api/ApiList.vue');
@@ -25,7 +25,7 @@ const TestReport = () => import('./views/project/automation/TestReport.vue');
 const ProjectMember = () => import('./views/project/ProjectMember.vue');
 const ProjectDynamic = () => import('./views/project/ProjectDynamic.vue');
 const ProjectTitle = () => import('./views/project/projectTitle/ProjectTitle.vue');
-const ProjectReport = () => import('./views/project/projectReport');
+const ProjectReport = () => import('./views/project/ProjectReport');
 
 let routes = [
     {
