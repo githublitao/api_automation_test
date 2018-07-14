@@ -171,7 +171,6 @@ def test_api(host_id, case_id, project_id, _id):
                     return 'fail'
                 pattern = re.compile(r'<response\[.*]')
                 header[key_] = re.sub(pattern, str(param_data), value)
-
             except Exception as e:
                 logging.exception(e)
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,

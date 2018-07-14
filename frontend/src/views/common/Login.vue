@@ -40,9 +40,7 @@
 
 <script>
     /* eslint-disable */
-    import { test } from '../../api/api'
-    import $ from 'jquery'
-    // import NProgress from 'nprogress'
+    import { requestLogin, recordVisitor } from '../../api/api';
     export default {
         data () {
             return {
@@ -68,45 +66,40 @@
             handleReset2 () {
                 this.$refs.ruleForm2.resetFields()
             },
-            handleSubmit2 (ev) {
-                var _this = this
-                // var _this = this
+            handleSubmit2(ev) {
+                var _this = this;
                 this.$refs.ruleForm2.validate((valid) => {
                     if (valid) {
-                        // _this.$router.replace('/table')
-                        _this.logining = true
-                        // NProgress.start()
-                        $.ajax({
-                            type: "post",
-                            url: test+"/api/user/login",
-                            async: true,
-                            data: {'username': this.ruleForm2.account, 'password': this.ruleForm2.checkPass},
-                            timeout: 5000,
-                            success: function(data) {
-                                _this.logining = false
-                                if (data.code === '999999') {
-                                    sessionStorage.setItem('username', JSON.stringify(data.data.first_name));
-                                    sessionStorage.setItem('token', JSON.stringify(data.data.key));
-                                    console.log(_this.$route)
-                                    if (_this.$route.query.url) {
-                                        _this.$router.push(_this.$route.query.url);
-                                    } else {
-                                        _this.$router.push('/projectList');
-                                    }
+                        //_this.$router.replace('/table');
+                        this.logining = true;
+                        //NProgress.start();
+                        var loginParams = { username: this.ruleForm2.account, password: this.ruleForm2.checkPass };
+                        requestLogin(loginParams).then(_data => {
+                            _this.logining = false;
+                            let { msg, code, data } = _data;
+                            console.log(_data);
+                            if (code === '999999') {
+                                sessionStorage.setItem('username', JSON.stringify(data.first_name));
+                                sessionStorage.setItem('token', JSON.stringify(data.key));
+                                console.log(_this.$route);
+                                if (_this.$route.query.url) {
+                                    _this.$router.push(_this.$route.query.url);
+                                } else {
+                                    _this.$router.push('/projectList');
                                 }
-                                else {
-                                    _this.$message.error({
-                                        message: data.msg,
-                                        center: true
-                                    })
-                                }
-                            },
-                        })
+                            }
+                            else {
+                                _this.$message.error({
+                                    message: msg,
+                                    center: true
+                                })
+                            }
+                        });
                     } else {
                         console.log('error submit!!');
-                        return false
+                        return false;
                     }
-                })
+                });
             },
             getVisitor() {
                 let self = this;
@@ -145,71 +138,38 @@
                     "longitude": data.position.getLng(),
                     "latitude": data.position.getLat(),
                 };
-                $.ajax({
-                    type: "post",
-                    url: test+"/api/user/VisitorRecord",
-                    async: true,
-                    data: JSON.stringify(param),
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        if (data.code === '999999') {
+                recordVisitor(param).then(_data => {
+                    let { msg, code, data } = _data;
+                    if (code === '999999') {
                             console.log("成功")
-                            // self.total = data.data.total;
-                            // self.project = data.data.data
                         }
                         else {
                             console.log("失败")
-                            // self.$message.error({
-                            //     message: data.msg,
-                            //     center: true,
-                            // })
                         }
-                    },
-                })
-                // document.getElementById('tip').innerHTML = str.join('<br>');
+                });
             },
             //解析定位错误信息
             onError(data) {
-                console.log("定位失败")
+                console.log("定位失败");
                 var param = {
                     "success": 0,
                 };
-                $.ajax({
-                    type: "post",
-                    url: test+"/api/user/VisitorRecord",
-                    async: true,
-                    data: JSON.stringify(param),
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        if (data.code === '999999') {
-                            console.log("成功")
-                            // self.total = data.data.total;
-                            // self.project = data.data.data
-                        }
-                        else {
-                            console.log("失败")
-                            // self.$message.error({
-                            //     message: data.msg,
-                            //     center: true,
-                            // })
-                        }
-                    },
-                })
+                recordVisitor(param).then(_data => {
+                    let { msg, code, data } = _data;
+                    if (code === '999999') {
+                        console.log("成功")
+                    }
+                    else {
+                        console.log("失败")
+                    }
+                });
                 // document.getElementById('tip').innerHTML = '定位失败';
             },
             carouselPicture(){
                 this.ab(1)
-                // this.ab(2)
-                // this.ab(3)
             },
             ab(num){
-                var carouse = document.getElementsByClassName("carouse")
+                var carouse = document.getElementsByClassName("carouse");
                 carouse.item(0).id = 'carouse'+num;
             }
 

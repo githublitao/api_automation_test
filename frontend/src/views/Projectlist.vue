@@ -123,6 +123,8 @@
 <script>
 	//import NProgress from 'nprogress'
 import { test } from '../api/api'
+     import { getProject, delProject, disableProject, enableProject,
+updateProject, addProject} from '../api/api';
 import $ from 'jquery'
 // import ElRow from "element-ui/packages/row/src/row";
 export default {
@@ -195,34 +197,27 @@ export default {
 
 		}
 	},
-methods: {
+    methods: {
 		// 获取项目列表
 		getProjectList() {
 			this.listLoading = true;
 			let self = this;
-			$.ajax({
-				type: "get",
-				url: test+"/api/project/project_list",
-				async: true,
-				data: { page: self.page, name: self.filters.name},
-				headers: {
-					Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-				},
-				timeout: 5000,
-				success: function(data) {
-					self.listLoading = false;
-					if (data.code === '999999') {
-						self.total = data.data.total;
-						self.project = data.data.data
+			let params = { page: self.page, name: self.filters.name};
+			let headers = {Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))};
+			getProject(headers, params).then((res) => {
+                self.listLoading = false;
+                let { msg, code, data } = res;
+					if (code === '999999') {
+						self.total = data.total;
+						self.project = data.data
 					}
 					else {
 						self.$message.error({
-							message: data.msg,
+							message: msg,
 							center: true,
 						})
 					}
-				},
-			})
+            })
 		},
 		//删除
 		handleDel: function (index, row) {
@@ -232,18 +227,14 @@ methods: {
 				this.listLoading = true;
 				//NProgress.start();
 				let self = this;
-				$.ajax({
-                type: "post",
-                url: test+"/api/project/del_project",
-                async: true,
-                data: JSON.stringify({ids: [row.id, ]}),
-                headers: {
-                    "Content-Type": "application/json",
+				let params = {ids: [row.id, ]};
+				let header = {
+				    "Content-Type": "application/json",
                     Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                },
-                timeout: 5000,
-                success: function(data) {
-                    if (data.code === '999999') {
+				};
+                delProject(header, params).then(_data => {
+                    let { msg, code, data } = _data;
+                    if (code === '999999') {
                         self.$message({
                             message: '删除成功',
                             center: true,
@@ -251,81 +242,64 @@ methods: {
                         })
                     } else {
                         self.$message.error({
-                            message: data.msg,
+                            message: msg,
                             center: true,
                         })
                     }
                     self.getProjectList()
-                },
+                });
             })
-
-			}).catch(() => {
-			});
 		},
+        // 改变项目状态
 		handleChangeStatus: function(index, row) {
-		    let self = this;
-		    this.listLoading = true;
-		    if (row.status) {
-		        $.ajax({
-                    type: "post",
-                    url: test+"/api/project/disable_project",
-                    async: true,
-                    data: JSON.stringify({ project_id: row.id}),
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        self.listLoading = false;
-                        if (data.code === '999999') {
-                            self.$message({
-                                message: '禁用成功',
-                                center: true,
-                                type: 'success'
-                            });
-                            row.status = !row.status;
-                        }
-                        else {
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                    },
-                })
-		    } else {
-		        $.ajax({
-                    type: "post",
-                    url: test+"/api/project/enable_project",
-                    async: true,
-                    data: JSON.stringify({ project_id: row.id}),
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        self.listLoading = false;
-                        if (data.code === '999999') {
-                            self.$message({
-                                message: '启用成功',
-                                center: true,
-                                type: 'success'
-                            });
-                            row.status = !row.status;
-                        }
-                        else {
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                    },
-                })
-		    }
-		},
-	    handleCurrentChange(val) {
+            let self = this;
+            this.listLoading = true;
+            let params = { project_id: row.id};
+            let headers = {
+                "Content-Type": "application/json",
+                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+            };
+            if (row.status) {
+                disableProject(headers, params).then(_data => {
+                    let { msg, code, data } = _data;
+                    self.listLoading = false;
+                    if (code === '999999') {
+                        self.$message({
+                            message: '禁用成功',
+                            center: true,
+                            type: 'success'
+                        });
+                        row.status = !row.status;
+                    }
+                    else {
+                        self.$message.error({
+                            message: msg,
+                            center: true,
+                        })
+                    }
+                });
+            } else {
+                enableProject(headers, params).then(_data => {
+                    let { msg, code, data } = _data;
+                    self.listLoading = false;
+                    if (code === '999999') {
+                        self.$message({
+                            message: '启用成功',
+                            center: true,
+                            type: 'success'
+                        });
+                        row.status = !row.status;
+                    }
+                    else {
+                        self.$message.error({
+                            message: msg,
+                            center: true,
+                        })
+                    }
+                });
+            }
+        },
+        handleCurrentChange(val) {
             this.page = val;
             this.getProjectList()
         },
@@ -338,114 +312,102 @@ methods: {
 		handleAdd: function () {
 			this.addFormVisible = true;
 		},
-		//编辑
-		editSubmit: function () {
-		    let self = this;
-			this.$refs.editForm.validate((valid) => {
-				if (valid) {
-					this.$confirm('确认提交吗？', '提示', {}).then(() => {
-						self.editLoading = true;
-						//NProgress.start();
-                        let data = JSON.stringify({
-                                project_id: self.editForm.id,
-                                name: self.editForm.name,
-                                type: self.editForm.type,
-                                version: self.editForm.version,
-                                description: self.editForm.description
-                            });
-						$.ajax({
-                            type: "post",
-                            url: test+"/api/project/update_project",
-                            async: true,
-                            data: data,
-                            headers: {
-                                "Content-Type": "application/json",
-                                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                            },
-                            timeout: 5000,
-                            success: function(data) {
-                                self.editLoading = false;
-                                if (data.code === '999999') {
-                                    self.$message({
-                                        message: '修改成功',
-                                        center: true,
-                                        type: 'success'
-                                    });
-                                    self.$refs['editForm'].resetFields();
-                                    self.editFormVisible = false;  
-                                    self.getProjectList()
-                                } else if (data.code === '999997'){
-                                    self.$message.error({
-                                        message: data.msg,
-                                        center: true,
-                                    })
-                                } else {
-                                    self.$message.error({
-                                        message: data.msg,
-                                        center: true,
-                                    })
-                                }
-                            },
-                        })
-					});
-				}
-			});
-		},
-		//新增
-		addSubmit: function () {
-			this.$refs.addForm.validate((valid) => {
-				if (valid) {
-				    let self = this;
-					this.$confirm('确认提交吗？', '提示', {}).then(() => {
-						self.addLoading = true;
-						//NProgress.start();
-                        let data = JSON.stringify({
+        //编辑
+        editSubmit: function () {
+            let self = this;
+            this.$refs.editForm.validate((valid) => {
+                if (valid) {
+                    this.$confirm('确认提交吗？', '提示', {}).then(() => {
+                        self.editLoading = true;
+                        //NProgress.start();
+                        let params = {
+                            project_id: self.editForm.id,
+                            name: self.editForm.name,
+                            type: self.editForm.type,
+                            version: self.editForm.version,
+                            description: self.editForm.description
+                        };
+                        let header = {
+                            "Content-Type": "application/json",
+                            Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                        };
+                        updateProject(header, params).then(_data => {
+                            let {msg, code, data} = _data;
+                            self.editLoading = false;
+                            if (code === '999999') {
+                                self.$message({
+                                    message: '修改成功',
+                                    center: true,
+                                    type: 'success'
+                                });
+                                self.$refs['editForm'].resetFields();
+                                self.editFormVisible = false;
+                                self.getProjectList()
+                            } else if (code === '999997'){
+                                self.$message.error({
+                                    message: msg,
+                                    center: true,
+                                })
+                            } else {
+                                self.$message.error({
+                                    message: msg,
+                                    center: true,
+                                })
+                            }
+                        });
+                    });
+                }
+            });
+        },
+        //新增
+        addSubmit: function () {
+            this.$refs.addForm.validate((valid) => {
+                if (valid) {
+                    let self = this;
+                    this.$confirm('确认提交吗？', '提示', {}).then(() => {
+                        self.addLoading = true;
+                        //NProgress.start();
+                        let params = JSON.stringify({
                             name: self.addForm.name,
                             type: self.addForm.type,
                             version: self.addForm.version,
                             description: self.addForm.description
                         });
-                        $.ajax({
-                            type: "post",
-                            url: test+"/api/project/add_project",
-                            async: true,
-                            data: data,
-                            headers: {
-                                "Content-Type": "application/json",
-                                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                            },
-                            timeout: 5000,
-                            success: function(data) {
-                                self.addLoading = false;
-                                if (data.code === '999999') {
-                                    self.$message({
-                                        message: '添加成功',
-                                        center: true,
-                                        type: 'success'
-                                    });
-                                    self.$refs['addForm'].resetFields();
-                                    self.addFormVisible = false;  
-                                    self.getProjectList()
-                                } else if (data.code === '999997'){
-                                    self.$message.error({
-                                        message: data.msg,
-                                        center: true,
-                                    })
-                                } else {
-                                    self.$message.error({
-                                        message: data.msg,
-                                        center: true,
-                                    });
-                                    self.$refs['addForm'].resetFields();
-                                    self.addFormVisible = false;  
-                                    self.getProjectList()
-                                }
-                            },
+                        let header = {
+                            "Content-Type": "application/json",
+                            Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                        };
+                        addProject(header, params).then(_data => {
+                            let {msg, code, data} = _data;
+                            self.addLoading = false;
+                            if (code === '999999') {
+                                self.$message({
+                                    message: '添加成功',
+                                    center: true,
+                                    type: 'success'
+                                });
+                                self.$refs['addForm'].resetFields();
+                                self.addFormVisible = false;
+                                self.getProjectList()
+                            } else if (code === '999997') {
+                                self.$message.error({
+                                    message: msg,
+                                    center: true,
+                                })
+                            } else {
+                                self.$message.error({
+                                    message: msg,
+                                    center: true,
+                                });
+                                self.$refs['addForm'].resetFields();
+                                self.addFormVisible = false;
+                                self.getProjectList()
+                            }
                         })
-					});
-				}
-			});
-		},
+                    });
+                }
+            });
+        },
 		selsChange: function (sels) {
 			this.sels = sels;
 		},
@@ -456,39 +418,31 @@ methods: {
 			this.$confirm('确认删除选中记录吗？', '提示', {
 				type: 'warning'
 			}).then(() => {
-				self.listLoading = true;
-				//NProgress.start();
-                $.ajax({
-                    type: "post",
-                    url: test+"/api/project/del_project",
-                    async: true,
-                    data:JSON.stringify({ids: ids}),
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        self.listLoading = false;
-                        if (data.code === '999999') {
-                            self.$message({
-                                message: '删除成功',
-                                center: true,
-                                type: 'success'
-                            })
-                        }
-                        else {
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                        self.getProjectList()
-                    },
-                })
-			}).catch(() => {
-
-			});
+                this.listLoading = true;
+                //NProgress.start();
+                let self = this;
+                let params = {ids: ids};
+                let header = {
+                    "Content-Type": "application/json",
+                    Authorization: 'Token ' + JSON.parse(sessionStorage.getItem('token'))
+                };
+                delProject(header, params).then(_data => {
+                    let {msg, code, data} = _data;
+                    if (code === '999999') {
+                        self.$message({
+                            message: '删除成功',
+                            center: true,
+                            type: 'success'
+                        })
+                    } else {
+                        self.$message.error({
+                            message: msg,
+                            center: true,
+                        })
+                    }
+                    self.getProjectList()
+                });
+            })
 		}
 	},
 	mounted() {
