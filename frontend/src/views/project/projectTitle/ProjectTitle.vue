@@ -66,9 +66,7 @@
 </template>
 
 <script>
-    import { test } from '../../../api/api'
     import { getProjectDetail } from '../../../api/api'
-    import $ from 'jquery'
     export default {
         data() {
             return {

@@ -25,7 +25,24 @@ export const updateProject = (headers, params) => {
 // 添加项目
 export const addProject = (headers, params) => {
     return axios.post(`${test}/api/project/add_project`, params, {headers}).then(res => res.data); };
-// 获取项目
+// 获取项目详情
 export const getProjectDetail = (headers, params) => {
     return axios.get(`${test}/api/title/project_info`, { params: params, headers:headers}).then(res => res.data); };
-
+// 获取测试地址列表
+export const getHost = (headers, params) => {
+    return axios.get(`${test}/api/global/host_total`, { params: params, headers:headers}).then(res => res.data); };
+// 删除测试地址列表
+export const delHost = (headers, params) => {
+    return axios.post(`${test}/api/global/del_host`, params, {headers}).then(res => res.data); };
+// 禁用测试地址列表
+export const disableHost = (headers, params) => {
+    return axios.post(`${test}/api/global/disable_host`, params, {headers}).then(res => res.data); };
+// 启用测试地址列表
+export const enableHost = (headers, params) => {
+    return axios.post(`${test}/api/global/enable_host`, params, {headers}).then(res => res.data); };
+// 修改测试地址列表
+export const updateHost = (headers, params) => {
+    return axios.post(`${test}/api/global/update_host`, params, {headers}).then(res => res.data); };
+// 添加测试地址列表
+export const addHost = (headers, params) => {
+    return axios.post(`${test}/api/global/add_host`, params, {headers}).then(res => res.data); };

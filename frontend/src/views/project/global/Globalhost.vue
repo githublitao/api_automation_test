@@ -89,6 +89,8 @@
 <script>
     //import NProgress from 'nprogress'
     import { test } from '../../../api/api'
+    import { getHost, delHost, disableHost, enableHost,
+    updateHost, addHost} from '../../../api/api'
     import $ from 'jquery'
     export default {
         data() {
@@ -167,29 +169,28 @@
             getGlobalHost() {
                 this.listLoading = true;
                 let self = this;
-                $.ajax({
-                    type: "get",
-                    url: test+"/api/global/host_total",
-                    async: true,
-                    data: { project_id: this.$route.params.project_id, page: self.page, name: self.filters.name},
-                    headers: {
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        self.listLoading = false;
-                        if (data.code === '999999') {
-                            self.total = data.data.total;
-                            self.project = data.data.data
-                        }
-                        else {
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                    },
-                })
+                let params = {
+                    project_id: this.$route.params.project_id,
+                    page: self.page,
+                    name: self.filters.name
+                };
+                let headers = {
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                };
+                getHost(headers, params).then(_data => {
+                    let { msg, code, data } = _data;
+                    self.listLoading = false;
+                    if (code === '999999') {
+                        self.total = data.total;
+                        self.project = data.data
+                    }
+                    else {
+                        self.$message.error({
+                            message: msg,
+                            center: true,
+                        })
+                    }
+                });
             },
             //删除
             handleDel: function (index, row) {
@@ -199,97 +200,81 @@
                     this.listLoading = true;
                     //NProgress.start();
                     let self = this;
-                    $.ajax({
-                        type: "post",
-                        url: test+"/api/global/del_host",
-                        async: true,
-                        data: JSON.stringify({project_id: Number(this.$route.params.project_id), ids: [row.id, ]}),
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                        },
-                        timeout: 5000,
-                        success: function(data) {
-                            if (data.code === '999999') {
-                                self.$message({
-                                    message: '删除成功',
-                                    center: true,
-                                    type: 'success'
-                                })
-                            } else {
-                                self.$message.error({
-                                    message: data.msg,
-                                    center: true,
-                                })
-                            }
-                            self.getGlobalHost()
-                        },
-                    })
-
-                }).catch(() => {
+                    let params = {
+                        project_id: Number(this.$route.params.project_id),
+                        ids: [row.id, ]
+                    };
+                    let headers = {
+                        "Content-Type": "application/json",
+                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                    };
+                    delHost(headers, params).then(_data => {
+                        let { msg, code, data } = _data;
+                        if (code === '999999') {
+                            self.$message({
+                                message: '删除成功',
+                                center: true,
+                                type: 'success'
+                            })
+                        } else {
+                            self.$message.error({
+                                message: msg,
+                                center: true,
+                            })
+                        }
+                        self.getGlobalHost()
+                    });
                 });
             },
             handleChangeStatus: function(index, row) {
                 let self = this;
                 this.listLoading = true;
+                let params = {
+                    project_id: Number(this.$route.params.project_id),
+                    host_id: Number(row.id)
+                };
+                let headers = {
+                    "Content-Type": "application/json",
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                };
                 if (row.status) {
-                    $.ajax({
-                        type: "post",
-                        url: test+"/api/global/disable_host",
-                        async: true,
-                        data: JSON.stringify({ project_id: Number(this.$route.params.project_id), host_id: Number(row.id)}),
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                        },
-                        timeout: 5000,
-                        success: function(data) {
-                            self.listLoading = false;
-                            if (data.code === '999999') {
-                                self.$message({
-                                    message: '禁用成功',
-                                    center: true,
-                                    type: 'success'
-                                });
-                                row.status = !row.status;
-                            }
-                            else {
-                                self.$message.error({
-                                    message: data.msg,
-                                    center: true,
-                                })
-                            }
-                        },
-                    })
+                    disableHost(headers, params).then(_data => {
+                        let {msg, code, data} = _data;
+                        self.listLoading = false;
+                        if (code === '999999') {
+                            self.$message({
+                                message: '禁用成功',
+                                center: true,
+                                type: 'success'
+                            });
+                            row.status = !row.status;
+                        }
+                        else {
+                            self.$message.error({
+                                message: msg,
+                                center: true,
+                            })
+                        }
+                    });
                 } else {
-                    $.ajax({
-                        type: "post",
-                        url: test+"/api/global/enable_host",
-                        async: true,
-                        data: JSON.stringify({ project_id: Number(this.$route.params.project_id), host_id: Number(row.id)}),
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                        },
-                        timeout: 5000,
-                        success: function(data) {
-                            self.listLoading = false;
-                            if (data.code === '999999') {
-                                self.$message({
-                                    message: '启用成功',
-                                    center: true,
-                                    type: 'success'
-                                });
-                                row.status = !row.status;
-                            }
-                            else {
-                                self.$message.error({
-                                    message: data.msg,
-                                    center: true,
-                                })
-                            }
-                        },
-                    })
+                    enableHost(headers, params).then(_data => {
+                        let {msg, code, data} = _data;
+                        self.listLoading = false;
+                        if (code === '999999') {
+                            self.$message({
+                                message: '启用成功',
+                                center: true,
+                                type: 'success'
+                            });
+                            row.status = !row.status;
+                        }
+                        else {
+                            self.$message.error({
+                                message: msg,
+                                center: true,
+                            })
+                        }
+                    });
                 }
             },
             handleCurrentChange(val) {
@@ -308,49 +293,52 @@
             //编辑
             editSubmit: function () {
                 let self = this;
+                let host = this.editForm.host.toLowerCase();
+                if (host.indexOf("http://") ===0){
+                    host = host.slice(7)
+                }
+                if (host.indexOf("https://") ===0){
+                    host = host.slice(8)
+                }
                 this.$refs.editForm.validate((valid) => {
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             self.editLoading = true;
                             //NProgress.start();
-                            let data = JSON.stringify({ project_id: Number(this.$route.params.project_id),
-                                    id: Number(self.editForm.id),
-                                    name: self.editForm.name,
-                                    host: self.editForm.host,
-                                    description: self.editForm.description });
-                            $.ajax({
-                                type: "post",
-                                url: test+"/api/global/update_host",
-                                async: true,
-                                data: data,
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                                },
-                                timeout: 5000,
-                                success: function(data) {
-                                    self.editLoading = false;
-                                    if (data.code === '999999') {
-                                        self.$message({
-                                            message: '修改成功',
-                                            center: true,
-                                            type: 'success'
-                                        });
-                                        self.$refs['editForm'].resetFields();
-                                        self.editFormVisible = false;
-                                        self.getGlobalHost()
-                                    } else if (data.code === '999997'){
-                                        self.$message.error({
-                                            message: data.msg,
-                                            center: true,
-                                        })
-                                    } else {
-                                        self.$message.error({
-                                            message: data.msg,
-                                            center: true,
-                                        })
-                                    }
-                                },
+                            let params = {
+                                project_id: Number(this.$route.params.project_id),
+                                id: Number(self.editForm.id),
+                                name: self.editForm.name,
+                                host: host,
+                                description: self.editForm.description
+                            };
+                            let headers = {
+                                "Content-Type": "application/json",
+                                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                            };
+                            updateHost(headers, params).then(_data => {
+                                let {msg, code, data} = _data;
+                                self.editLoading = false;
+                                if (code === '999999') {
+                                    self.$message({
+                                        message: '修改成功',
+                                        center: true,
+                                        type: 'success'
+                                    });
+                                    self.$refs['editForm'].resetFields();
+                                    self.editFormVisible = false;
+                                    self.getGlobalHost()
+                                } else if (code === '999997'){
+                                    self.$message.error({
+                                        message: msg,
+                                        center: true,
+                                    })
+                                } else {
+                                    self.$message.error({
+                                        message: msg,
+                                        center: true,
+                                    })
+                                }
                             })
                         });
                     }
@@ -360,57 +348,54 @@
             addSubmit: function () {
                 let host = this.addForm.host.toLowerCase();
                 if (host.indexOf("http://") ===0){
-                    this.addForm.host = host.slice(7)
+                    host = host.slice(7)
                 }
                 if (host.indexOf("https://") ===0){
-                    this.form.addr = host.slice(8)
+                    host = host.slice(8)
                 }
                 this.$refs.addForm.validate((valid) => {
-                    console.log(valid)
+                    console.log(valid);
                     if (valid) {
                         let self = this;
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             self.addLoading = true;
                             //NProgress.start();
-                            $.ajax({
-                                type: "post",
-                                url: test+"/api/global/add_host",
-                                async: true,
-                                data: JSON.stringify({ project_id: Number(this.$route.params.project_id),
-                                    name: self.addForm.name,
-                                    host: host,
-                                    description: self.addForm.description }),
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                                },
-                                timeout: 5000,
-                                success: function(data) {
-                                    self.addLoading = false;
-                                    if (data.code === '999999') {
-                                        self.$message({
-                                            message: '添加成功',
-                                            center: true,
-                                            type: 'success'
-                                        });
-                                        self.$refs['addForm'].resetFields();
-                                        self.addFormVisible = false;
-                                        self.getGlobalHost()
-                                    } else if (data.code === '999997'){
-                                        self.$message.error({
-                                            message: data.msg,
-                                            center: true,
-                                        })
-                                    } else {
-                                        self.$message.error({
-                                            message: data.msg,
-                                            center: true,
-                                        });
-                                        self.$refs['addForm'].resetFields();
-                                        self.addFormVisible = false;
-                                        self.getGlobalHost()
-                                    }
-                                },
+                            let params = {
+                                project_id: Number(this.$route.params.project_id),
+                                name: self.addForm.name,
+                                host: host,
+                                description: self.addForm.description
+                            };
+                            let headers = {
+                                "Content-Type": "application/json",
+                                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                            };
+                            addHost(headers, params).then(_data => {
+                                let {msg, code, data} = _data;
+                                self.addLoading = false;
+                                if (code === '999999') {
+                                    self.$message({
+                                        message: '添加成功',
+                                        center: true,
+                                        type: 'success'
+                                    });
+                                    self.$refs['addForm'].resetFields();
+                                    self.addFormVisible = false;
+                                    self.getGlobalHost()
+                                } else if (code === '999997'){
+                                    self.$message.error({
+                                        message: msg,
+                                        center: true,
+                                    })
+                                } else {
+                                    self.$message.error({
+                                        message: msg,
+                                        center: true,
+                                    });
+                                    self.$refs['addForm'].resetFields();
+                                    self.addFormVisible = false;
+                                    self.getGlobalHost()
+                                }
                             })
                         });
                     }
@@ -428,37 +413,33 @@
                 }).then(() => {
                     self.listLoading = true;
                     //NProgress.start();
-                    $.ajax({
-                        type: "post",
-                        url: test+"/api/global/del_host",
-                        async: true,
-                        data: JSON.stringify({project_id: Number(this.$route.params.project_id), ids: ids}),
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                        },
-                        timeout: 5000,
-                        success: function(data) {
-                            self.listLoading = false;
-                            if (data.code === '999999') {
-                                self.$message({
-                                    message: '删除成功',
-                                    center: true,
-                                    type: 'success'
-                                })
-                            }
-                            else {
-                                self.$message.error({
-                                    message: data.msg,
-                                    center: true,
-                                })
-                            }
-                            self.getGlobalHost()
-                        },
+                    let params = {
+                        project_id: Number(this.$route.params.project_id),
+                        ids: ids
+                    };
+                    let headers = {
+                        "Content-Type": "application/json",
+                        Authorization: 'Token ' + JSON.parse(sessionStorage.getItem('token'))
+                    };
+                    delHost(headers, params).then(_data => {
+                        let {msg, code, data} = _data;
+                        self.listLoading = false;
+                        if (code === '999999') {
+                            self.$message({
+                                message: '删除成功',
+                                center: true,
+                                type: 'success'
+                            })
+                        }
+                        else {
+                            self.$message.error({
+                                message: msg,
+                                center: true,
+                            })
+                        }
+                        self.getGlobalHost()
                     })
-                }).catch(() => {
-
-                });
+                })
             }
         },
         mounted() {
