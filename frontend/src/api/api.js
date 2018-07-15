@@ -61,3 +61,12 @@ export const delEmailConfig = (headers, params) => {
 // 添加邮件配置
 export const addEmailConfig = (headers, params) => {
     return axios.post(`${test}/api/member/email_config`, params, {headers}).then(res => res.data); };
+// 获取自动化测试结果
+export const getTestResultList = (headers, params) => {
+    return axios.get(`${test}/api/report/auto_test_report`, { params: params, headers:headers}).then(res => res.data); };
+// 获取最近10次测试时间
+export const getTestTenTime = (headers, params) => {
+    return axios.get(`${test}/api/report/test_time`, { params: params, headers:headers}).then(res => res.data); };
+// 获取最近10次测试比例结果
+export const getTestTenResult = (headers, params) => {
+    return axios.get(`${test}/api/report/lately_ten`, { params: params, headers:headers}).then(res => res.data); };

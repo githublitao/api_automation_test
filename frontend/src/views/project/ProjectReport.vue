@@ -95,8 +95,7 @@
 </template>
 <script>
     import echarts from 'echarts'
-    import { test } from '../../api/api'
-    import $ from 'jquery'
+    import { getTestResultList, getTestTenTime, getTestTenResult} from '../../api/api'
 
     export default {
         data () {
@@ -123,8 +122,6 @@
             }
         },
         mounted(){
-            // this.drawLine();
-            // this.singleTestDraw();
             this.getTenTestTime();
             this.getLatelyTenTestResult();
         },
@@ -132,35 +129,32 @@
             getTestResult() {
                 this.listLoading = true;
                 let self = this;
-                $.ajax({
-                    type: "get",
-                    url: test + "/api/report/auto_test_report",
-                    async: true,
-                    data: { project_id: this.$route.params.project_id,
-                            time: this.time.toString()
-                    },
-                    headers: {
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        self.listLoading = false;
-                        if (data.code === '999999') {
-                            self.total = data.data.total;
-                            self.pass = data.data.pass;
-                            self.fail = data.data.fail;
-                            self.not_run = data.data.NotRun;
-                            self.error = data.data.error;
-                            self.tableData = data.data.data
+                let params = {
+                    project_id: this.$route.params.project_id,
+                    time: this.time.toString()
+                };
+                let headers = {
+                    "Content-Type": "application/json",
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                };
+                getTestResultList(headers, params).then(_data => {
+                    let {msg, code, data} = _data;
+                    self.listLoading = false;
+                        if (code === '999999') {
+                            self.total = data.total;
+                            self.pass = data.pass;
+                            self.fail = data.fail;
+                            self.not_run = data.NotRun;
+                            self.error = data.error;
+                            self.tableData = data.data
                             self.singleTestDraw();
                         }
                         else {
                             self.$message.error({
-                                message: data.msg,
+                                message: msg,
                                 center: true,
                             })
                         }
-                    },
                 })
             },
             drawLine(){
@@ -305,70 +299,66 @@
             },
             getTenTestTime(){
                 let self = this;
-                $.ajax({
-                    type: "get",
-                    url: test + "/api/report/test_time",
-                    async: true,
-                    data: { project_id: this.$route.params.project_id},
-                    headers: {
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        if (data.code === '999999') {
-                            self.options = data.data;
-                            if (data.data.length) {
-                                self.time = data.data[0].startTime;
-                                self.elapsedTime = data.data[0].elapsedTime;
-                                self.host = data.data[0].host;
-                                self.getTestResult();
-                            }
+                let params = {
+                    project_id: this.$route.params.project_id
+                };
+                let headers = {
+                    "Content-Type": "application/json",
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                };
+                getTestTenTime(headers, params).then(_data => {
+                    let {msg, code, data} = _data;
+                    if (code === '999999') {
+                        self.options = data;
+                        if (data.length) {
+                            self.time = data[0].startTime;
+                            self.elapsedTime = data[0].elapsedTime;
+                            self.host = data[0].host;
+                            self.getTestResult();
                         }
-                        else {
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                    },
+                    }
+                    else {
+                        self.$message.error({
+                            message: msg,
+                            center: true,
+                        })
+                    }
                 })
             },
             changeHost(){
-              for (let i=0;i<this.options.length;i++){
-                  if (this.options[i]['startTime'] === this.time){
-                      this.host = this.options[i].host;
-                      this.elapsedTime = this.options[i].elapsedTime;
-                  }
-              }
+                for (let i=0;i<this.options.length;i++){
+                    if (this.options[i]['startTime'] === this.time){
+                        this.host = this.options[i].host;
+                        this.elapsedTime = this.options[i].elapsedTime;
+                    }
+                }
             },
             getLatelyTenTestResult(){
                 let self = this;
-                $.ajax({
-                    type: "get",
-                    url: test + "/api/report/lately_ten",
-                    async: true,
-                    data: { project_id: this.$route.params.project_id },
-                    headers: {
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        if (data.code === '999999') {
-                            console.log(data.data)
-                            data.data.forEach((item) => {
-                                self.latelyTenPass.push(item.pass*100)
-                                self.latelyTenFail.push(item.fail*100)
-                                self.latelyTenError.push(item.error*100)
-                            });
-                            self.drawLine()
-                        }
-                        else {
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                    },
+                let params = {
+                    project_id: this.$route.params.project_id
+                };
+                let headers = {
+                    "Content-Type": "application/json",
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                };
+                getTestTenResult(headers, params).then(_data => {
+                    let {msg, code, data} = _data;
+                    if (code === '999999') {
+                        console.log(data);
+                        data.forEach((item) => {
+                            self.latelyTenPass.push(item.pass*100);
+                            self.latelyTenFail.push(item.fail*100);
+                            self.latelyTenError.push(item.error*100)
+                        });
+                        self.drawLine()
+                    }
+                    else {
+                        self.$message.error({
+                            message: msg,
+                            center: true,
+                        })
+                    }
                 })
             }
         },

@@ -54,7 +54,6 @@
 
 <script>
     import { getProjectMemberList, getEmailConfigDetail, delEmailConfig, addEmailConfig} from "../../api/api";
-    import $ from 'jquery'
     export default {
         data() {
             return {
