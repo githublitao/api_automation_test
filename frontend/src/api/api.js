@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 // export const test = 'http://127.0.0.1:8000';
-// export const test = 'http://192.168.193.130:8000';
-export const test = 'http://120.79.232.23:8000';
+export const test = 'http://192.168.193.130:8000';
+// export const test = 'http://120.79.232.23:8000';
 // 登录
 export const requestLogin = params => { return axios.post(`${test}/api/user/login`, params).then(res => res.data); };
 // 记录访客
@@ -25,4 +25,7 @@ export const updateProject = (headers, params) => {
 // 添加项目
 export const addProject = (headers, params) => {
     return axios.post(`${test}/api/project/add_project`, params, {headers}).then(res => res.data); };
+// 获取项目
+export const getProjectDetail = (headers, params) => {
+    return axios.get(`${test}/api/title/project_info`, { params: params, headers:headers}).then(res => res.data); };
 

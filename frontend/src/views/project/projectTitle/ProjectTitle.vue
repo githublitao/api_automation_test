@@ -67,6 +67,7 @@
 
 <script>
     import { test } from '../../../api/api'
+    import { getProjectDetail } from '../../../api/api'
     import $ from 'jquery'
     export default {
         data() {
@@ -84,20 +85,15 @@
         methods: {
             getProjectInfo() {
                 var self = this;
-                $.ajax({
-                    type: "get",
-                    url: test+"/api/title/project_info",
-                    async: true,
-                    data: { project_id: this.$route.params.project_id},
-                    headers: {
+                let params = { project_id: this.$route.params.project_id};
+                let headers = {
                         "Content-Type": "application/json",
                         Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        self.listLoading = false;
-                        if (data.code === '999999') {
-                            data = data.data;
+                    };
+                getProjectDetail(headers, params).then(_data => {
+                   let { msg, code, data } = _data;
+                   self.listLoading = false;
+                        if (code === '999999') {
                             self.type = data.type;
                             self.version = data.version;
                             self.updateDate = data.LastUpdateTime;
@@ -108,12 +104,11 @@
                         }
                         else {
                             self.$message.error({
-                                message: data.msg,
+                                message: msg,
                                 center: true,
                             })
                         }
-                    },
-                })
+                });
             }
         },
         mounted() {
