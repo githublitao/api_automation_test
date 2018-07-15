@@ -21,8 +21,7 @@
 </template>
 
 <script>
-    import { test } from '../../api/api'
-    import $ from 'jquery'
+    import { getProjectDynamicList } from '../../api/api'
     export default {
         data() {
             return {
@@ -41,29 +40,27 @@
             getProjectDynamic() {
                 this.listLoading = true;
                 let self = this;
-                $.ajax({
-                    type: "get",
-                    url: test+"/api/dynamic/dynamic",
-                    async: true,
-                    data: { project_id: Number(this.$route.params.project_id), page: self.page},
-                    headers: {
-                        // "Content-Type": "application/json",
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        self.listLoading = false;
-                        if (data.code === '999999') {
-                            self.total = data.data.total;
-                            self.tableData = data.data.data
-                        }
-                        else {
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                    },
+                let params = {
+                    project_id: Number(this.$route.params.project_id),
+                    page: self.page
+                };
+                let headers = {
+                    "Content-Type": "application/json",
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                };
+                getProjectDynamicList(headers, params).then(_data => {
+                    let {msg, code, data} = _data;
+                    self.listLoading = false;
+                    if (code === '999999') {
+                        self.total = data.total;
+                        self.tableData = data.data
+                    }
+                    else {
+                        self.$message.error({
+                            message: msg,
+                            center: true,
+                        })
+                    }
                 })
             },
         },

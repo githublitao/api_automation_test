@@ -46,3 +46,6 @@ export const updateHost = (headers, params) => {
 // 添加测试地址列表
 export const addHost = (headers, params) => {
     return axios.post(`${test}/api/global/add_host`, params, {headers}).then(res => res.data); };
+// 获取项目动态
+export const getProjectDynamicList = (headers, params) => {
+    return axios.get(`${test}/api/dynamic/dynamic`, { params: params, headers:headers}).then(res => res.data); };

@@ -88,10 +88,8 @@
 
 <script>
     //import NProgress from 'nprogress'
-    import { test } from '../../../api/api'
     import { getHost, delHost, disableHost, enableHost,
     updateHost, addHost} from '../../../api/api'
-    import $ from 'jquery'
     export default {
         data() {
             var checkIp = (rule, value, callback) => {
