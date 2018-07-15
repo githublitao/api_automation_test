@@ -228,6 +228,8 @@
 <script>
     import { test } from '../../../api/api'
     import $ from 'jquery'
+    import { addApiDetail, getApiGroupList } from "../../../api/api";
+
     export default {
         data() {
             return {
@@ -374,7 +376,7 @@
                 this.$refs.form.validate((valid) => {
                     if (valid) {
                         let self = this;
-                        console.log(this.form.requestList)
+                        console.log(this.form.requestList);
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             self.form.parameterType = self.radio;
                             let _type = self.form.parameterType;
@@ -383,15 +385,19 @@
                                 if ( self.radioType === true) {
                                     _type = 'raw';
                                     self.form.requestList.forEach((item) => {
-                                        _parameter[item.name] = item.value
+                                        if (item.name) {
+                                            _parameter[item.name] = item.value
+                                        }
                                     });
+                                    _parameter = JSON.stringify(_parameter)
                                 } else {
                                     _parameter = self.form.requestList;
                                 }
                             } else {
                                 _parameter = self.parameterRaw
                             }
-                            let param = JSON.stringify({
+                            console.log(_parameter)
+                            let params = {
                                 project_id: Number(self.$route.params.project_id),
                                 apiGroupLevelFirst_id: Number(self.form.apiGroupLevelFirst_id),
                                 name: self.form.name,
@@ -406,7 +412,12 @@
                                 mockCode: self.form.mockCode,
                                 data: self.form.data,
                                 description: "",
-                            });
+                            };
+                            let headers = {
+                                "Content-Type": "application/json",
+                                Authorization: 'Token ' + JSON.parse(sessionStorage.getItem('token'))
+
+                            };
                             if (self.parameterRaw&&_type==="raw"){
                                 if (!self.isJsonString(self.parameterRaw)) {
                                     self.$message({
@@ -415,58 +426,9 @@
                                         type: 'error'
                                     })
                                 } else {
-                                    $.ajax({
-                                        type: "post",
-                                        url: test + "/api/api/add_api",
-                                        async: true,
-                                        contentType: "application/json",
-                                        dataType: "json",
-                                        data: param,
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                            Authorization: 'Token ' + JSON.parse(sessionStorage.getItem('token'))
-
-                                        },
-                                        timeout: 5000,
-                                        success: function (data) {
-                                            if (data.code === '999999') {
-                                                self.$router.push({name: '分组接口列表',
-                                                    params: {
-                                                        project_id: self.$route.params.project_id,
-                                                        firstGroup: self.form.apiGroupLevelFirst_id
-                                                    }
-                                                });
-                                                self.$message({
-                                                    message: '保存成功',
-                                                    center: true,
-                                                    type: 'success'
-                                                })
-                                            }
-                                            else {
-                                                self.$message.error({
-                                                    message: data.msg,
-                                                    center: true,
-                                                })
-                                            }
-                                        },
-                                    })
-                                }
-                            } else {
-                                $.ajax({
-                                    type: "post",
-                                    url: test + "/api/api/add_api",
-                                    async: true,
-                                    contentType: "application/json",
-                                    dataType: "json",
-                                    data: param,
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                        Authorization: 'Token ' + JSON.parse(sessionStorage.getItem('token'))
-
-                                    },
-                                    timeout: 5000,
-                                    success: function (data) {
-                                        if (data.code === '999999') {
+                                    addApiDetail(headers, params).then(_data => {
+                                        let {msg, code, data} = _data;
+                                        if (code === '999999') {
                                             self.$router.push({name: '分组接口列表',
                                                 params: {
                                                     project_id: self.$route.params.project_id,
@@ -481,11 +443,34 @@
                                         }
                                         else {
                                             self.$message.error({
-                                                message: data.msg,
+                                                message: msg,
                                                 center: true,
                                             })
                                         }
-                                    },
+                                    })
+                                }
+                            } else {
+                                addApiDetail(headers, params).then(_data => {
+                                    let {msg, code, data} = _data;
+                                    if (code === '999999') {
+                                        self.$router.push({name: '分组接口列表',
+                                            params: {
+                                                project_id: self.$route.params.project_id,
+                                                firstGroup: self.form.apiGroupLevelFirst_id
+                                            }
+                                        });
+                                        self.$message({
+                                            message: '保存成功',
+                                            center: true,
+                                            type: 'success'
+                                        })
+                                    }
+                                    else {
+                                        self.$message.error({
+                                            message: msg,
+                                            center: true,
+                                        })
+                                    }
                                 })
                             }
                         })
@@ -521,28 +506,25 @@
             // 获取api分组
             getApiGroup() {
                 let self = this;
-                $.ajax({
-                    type: "get",
-                    url: test+"/api/api/group",
-                    async: true,
-                    data: { project_id: this.$route.params.project_id},
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        if (data.code === '999999') {
-                            self.group = data.data;
-                            self.form.apiGroupLevelFirst_id = self.group[0].id
-                        }
-                        else {
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                    },
+                let params = {
+                    project_id: this.$route.params.project_id
+                };
+                let headers = {
+                    "Content-Type": "application/json",
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                };
+                getApiGroupList(headers, params).then(_data => {
+                    let {msg, code, data} = _data;
+                    if (code === '999999') {
+                        self.group = data;
+                        self.form.apiGroupLevelFirst_id = self.group[0].id
+                    }
+                    else {
+                        self.$message.error({
+                            message: msg,
+                            center: true,
+                        })
+                    }
                 })
             },
             addHead() {
@@ -627,19 +609,6 @@
             radio() {
                 this.changeParameterType()
             },
-            // form: {
-            //     //注意：当观察的数据为对象或数组时，curVal和oldVal是相等的，因为这两个形参指向的是同一个数据对象
-            //     handler(curVal,oldVal){
-            //         if (curVal.data) {
-            //             if (!this.isJsonString(curVal.data)){
-            //                 this.checkJson = true
-            //             } else {
-            //                 this.checkJson = false
-            //             }
-            //         }
-            //     },
-            //     deep:true
-            // },
         },
         mounted() {
             this.getApiGroup();

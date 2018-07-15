@@ -70,3 +70,9 @@ export const getTestTenTime = (headers, params) => {
 // 获取最近10次测试比例结果
 export const getTestTenResult = (headers, params) => {
     return axios.get(`${test}/api/report/lately_ten`, { params: params, headers:headers}).then(res => res.data); };
+// 添加接口
+export const addApiDetail = (headers, params) => {
+    return axios.post(`${test}/api/api/add_api`, params, {headers}).then(res => res.data); };
+// 获取接口分组列表
+export const getApiGroupList = (headers, params) => {
+    return axios.get(`${test}/api/api/group`, { params: params, headers:headers}).then(res => res.data); };
