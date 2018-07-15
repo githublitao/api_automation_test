@@ -53,7 +53,7 @@
 </template>
 
 <script>
-    import { test } from '../../api/api'
+    import { getProjectMemberList, getEmailConfigDetail, delEmailConfig, addEmailConfig} from "../../api/api";
     import $ from 'jquery'
     export default {
         data() {
@@ -97,92 +97,84 @@
             getProjectMember() {
                 this.listLoading = true;
                 let self = this;
-                $.ajax({
-                    type: "get",
-                    url: test+"/api/member/project_member",
-                    async: true,
-                    data: { project_id: this.$route.params.project_id, page: self.page},
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        self.listLoading = false;
-                        if (data.code === '999999') {
-                            self.total = data.data.total;
-                            self.memberData = data.data.data
-                        }
-                        else {
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                    },
+                let params = {
+                    project_id: this.$route.params.project_id,
+                    page: self.page
+                };
+                let headers = {
+                    "Content-Type": "application/json",
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                };
+                getProjectMemberList(headers, params).then(_data => {
+                    let {msg, code, data} = _data;
+                    self.listLoading = false;
+                    if (code === '999999') {
+                        self.total = data.total;
+                        self.memberData = data.data
+                    }
+                    else {
+                        self.$message.error({
+                            message: msg,
+                            center: true,
+                        })
+                    }
                 })
             },
             getEmailConfig(){
                 let self = this;
-                $.ajax({
-                    type: "get",
-                    url: test+"/api/member/get_email",
-                    async: true,
-                    data: { project_id: this.$route.params.project_id},
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        self.listLoading = false;
-                        if (data.code === '999999') {
-                            console.log(data.data)
-                            if (data.data) {
-                                self.reportFrom = data.data.reportFrom;
-                                self.editForm = data.data
-                            } else {
-                                self.reportFrom = "";
-                                self.editForm = {}
-                            }
+                let params = {
+                    project_id: this.$route.params.project_id,
+                };
+                let headers = {
+                    "Content-Type": "application/json",
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                };
+                getEmailConfigDetail(headers, params).then(_data => {
+                    let {msg, code, data} = _data;
+                    self.listLoading = false;
+                    if (code === '999999') {
+                        console.log(data);
+                        if (data) {
+                            self.reportFrom = data.reportFrom;
+                            self.editForm = data
+                        } else {
+                            self.reportFrom = "";
+                            self.editForm = {}
                         }
-                        else {
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                    },
-                })
+                    }
+                    else {
+                        self.$message.error({
+                            message: msg,
+                            center: true,
+                        })
+                    }
+                });
             },
             DelEmail(){
                 let self = this;
-                $.ajax({
-                    type: "post",
-                    url: test+"/api/member/del_email",
-                    async: true,
-                    data: JSON.stringify({ project_id: Number(this.$route.params.project_id)}),
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        self.listLoading = false;
-                        if (data.code === '999999') {
-                            self.$message.success({
-                                message: "删除成功",
-                                center: true,
-                            });
-                            self.getEmailConfig()
-                        }
-                        else {
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                    },
+                let params = {
+                    project_id: Number(this.$route.params.project_id)
+                };
+                let headers = {
+                    "Content-Type": "application/json",
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                };
+                delEmailConfig(headers, params).then(_data => {
+                    let {msg, code, data} = _data;
+                    self.listLoading = false;
+                    if (code === '999999') {
+                        self.$message.success({
+                            message: "删除成功",
+                            center: true,
+                        });
+                        self.getEmailConfig()
+                    }
+                    else {
+                        self.$message.error({
+                            message: msg,
+                            center: true,
+                        })
+                    }
                 })
             },
             editSubmit: function () {
@@ -192,45 +184,40 @@
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             self.editLoading = true;
                             //NProgress.start();
-                            $.ajax({
-                                type: "post",
-                                url: test+"/api/member/email_config",
-                                async: true,
-                                data: JSON.stringify({
-                                    project_id: Number(this.$route.params.project_id),
-                                    reportFrom: this.editForm.reportFrom,
-                                    mailUser: this.editForm.mailUser,
-                                    mailPass: this.editForm.mailPass,
-                                    mailSmtp: this.editForm.mailSmtp,
-                                }),
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                                },
-                                timeout: 5000,
-                                success: function(data) {
-                                    self.editLoading = false;
-                                    if (data.code === '999999') {
-                                        self.$message({
-                                            message: '修改成功',
-                                            center: true,
-                                            type: 'success'
-                                        });
-                                        self.$refs['editForm'].resetFields();
-                                        self.editFormVisible = false;
-                                        self.getEmailConfig()
-                                    } else if (data.code === '999997'){
-                                        self.$message.error({
-                                            message: data.msg,
-                                            center: true,
-                                        })
-                                    } else {
-                                        self.$message.error({
-                                            message: data.msg,
-                                            center: true,
-                                        })
-                                    }
-                                },
+                            let params = {
+                                project_id: Number(this.$route.params.project_id),
+                                reportFrom: this.editForm.reportFrom,
+                                mailUser: this.editForm.mailUser,
+                                mailPass: this.editForm.mailPass,
+                                mailSmtp: this.editForm.mailSmtp,
+                            };
+                            let headers = {
+                                "Content-Type": "application/json",
+                                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                            };
+                            addEmailConfig(headers, params).then(_data => {
+                                let {msg, code, data} = _data;
+                                self.editLoading = false;
+                                if (code === '999999') {
+                                    self.$message({
+                                        message: '修改成功',
+                                        center: true,
+                                        type: 'success'
+                                    });
+                                    self.$refs['editForm'].resetFields();
+                                    self.editFormVisible = false;
+                                    self.getEmailConfig()
+                                } else if (code === '999997'){
+                                    self.$message.error({
+                                        message: msg,
+                                        center: true,
+                                    })
+                                } else {
+                                    self.$message.error({
+                                        message: msg,
+                                        center: true,
+                                    })
+                                }
                             })
                         });
                     }

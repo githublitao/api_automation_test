@@ -49,3 +49,15 @@ export const addHost = (headers, params) => {
 // 获取项目动态
 export const getProjectDynamicList = (headers, params) => {
     return axios.get(`${test}/api/dynamic/dynamic`, { params: params, headers:headers}).then(res => res.data); };
+// 获取项目成员
+export const getProjectMemberList = (headers, params) => {
+    return axios.get(`${test}/api/member/project_member`, { params: params, headers:headers}).then(res => res.data); };
+// 获取发送邮件配置
+export const getEmailConfigDetail = (headers, params) => {
+    return axios.get(`${test}/api/member/get_email`, { params: params, headers:headers}).then(res => res.data); };
+// 删除邮件配置
+export const delEmailConfig = (headers, params) => {
+    return axios.post(`${test}/api/member/del_email`, params, {headers}).then(res => res.data); };
+// 添加邮件配置
+export const addEmailConfig = (headers, params) => {
+    return axios.post(`${test}/api/member/email_config`, params, {headers}).then(res => res.data); };
