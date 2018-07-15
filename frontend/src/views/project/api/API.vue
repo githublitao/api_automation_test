@@ -67,8 +67,7 @@
 </template>
 
 <script>
-    import { test } from '../../../api/api'
-    import $ from 'jquery'
+    import {addApiGroup, delApiGroup, getApiGroupList, updateApiGroup} from '../../../api/api'
     export default {
         data() {
             return {
@@ -120,27 +119,25 @@
             // 获取api分组
             getApiGroup() {
                 let self = this;
-                $.ajax({
-                    type: "get",
-                    url: test+"/api/api/group",
-                    async: true,
-                    data: { project_id: Number(this.$route.params.project_id)},
-                    headers: {
-                        Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                    },
-                    timeout: 5000,
-                    success: function(data) {
-                        if (data.code === '999999') {
-                            self.groupData = data.data;
-                            self.init();
-                        }
-                        else {
-                            self.$message.error({
-                                message: data.msg,
-                                center: true,
-                            })
-                        }
-                    },
+                let params = {
+                    project_id: this.$route.params.project_id
+                };
+                let headers = {
+                    "Content-Type": "application/json",
+                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                };
+                getApiGroupList(headers, params).then(_data => {
+                    let {msg, code, data} = _data;
+                    if (code === '999999') {
+                        self.groupData = data;
+                        self.init();
+                    }
+                    else {
+                        self.$message.error({
+                            message: msg,
+                            center: true,
+                        })
+                    }
                 })
             },
             // 添加分组弹窗显示
@@ -161,19 +158,18 @@
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             self.addGroupLoading = true;
                             //NProgress.start();
-                            $.ajax({
-                                type: "post",
-                                url: test+"/api/api/add_group",
-                                async: true,
-                                data: JSON.stringify({ project_id: Number(this.$route.params.project_id), name: self.addGroupForm.firstgroup}),
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                                },
-                                timeout: 5000,
-                                success: function(data) {
-                                    self.addGroupLoading = false;
-                                    if (data.code === '999999') {
+                            let params = {
+                                project_id: Number(this.$route.params.project_id),
+                                name: self.addGroupForm.firstgroup
+                            };
+                            let headers = {
+                                "Content-Type": "application/json",
+                                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                            };
+                            addApiGroup(headers, params).then(_data => {
+                                let {msg, code, data} = _data;
+                                self.addGroupLoading = false;
+                                    if (code === '999999') {
                                         self.$message({
                                             message: '修改成功',
                                             center: true,
@@ -183,14 +179,14 @@
                                         self.addGroupFormVisible = false;
                                         self.getApiGroup();
                                         self.init()
-                                    } else if (data.code === '999997'){
+                                    } else if (code === '999997'){
                                         self.$message.error({
-                                            message: data.msg,
+                                            message: msg,
                                             center: true,
                                         })
                                     } else {
                                         self.$message.error({
-                                            message: data.msg,
+                                            message: msg,
                                             center: true,
                                         });
                                         self.$refs['addGroupForm'].resetFields();
@@ -198,7 +194,6 @@
                                         self.getApiGroup();
                                         self.init()
                                     }
-                                },
                             })
                         });
                     }
@@ -211,46 +206,43 @@
                         let self = this;
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             self.editFirstGroupLoading = true;
-                            $.ajax({
-                                type: "post",
-                                url: test+"/api/api/update_name_group",
-                                async: true,
-                                data: JSON.stringify({ project_id: Number(this.$route.params.project_id),
-                                    name: self.editFirstGroupForm.secondFirstGroup,
-                                    id: self.editFirstGroupForm.second_id}),
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                                },
-                                timeout: 5000,
-                                success: function(data) {
-                                    self.editFirstGroupLoading = false;
-                                    if (data.code === '999999') {
-                                        self.$message({
-                                            message: '修改成功',
-                                            center: true,
-                                            type: 'success'
-                                        });
-                                        self.$refs['editFirstGroupForm'].resetFields();
-                                        self.editFirstGroupFormVisible = false;
-                                        self.getApiGroup();
-                                        self.init()
-                                    } else if (data.code === '999997'){
-                                        self.$message.error({
-                                            message: data.msg,
-                                            center: true,
-                                        })
-                                    } else {
-                                        self.$message.error({
-                                            message: data.msg,
-                                            center: true,
-                                        });
-                                        self.$refs['editFirstGroupForm'].resetFields();
-                                        self.editFirstGroupFormVisible = false;
-                                        self.getApiGroup();
-                                        self.init()
-                                    }
-                                },
+                            let params = {
+                                project_id: Number(this.$route.params.project_id),
+                                name: self.editFirstGroupForm.secondFirstGroup,
+                                id: self.editFirstGroupForm.second_id
+                            };
+                            let headers = {
+                                "Content-Type": "application/json",
+                                Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
+                            };
+                            updateApiGroup(headers, params).then(_data => {
+                                let {msg, code, data} = _data;
+                                self.editFirstGroupLoading = false;
+                                if (code === '999999') {
+                                    self.$message({
+                                        message: '修改成功',
+                                        center: true,
+                                        type: 'success'
+                                    });
+                                    self.$refs['editFirstGroupForm'].resetFields();
+                                    self.editFirstGroupFormVisible = false;
+                                    self.getApiGroup();
+                                    self.init()
+                                } else if (code === '999997'){
+                                    self.$message.error({
+                                        message: msg,
+                                        center: true,
+                                    })
+                                } else {
+                                    self.$message.error({
+                                        message: msg,
+                                        center: true,
+                                    });
+                                    self.$refs['editFirstGroupForm'].resetFields();
+                                    self.editFirstGroupFormVisible = false;
+                                    self.getApiGroup();
+                                    self.init()
+                                }
                             })
                         });
                     }
@@ -263,36 +255,31 @@
                 }).then(() => {
                     //NProgress.start();
                     let self = this;
-                    $.ajax({
-                        type: "post",
-                        url: test+"/api/api/del_group",
-                        async: true,
-                        data: JSON.stringify({id: Number(id),
-                            project_id: Number(this.$route.params.project_id)}),
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
-                        },
-                        timeout: 5000,
-                        success: function(data) {
-                            if (data.code === '999999') {
-                                self.$message({
-                                    message: '删除成功',
-                                    center: true,
-                                    type: 'success'
-                                })
-                            } else {
-                                self.$message.error({
-                                    message: data.msg,
-                                    center: true,
-                                })
-                            }
-                            self.getApiGroup()
-                        },
+                    let params = {
+                        id: Number(id),
+                        project_id: Number(this.$route.params.project_id)
+                    };
+                    let headers = {
+                        "Content-Type": "application/json",
+                        Authorization: 'Token ' + JSON.parse(sessionStorage.getItem('token'))
+                    };
+                    delApiGroup(headers, params).then(_data => {
+                        let {msg, code, data} = _data;
+                        if (code === '999999') {
+                            self.$message({
+                                message: '删除成功',
+                                center: true,
+                                type: 'success'
+                            })
+                        } else {
+                            self.$message.error({
+                                message: msg,
+                                center: true,
+                            })
+                        }
+                        self.getApiGroup()
                     })
-
-                }).catch(() => {
-                });
+                })
             }
         },
         mounted() {

@@ -226,8 +226,6 @@
     </section>
 </template>
 <script>
-    import { test } from '../../../api/api'
-    import $ from 'jquery'
     import { addApiDetail, getApiGroupList } from "../../../api/api";
 
     export default {

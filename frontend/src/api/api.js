@@ -76,3 +76,11 @@ export const addApiDetail = (headers, params) => {
 // 获取接口分组列表
 export const getApiGroupList = (headers, params) => {
     return axios.get(`${test}/api/api/group`, { params: params, headers:headers}).then(res => res.data); };
+// 添加接口分组
+export const addApiGroup = (headers, params) => { return axios.post(`${test}/api/api/add_group`, params, {headers}).then(res => res.data); };
+// 修改接口分组
+export const updateApiGroup = (headers, params) => {
+    return axios.post(`${test}/api/api/update_name_group`, params, {headers}).then(res => res.data); };
+// 删除接口分组
+export const delApiGroup = (headers, params) => {
+    return axios.post(`${test}/api/api/del_group`, params, {headers}).then(res => res.data); };
