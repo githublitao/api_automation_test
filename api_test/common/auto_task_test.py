@@ -67,11 +67,11 @@ def test_api(host, case_id, _id, time):
                         a = re.findall('(?<=\[").*?(?="])', value)
                         try:
                             param_data = eval(json.loads(serializers.serialize(
-                                'json', AutomationCaseTestResult.objects.filter(automationCaseApi=api_id[0],
-                                                                                testTime=time)))[0]['fields']["responseData"])
+                                'json', AutomationCaseTestResult.objects.filter(
+                                    automationCaseApi=api_id[0], testTime=time)))[0]['fields']["responseData"])
                             for j in a:
                                 param_data = param_data[j]
-                        except Exception as e:
+                        except Exception:
                             record_auto_results(_id=_id, header=header, parameter=parameter,
                                                 _result='ERROR', code="", response_data="", time=time)
                             return 'fail'
@@ -103,7 +103,7 @@ def test_api(host, case_id, _id, time):
         if len(parameter[0]["data"]):
             try:
                 parameter = eval(parameter[0]["data"])
-            except:
+            except Exception:
                 record_auto_results(_id=_id, header=header, parameter=parameter,
                                     _result='ERROR', code="", response_data="", time=time)
                 return 'fail'

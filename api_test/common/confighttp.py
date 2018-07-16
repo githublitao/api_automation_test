@@ -82,7 +82,7 @@ def test_api(host_id, case_id, project_id, _id):
                                            host=host.name,
                                            status_code=http_code, examine_type=examine_type,
                                            examine_data=response_parameter_list,
-                                           _result='ERROR', code="", response_data="")
+                                           _result='ERROR', code="", response_data="关联有误！")
                             return 'fail'
                     elif interrelate_type[0] == "Regular":
                         api_id = re.findall('(?<=<response\[Regular]\[).*?(?=\])', value)

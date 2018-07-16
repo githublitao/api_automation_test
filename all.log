@@ -1330,3 +1330,38 @@ Traceback (most recent call last):
   File "E:\project\api_automation_test\api_test\common\confighttp.py", line 93, in test_api
     param_data = re.findall(pattern[0], param_data.replace("\'", "\""))[0]
 IndexError: list index out of range
+2018-07-16 17:43:33,867,3600,root,ERROR,confighttp.py:79,'app_id'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+KeyError: 'app_id'
+2018-07-16 17:44:16,315,10392,root,ERROR,confighttp.py:79,'app_id'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+KeyError: 'app_id'
+2018-07-16 17:45:50,686,6640,root,ERROR,confighttp.py:79,'app_id'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+KeyError: 'app_id'
+2018-07-16 17:54:15,581,6640,root,ERROR,confighttp.py:79,'app_id'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+KeyError: 'app_id'
+2018-07-16 17:54:17,885,6640,root,ERROR,confighttp.py:79,'app_id'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+KeyError: 'app_id'
+2018-07-16 17:54:22,282,6640,root,ERROR,confighttp.py:79,'app_id'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+KeyError: 'app_id'
+2018-07-16 17:56:02,320,5344,root,ERROR,confighttp.py:79,'app_id'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+KeyError: 'app_id'
