@@ -335,7 +335,7 @@
         methods: {
             checkRequest(){
                 let request = this.form.request4;
-                if (request==="GET"){
+                if (request==="GET" || request==="DELETE"){
                     this.request3=false
                 } else {
                     this.request3=true

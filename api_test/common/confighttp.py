@@ -308,7 +308,7 @@ def post(header, address, request_parameter_type, data):
     """
     if request_parameter_type == 'raw':
         data = json.dumps(data)
-    response = requests.post(url=address, data=data, headers=header, timeout=8)
+    response = requests.post(url=address, data=data, headers=header, timeout=8, allow_redirects=False)
     try:
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:
@@ -358,7 +358,7 @@ def put(header, address, request_parameter_type, data):
     """
     if request_parameter_type == 'raw':
         data = json.dumps(data)
-    response = requests.put(url=address, data=data, headers=header, timeout=8)
+    response = requests.put(url=address, data=data, headers=header, timeout=8, allow_redirects=False)
     try:
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:
@@ -380,9 +380,9 @@ def delete(header, address, request_parameter_type, data):
     :param data: 请求参数
     :return:
     """
-    if request_parameter_type == 'raw':
-        data = json.dumps(data)
-    response = requests.delete(url=address, data=data, headers=header, timeout=8)
+    # if request_parameter_type == 'raw':
+    #     data = json.dumps(data)
+    response = requests.delete(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
     try:
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:

@@ -1365,3 +1365,21 @@ Traceback (most recent call last):
   File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
     param_data = param_data[j]
 KeyError: 'app_id'
+2018-07-17 15:55:31,454,856,root,ERROR,confighttp.py:79,invalid character in identifier (<string>, line 1)
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 75, in test_api
+    [0]['fields']["responseData"])
+  File "<string>", line 1
+    ¹ØÁªÓÐÎó£¡
+        ^
+SyntaxError: invalid character in identifier
+2018-07-17 15:58:17,341,856,root,ERROR,confighttp.py:79,'app_id'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+KeyError: 'app_id'
+2018-07-17 15:58:20,055,856,root,ERROR,confighttp.py:79,'app_id'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+KeyError: 'app_id'
