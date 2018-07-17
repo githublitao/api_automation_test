@@ -1383,3 +1383,720 @@ Traceback (most recent call last):
   File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
     param_data = param_data[j]
 KeyError: 'app_id'
+2018-07-17 16:35:43,399,7960,root,ERROR,confighttp.py:196,<class 'requests.exceptions.ReadTimeout'>
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 258, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+  File "D:\Program Files (x86)\python\lib\ssl.py", line 1009, in recv_into
+    return self.read(nbytes, buffer)
+  File "D:\Program Files (x86)\python\lib\ssl.py", line 871, in read
+    return self._sslobj.read(len, buffer)
+  File "D:\Program Files (x86)\python\lib\ssl.py", line 631, in read
+    v = self._sslobj.read(len, buffer)
+socket.timeout: The read operation timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 357, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\packages\six.py", line 686, in reraise
+    raise value
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 389, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 309, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Read timed out. (read timeout=8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 192, in test_api
+    code, response_data = delete(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 385, in delete
+    response = requests.delete(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 152, in delete
+    return request('delete', url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 521, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Read timed out. (read timeout=8)
+2018-07-17 16:36:59,783,12264,root,ERROR,confighttp.py:196,<class 'requests.exceptions.ReadTimeout'>
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 258, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+  File "D:\Program Files (x86)\python\lib\ssl.py", line 1009, in recv_into
+    return self.read(nbytes, buffer)
+  File "D:\Program Files (x86)\python\lib\ssl.py", line 871, in read
+    return self._sslobj.read(len, buffer)
+  File "D:\Program Files (x86)\python\lib\ssl.py", line 631, in read
+    v = self._sslobj.read(len, buffer)
+socket.timeout: The read operation timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 357, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\packages\six.py", line 686, in reraise
+    raise value
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 389, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 309, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Read timed out. (read timeout=8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 192, in test_api
+    code, response_data = delete(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 388, in delete
+    response = requests.delete(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 152, in delete
+    return request('delete', url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 521, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Read timed out. (read timeout=8)
+2018-07-17 16:38:35,178,7560,root,ERROR,automationCase.py:1059,HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Max retries exceeded with url: /app/appinfo?app_id=4947ff50899711e8b3a9066cf4d4679c (Caused by ProxyError('Cannot connect to proxy.', RemoteDisconnected('Remote end closed connection without response',)))
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 266, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 388, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Max retries exceeded with url: /app/appinfo?app_id=4947ff50899711e8b3a9066cf4d4679c (Caused by ProxyError('Cannot connect to proxy.', RemoteDisconnected('Remote end closed connection without response',)))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1057, in post
+    _id=data["id"], project_id=data["project_id"])
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 192, in test_api
+    code, response_data = delete(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 388, in delete
+    response = requests.delete(url=address, params=data, headers=header, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 152, in delete
+    return request('delete', url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 502, in send
+    raise ProxyError(e, request=request)
+requests.exceptions.ProxyError: HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Max retries exceeded with url: /app/appinfo?app_id=4947ff50899711e8b3a9066cf4d4679c (Caused by ProxyError('Cannot connect to proxy.', RemoteDisconnected('Remote end closed connection without response',)))
+2018-07-17 16:40:28,618,14192,root,ERROR,automationCase.py:1059,HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Max retries exceeded with url: /app/appinfo?app_id=4947ff50899711e8b3a9066cf4d4679c (Caused by ProxyError('Cannot connect to proxy.', RemoteDisconnected('Remote end closed connection without response',)))
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 266, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 388, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Max retries exceeded with url: /app/appinfo?app_id=4947ff50899711e8b3a9066cf4d4679c (Caused by ProxyError('Cannot connect to proxy.', RemoteDisconnected('Remote end closed connection without response',)))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1057, in post
+    _id=data["id"], project_id=data["project_id"])
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 192, in test_api
+    code, response_data = delete(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 388, in delete
+    response = requests.delete(url=address, params=data, headers=header, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 152, in delete
+    return request('delete', url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 502, in send
+    raise ProxyError(e, request=request)
+requests.exceptions.ProxyError: HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Max retries exceeded with url: /app/appinfo?app_id=4947ff50899711e8b3a9066cf4d4679c (Caused by ProxyError('Cannot connect to proxy.', RemoteDisconnected('Remote end closed connection without response',)))
+2018-07-17 16:44:42,342,7212,root,ERROR,automationCase.py:1059,HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Max retries exceeded with url: /app/appinfo?app_id=4947ff50899711e8b3a9066cf4d4679c (Caused by ProxyError('Cannot connect to proxy.', RemoteDisconnected('Remote end closed connection without response',)))
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 266, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 388, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Max retries exceeded with url: /app/appinfo?app_id=4947ff50899711e8b3a9066cf4d4679c (Caused by ProxyError('Cannot connect to proxy.', RemoteDisconnected('Remote end closed connection without response',)))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1057, in post
+    _id=data["id"], project_id=data["project_id"])
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 192, in test_api
+    code, response_data = delete(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 388, in delete
+    response = requests.delete(url=address, params=data, headers=header, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 152, in delete
+    return request('delete', url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 502, in send
+    raise ProxyError(e, request=request)
+requests.exceptions.ProxyError: HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Max retries exceeded with url: /app/appinfo?app_id=4947ff50899711e8b3a9066cf4d4679c (Caused by ProxyError('Cannot connect to proxy.', RemoteDisconnected('Remote end closed connection without response',)))
+2018-07-17 16:44:51,969,7212,root,ERROR,confighttp.py:196,<class 'requests.exceptions.ReadTimeout'>
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 258, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 357, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\packages\six.py", line 686, in reraise
+    raise value
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 389, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 309, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 186, in test_api
+    code, response_data = get(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 335, in get
+    response = requests.get(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 521, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+2018-07-17 16:44:53,600,7212,root,ERROR,confighttp.py:196,<class 'requests.exceptions.ReadTimeout'>
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 258, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 357, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\packages\six.py", line 686, in reraise
+    raise value
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 389, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 309, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 186, in test_api
+    code, response_data = get(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 335, in get
+    response = requests.get(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 521, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+2018-07-17 16:45:01,050,7212,root,ERROR,confighttp.py:196,<class 'requests.exceptions.ReadTimeout'>
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 258, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 357, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\packages\six.py", line 686, in reraise
+    raise value
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 389, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 309, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 186, in test_api
+    code, response_data = get(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 335, in get
+    response = requests.get(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 521, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+2018-07-17 16:45:30,785,7212,root,ERROR,confighttp.py:196,<class 'requests.exceptions.ReadTimeout'>
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 258, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 357, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\packages\six.py", line 686, in reraise
+    raise value
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 389, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 309, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 186, in test_api
+    code, response_data = get(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 335, in get
+    response = requests.get(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 521, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+2018-07-17 16:45:58,632,7212,root,ERROR,confighttp.py:196,<class 'requests.exceptions.ReadTimeout'>
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 258, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 357, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\packages\six.py", line 686, in reraise
+    raise value
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 389, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 309, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 186, in test_api
+    code, response_data = get(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 335, in get
+    response = requests.get(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 521, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+2018-07-17 16:47:10,568,7212,root,ERROR,confighttp.py:196,<class 'requests.exceptions.ReadTimeout'>
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 258, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Program Files (x86)\python\lib\socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 357, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\packages\six.py", line 686, in reraise
+    raise value
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 389, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 309, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 186, in test_api
+    code, response_data = get(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 335, in get
+    response = requests.get(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 521, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='127.0.0.1', port=8888): Read timed out. (read timeout=8)
+2018-07-17 16:57:39,022,3784,root,ERROR,automationCase.py:1059,HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Max retries exceeded with url: /app/appinfo?app_id=4947ff50899711e8b3a9066cf4d4679c (Caused by ProxyError('Cannot connect to proxy.', RemoteDisconnected('Remote end closed connection without response',)))
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 266, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 388, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Max retries exceeded with url: /app/appinfo?app_id=4947ff50899711e8b3a9066cf4d4679c (Caused by ProxyError('Cannot connect to proxy.', RemoteDisconnected('Remote end closed connection without response',)))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1057, in post
+    _id=data["id"], project_id=data["project_id"])
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 192, in test_api
+    code, response_data = delete(header, url, request_parameter_type, parameter)
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 389, in delete
+    response = requests.delete(url=address, params=data, headers=header, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 152, in delete
+    return request('delete', url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 502, in send
+    raise ProxyError(e, request=request)
+requests.exceptions.ProxyError: HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Max retries exceeded with url: /app/appinfo?app_id=4947ff50899711e8b3a9066cf4d4679c (Caused by ProxyError('Cannot connect to proxy.', RemoteDisconnected('Remote end closed connection without response',)))
+2018-07-17 16:57:39,809,3784,django.request,ERROR,exception.py:118,Internal Server Error: /api/user/test
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 383, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 1331, in getresponse
+    response.begin()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 297, in begin
+    version, status, reason = self._read_status()
+  File "D:\Program Files (x86)\python\lib\http\client.py", line 266, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "D:\Program Files (x86)\python\lib\site-packages\urllib3\util\retry.py", line 388, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Max retries exceeded with url: /app/appinfo/?app_id=83dff93c88d011e8b3a9066cf4d4679c (Caused by ProxyError('Cannot connect to proxy.', RemoteDisconnected('Remote end closed connection without response',)))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\test.py", line 28, in get
+    response = requests.delete(url=address, params=data, headers=header, allow_redirects=False)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 152, in delete
+    return request('delete', url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\adapters.py", line 502, in send
+    raise ProxyError(e, request=request)
+requests.exceptions.ProxyError: HTTPSConnectionPool(host='philipsapi.fogcloud.io', port=443): Max retries exceeded with url: /app/appinfo/?app_id=83dff93c88d011e8b3a9066cf4d4679c (Caused by ProxyError('Cannot connect to proxy.', RemoteDisconnected('Remote end closed connection without response',)))
+2018-07-17 16:57:40,173,3784,django.server,ERROR,basehttp.py:124,"GET /api/user/test HTTP/1.1" 500 20876
+2018-07-17 17:00:23,447,2348,root,ERROR,confighttp.py:79,'app_id'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+KeyError: 'app_id'
+2018-07-17 17:00:25,846,2348,root,ERROR,confighttp.py:79,'app_id'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+KeyError: 'app_id'
+2018-07-17 17:03:16,983,7936,root,ERROR,confighttp.py:79,'app_id'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+KeyError: 'app_id'
+2018-07-17 17:03:19,449,7936,root,ERROR,confighttp.py:79,'app_id'
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
+    param_data = param_data[j]
+KeyError: 'app_id'

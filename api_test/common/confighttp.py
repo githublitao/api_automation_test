@@ -180,7 +180,7 @@ def test_api(host_id, case_id, project_id, _id):
                 return 'fail'
         else:
             header[key_] = value
-    header["Content-Length"] = '%s' % len(str(parameter))
+    # header["Content-Length"] = '%s' % len(str(parameter))
     try:
         if request_type == 'GET':
             code, response_data = get(header, url, request_parameter_type, parameter)
@@ -189,7 +189,7 @@ def test_api(host_id, case_id, project_id, _id):
         elif request_type == 'PUT':
             code, response_data = put(header, url, request_parameter_type, parameter)
         elif request_type == 'DELETE':
-            code, response_data = delete(header, url, request_parameter_type, parameter)
+            code, response_data = delete(header, url, parameter)
         else:
             return 'ERROR'
     except ReadTimeout:
@@ -308,7 +308,7 @@ def post(header, address, request_parameter_type, data):
     """
     if request_parameter_type == 'raw':
         data = json.dumps(data)
-    response = requests.post(url=address, data=data, headers=header, timeout=8, allow_redirects=False)
+    response = requests.post(url=address, data=data, headers=header, timeout=8)
     try:
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:
@@ -332,7 +332,7 @@ def get(header, address, request_parameter_type, data):
     """
     if request_parameter_type == 'raw':
         data = json.dumps(data)
-    response = requests.get(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+    response = requests.get(url=address, params=data, headers=header, timeout=8)
     if response.status_code == 301:
         response = requests.get(url=response.headers["location"])
     try:
@@ -358,7 +358,7 @@ def put(header, address, request_parameter_type, data):
     """
     if request_parameter_type == 'raw':
         data = json.dumps(data)
-    response = requests.put(url=address, data=data, headers=header, timeout=8, allow_redirects=False)
+    response = requests.put(url=address, data=data, headers=header, timeout=8)
     try:
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:
@@ -371,7 +371,7 @@ def put(header, address, request_parameter_type, data):
         return {}, {}
 
 
-def delete(header, address, request_parameter_type, data):
+def delete(header, address, data):
     """
     put 请求
     :param header:  请求头
@@ -380,9 +380,10 @@ def delete(header, address, request_parameter_type, data):
     :param data: 请求参数
     :return:
     """
-    # if request_parameter_type == 'raw':
-    #     data = json.dumps(data)
-    response = requests.delete(url=address, params=data, headers=header, timeout=8, allow_redirects=False)
+    print(header)
+    print(address)
+    print(data)
+    response = requests.delete(url=address, params=data, headers=header)
     try:
         return response.status_code, response.json()
     except json.decoder.JSONDecodeError:
