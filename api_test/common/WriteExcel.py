@@ -40,6 +40,9 @@ class Write:
             'align': 'center',
             'valign': 'vcenter',
         })
+        row_format = self.workbook.add_format({
+            'align': 'center',
+        })
         for i in data:
             for api in i["automationGroup"]:
                 for n in api["api"]:
@@ -81,10 +84,16 @@ class Write:
                     self.worksheet.write(row, 13, api["updateTime"])
                     row = row+1
                     _module_row = _module_row+1
-                self.worksheet.merge_range(case_row, 2, case_row + len(api["api"]) - 1, 2, api["caseName"], merge_format)
+                if row-1 != case_row:
+                    self.worksheet.merge_range(case_row, 2, case_row + len(api["api"]) - 1, 2, api["caseName"], merge_format)
+                else:
+                    self.worksheet.write(case_row, 2, api["caseName"], row_format)
                 case_row = row
-            self.worksheet.merge_range(module_row, 1, _module_row, 1, i["name"], merge_format)
-            module_row = _module_row+1
+            if _module_row != module_row:
+                self.worksheet.merge_range(module_row, 1, _module_row, 1, i["name"], merge_format)
+            else:
+                self.worksheet.write(module_row, 1, i["name"], row_format)
+            module_row = _module_row + 1
         self.workbook.close()
         return True
 

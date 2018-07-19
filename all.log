@@ -2488,3 +2488,27 @@ Traceback (most recent call last):
   File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 63, in write_case
     param = n["parameterRaw"][0]["data"]
 IndexError: list index out of range
+2018-07-19 17:53:53,049,2540,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/DownloadCase
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1377, in get
+    result = Write(path).write_case(data)
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 84, in write_case
+    print("row:"+row)
+TypeError: must be str, not int
+2018-07-19 17:53:54,246,2540,django.server,ERROR,basehttp.py:124,"GET /api/automation/DownloadCase?project_id=1 HTTP/1.1" 500 18241
