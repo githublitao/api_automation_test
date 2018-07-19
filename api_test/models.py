@@ -427,7 +427,7 @@ class AutomationTestCase(models.Model):
     id = models.AutoField(primary_key=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='所属项目')
     automationGroupLevelFirst = models.ForeignKey(AutomationGroupLevelFirst, blank=True, null=True,
-                                                  on_delete=models.SET_NULL, verbose_name='所属用例一级分组')
+                                                  on_delete=models.SET_NULL, verbose_name='所属用例一级分组', related_name="automationGroup")
     # automationGroupLevelSecond = models.ForeignKey(AutomationGroupLevelSecond, blank=True, null=True,
     #                                                on_delete=models.SET_NULL, verbose_name='所属用例二级分组')
     caseName = models.CharField(max_length=50, verbose_name='用例名称')

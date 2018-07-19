@@ -29,7 +29,7 @@ from api_test.serializers import AutomationGroupLevelFirstSerializer, Automation
     AutomationTestResultSerializer, ApiInfoSerializer, CorrelationDataSerializer, AutomationTestReportSerializer, \
     AutomationTestCaseDeserializer, AutomationCaseApiDeserializer, AutomationHeadDeserializer, \
     AutomationParameterDeserializer, AutomationTestTaskDeserializer, ProjectSerializer, ApiInfoDocSerializer, \
-    AutomationCaseDownloadSerializer
+    AutomationCaseDownloadSerializer, AutomationCaseDownSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -1371,8 +1371,8 @@ class DownLoadCase(APIView):
         pro_data = ProjectSerializer(obj)
         if not pro_data.data["status"]:
             return JsonResponse(code="999985", msg="该项目已禁用")
-        obi = AutomationTestCase.objects.filter(project=project_id).order_by("id")
-        data = AutomationCaseDownloadSerializer(obi, many=True).data
+        obi = AutomationGroupLevelFirst.objects.filter(project=project_id).order_by("id")
+        data = AutomationCaseDownSerializer(obi, many=True).data
         path = "./api_test/ApiDoc/%s.xlsx" % str(obj.name)
         result = Write(path).write_case(data)
         if result:

@@ -35,55 +35,56 @@ class Write:
         row = 1
         case_row = 1
         module_row = 1
+        _module_row = 0
         merge_format = self.workbook.add_format({
             'align': 'center',
             'valign': 'vcenter',
         })
-        # self.worksheet.write(row, 0, row)
-        # self.worksheet.write(row, 1, i["automationGroupLevelFirst"])
         for i in data:
-            for n in i["api"]:
-                self.worksheet.write(row, 0, row)
-                self.worksheet.write(row, 3, n["name"])
-                self.worksheet.write(row, 4, n["httpType"].lower()+"://xxxx"+n["apiAddress"])
-                self.worksheet.write(row, 5, n["requestType"])
-                header = {}
-                try:
-                    for m in n["header"]:
-                        header[m["name"]] = m["value"]
-                except Exception as e:
-                    logging.exception(e)
-                self.worksheet.write(row, 6, str(header))
-                try:
-                    if n["requestParameterType"] == "form-data":
-                        param = {}
-                        for m in n["parameterList"]:
-                            param[m["name"]] = m["value"]
-                    else:
-                        param = n["parameterRaw"][0]["data"]
-                except Exception as e:
-                    logging.exception(e)
-                    param = ""
-                self.worksheet.write(row, 7, str(param))
-                check = {
-                    'no_check': '不校验',
-                    'only_check_status': '校验http状态',
-                    'json': 'JSON校验',
-                    'entirely_check': '完全校验',
-                    'Regular_check': '正则校验',
-                }
-                self.worksheet.write(row, 8, check[n["examineType"]])
-                if n["httpCode"]:
-                    self.worksheet.write(row, 9, n["httpCode"])
-                if n["responseData"]:
-                    self.worksheet.write(row, 10, n["responseData"])
-                self.worksheet.write(row, 12, i["user"])
-                self.worksheet.write(row, 13, i["updateTime"])
-                row = row+1
-            self.worksheet.merge_range(module_row, 1, module_row + row-2, 1, i["automationGroupLevelFirst"], merge_format)
-        for j in data:
-            self.worksheet.merge_range(case_row, 2, case_row+len(j["api"])-1, 2, j["caseName"], merge_format)
-            case_row = case_row + len(j["api"])
+            for api in i["automationGroup"]:
+                for n in api["api"]:
+                    self.worksheet.write(row, 0, row)
+                    self.worksheet.write(row, 3, n["name"])
+                    self.worksheet.write(row, 4, n["httpType"].lower()+"://xxxx"+n["apiAddress"])
+                    self.worksheet.write(row, 5, n["requestType"])
+                    header = {}
+                    try:
+                        for m in n["header"]:
+                            header[m["name"]] = m["value"]
+                    except Exception as e:
+                        logging.exception(e)
+                    self.worksheet.write(row, 6, str(header))
+                    try:
+                        if n["requestParameterType"] == "form-data":
+                            param = {}
+                            for m in n["parameterList"]:
+                                param[m["name"]] = m["value"]
+                        else:
+                            param = n["parameterRaw"][0]["data"]
+                    except Exception as e:
+                        logging.exception(e)
+                        param = ""
+                    self.worksheet.write(row, 7, str(param))
+                    check = {
+                        'no_check': '不校验',
+                        'only_check_status': '校验http状态',
+                        'json': 'JSON校验',
+                        'entirely_check': '完全校验',
+                        'Regular_check': '正则校验',
+                    }
+                    self.worksheet.write(row, 8, check[n["examineType"]])
+                    if n["httpCode"]:
+                        self.worksheet.write(row, 9, n["httpCode"])
+                    if n["responseData"]:
+                        self.worksheet.write(row, 10, n["responseData"])
+                    self.worksheet.write(row, 12, api["user"])
+                    self.worksheet.write(row, 13, api["updateTime"])
+                    row = row+1
+                    _module_row = _module_row+1
+                self.worksheet.merge_range(case_row, 2, case_row + len(api["api"]) - 1, 2, api["caseName"], merge_format)
+                case_row = row
+            self.worksheet.merge_range(module_row, 1, _module_row, 1, i["name"], merge_format)
+            module_row = _module_row+1
         self.workbook.close()
         return True
 

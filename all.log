@@ -2100,3 +2100,391 @@ Traceback (most recent call last):
   File "E:\project\api_automation_test\api_test\common\confighttp.py", line 77, in test_api
     param_data = param_data[j]
 KeyError: 'app_id'
+2018-07-19 14:20:15,386,6644,root,ERROR,WriteExcel.py:63,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 61, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 14:21:33,006,6644,root,ERROR,WriteExcel.py:63,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 61, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 14:25:06,052,6872,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 14:29:44,295,7676,root,ERROR,WriteExcel.py:63,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 61, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 14:31:15,906,11460,root,ERROR,WriteExcel.py:63,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 61, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 14:35:41,795,4892,root,ERROR,WriteExcel.py:63,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 61, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 14:37:53,031,6172,root,ERROR,WriteExcel.py:63,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 61, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 14:38:52,812,8172,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 14:39:39,394,14432,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:04:25,212,6920,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/DownloadCase
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1377, in get
+    result = Write(path).write_case(data)
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 43, in write_case
+    moudle_name = i["automationGroupLevelFirst"]
+KeyError: 'automationGroupLevelFirst'
+2018-07-19 15:04:26,353,6920,django.server,ERROR,basehttp.py:124,"GET /api/automation/DownloadCase?project_id=1 HTTP/1.1" 500 18276
+2018-07-19 15:05:49,438,8860,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/download_doc
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 1082, in download_doc
+    _file = open(url, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: '[object Object],[object Object]'
+2018-07-19 15:05:49,740,8860,django.server,ERROR,basehttp.py:124,"GET /api/api/download_doc?url=[object%20Object],[object%20Object] HTTP/1.1" 500 71409
+2018-07-19 15:07:15,119,3116,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/DownloadCase
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1375, in get
+    data = AutomationCaseDownSerializer(obi, many=True).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 504, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 487, in to_representation
+    fields = self._readable_fields
+  File "D:\Program Files (x86)\python\lib\site-packages\django\utils\functional.py", line 36, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 377, in _readable_fields
+    field for field in self.fields.values()
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 363, in fields
+    for key, value in self.get_fields().items():
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 997, in get_fields
+    field_names = self.get_field_names(declared_fields, info)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1098, in get_field_names
+    serializer_class=self.__class__.__name__
+AssertionError: The field 'automationGroupLevelFirst' was declared on serializer AutomationCaseDownloadSerializer, but has not been included in the 'fields' option.
+2018-07-19 15:07:15,341,3116,django.server,ERROR,basehttp.py:124,"GET /api/automation/DownloadCase?project_id=1 HTTP/1.1" 500 20616
+2018-07-19 15:07:51,110,5964,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/DownloadCase
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1375, in get
+    data = AutomationCaseDownSerializer(obi, many=True).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 504, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 487, in to_representation
+    fields = self._readable_fields
+  File "D:\Program Files (x86)\python\lib\site-packages\django\utils\functional.py", line 36, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 377, in _readable_fields
+    field for field in self.fields.values()
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 363, in fields
+    for key, value in self.get_fields().items():
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 997, in get_fields
+    field_names = self.get_field_names(declared_fields, info)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 1098, in get_field_names
+    serializer_class=self.__class__.__name__
+AssertionError: The field 'automationGroupLevelFirst' was declared on serializer AutomationCaseDownloadSerializer, but has not been included in the 'fields' option.
+2018-07-19 15:07:51,345,5964,django.server,ERROR,basehttp.py:124,"GET /api/automation/DownloadCase?project_id=1 HTTP/1.1" 500 20616
+2018-07-19 15:14:51,648,9984,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/download_doc
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 1082, in download_doc
+    _file = open(url, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: '[object Object],[object Object]'
+2018-07-19 15:14:51,959,9984,django.server,ERROR,basehttp.py:124,"GET /api/api/download_doc?url=[object%20Object],[object%20Object] HTTP/1.1" 500 71409
+2018-07-19 15:16:28,174,9984,django.request,ERROR,exception.py:118,Internal Server Error: /api/api/download_doc
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\project\api_automation_test\api_test\api\ApiDoc.py", line 1082, in download_doc
+    _file = open(url, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: '[object Object],[object Object]'
+2018-07-19 15:16:28,252,9984,django.server,ERROR,basehttp.py:124,"GET /api/api/download_doc?url=[object%20Object],[object%20Object] HTTP/1.1" 500 71409
+2018-07-19 15:25:20,520,12628,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/DownloadCase
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1377, in get
+    result = Write(path).write_case(data)
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 79, in write_case
+    self.worksheet.write(row, 12, i["user"])
+KeyError: 'user'
+2018-07-19 15:25:20,748,12628,django.server,ERROR,basehttp.py:124,"GET /api/automation/DownloadCase?project_id=1 HTTP/1.1" 500 18238
+2018-07-19 15:25:50,885,5264,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/DownloadCase
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1377, in get
+    result = Write(path).write_case(data)
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 82, in write_case
+    self.worksheet.merge_range(module_row, 1, module_row + row-2, 1, i["automationGroupLevelFirst"], merge_format)
+KeyError: 'automationGroupLevelFirst'
+2018-07-19 15:25:51,133,5264,django.server,ERROR,basehttp.py:124,"GET /api/automation/DownloadCase?project_id=1 HTTP/1.1" 500 18342
+2018-07-19 15:26:05,779,9716,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:29:04,700,7732,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:29:47,378,6488,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:30:30,860,12156,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:31:09,359,7216,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/DownloadCase
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1377, in get
+    result = Write(path).write_case(data)
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 84, in write_case
+    self.worksheet.merge_range(module_row, 1, module_row + row-2, 1, i["automationGroupLevelFirst"], merge_format)
+KeyError: 'automationGroupLevelFirst'
+2018-07-19 15:31:09,617,7216,django.server,ERROR,basehttp.py:124,"GET /api/automation/DownloadCase?project_id=1 HTTP/1.1" 500 18342
+2018-07-19 15:31:38,364,1292,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:32:27,397,10372,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:33:08,565,8876,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:34:12,805,8844,root,ERROR,WriteExcel.py:65,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 63, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:35:15,462,14484,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:37:19,129,7724,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:38:34,274,10232,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:40:36,112,8976,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:41:24,120,11236,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:41:38,279,11236,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:43:00,737,4428,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:43:18,528,4428,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:44:36,345,4428,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:47:04,611,9568,root,ERROR,WriteExcel.py:64,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 62, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:48:44,608,11104,root,ERROR,WriteExcel.py:65,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 63, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:49:47,986,12864,root,ERROR,WriteExcel.py:65,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 63, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:50:28,233,8484,root,ERROR,WriteExcel.py:65,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 63, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:50:48,051,8484,root,ERROR,WriteExcel.py:65,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 63, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range
+2018-07-19 15:51:26,825,8712,root,ERROR,WriteExcel.py:65,list index out of range
+Traceback (most recent call last):
+  File "E:\project\api_automation_test\api_test\common\WriteExcel.py", line 63, in write_case
+    param = n["parameterRaw"][0]["data"]
+IndexError: list index out of range

@@ -446,19 +446,30 @@ class AutomationCaseDownloadSerializer(serializers.ModelSerializer):
     """
     # api = AutomationCaseApiSerializer(many=True, read_only=True)
     updateTime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
-    automationGroupLevelFirst = serializers.CharField(source='automationGroupLevelFirst.name')
+    # automationGroupLevelFirst = serializers.CharField(source='automationGroupLevelFirst.name')
     user = serializers.CharField(source="user.first_name")
     api = serializers.SerializerMethodField()
 
     class Meta:
         model = AutomationTestCase
-        fields = ('automationGroupLevelFirst', 'caseName', 'user', 'updateTime', 'api')
+        fields = ('caseName', 'user', 'updateTime', 'api')
 
     def get_api(self, obj):
         return AutomationCaseApiSerializer(
             AutomationCaseApi.objects.filter(automationTestCase=obj).order_by("id"),
             many=True
         ).data
+
+
+class AutomationCaseDownSerializer(serializers.ModelSerializer):
+    """
+    下载用例读取数据序列
+    """
+    automationGroup = AutomationCaseDownloadSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = AutomationGroupLevelFirst
+        fields = ("name", "automationGroup")
 
 
 class AutomationCaseApiDeserializer(serializers.ModelSerializer):
