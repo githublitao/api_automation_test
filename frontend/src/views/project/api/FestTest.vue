@@ -285,6 +285,7 @@
                 if (host.indexOf("https://") ===0){
                     this.form.addr = host.slice(8)
                 }
+                console.log(this.form.addr)
                 this.$refs.form.validate((valid) => {
                     if (valid) {
                         this.loadingSend = true;
@@ -300,7 +301,7 @@
                                 headers[a] = self.form.head[i]["value"]
                             }
                         }
-                        let url = self.form.Http4 + "://" + self.form.url + host;
+                        let url = self.form.Http4 + "://" + this.form.addr;
                         let _type = self.radio;
                         if (_type === 'form-data') {
                             if (self.radioType) {
@@ -333,7 +334,9 @@
                                     data: _parameter,
                                     headers: headers,
                                     timeout: 5000,
+                                    dataType: 'jsonp',
                                     success: function (data, status, jqXHR) {
+                                        console.log(data)
                                         self.loadingSend = false;
                                         self.form.statusCode = jqXHR.status;
                                         self.form.resultData = data;

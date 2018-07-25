@@ -249,6 +249,7 @@
         line-height: 70px;
         /*<!--margin: -300px 0 0 0;-->*/
         z-index: 1000;
+        margin-top: 25px;
     }
     .tyg-div {
         color: #2ec0f6;

@@ -170,7 +170,6 @@ class CustomMethodForm(admin.ModelAdmin):
         }],)
 
 
-
 class ApiGroupLevelFirstForm(admin.ModelAdmin):
     search_fields = ('name', 'project')
     list_display = ('id', 'project', 'name')

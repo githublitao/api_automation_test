@@ -380,9 +380,6 @@ def delete(header, address, data):
     :param data: 请求参数
     :return:
     """
-    print(header)
-    print(address)
-    print(data)
     response = requests.delete(url=address, params=data, headers=header)
     try:
         return response.status_code, response.json()
