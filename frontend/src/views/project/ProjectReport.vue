@@ -49,12 +49,11 @@
                             <el-form-item label="请求头： ">
                                 <span style="word-break: break-all;overflow:auto;overflow-x:hidden">{{ props.row.header }}</span>
                             </el-form-item>
-                            <el-form-item>
+                            <el-form-item label="返回头： ">
+                                <span style="word-break: break-all;overflow:auto;overflow-x:hidden">{{props.row.responseHeader}}</span>
                             </el-form-item>
                             <el-form-item label="请求参数： ">
                                 <span style="word-break: break-all;overflow:auto;overflow-x:hidden">{{ props.row.parameter }}</span>
-                            </el-form-item>
-                            <el-form-item>
                             </el-form-item>
                             <el-form-item label="返回结果： ">
                                 <span style="word-break: break-all;overflow:auto;overflow-x:hidden">{{props.row.responseData}}</span>
@@ -91,6 +90,7 @@
                 </el-table-column>
             </el-table>
         </div>
+        <div style="margin-top: 5%"></div>
     </section>
 </template>
 <script>

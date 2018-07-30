@@ -180,16 +180,15 @@ def test_api(host_id, case_id, project_id, _id):
                 return 'fail'
         else:
             header[key_] = value
-    # header["Content-Length"] = '%s' % len(str(parameter))
     try:
         if request_type == 'GET':
-            code, response_data = get(header, url, request_parameter_type, parameter)
+            code, response_data, header_data = get(header, url, request_parameter_type, parameter)
         elif request_type == 'POST':
-            code, response_data = post(header, url, request_parameter_type, parameter)
+            code, response_data, header_data = post(header, url, request_parameter_type, parameter)
         elif request_type == 'PUT':
-            code, response_data = put(header, url, request_parameter_type, parameter)
+            code, response_data, header_data = put(header, url, request_parameter_type, parameter)
         elif request_type == 'DELETE':
-            code, response_data = delete(header, url, parameter)
+            code, response_data, header_data = delete(header, url, parameter)
         else:
             return 'ERROR'
     except ReadTimeout:
@@ -310,15 +309,15 @@ def post(header, address, request_parameter_type, data):
         data = json.dumps(data)
     response = requests.post(url=address, data=data, headers=header, timeout=8)
     try:
-        return response.status_code, response.json()
+        return response.status_code, response.json(), response.headers
     except json.decoder.JSONDecodeError:
-        return response.status_code, ''
+        return response.status_code, '', response.headers
     except simplejson.errors.JSONDecodeError:
-        return response.status_code, ''
+        return response.status_code, '', response.headers
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return {}, {}
+        return {}, {}, response.headers
 
 
 def get(header, address, request_parameter_type, data):
@@ -336,15 +335,15 @@ def get(header, address, request_parameter_type, data):
     if response.status_code == 301:
         response = requests.get(url=response.headers["location"])
     try:
-        return response.status_code, response.json()
+        return response.status_code, response.json(), response.headers
     except json.decoder.JSONDecodeError:
-        return response.status_code, ''
+        return response.status_code, '', response.headers
     except simplejson.errors.JSONDecodeError:
-        return response.status_code, ''
+        return response.status_code, '', response.headers
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return {}, {}
+        return {}, {}, response.headers
 
 
 def put(header, address, request_parameter_type, data):
@@ -360,15 +359,15 @@ def put(header, address, request_parameter_type, data):
         data = json.dumps(data)
     response = requests.put(url=address, data=data, headers=header, timeout=8)
     try:
-        return response.status_code, response.json()
+        return response.status_code, response.json(), response.headers
     except json.decoder.JSONDecodeError:
-        return response.status_code, ''
+        return response.status_code, '', response.headers
     except simplejson.errors.JSONDecodeError:
-        return response.status_code, ''
+        return response.status_code, '', response.headers
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return {}, {}
+        return {}, {}, response.headers
 
 
 def delete(header, address, data):
@@ -376,19 +375,17 @@ def delete(header, address, data):
     put 请求
     :param header:  请求头
     :param address:  host地址
-    :param request_parameter_type: 接口请求参数格式 （form-data, raw, Restful）
     :param data: 请求参数
     :return:
     """
     response = requests.delete(url=address, params=data, headers=header)
     try:
-        return response.status_code, response.json()
+        return response.status_code, response.json(), response.headers
     except json.decoder.JSONDecodeError:
-        return response.status_code, ''
+        return response.status_code, '', response.headers
     except simplejson.errors.JSONDecodeError:
-        return response.status_code, ''
+        return response.status_code, '', response.headers
     except Exception as e:
         logging.exception('ERROR')
         logging.error(e)
-        return {}, {}
-
+        return {}, {}, response.headers

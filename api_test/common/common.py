@@ -17,8 +17,6 @@ django.setup()
 from crontab import CronTab
 from rest_framework.views import exception_handler
 
-from api_test.common import GlobalStatusCode
-from api_test.common.api_response import JsonResponse
 from api_test.models import AutomationTestResult, AutomationCaseApi, AutomationResponseJson, \
     AutomationCaseTestResult
 
@@ -51,37 +49,6 @@ def custom_exception_handler(exc, context):
                     response.data['msg'] = '参数有误'
 
     return response
-
-
-def verify_parameter(expect_parameter, method):
-    """
-    参数验证装饰器
-    :param expect_parameter: 期望参数列表
-    :param method: 方式
-    :return:
-    """
-    def api(func):
-        def verify(reality_parameter):
-            """
-            :param reality_parameter: 实际参数
-            :return:
-            """
-            if method == 'POST':
-                parameter = dict(reality_parameter.POST.lists())
-            elif method == 'GET':
-                parameter = dict(reality_parameter.GET.lists())
-            else:
-                raise Exception
-            if set(expect_parameter).issubset(list(parameter)):
-                for i in expect_parameter:
-                    if parameter[i] == ['']:
-                        return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-            else:
-                return JsonResponse(code_msg=GlobalStatusCode.parameter_wrong())
-
-            return func(reality_parameter)
-        return verify
-    return api
 
 
 result = 'success'
@@ -150,7 +117,7 @@ def record_results(_id, url, request_type, header, parameter, host,
         result_.save()
 
 
-def record_auto_results(_id, time,  header, parameter, _result, code, response_data):
+def record_auto_results(_id, time,  header, parameter, _result, responseHeader, code, response_data):
     """
     记录自动测试结果
     :param _id: ID
@@ -159,11 +126,12 @@ def record_auto_results(_id, time,  header, parameter, _result, code, response_d
     :param parameter: 请求参数
     :param _result:  是否通过
     :param code:  HTTP状态码
+    :param responseHeader:  返回头
     :param response_data:  返回结果
     :return:
     """
     result_ = AutomationCaseTestResult(automationCaseApi=AutomationCaseApi.objects.get(id=_id), header=header,
-                                       parameter=parameter, testTime=time,
+                                       parameter=parameter, testTime=time, responseHeader=responseHeader,
                                        result=_result, httpStatus=code, responseData=response_data)
     result_.save()
 
@@ -202,12 +170,13 @@ def record_dynamic(project, _type, operationObject,  user, data):
     :return:
     """
     time = datetime.datetime.now()
-    dynamic_serializer = ProjectDynamicDeserializer(data={
-        "time": time,
-        "project": project, "type": _type,
-        "operationObject": operationObject, "user": user,
-        "description": data
-    }
+    dynamic_serializer = ProjectDynamicDeserializer(
+        data={
+            "time": time,
+            "project": project, "type": _type,
+            "operationObject": operationObject, "user": user,
+            "description": data
+        }
     )
     if dynamic_serializer.is_valid():
         dynamic_serializer.save()

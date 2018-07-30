@@ -73,7 +73,8 @@ def test_api(host, case_id, _id, time):
                                 param_data = param_data[j]
                         except Exception:
                             record_auto_results(_id=_id, header=header, parameter=parameter,
-                                                _result='ERROR', code="", response_data="", time=time)
+                                                _result='ERROR', code="", response_data="关联错误！", time=time,
+                                                responseHeader="{}")
                             return 'fail'
                     elif interrelate_type[0] == "Regular":
                         api_id = re.findall('(?<=<response\[Regular]\[).*?(?=\])', value)
@@ -84,7 +85,8 @@ def test_api(host, case_id, _id, time):
                         param_data = re.findall(pattern[0], param_data.replace("\'", "\""))[0]
                     else:
                         record_auto_results(_id=_id, header=header, parameter=parameter,
-                                            _result='ERROR', code="", response_data="", time=time)
+                                            _result='ERROR', code="", response_data="关联错误！", time=time,
+                                            responseHeader="{}")
                         return 'fail'
                     pattern = re.compile(r'<response\[.*]')
                     parameter[key_] = re.sub(pattern, param_data, value)
@@ -93,7 +95,7 @@ def test_api(host, case_id, _id, time):
             except Exception as e:
                 logging.exception(e)
                 record_auto_results(_id=_id, header=header, parameter=parameter,
-                                    _result='ERROR', code="", response_data="", time=time)
+                                    _result='ERROR', code="", response_data="", time=time, responseHeader="{}")
                 return 'fail'
         if data["formatRaw"]:
             request_parameter_type = "raw"
@@ -105,7 +107,7 @@ def test_api(host, case_id, _id, time):
                 parameter = eval(parameter[0]["data"])
             except Exception:
                 record_auto_results(_id=_id, header=header, parameter=parameter,
-                                    _result='ERROR', code="", response_data="", time=time)
+                                    _result='ERROR', code="", response_data="", time=time, responseHeader="{}")
                 return 'fail'
         else:
             parameter = []
@@ -128,7 +130,8 @@ def test_api(host, case_id, _id, time):
                             param_data = param_data[j]
                     except Exception as e:
                         record_auto_results(_id=_id, header=header, parameter=parameter,
-                                            _result='ERROR', code="", response_data="", time=time)
+                                            _result='ERROR', code="", response_data="关联错误！",
+                                            time=time, responseHeader="{}")
                         return 'fail'
                 elif interrelate_type[0] == "Regular":
                     api_id = re.findall('(?<=<response\[Regular]\[).*?(?=\])', value)
@@ -139,7 +142,7 @@ def test_api(host, case_id, _id, time):
                     param_data = re.findall(pattern[0], param_data.replace("\'", "\""))[0]
                 else:
                     record_auto_results(_id=_id, header=header, parameter=parameter,
-                                        _result='ERROR', code="", response_data="", time=time)
+                                        _result='ERROR', code="", response_data="关联错误", time=time, responseHeader="{}")
                     return 'fail'
                 pattern = re.compile(r'<response\[.*]')
                 header[key_] = re.sub(pattern, param_data, value)
@@ -148,7 +151,7 @@ def test_api(host, case_id, _id, time):
                 logging.exception("ERROR")
                 logging.error(e)
                 record_auto_results(_id=_id, header=header, parameter=parameter,
-                                    _result='ERROR', code="", response_data="", time=time)
+                                    _result='ERROR', code="", response_data="", time=time, responseHeader="{}")
                 return 'fail'
         else:
             header[key_] = value
@@ -156,22 +159,23 @@ def test_api(host, case_id, _id, time):
     header["Content-Length"] = '%s' % len(str(parameter))
     try:
         if request_type == 'GET':
-            code, response_data = get(header, url, request_parameter_type, parameter)
+            code, response_data, header_data = get(header, url, request_parameter_type, parameter)
         elif request_type == 'POST':
-            code, response_data = post(header, url, request_parameter_type, parameter)
+            code, response_data, header_data = post(header, url, request_parameter_type, parameter)
         elif request_type == 'PUT':
-            code, response_data = put(header, url, request_parameter_type, parameter)
+            code, response_data, header_data = put(header, url, request_parameter_type, parameter)
         elif request_type == 'DELETE':
-            code, response_data = delete(header, url, request_parameter_type, parameter)
+            code, response_data, header_data = delete(header, url, parameter)
         else:
             return 'ERROR'
     except ReadTimeout:
         record_auto_results(_id=_id, header=header, parameter=parameter,
-                            _result='TimeOut', code="", response_data="", time=time)
+                            _result='TimeOut', code="", response_data="", time=time, responseHeader="{}")
         return 'timeout'
     if examine_type == 'no_check':
         record_auto_results(_id=_id, header=header, parameter=parameter,
-                            _result='PASS', code=code, response_data=response_data, time=time)
+                            _result='PASS', code=code, response_data=response_data,
+                            time=time, responseHeader=header_data)
         return 'success'
 
     elif examine_type == 'json':
@@ -179,27 +183,33 @@ def test_api(host, case_id, _id, time):
             try:
                 result = check_json(eval(response_parameter_list), response_data)
             except:
-                result = check_json(eval(response_parameter_list.replace('true', 'True').replace('false', 'False')), response_data)
+                result = check_json(eval(response_parameter_list.replace('true', 'True').replace('false', 'False')),
+                                    response_data)
             if result:
                 record_auto_results(_id=_id, header=header, parameter=parameter,
-                                    _result='PASS', code=code, response_data=response_data, time=time)
+                                    _result='PASS', code=code, response_data=response_data,
+                                    time=time, responseHeader=header_data)
             else:
                 record_auto_results(_id=_id, header=header, parameter=parameter,
-                                    _result='FAIL', code=code, response_data=response_data, time=time)
+                                    _result='FAIL', code=code, response_data=response_data,
+                                    time=time, responseHeader=header_data)
             return result
         else:
             record_auto_results(_id=_id, header=header, parameter=parameter,
-                                _result='FAIL', code=code, response_data=response_data, time=time)
+                                _result='FAIL', code=code, response_data=response_data,
+                                time=time, responseHeader=header_data)
             return 'fail'
 
     elif examine_type == 'only_check_status':
         if int(http_code) == code:
             record_auto_results(_id=_id, header=header, parameter=parameter,
-                                _result='PASS', code=code, response_data=response_data, time=time)
+                                _result='PASS', code=code, response_data=response_data,
+                                time=time, responseHeader=header_data)
             return 'success'
         else:
             record_auto_results(_id=_id, header=header, parameter=parameter,
-                                _result='FAIL', code=code, response_data=response_data, time=time)
+                                _result='FAIL', code=code, response_data=response_data,
+                                time=time, responseHeader=header_data)
             return 'fail'
 
     elif examine_type == 'entirely_check':
@@ -207,18 +217,22 @@ def test_api(host, case_id, _id, time):
             try:
                 result = operator.eq(eval(response_parameter_list), response_data)
             except:
-                result = operator.eq(eval(response_parameter_list.replace('true', 'True').replace('false', 'False')), response_data)
+                result = operator.eq(eval(response_parameter_list.replace('true', 'True').replace('false', 'False')),
+                                     response_data)
             if result:
                 record_auto_results(_id=_id, header=header, parameter=parameter,
-                                    _result='PASS', code=code, response_data=response_data, time=time)
+                                    _result='PASS', code=code, response_data=response_data,
+                                    time=time, responseHeader=header_data)
                 return 'success'
             else:
                 record_auto_results(_id=_id, header=header, parameter=parameter,
-                                    _result='FAIL', code=code, response_data=response_data, time=time)
+                                    _result='FAIL', code=code, response_data=response_data,
+                                    time=time, responseHeader=header_data)
                 return 'fail'
         else:
             record_auto_results(_id=_id, header=header, parameter=parameter,
-                                _result='FAIL', code=code, response_data=response_data, time=time)
+                                _result='FAIL', code=code, response_data=response_data,
+                                time=time, responseHeader=header_data)
             return 'fail'
 
     elif examine_type == 'Regular_check':
@@ -229,18 +243,22 @@ def test_api(host, case_id, _id, time):
                 result = re.findall(response_parameter_list, eval(response_data.replace('true', 'True').replace('false', 'False')))
             if result:
                 record_auto_results(_id=_id, header=header, parameter=parameter,
-                                    _result='PASS', code=code, response_data=response_data, time=time)
+                                    _result='PASS', code=code, response_data=response_data,
+                                    time=time, responseHeader=header_data)
                 return 'success'
             else:
                 record_auto_results(_id=_id, header=header, parameter=parameter,
-                                    _result='FAIL', code=code, response_data=response_data, time=time)
+                                    _result='FAIL', code=code, response_data=response_data,
+                                    time=time, responseHeader=header_data)
                 return 'fail'
         else:
             record_auto_results(_id=_id, header=header, parameter=parameter,
-                                _result='FAIL', code=code, response_data=response_data, time=time)
+                                _result='FAIL', code=code, response_data=response_data,
+                                time=time, responseHeader=header_data)
             return 'fail'
 
     else:
         record_auto_results(_id=_id, header=header, parameter=parameter,
-                            _result='FAIL', code=code, response_data=response_data, time=time)
+                            _result='FAIL', code=code, response_data=response_data,
+                            time=time, responseHeader=header_data)
         return 'fail'

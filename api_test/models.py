@@ -625,6 +625,7 @@ class AutomationCaseTestResult(models.Model):
     parameter = models.TextField(blank=True, null=True, verbose_name='请求参数')
     result = models.CharField(max_length=50, verbose_name='测试结果', choices=RESULT_CHOICE)
     httpStatus = models.CharField(max_length=50, blank=True, null=True, verbose_name='http状态', choices=HTTP_CODE_CHOICE)
+    responseHeader = models.TextField(blank=True, null=True, verbose_name='返回头')
     responseData = models.TextField(blank=True, null=True, verbose_name='实际返回内容')
     testTime = models.CharField(max_length=128, null=True, blank=True, verbose_name='测试时间')
 

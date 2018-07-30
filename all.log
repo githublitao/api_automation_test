@@ -2512,3 +2512,804 @@ Traceback (most recent call last):
     print("row:"+row)
 TypeError: must be str, not int
 2018-07-19 17:53:54,246,2540,django.server,ERROR,basehttp.py:124,"GET /api/automation/DownloadCase?project_id=1 HTTP/1.1" 500 18241
+2018-07-30 13:32:30,309,4384,django.request,ERROR,exception.py:118,Internal Server Error: /api/report/lately_ten
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationReport.py", line 144, in get
+    for j in result:
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 272, in __iter__
+    self._fetch_all()
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 1179, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\sql\compiler.py", line 1064, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+2018-07-30 13:32:30,568,4384,django.request,ERROR,exception.py:118,Internal Server Error: /api/report/auto_test_report
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationReport.py", line 81, in get
+    AutomationCaseTestResult.objects.filter(api, testTime=time), many=True).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 272, in __iter__
+    self._fetch_all()
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 1179, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\sql\compiler.py", line 1064, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+2018-07-30 13:32:31,651,4384,django.server,ERROR,basehttp.py:124,"GET /api/report/auto_test_report?project_id=1&time=2018-07-09+16:50:21 HTTP/1.1" 500 23847
+2018-07-30 13:32:31,654,4384,django.server,ERROR,basehttp.py:124,"GET /api/report/lately_ten?project_id=1 HTTP/1.1" 500 23179
+2018-07-30 13:32:31,980,4384,django.request,ERROR,exception.py:118,Internal Server Error: /api/report/auto_test_report
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationReport.py", line 81, in get
+    AutomationCaseTestResult.objects.filter(api, testTime=time), many=True).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 272, in __iter__
+    self._fetch_all()
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 1179, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\sql\compiler.py", line 1064, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+2018-07-30 13:32:32,295,4384,django.server,ERROR,basehttp.py:124,"GET /api/report/auto_test_report?project_id=1&time=2018-07-09+16:50:21 HTTP/1.1" 500 23847
+2018-07-30 13:32:53,149,4384,django.request,ERROR,exception.py:118,Internal Server Error: /api/report/lately_ten
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationReport.py", line 144, in get
+    for j in result:
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 272, in __iter__
+    self._fetch_all()
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 1179, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\sql\compiler.py", line 1064, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+2018-07-30 13:32:53,704,4384,django.server,ERROR,basehttp.py:124,"GET /api/report/lately_ten?project_id=1 HTTP/1.1" 500 23179
+2018-07-30 13:32:54,017,4384,django.request,ERROR,exception.py:118,Internal Server Error: /api/report/auto_test_report
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationReport.py", line 81, in get
+    AutomationCaseTestResult.objects.filter(api, testTime=time), many=True).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 272, in __iter__
+    self._fetch_all()
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 1179, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\sql\compiler.py", line 1064, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+2018-07-30 13:32:54,527,4384,django.server,ERROR,basehttp.py:124,"GET /api/report/auto_test_report?project_id=1&time=2018-07-09+16:50:21 HTTP/1.1" 500 23847
+2018-07-30 13:32:54,835,4384,django.request,ERROR,exception.py:118,Internal Server Error: /api/report/auto_test_report
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationReport.py", line 81, in get
+    AutomationCaseTestResult.objects.filter(api, testTime=time), many=True).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 272, in __iter__
+    self._fetch_all()
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 1179, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\sql\compiler.py", line 1064, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+2018-07-30 13:32:55,269,4384,django.server,ERROR,basehttp.py:124,"GET /api/report/auto_test_report?project_id=1&time=2018-07-09+16:50:21 HTTP/1.1" 500 23847
+2018-07-30 13:33:49,434,8276,django.request,ERROR,exception.py:118,Internal Server Error: /api/report/lately_ten
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationReport.py", line 144, in get
+    for j in result:
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 272, in __iter__
+    self._fetch_all()
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 1179, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\sql\compiler.py", line 1064, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+2018-07-30 13:33:50,041,8276,django.request,ERROR,exception.py:118,Internal Server Error: /api/report/auto_test_report
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationReport.py", line 81, in get
+    AutomationCaseTestResult.objects.filter(api, testTime=time), many=True).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 272, in __iter__
+    self._fetch_all()
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 1179, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\sql\compiler.py", line 1064, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+2018-07-30 13:33:51,003,8276,django.server,ERROR,basehttp.py:124,"GET /api/report/auto_test_report?project_id=1&time=2018-07-09+16:50:21 HTTP/1.1" 500 23847
+2018-07-30 13:33:51,005,8276,django.server,ERROR,basehttp.py:124,"GET /api/report/lately_ten?project_id=1 HTTP/1.1" 500 23179
+2018-07-30 13:33:51,297,8276,django.request,ERROR,exception.py:118,Internal Server Error: /api/report/auto_test_report
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationReport.py", line 81, in get
+    AutomationCaseTestResult.objects.filter(api, testTime=time), many=True).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 742, in data
+    ret = super(ListSerializer, self).data
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 262, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\serializers.py", line 660, in to_representation
+    self.child.to_representation(item) for item in iterable
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 272, in __iter__
+    self._fetch_all()
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 1179, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\models\sql\compiler.py", line 1064, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 893, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1103, in _read_query_result
+    result.read()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1396, in read
+    first_packet = self.connection._read_packet()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 1059, in _read_packet
+    packet.check_error()
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\connections.py", line 384, in check_error
+    err.raise_mysql_exception(self._data)
+  File "D:\Program Files (x86)\python\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.InternalError: (1054, "Unknown column 'api_test_automationcasetestresult.responseHeader' in 'field list'")
+2018-07-30 13:33:51,851,8276,django.server,ERROR,basehttp.py:124,"GET /api/report/auto_test_report?project_id=1&time=2018-07-09+16:50:21 HTTP/1.1" 500 23846
