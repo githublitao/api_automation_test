@@ -24,7 +24,8 @@
 ### 2.下载代码到本地并解压<br>
 ### 3.cmd到根目录下安装相关依赖包<br>
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt<br>
+pip install https://github.com/darklow/django-suit/tarball/v2
 ```
 ### 4.安装mysql数据库，配置数据库连接，进入api_automation_test/settings.py<br>
 ```python
