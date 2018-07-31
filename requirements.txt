@@ -16,3 +16,4 @@ django-reversion==2.0.13
 python-crontab==2.2.8
 PyMySQL==0.8.1
 XlsxWriter==1.0.5
+PyMySQL==0.8.1
