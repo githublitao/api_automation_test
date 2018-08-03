@@ -171,7 +171,7 @@
                                 self.addGroupLoading = false;
                                     if (code === '999999') {
                                         self.$message({
-                                            message: '修改成功',
+                                            message: '添加成功',
                                             center: true,
                                             type: 'success'
                                         });

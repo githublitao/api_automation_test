@@ -1,7 +1,6 @@
 import json
 import logging
 import platform
-import time
 
 from datetime import datetime
 
@@ -10,7 +9,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
 from django.db.models import Q
-from django.http import StreamingHttpResponse
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
@@ -28,8 +26,8 @@ from api_test.serializers import AutomationGroupLevelFirstSerializer, Automation
     AutomationCaseApiSerializer, AutomationCaseApiListSerializer, AutomationTestTaskSerializer, \
     AutomationTestResultSerializer, ApiInfoSerializer, CorrelationDataSerializer, AutomationTestReportSerializer, \
     AutomationTestCaseDeserializer, AutomationCaseApiDeserializer, AutomationHeadDeserializer, \
-    AutomationParameterDeserializer, AutomationTestTaskDeserializer, ProjectSerializer, ApiInfoDocSerializer, \
-    AutomationCaseDownloadSerializer, AutomationCaseDownSerializer
+    AutomationParameterDeserializer, AutomationTestTaskDeserializer, ProjectSerializer, \
+    AutomationCaseDownSerializer
 
 logger = logging.getLogger(__name__)  # 这里使用 __name__ 动态搜索定义的 logger 配置，这里有一个层次关系的知识点。
 
@@ -92,6 +90,8 @@ class AddGroup(APIView):
             return result
         try:
             obj = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and obj.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(obj)
@@ -139,6 +139,8 @@ class DelGroup(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(pro_data)
@@ -187,6 +189,8 @@ class UpdateNameGroup(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(pro_data)
@@ -242,6 +246,8 @@ class UpdateGroup(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(pro_data)
@@ -356,6 +362,8 @@ class AddCase(APIView):
         data["user"] = request.user.pk
         try:
             obj = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and obj.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(obj)
@@ -419,6 +427,8 @@ class UpdateCase(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(pro_data)
@@ -477,6 +487,8 @@ class DelCase(AddCase):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(pro_data)
@@ -614,6 +626,8 @@ class AddOldApi(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(pro_data)
@@ -704,6 +718,8 @@ class AddNewApi(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(pro_data)
@@ -859,6 +875,8 @@ class UpdateApi(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(pro_data)
@@ -982,6 +1000,8 @@ class DelApi(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(pro_data)
@@ -1110,6 +1130,8 @@ class AddTimeTask(APIView):
             return result
         try:
             pro_id = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_id.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(pro_id)
@@ -1241,6 +1263,8 @@ class DelTask(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(pro_data)

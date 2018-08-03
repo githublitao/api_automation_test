@@ -76,7 +76,6 @@ class Record(APIView):
                 "key": "2200d7985fd43582411687abaa5b01eb",
                 "location": str(longitude)+","+str(latitude)
                       }
-            print(params)
             headers = {"Content-Type": "application/json;charset=utf-8"}
             response = requests.get(url="http://restapi.amap.com/v3/geocode/regeo",
                                     params=params, headers=headers, allow_redirects=False,
@@ -85,7 +84,6 @@ class Record(APIView):
                 response = requests.get(url=response.headers["location"])
             try:
                 visitor_addr = response.json()
-                print(visitor_addr)
                 if visitor_addr["status"] == "1":
                     VisitorsRecord(
                         formattedAddress=visitor_addr["regeocode"]["formatted_address"],

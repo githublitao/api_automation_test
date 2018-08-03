@@ -92,6 +92,8 @@ class AddGroup(APIView):
         # 校验项目状态
         try:
             obj = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and obj.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(obj)
@@ -145,6 +147,8 @@ class UpdateNameGroup(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
@@ -194,6 +198,8 @@ class DelGroup(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
@@ -312,6 +318,8 @@ class AddApi(APIView):
         data["userUpdate"] = request.user.pk
         try:
             obj = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and obj.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(obj)
@@ -428,6 +436,8 @@ class UpdateApiMockStatus(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
@@ -565,6 +575,8 @@ class LeadSwagger(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
@@ -620,6 +632,8 @@ class UpdateApi(APIView):
         data["userUpdate"] = request.user.pk
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
@@ -747,6 +761,8 @@ class DelApi(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)
@@ -801,6 +817,8 @@ class UpdateGroup(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在!")
         pro_data = ProjectSerializer(pro_data)

@@ -92,6 +92,8 @@ class AddHost(APIView):
             return result
         try:
             obj = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and obj.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(obj)
@@ -147,6 +149,8 @@ class UpdateHost(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(pro_data)
@@ -204,6 +208,8 @@ class DelHost(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(pro_data)
@@ -252,6 +258,8 @@ class DisableHost(APIView):
         # 查找项目是否存在
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(pro_data)
@@ -298,6 +306,8 @@ class EnableHost(APIView):
         # 查找项目是否存在
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(pro_data)

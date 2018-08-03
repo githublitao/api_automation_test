@@ -90,6 +90,8 @@ class EmailConfig(APIView):
             return result
         try:
             obi = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and obi.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(obi)
@@ -138,6 +140,8 @@ class DelEmail(APIView):
             return result
         try:
             pro_data = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and pro_data.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         pro_data = ProjectSerializer(pro_data)

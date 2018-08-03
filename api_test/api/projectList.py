@@ -158,6 +158,8 @@ class UpdateProject(APIView):
         # 查找项目是否存在
         try:
             obj = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and obj.user.is_superuser:
+                return JsonResponse(code="999983", msg="无操作权限！")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
         # 查找是否相同名称的项目
@@ -209,6 +211,13 @@ class DelProject(APIView):
         if result:
             return result
         try:
+            for i in data["ids"]:
+                try:
+                    obj = Project.objects.get(id=i)
+                    if not request.user.is_superuser and obj.user.is_superuser:
+                        return JsonResponse(code="999983", msg=str(obj)+"无操作权限！")
+                except ObjectDoesNotExist:
+                    return JsonResponse(code="999995", msg="项目不存在！")
             for j in data["ids"]:
                 obj = Project.objects.filter(id=j)
                 obj.delete()
@@ -247,6 +256,8 @@ class DisableProject(APIView):
         # 查找项目是否存在
         try:
             obj = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and obj.user.is_superuser:
+                return JsonResponse(code="999983", msg=str(obj) + "无操作权限！")
             obj.status = False
             obj.save()
             record_dynamic(project=data["project_id"],
@@ -286,6 +297,8 @@ class EnableProject(APIView):
         # 查找项目是否存在
         try:
             obj = Project.objects.get(id=data["project_id"])
+            if not request.user.is_superuser and obj.user.is_superuser:
+                return JsonResponse(code="999983", msg=str(obj) + "无操作权限！")
             obj.status = True
             obj.save()
             record_dynamic(project=data["project_id"],
