@@ -323,7 +323,14 @@
             },
             addInterrelateSubmit() {
                 this.saveCorrelation = true;
-                this.interrelateObjects['value'] =  this.currentRow['tier'];
+                try {
+                    this.interrelateObjects['value'] =  this.currentRow['tier'];
+                } catch (e) {
+                    this.$message.warning({
+                        message: '未选中接口参数',
+                        center: true,
+                    });
+                }
                 this.interrelateObjects['interrelate'] = true;
                 this.saveCorrelation = false;
                 this.searchApiVisible = false;
