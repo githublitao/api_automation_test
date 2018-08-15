@@ -3611,3 +3611,107 @@ Traceback (most recent call last):
     print(obj['user'])
 TypeError: 'Project' object is not subscriptable
 2018-08-03 12:35:11,033,9304,django.server,ERROR,basehttp.py:124,"POST /api/project/update_project HTTP/1.1" 500 18590
+2018-08-14 17:08:14,645,6212,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1179, in post
+    start_time=start_time, end_time=end_time, frequency=data["frequency"], unit=data["unit"])
+  File "E:\project\api_automation_test\api_test\common\addTask.py", line 56, in add
+    my_user_cron.write()
+  File "D:\Program Files (x86)\python\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-08-14 17:08:14,991,6212,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 19072
+2018-08-14 17:28:16,058,15328,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1180, in post
+    start_time=start_time, end_time=end_time, frequency=data["frequency"], unit=data["unit"])
+  File "E:\project\api_automation_test\api_test\common\addTask.py", line 56, in add
+    my_user_cron.write()
+  File "D:\Program Files (x86)\python\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-08-14 17:28:16,304,15328,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 18786
+2018-08-14 17:30:48,302,444,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1181, in post
+    start_time=start_time, end_time=end_time, frequency=data["frequency"], unit=data["unit"])
+  File "E:\project\api_automation_test\api_test\common\addTask.py", line 56, in add
+    my_user_cron.write()
+  File "D:\Program Files (x86)\python\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-08-14 17:30:48,694,444,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 18786
+2018-08-14 17:31:21,028,15684,django.request,ERROR,exception.py:118,Internal Server Error: /api/automation/add_time_task
+Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\django\views\generic\base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 489, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 451, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Program Files (x86)\python\lib\site-packages\rest_framework\views.py", line 486, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\project\api_automation_test\api_test\api\automationCase.py", line 1181, in post
+    start_time=start_time, end_time=end_time, frequency=data["frequency"], unit=data["unit"])
+  File "E:\project\api_automation_test\api_test\common\addTask.py", line 56, in add
+    my_user_cron.write()
+  File "D:\Program Files (x86)\python\lib\site-packages\crontab.py", line 344, in write
+    raise IOError("Please specify user or filename to write.")
+OSError: Please specify user or filename to write.
+2018-08-14 17:31:21,244,15684,django.server,ERROR,basehttp.py:124,"POST /api/automation/add_time_task HTTP/1.1" 500 18786

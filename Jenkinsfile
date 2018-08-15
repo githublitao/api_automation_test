@@ -11,6 +11,7 @@ pipeline {
         sh 'cp -r /usr/local/python3/bin/darklow-django-suit-52ecdad/suit/static/suit frontend/dist/static'
         sh 'cp -rf /usr/local/python3/lib/python3.6/site-packages/django/contrib/admin/static/admin frontend/dist/static'
         sh 'cp -r /usr/local/python3/lib/python3.6/site-packages/rest_framework_swagger/static/rest_framework_swagger frontend/dist/static'
+        sh 'cp -r /usr/local/python3/lib/python3.6/site-packages/rest_framework/static/rest_framework frontend/dist/static'
         sh '/usr/local/python3/bin/uwsgi --ini /etc/script/uwsgi.ini'
       }
       post {
@@ -22,6 +23,7 @@ pipeline {
           sh 'cp -r /usr/local/python3/bin/darklow-django-suit-52ecdad/suit/static/suit frontend/dist/static'
           sh 'cp -rf /usr/local/python3/lib/python3.6/site-packages/django/contrib/admin/static/admin frontend/dist/static'
           sh 'cp -r /usr/local/python3/lib/python3.6/site-packages/rest_framework_swagger/static/rest_framework_swagger frontend/dist/static'
+          sh 'cp -r /usr/local/python3/lib/python3.6/site-packages/rest_framework/static/rest_framework frontend/dist/static'
           sh '/usr/local/python3/bin/uwsgi --ini /etc/script/uwsgi.ini'
         }
       }
