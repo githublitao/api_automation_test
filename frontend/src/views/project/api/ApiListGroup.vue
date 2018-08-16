@@ -53,7 +53,7 @@
 				</template>
 			</el-table-column>
 		</el-table>
-		<el-dialog title="修改所属分组" v-model="updateGroupFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
+		<el-dialog title="修改所属分组" :visible.sync="updateGroupFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
 			<el-form :model="updateGroupForm" label-width="80px" :rules="updateGroupFormRules" ref="updateGroupForm">
 				<el-form-item label="分组名称" prop="firstGroup">
 					<el-select v-model="updateGroupForm.firstGroup" placeholder="请选择">

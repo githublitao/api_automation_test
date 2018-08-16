@@ -17,7 +17,7 @@
                 </el-form-item>
             </el-form>
         </el-col>
-        <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
+        <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
             <el-form :model="editForm"  :rules="editFormRules" ref="editForm" label-width="80px">
                 <el-form-item label="名称" prop="caseName">
                     <el-input v-model.trim="editForm.caseName" auto-complete="off"></el-input>
@@ -38,7 +38,7 @@
         </el-dialog>
 
         <!--新增界面-->
-        <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false" style="width: 65%; left: 17.5%">
+        <el-dialog title="新增" :visible.sync="addFormVisible" :close-on-click-modal="false" style="width: 65%; left: 17.5%">
             <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
                 <el-form-item label="名称" prop="caseName">
                     <el-input v-model.trim="addForm.caseName" auto-complete="off"></el-input>
@@ -57,7 +57,7 @@
                 <el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
             </div>
         </el-dialog>
-        <el-dialog title="修改所属分组" v-model="updateGroupFormVisible" :close-on-click-modal="false" style="width: 65%; left: 17.5%">
+        <el-dialog title="修改所属分组" :visible.sync="updateGroupFormVisible" :close-on-click-modal="false" style="width: 65%; left: 17.5%">
             <el-form :model="updateGroupForm" label-width="80px"  :rules="updateGroupFormRules" ref="updateGroupForm">
                 <el-form-item label="分组" prop="firstGroup">
                     <el-select v-model="updateGroupForm.firstGroup" placeholder="请选择分组">

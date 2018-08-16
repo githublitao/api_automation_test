@@ -11,7 +11,7 @@
         <el-select v-model="url"  placeholder="测试环境" style="float: right">
             <el-option v-for="(item,index) in Host" :key="index+''" :label="item.name" :value="item.id"></el-option>
         </el-select>
-        <el-dialog title="选择创建的API" v-model="searchApiListVisible" :close-on-click-modal="false" >
+        <el-dialog title="选择创建的API" :visible.sync="searchApiListVisible" :close-on-click-modal="false" >
             <el-row :gutter="10">
                 <el-col :span="6">
                     <div style="height:400px;line-height:100px;overflow:auto;overflow-x:hidden;border: 1px solid #e6e6e6">
@@ -88,7 +88,7 @@
             <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :page-count="total" style="float:right;">
             </el-pagination>
         </el-col>
-        <el-dialog title="测试结果" v-model="TestResult" :close-on-click-modal="false">
+        <el-dialog title="测试结果" :visible.sync="TestResult" :close-on-click-modal="false">
             <div style="height:700px;overflow:auto;overflow-x:hidden;border: 1px solid #e6e6e6">
                 <div style="font-size: 25px;" class="resultStyle">{{result.name}}</div>
                 <div class="lin"></div>

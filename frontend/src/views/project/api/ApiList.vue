@@ -22,7 +22,7 @@
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click.native="loadSwaggerApi = true">导入接口</el-button>
-					<el-dialog title="导入swagger接口" v-model="loadSwaggerApi" :close-on-click-modal="false">
+					<el-dialog title="导入swagger接口" :visible.sync="loadSwaggerApi" :close-on-click-modal="false">
 						<el-input v-model.trim="swaggerUrl" placeholder="请输入swagger接口地址" style="width:90%"></el-input>
 						<el-button type="primary" @click="addSubmit" :loading="addLoading">导入</el-button>
 						<P v-if="!swaggerUrl" style="color: red; margin: 0px">不能为空</P>
@@ -30,7 +30,7 @@
 				</el-form-item>
 			</el-form>
 		</el-col>
-		<el-dialog title="修改所属分组" v-model="updateGroupFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
+		<el-dialog title="修改所属分组" :visible.sync="updateGroupFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
 			<el-form :model="updateGroupForm" label-width="80px" :rules="updateGroupFormRules" ref="updateGroupForm">
 				<el-form-item label="分组名称" prop="firstGroup">
 					<el-select v-model="updateGroupForm.firstGroup" placeholder="请选择">

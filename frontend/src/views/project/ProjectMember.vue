@@ -14,7 +14,7 @@
                 <i v-if="reportFrom" class="el-icon-delete" style="cursor:pointer;display: inline" @click="DelEmail()"></i>
             </div>
         </div>
-        <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
+        <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false" style="width: 60%; left: 20%">
 		    <el-form :model="editForm" label-width="100px"  :rules="editFormRules" ref="editForm">
                 <el-form-item label="发送人邮箱:" prop="reportFrom">
                     <el-input v-model.trim="editForm.reportFrom" auto-complete="off"></el-input>

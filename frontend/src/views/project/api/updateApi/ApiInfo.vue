@@ -59,7 +59,7 @@
                     </el-table-column>
                 </el-table>
             </el-collapse-item>
-            <el-dialog title="参数详情" v-model="parameterInfoVisible" :close-on-click-modal="false">
+            <el-dialog title="参数详情" :visible.sync="parameterInfoVisible" :close-on-click-modal="false">
                 <div v-model="parameterInfo" style="font-size: 15px">
                     <el-row :gutter="20" style="margin: 10px">
                         <div>
@@ -112,7 +112,7 @@
                     </el-table-column>
                 </el-table>
             </el-collapse-item>
-            <el-dialog title="参数详情" v-model="responseInfoVisible" :close-on-click-modal="false">
+            <el-dialog title="参数详情" :visible.sync="responseInfoVisible" :close-on-click-modal="false">
                 <div v-model="responseInfo" style="font-size: 15px">
                     <el-row :gutter="20" style="margin: 10px">
                         <div>
