@@ -2,7 +2,7 @@
     <section>
         <!--工具条-->
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-            <el-form :inline="true" :model="filters">
+            <el-form :inline="true" :model="filters" @submit.native.prevent>
                 <el-form-item>
                     <el-input v-model="filters.name" placeholder="名称" @keyup.enter.native="getProjectList"></el-input>
                 </el-form-item>

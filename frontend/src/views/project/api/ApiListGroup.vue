@@ -2,7 +2,7 @@
 	<section>
 		<!--工具条-->
 		<el-col :span="24" style="height: 46px">
-			<el-form :inline="true" :model="filters">
+			<el-form :inline="true" :model="filters" @submit.native.prevent>
 				<el-form-item>
 					<el-input v-model.trim="filters.name" placeholder="名称" @keyup.enter.native="getApiList"></el-input>
 				</el-form-item>
