@@ -502,7 +502,7 @@ class AutomationParameter(models.Model):
     automationCaseApi = models.ForeignKey(AutomationCaseApi, related_name='parameterList',
                                           on_delete=models.CASCADE, verbose_name='接口')
     name = models.CharField(max_length=1024, verbose_name='参数名')
-    value = models.CharField(max_length=1024, verbose_name='内容')
+    value = models.CharField(max_length=1024, verbose_name='内容', blank=True, null=True)
     interrelate = models.BooleanField(default=False, verbose_name='是否关联')
 
     def __unicode__(self):

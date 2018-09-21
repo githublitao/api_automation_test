@@ -40,7 +40,7 @@
                         <el-table :data="form.head" highlight-current-row>
                             <el-table-column prop="name" label="标签" min-width="28%" sortable>
                                 <template slot-scope="scope">
-                                    <el-select placeholder="head标签" filterable v-model="scope.row.name" style="width: 100%">
+                                    <el-select placeholder="head标签" filterable v-model="scope.row.name" style="width: 90%">
                                         <el-option v-for="(item,index) in header" :key="index+''" :label="item.label" :value="item.value"></el-option>
                                     </el-select>
                                     <el-input class="selectInput" v-model.trim="scope.row.name" :value="scope.row.name" placeholder="请输入内容"></el-input>

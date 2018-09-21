@@ -1,5 +1,6 @@
 import logging
 
+from crontab import CronTab
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
@@ -221,6 +222,9 @@ class DelProject(APIView):
             for j in data["ids"]:
                 obj = Project.objects.filter(id=j)
                 obj.delete()
+                my_user_cron = CronTab(user=True)
+                my_user_cron.remove_all(comment=j)
+                my_user_cron.write()
             return JsonResponse(code="999999", msg="成功")
         except ObjectDoesNotExist:
             return JsonResponse(code="999995", msg="项目不存在！")
