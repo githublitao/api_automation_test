@@ -107,12 +107,12 @@
                 <div class="resultStyle">HTTP状态码:&nbsp&nbsp{{result.statusCode}}</div>
                 <div class="resultStyle">匹配规则:&nbsp&nbsp{{result.examineType}}</div>
                 <div class="resultStyle">规则内容</div>
-                <div v-show="result.data" class="resultStyle" style="overflow:auto;overflow-x:hidden;border: 1px solid #e6e6e6;padding: 10px;width: 90%;word-break: break-all;line-height:25px"><span>{{result.data}}</span></div>
+                <div v-show="result.data" class="resultStyle" style="overflow:auto;overflow-x:hidden;border: 1px solid #e6e6e6;padding: 10px;width: 90%;word-break: break-all;line-height:25px"><pre v-highlightA><code>{{result.data}}</code></pre></div>
                 <div v-show="!result.data" class="resultStyle" style="overflow:auto;overflow-x:hidden;border: 1px solid #e6e6e6;padding: 10px;width: 90%;word-break: break-all;line-height:25px;text-align: center">无校验规则</div>
                 <div style="font-size: 25px;" class="resultStyle">实际结果</div>
                 <div class="resultStyle">HTTP状态码:&nbsp&nbsp{{result.httpStatus}}</div>
                 <div class="resultStyle">实际返回内容</div>
-                <div v-show="result.responseData" class="resultStyle" style="overflow:auto;overflow-x:hidden;border: 1px solid #e6e6e6;padding: 10px;width: 90%;word-break: break-all;line-height:25px">{{result.responseData}}</div>
+                <div v-show="result.responseData" class="resultStyle" style="overflow:auto;overflow-x:hidden;border: 1px solid #e6e6e6;padding: 10px;width: 90%;word-break: break-all;line-height:25px"><pre v-highlightA><code>{{result.responseData}}</code></pre></div>
                 <div v-show="!result.responseData" class="resultStyle" style="overflow:auto;overflow-x:hidden;border: 1px solid #e6e6e6;padding: 10px;width: 90%;word-break: break-all;line-height:25px;text-align: center">无返回内容</div>
             </div>
         </el-dialog>
@@ -414,7 +414,7 @@
                             self.result["data"] = data.data.data;
                             self.result["result"] = data.data.result;
                             self.result["httpStatus"] = data.data.httpStatus;
-                            self.result["responseData"] = data.data.responseData;
+                            self.result["responseData"] = JSON.parse(data.data.responseData.replace(/'/g, "\""));
                             self.result["testTime"] = data.data.testTime;
                             self.TestResult = true;
                         }

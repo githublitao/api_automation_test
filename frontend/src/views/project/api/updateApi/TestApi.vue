@@ -551,6 +551,9 @@
                 })
             },
             neatenFormat() {
+                let demo = document.getElementsByTagName('pre')[0];
+                console.log(demo)
+                hljs.highlightBlock(demo);
                 this.format = !this.format
             },
             addHead() {

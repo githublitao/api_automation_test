@@ -59,11 +59,6 @@
                                 <span style="word-break: break-all;overflow:auto;overflow-x:hidden">{{props.row.responseData}}</span>
                             </el-form-item>
                         </el-form>
-                        <el-form-item>
-                        </el-form-item>
-                        <el-form-item>
-                            <span>{{ props.row.testTime}}</span>
-                        </el-form-item>
                     </template>
                 </el-table-column>
                 <el-table-column type="index" label="#" width="100">

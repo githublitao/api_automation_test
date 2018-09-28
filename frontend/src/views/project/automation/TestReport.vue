@@ -18,41 +18,39 @@
             <div>Total</div>
         </div>
         <div>
-            <el-table :data="tableData" v-loading="listLoading" :row-style="tableRowStyle">
+            <el-table :data="tableData" v-loading="listLoading" :row-style="tableRowStyle" @expand-change="showJson">
                 <el-table-column type="expand">
                     <template slot-scope="props">
                         <el-form label-position="left" inline class="demo-table-expand">
-                          <el-form-item label="名称: ">
-                            <span>{{ props.row.name }}</span>
-                          </el-form-item>
-                          <el-form-item>
-                          </el-form-item>
-                          <el-form-item label="测试环境： ">
-                            <span>{{ props.row.host }}</span>
-                          </el-form-item>
-                          <el-form-item label="接口地址： ">
-                            <span>{{ props.row.apiAddress }}</span>
-                          </el-form-item>
-                          <el-form-item label="请求方式： ">
-                            <span>{{ props.row.requestType }}</span>
-                          </el-form-item>
-                          <el-form-item label="测试结果： ">
-                            <span>{{ props.row.result }}</span>
-                          </el-form-item>
-                          <el-form-item label="请求参数： ">
-                            <span style="word-break: break-all;overflow:auto;overflow-x:hidden">{{ props.row.parameter }}</span>
-                          </el-form-item>
-                          <el-form-item>
-                          </el-form-item>
-                          <el-form-item label="返回结果： ">
-                              <span style="word-break: break-all;overflow:auto;overflow-x:hidden">{{props.row.responseData}}</span>
-                          </el-form-item>
+                            <el-form-item label="名称: ">
+                                <span>{{ props.row.name }}</span>
+                            </el-form-item>
+                            <el-form-item>
+                            </el-form-item>
+                            <el-form-item label="测试环境： ">
+                                <span>{{ props.row.host }}</span>
+                            </el-form-item>
+                            <el-form-item label="接口地址： ">
+                                <span>{{ props.row.apiAddress }}</span>
+                            </el-form-item>
+                            <el-form-item label="请求方式： ">
+                                <span>{{ props.row.requestType }}</span>
+                            </el-form-item>
+                            <el-form-item label="测试结果： ">
+                                <span>{{ props.row.result }}</span>
+                            </el-form-item>
+                            <el-form-item label="请求参数： ">
+                                <span style="word-break: break-all;overflow:auto;overflow-x:hidden">{{ props.row.parameter }}</span>
+                            </el-form-item>
+                            <el-form-item label="测试时间">
+                                <span>{{ props.row.testTime}}</span>
+                            </el-form-item>
+                            <el-form-item label="返回结果： ">
+                                <span>
+                                    <pre style="word-break: break-all;overflow:auto;overflow-x:hidden" v-highlightA><code>{{props.row.responseData}}</code></pre>
+                                </span>
+                            </el-form-item>
                         </el-form>
-                        <el-form-item>
-                          </el-form-item>
-                        <el-form-item>
-                            <span>{{ props.row.testTime}}</span>
-                          </el-form-item>
                     </template>
                 </el-table-column>
                 <el-table-column type="index" label="#" width="100">
@@ -139,6 +137,9 @@
                             self.not_run = data.data.NotRun;
                             self.error = data.data.error;
                             self.tableData = data.data.data
+                            self.tableData.forEach((i) =>{
+                                i["responseData"] = JSON.parse(i["responseData"].replace(/'/g, "\""));
+                            })
                         }
                         else {
                             self.$message.error({

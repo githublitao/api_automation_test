@@ -25,7 +25,7 @@ const TestReport = () => import('./views/project/automation/TestReport.vue');
 const ProjectMember = () => import('./views/project/ProjectMember.vue');
 const ProjectDynamic = () => import('./views/project/ProjectDynamic.vue');
 const ProjectTitle = () => import('./views/project/projectTitle/ProjectTitle.vue');
-const ProjectReport = () => import('./views/project/ProjectReport');
+const ProjectReport = () => import('./views/project/ProjectReport.vue');
 
 let routes = [
     {

@@ -13,6 +13,8 @@ pipeline {
         sh 'cp -r /usr/local/python3/lib/python3.6/site-packages/rest_framework_swagger/static/rest_framework_swagger frontend/dist/static'
         sh 'cp -r /usr/local/python3/lib/python3.6/site-packages/rest_framework/static/rest_framework frontend/dist/static'
         sh '/usr/local/python3/bin/uwsgi --ini /etc/script/uwsgi.ini'
+        sh '/usr/local/python3/bin/uwsgi --ini /etc/script/Ituwsgi.ini'
+        sh '/usr/local/python3/bin/uwsgi --ini /etc/script/MItuwsgi.ini'
       }
       post {
         always {
@@ -25,6 +27,8 @@ pipeline {
           sh 'cp -r /usr/local/python3/lib/python3.6/site-packages/rest_framework_swagger/static/rest_framework_swagger frontend/dist/static'
           sh 'cp -r /usr/local/python3/lib/python3.6/site-packages/rest_framework/static/rest_framework frontend/dist/static'
           sh '/usr/local/python3/bin/uwsgi --ini /etc/script/uwsgi.ini'
+          sh '/usr/local/python3/bin/uwsgi --ini /etc/script/Ituwsgi.ini'
+          sh '/usr/local/python3/bin/uwsgi --ini /etc/script/MItuwsgi.ini'
         }
       }
     }

@@ -253,6 +253,9 @@
             formatChange() {
             },
             changFormat() {
+                let demo = document.getElementsByTagName('pre')[0];
+                console.log(demo)
+                hljs.highlightBlock(demo);
                 this.resultShow = !this.resultShow
             },
             lookParameterInfo(index) {

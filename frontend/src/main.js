@@ -38,6 +38,36 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+
+let Highlight = {};
+Highlight.install = function (Vue, options) {
+    // 先有数据再绑定，调用highlightA
+    Vue.directive('highlightA', {
+        inserted: function(el) {
+            let blocks = el.querySelectorAll('pre code');
+            for (let i = 0; i < blocks.length; i++) {
+              console.log(blocks)
+                console.log(blocks[i])
+                const item = blocks[i];
+                console.log(item)
+                hljs.highlightBlock(item);
+            };
+        }
+    });
+    // 先绑定，后面会有数据更新，调用highlightB
+    Vue.directive('highlightB', {
+        componentUpdated: function(el) {
+            let blocks = el.querySelectorAll('pre code');
+            for (let i = 0; i < blocks.length; i++) {
+                const item = blocks[i];
+                hljs.highlightBlock(item);
+            };
+        }
+    });
+};
+
+Vue.use(Highlight);
+
 //router.afterEach(transition => {
 //NProgress.done();
 //});
