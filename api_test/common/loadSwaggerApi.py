@@ -83,68 +83,45 @@ def add_swagger_api(data, user):
     try:
         obj = Project.objects.get(id=data["project_id"])
         try:
-            with transaction.atomic():
+            with transaction.atomic():  # 执行错误后，帮助事物回滚
                 serialize = ApiInfoDeserializer(data=data)
                 if serialize.is_valid():
                     serialize.save(project=obj)
                     api_id = serialize.data.get("id")
-                    try:
-                        if len(data["headDict"]):
-                            for i in data["headDict"]:
-                                try:
-                                    if i["name"]:
-                                        i["api"] = api_id
-                                        head_serialize = ApiHeadDeserializer(data=i)
-                                        if head_serialize.is_valid():
-                                            head_serialize.save(api=ApiInfo.objects.get(id=api_id))
-                                except KeyError:
-                                    pass
-                    except KeyError:
-                        pass
+                    if len(data.get("headDict")):
+                        for i in data["headDict"]:
+                            if i.get("name"):
+                                i["api"] = api_id
+                                head_serialize = ApiHeadDeserializer(data=i)
+                                if head_serialize.is_valid():
+                                    head_serialize.save(api=ApiInfo.objects.get(id=api_id))
                     if data["requestParameterType"] == "form-data":
-                        try:
-                            if len(data["requestList"]):
-                                for i in data["requestList"]:
-                                    try:
-                                        if i["name"]:
-                                            i["api"] = api_id
-                                            param_serialize = ApiParameterDeserializer(data=i)
-                                            if param_serialize.is_valid():
-                                                param_serialize.save(api=ApiInfo.objects.get(id=api_id))
-                                    except KeyError:
-                                        pass
-                        except KeyError:
-                            pass
+                        if len(data.get("requestList")):
+                            for i in data["requestList"]:
+                                if i.get("name"):
+                                    i["api"] = api_id
+                                    param_serialize = ApiParameterDeserializer(data=i)
+                                    if param_serialize.is_valid():
+                                        param_serialize.save(api=ApiInfo.objects.get(id=api_id))
                     else:
-                        try:
-                            if len(data["requestList"]):
-                                ApiParameterRaw(api=ApiInfo.objects.get(id=api_id), data=data["requestList"]).save()
-                        except KeyError:
-                            pass
-                    try:
-                        if len(data["responseList"]):
-                            for i in data["responseList"]:
-                                try:
-                                    if i["name"]:
-                                        i["api"] = api_id
-                                        response_serialize = ApiResponseDeserializer(data=i)
-                                        if response_serialize.is_valid():
-                                            response_serialize.save(api=ApiInfo.objects.get(id=api_id))
-                                except KeyError:
-                                    pass
-                    except KeyError:
-                        pass
+                        if len(data.get("requestList")):
+                            ApiParameterRaw(api=ApiInfo.objects.get(id=api_id), data=data["requestList"].replace("'", "\"")).save()
+                    if len(data.get("responseList")):
+                        for i in data["responseList"]:
+                            if i.get("name"):
+                                i["api"] = api_id
+                                response_serialize = ApiResponseDeserializer(data=i)
+                                if response_serialize.is_valid():
+                                    response_serialize.save(api=ApiInfo.objects.get(id=api_id))
                     record_dynamic(project=data["project_id"],
                                    _type="新增", operationObject="接口", user=user.pk,
                                    data="新增接口“%s”" % data["name"])
                     api_record = ApiOperationHistory(api=ApiInfo.objects.get(id=api_id),
                                                      user=User.objects.get(id=user.pk),
-                                                     description="新增接口\"%s\"" % data["name"])
+                                                     description="新增接口“%s”" % data["name"])
                     api_record.save()
-                return True
         except Exception as e:
-            logging.exception("error")
-            logging.error(e)
+            # logging.exception(e)
             return False
     except ObjectDoesNotExist:
         return False

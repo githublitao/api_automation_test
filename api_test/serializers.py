@@ -143,13 +143,14 @@ class ApiHeadSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = ApiHead
-        fields = ('id', 'name', 'value')
+        fields = ('id', 'api', 'name', 'value')
 
 
 class ApiHeadDeserializer(serializers.ModelSerializer):
     """
     接口请求头反序列化
     """
+
     class Meta:
         model = ApiHead
         fields = ('id', 'api', 'name', 'value')
@@ -162,7 +163,7 @@ class ApiParameterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ApiParameter
-        fields = ('id', 'name', 'value', '_type', 'required', 'restrict', 'description')
+        fields = ('id', 'api', 'name', 'value', '_type', 'required', 'restrict', 'description')
 
 
 class ApiParameterDeserializer(serializers.ModelSerializer):
@@ -182,7 +183,7 @@ class ApiParameterRawSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ApiParameterRaw
-        fields = ('id', 'data')
+        fields = ('id', 'api', 'data')
 
 
 class ApiParameterRawDeserializer(serializers.ModelSerializer):
@@ -202,7 +203,7 @@ class ApiResponseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ApiResponse
-        fields = ('id', 'name', 'value', '_type', 'required', 'description')
+        fields = ('id', 'api', 'name', 'value', '_type', 'required', 'description')
 
 
 class ApiResponseDeserializer(serializers.ModelSerializer):
@@ -223,7 +224,7 @@ class ApiInfoSerializer(serializers.ModelSerializer):
     headers = ApiHeadSerializer(many=True, read_only=True)
     requestParameter = ApiParameterSerializer(many=True, read_only=True)
     response = ApiResponseSerializer(many=True, read_only=True)
-    requestParameterRaw = ApiParameterRawSerializer(many=True, read_only=True)
+    requestParameterRaw = ApiParameterRawSerializer(many=False, read_only=True)
     userUpdate = serializers.CharField(source='userUpdate.first_name')
 
     class Meta:
@@ -347,7 +348,7 @@ class AutomationHeadSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = AutomationHead
-        fields = ('id', 'name', 'value', 'interrelate')
+        fields = ('id', 'automationCaseApi', 'name', 'value', 'interrelate')
 
 
 class AutomationHeadDeserializer(serializers.ModelSerializer):
@@ -365,7 +366,7 @@ class AutomationParameterSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = AutomationParameter
-        fields = ('id', 'name', 'value', 'interrelate')
+        fields = ('id', 'automationCaseApi', 'name', 'value', 'interrelate')
 
 
 class AutomationParameterDeserializer(serializers.ModelSerializer):
@@ -383,7 +384,7 @@ class AutomationParameterRawSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = AutomationParameterRaw
-        fields = ('id', 'data')
+        fields = ('id', 'automationCaseApi', 'data')
 
 
 class AutomationParameterRawDeserializer(serializers.ModelSerializer):
@@ -402,7 +403,7 @@ class AutomationResponseJsonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AutomationResponseJson
-        fields = ('id', 'name', 'tier')
+        fields = ('id', 'automationCaseApi', 'name', 'tier')
 
 
 class AutomationResponseJsonDeserializer(serializers.ModelSerializer):
@@ -432,7 +433,7 @@ class AutomationCaseApiSerializer(serializers.ModelSerializer):
     """
     header = AutomationHeadSerializer(many=True, read_only=True)
     parameterList = AutomationParameterSerializer(many=True, read_only=True)
-    parameterRaw = AutomationParameterRawSerializer(many=True, read_only=True)
+    parameterRaw = AutomationParameterRawSerializer(many=False, read_only=True)
 
     class Meta:
         model = AutomationCaseApi

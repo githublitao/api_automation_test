@@ -213,7 +213,7 @@ def test_api(host_id, case_id, project_id, _id):
                 result = check_json(json.loads(response_parameter_list), response_data)
             except Exception:
                 logging.info(response_parameter_list)
-                result = check_json(eval(response_parameter_list.replace('true', 'True').replace('false', 'False')), response_data)
+                result = check_json(eval(response_parameter_list.replace('true', 'True').replace('false', 'False').replace("null", "None")), response_data)
             if result:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                status_code=http_code, examine_type="JSON校验", examine_data=response_parameter_list,
@@ -247,7 +247,7 @@ def test_api(host_id, case_id, project_id, _id):
                 result = operator.eq(json.loads(response_parameter_list), response_data)
             except Exception as e:
                 logging.exception(e)
-                result = operator.eq(eval(response_parameter_list.replace('true', 'True').replace('false', 'False')), response_data)
+                result = operator.eq(eval(response_parameter_list.replace('true', 'True').replace('false', 'False').replace("null", "None")), response_data)
             if result:
                 record_results(_id=_id, url=url, request_type=request_type, header=header, parameter=parameter,
                                status_code=http_code, examine_type="完全校验", examine_data=response_parameter_list,
@@ -268,7 +268,7 @@ def test_api(host_id, case_id, project_id, _id):
         if int(http_code) == code:
             try:
                 logging.info(response_parameter_list)
-                result = re.findall(response_parameter_list, json.dumps(response_data))
+                result = re.findall(response_parameter_list, json.dumps(response_data).encode('latin-1').decode('unicode_escape'))
                 logging.info(result)
             except Exception as e:
                 logging.exception(e)

@@ -583,6 +583,7 @@ class CaseApiInfo(APIView):
         except ObjectDoesNotExist:
             return JsonResponse(code="999990", msg="接口不存在！")
         data = AutomationCaseApiSerializer(obm).data
+        print(data)
         try:
             name = AutomationResponseJson.objects.get(automationCaseApi=api_id, type="Regular")
             data["RegularParam"] = name.name
@@ -658,8 +659,8 @@ class AddOldApi(APIView):
                         if api_data["requestParameterRaw"]:
                             # data = json.loads(serializers.serialize("json",data["requestParameterRaw"]))
                             AutomationParameterRaw(automationCaseApi=AutomationCaseApi.objects.get(id=case_api),
-                                                   data=json.loads(api_data["requestParameterRaw"][0]["data"])).save()
-                    if api_data["headers"]:
+                                                   data=json.loads(api_data["requestParameterRaw"]["data"])).save()
+                    if api_data.get("headers"):
                         for n in api_data["headers"]:
                             if n["name"]:
                                 AutomationHead(automationCaseApi=AutomationCaseApi.objects.get(id=case_api),
@@ -737,59 +738,41 @@ class AddNewApi(APIView):
             if serialize.is_valid():
                 serialize.save(automationTestCase=obj)
                 api_id = serialize.data.get("id")
-                try:
-                    if len(data["headDict"]):
-                        for i in data["headDict"]:
-                            try:
-                                if i["name"]:
-                                    i["automationCaseApi_id"] = api_id
-                                    head_serialize = AutomationHeadDeserializer(data=i)
-                                    if head_serialize.is_valid():
-                                        head_serialize.save(automationCaseApi=AutomationCaseApi.objects.get(id=api_id))
-                            except KeyError:
-                                return JsonResponse(code="999996", msg="参数有误!")
-                except KeyError:
-                    pass
+                if len(data.get("headDict")):
+                    for i in data["headDict"]:
+                        if i["name"]:
+                            i["automationCaseApi_id"] = api_id
+                            head_serialize = AutomationHeadDeserializer(data=i)
+                            if head_serialize.is_valid():
+                                head_serialize.save(automationCaseApi=AutomationCaseApi.objects.get(id=api_id))
                 if data["requestParameterType"] == "form-data":
-                    try:
-                        if len(data["requestList"]):
-                            for i in data["requestList"]:
-                                try:
-                                    if i["name"]:
-                                        i["automationCaseApi_id"] = api_id
-                                        param_serialize = AutomationParameterDeserializer(data=i)
-                                        if param_serialize.is_valid():
-                                            param_serialize.save(automationCaseApi=AutomationCaseApi.objects.get(id=api_id))
-                                        else:
-                                            return JsonResponse(code="999998", msg="失败！")
-                                except KeyError:
-                                    return JsonResponse(code="999996", msg="参数有误！")
-                    except KeyError:
-                        pass
+                    if len(data.get("requestList")):
+                        for i in data.get["requestList"]:
+                            if i.get("name"):
+                                i["automationCaseApi_id"] = api_id
+                                param_serialize = AutomationParameterDeserializer(data=i)
+                                if param_serialize.is_valid():
+                                    param_serialize.save(automationCaseApi=AutomationCaseApi.objects.get(id=api_id))
                 else:
-                    try:
-                        if len(data["requestList"]):
-                            AutomationParameterRaw(automationCaseApi=AutomationCaseApi.objects.get(id=api_id),
-                                                   data=data["requestList"]).save()
-                    except KeyError:
-                        pass
+                    if len(data.get("requestList")):
+                        AutomationParameterRaw(automationCaseApi=AutomationCaseApi.objects.get(id=api_id),
+                                               data=data["requestList"]).save()
                 api_ids = AutomationCaseApi.objects.get(id=api_id)
-                if data["examineType"] == "json":
+                if data.get("examineType") == "json":
                     try:
                         response = eval(data["responseData"].replace("true", "True").replace("false", "False").replace("null", "None"))
                         api = "<response[JSON][%s]>" % api_id
                         create_json(api_ids, api, response)
                     except KeyError:
                         return JsonResponse(code="999998", msg="失败！")
-                elif data["examineType"] == 'Regular_check':
-                    try:
-                        if data["RegularParam"]:
-                            AutomationResponseJson(automationCaseApi=api_ids,
-                                                   name=data["RegularParam"],
-                                                   tier='<response[Regular][%s]["%s"]' % (api_id, data["responseData"]),
-                                                   type='Regular').save()
-                    except KeyError:
-                        pass
+                    except AttributeError:
+                        return JsonResponse(code="999998", msg="校验内容不能为空！")
+                elif data.get("examineType") == 'Regular_check':
+                    if data.get("RegularParam"):
+                        AutomationResponseJson(automationCaseApi=api_ids,
+                                               name=data["RegularParam"],
+                                               tier='<response[Regular][%s]["%s"]' % (api_id, data["responseData"]),
+                                               type='Regular').save()
                 return JsonResponse(data={"api_id": api_id}, code="999999", msg="成功！")
             return JsonResponse(code="999998", msg="失败！")
 
@@ -897,67 +880,73 @@ class UpdateApi(APIView):
             serialize = AutomationCaseApiDeserializer(data=data)
             if serialize.is_valid():
                 serialize.update(instance=obj, validated_data=data)
-                try:
-                    AutomationHead.objects.filter(automationCaseApi=data["id"]).delete()
-                    if len(data["headDict"]):
-                        for i in data["headDict"]:
-                            try:
+                header = Q()
+                if len(data.get("headDict")):
+                    for i in data["headDict"]:
+                        if i.get("automationCaseApi") and i.get("id"):
+                            header = header | Q(id=i["id"])
+                            if i["name"]:
+                                head_serialize = AutomationHeadDeserializer(data=i)
+                                if head_serialize.is_valid():
+                                    i["automationCaseApi"] = AutomationCaseApi.objects.get(id=i["automationCaseApi"])
+                                    head_serialize.update(instance=AutomationHead.objects.get(id=i["id"]), validated_data=i)
+                        else:
+                            if i.get("name"):
+                                i["automationCaseApi"] = data['id']
+                                head_serialize = AutomationHeadDeserializer(data=i)
+                                if head_serialize.is_valid():
+                                    head_serialize.save(automationCaseApi=AutomationCaseApi.objects.get(id=data["id"]))
+                                    header = header | Q(id=head_serialize.data.get("id"))
+                AutomationHead.objects.exclude(header).delete()
+                api_param = Q()
+                api_param_raw = Q()
+                if len(data.get("requestList")):
+                    if data["requestParameterType"] == "form-data":
+                        AutomationParameterRaw.objects.filter(automationCaseApi=data["id"]).delete()
+                        for i in data["requestList"]:
+                            if i.get("automationCaseApi") and i.get("id"):
+                                api_param = api_param | Q(id=i["id"])
                                 if i["name"]:
-                                    i["automationCaseApi_id"] = data["id"]
-                                    head_serialize = AutomationHeadDeserializer(data=i)
-                                    if head_serialize.is_valid():
-                                        head_serialize.save(automationCaseApi=AutomationCaseApi.objects.get(id=data["id"]))
-                            except KeyError:
-                                return JsonResponse(code="999996", msg="参数有误！")
-                except KeyError:
-                    pass
-                AutomationParameter.objects.filter(automationCaseApi=data["id"]).delete()
-                AutomationParameterRaw.objects.filter(automationCaseApi=data["id"]).delete()
-                if data["requestParameterType"] == "form-data":
-                    try:
-                        if len(data["requestList"]):
-                            for i in data["requestList"]:
-                                try:
-                                    if i["name"]:
-                                        i["automationCaseApi_id"] = data["id"]
-                                        param_serialize = AutomationParameterDeserializer(data=i)
-                                        if param_serialize.is_valid():
-                                            param_serialize.save(automationCaseApi=AutomationCaseApi.objects.get(id=data["id"]))
-                                        else:
-                                            return JsonResponse(code="999998", msg="参数有误！")
-                                except KeyError:
-                                    return JsonResponse(code="999996", msg="参数有误！")
-                    except KeyError:
-                        pass
-                else:
-                    try:
-                        if len(data["requestList"]):
-                            AutomationParameterRaw(automationCaseApi=AutomationCaseApi.objects.get(id=data["id"]),
-                                                   data=data["requestList"]).save()
-                    except KeyError:
-                        pass
-                AutomationResponseJson.objects.filter(automationCaseApi=data["id"]).delete()
-                api_id = AutomationCaseApi.objects.get(id=data["id"])
-                if data["examineType"] == "json":
-                    if data["responseData"]:
-                        try:
-                            response = eval(data["responseData"].replace("true", "True").replace("false", "False").replace("null", "None"))
-                            api = "<response[JSON][%s]>" % data["id"]
-                            create_json(api_id, api, response)
-                        except KeyError:
-                            return JsonResponse(code="999998", msg="失败！")
+                                    param_serialize = AutomationParameterDeserializer(data=i)
+                                    if param_serialize.is_valid():
+                                        i["automationCaseApi"] = AutomationCaseApi.objects.get(id=i["automationCaseApi"])
+                                        param_serialize.update(instance=AutomationParameter.objects.get(id=i["id"]),
+                                                               validated_data=i)
+                            else:
+                                if i.get("name"):
+                                    i["automationCaseApi"] = data['id']
+                                    param_serialize = AutomationParameterDeserializer(data=i)
+                                    if param_serialize.is_valid():
+                                        param_serialize.save(automationCaseApi=AutomationCaseApi.objects.get(id=data["id"]))
+                                        api_param = api_param | Q(id=param_serialize.data.get("id"))
                     else:
-                        pass
-                elif data["examineType"] == 'Regular_check':
+                        try:
+                            obj = AutomationParameterRaw.objects.get(automationCaseApi=data["id"])
+                            obj.data = data["requestList"]
+                            obj.save()
+                        except ObjectDoesNotExist:
+                            obj = AutomationParameterRaw(automationCaseApi=AutomationCaseApi.objects.get(id=data['id']), data=data["requestList"])
+                            obj.save()
+                        api_param_raw = api_param_raw | Q(id=obj.id)
+                AutomationParameter.objects.exclude(api_param).delete()
+                AutomationParameterRaw.objects.exclude(api_param_raw).delete()
+                api_id = AutomationCaseApi.objects.get(id=data["id"])
+                AutomationResponseJson.objects.filter(automationCaseApi=api_id).delete()
+                if data.get("examineType") == "json":
                     try:
-                        if data["RegularParam"]:
-                            AutomationResponseJson(automationCaseApi=api_id,
-                                                   name=data["RegularParam"],
-                                                   tier='<response[Regular][%s]["%s"]' % (api_id.id, data["responseData"]),
-                                                   type='Regular').save()
-                    except KeyError as e:
-                        # logging.exception(e)
-                        pass
+                        response = eval(data["responseData"].replace("true", "True").replace("false", "False").replace("null", "None"))
+                        api = "<response[JSON][%s]>" % api_id
+                        create_json(api_id, api, response)
+                    except KeyError:
+                        return JsonResponse(code="999998", msg="失败！")
+                    except AttributeError:
+                        return JsonResponse(code="999998", msg="校验内容不能为空！")
+                elif data.get("examineType") == 'Regular_check':
+                    if data.get("RegularParam"):
+                        AutomationResponseJson(automationCaseApi=api_id,
+                                               name=data["RegularParam"],
+                                               tier='<response[Regular][%s]["%s"]' % (api_id, data["responseData"]),
+                                               type='Regular').save()
                 record_dynamic(project=data["project_id"],
                                _type="修改", operationObject="用例接口", user=request.user.pk,
                                data="用例“%s”修改接口\"%s\"" % (obi.caseName, data["name"]))

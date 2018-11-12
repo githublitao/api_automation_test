@@ -381,7 +381,7 @@
                                 self.form.head = data.headers;
                             }
                             try {
-                                self.parameterRaw = data.requestParameterRaw[0].data;
+                                self.parameterRaw = data.requestParameterRaw.data.replace(/'/g, "\"").replace(/None/g, "null").replace(/True/g, "true").replace(/False/g, "false");
                             } catch (e){
 
                             }

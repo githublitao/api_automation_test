@@ -414,7 +414,7 @@
                             self.result["data"] = data.data.data;
                             self.result["result"] = data.data.result;
                             self.result["httpStatus"] = data.data.httpStatus;
-                            self.result["responseData"] = JSON.parse(data.data.responseData.replace(/'/g, "\""));
+                            self.result["responseData"] = JSON.parse(data.data.responseData.replace(/'/g, "\"").replace(/None/g, "null").replace(/True/g, "true").replace(/False/g, "false"));
                             self.result["testTime"] = data.data.testTime;
                             self.TestResult = true;
                         }

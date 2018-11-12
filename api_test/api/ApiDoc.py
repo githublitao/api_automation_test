@@ -329,80 +329,53 @@ class AddApi(APIView):
         if len(api_name):
             return JsonResponse(code="999997", msg="存在相同名称!")
         else:
-            with transaction.atomic(): # 执行错误后，帮助事物回滚
-                try:
-                    serialize = ApiInfoDeserializer(data=data)
-                    if serialize.is_valid():
-                        try:
-                            if not isinstance(data["apiGroupLevelFirst_id"], int):
-                                return JsonResponse(code="999996", msg="参数有误!")
-                            obi = ApiGroupLevelFirst.objects.get(id=data["apiGroupLevelFirst_id"], project=data["project_id"])
-                            serialize.save(project=obj, apiGroupLevelFirst=obi)
-                        except KeyError:
-                            serialize.save(project=obj)
-                        api_id = serialize.data.get("id")
-                        try:
-                            if len(data["headDict"]):
-                                for i in data["headDict"]:
-                                    try:
-                                        if i["name"]:
-                                            i["api"] = api_id
-                                            head_serialize = ApiHeadDeserializer(data=i)
-                                            if head_serialize.is_valid():
-                                                head_serialize.save(api=ApiInfo.objects.get(id=api_id))
-                                    except KeyError:
-                                        return JsonResponse(code="999996", msg="参数有误!")
-                        except KeyError:
-                            pass
-                        if data["requestParameterType"] == "form-data":
-                            try:
-                                if len(data["requestList"]):
-                                    for i in data["requestList"]:
-                                        try:
-                                            if i["name"]:
-                                                i["api"] = api_id
-                                                param_serialize = ApiParameterDeserializer(data=i)
-                                                if param_serialize.is_valid():
-                                                    param_serialize.save(api=ApiInfo.objects.get(id=api_id))
-                                                else:
-                                                    return JsonResponse(code="999998", msg="失败!")
-                                        except KeyError:
-                                            return JsonResponse(code="999996", msg="参数有误!")
-                            except KeyError:
-                                pass
-                        else:
-                            try:
-                                if len(data["requestList"]):
-                                    ApiParameterRaw(api=ApiInfo.objects.get(id=api_id), data=data["requestList"]).save()
-                            except KeyError:
-                                pass
-                        try:
-                            if len(data["responseList"]):
-                                for i in data["responseList"]:
-                                    try:
-                                        if i["name"]:
-                                            i["api"] = api_id
-                                            response_serialize = ApiResponseDeserializer(data=i)
-                                            if response_serialize.is_valid():
-                                                response_serialize.save(api=ApiInfo.objects.get(id=api_id))
-                                            else:
-                                                return JsonResponse(code="999998", msg="失败!")
-                                    except KeyError:
-                                        logging.exception("Error")
-                                        return JsonResponse(code="999998", msg="失败!")
-                        except KeyError:
-                            pass
-                        record_dynamic(project=data["project_id"],
-                                       _type="新增", operationObject="接口", user=request.user.pk,
-                                       data="新增接口“%s”" % data["name"])
-                        api_record = ApiOperationHistory(api=ApiInfo.objects.get(id=api_id),
-                                                         user=User.objects.get(id=request.user.pk),
-                                                         description="新增接口“%s”" % data["name"])
-                        api_record.save()
-                        return JsonResponse(code="999999", msg="成功!", data={"api_id": api_id})
-                    return JsonResponse(code="999998", msg="失败!")
-                except ObjectDoesNotExist:
-                    return JsonResponse(code="999991", msg="分组不存在!")
+            with transaction.atomic():  # 执行错误后，帮助事物回滚
+                serialize = ApiInfoDeserializer(data=data)
+                if serialize.is_valid():
+                    try:
+                        if not isinstance(data.get("apiGroupLevelFirst_id"), int):
+                            return JsonResponse(code="999996", msg="参数有误!")
+                        obi = ApiGroupLevelFirst.objects.get(id=data["apiGroupLevelFirst_id"], project=data["project_id"])
+                        serialize.save(project=obj, apiGroupLevelFirst=obi)
+                    except KeyError:
+                        serialize.save(project=obj)
+                    except ObjectDoesNotExist:
+                        return JsonResponse(code="999991", msg="分组不存在!")
+                    api_id = serialize.data.get("id")
+                    if len(data.get("headDict")):
+                        for i in data["headDict"]:
+                            if i.get("name"):
+                                i["api"] = api_id
+                                head_serialize = ApiHeadDeserializer(data=i)
+                                if head_serialize.is_valid():
+                                    head_serialize.save(api=ApiInfo.objects.get(id=api_id))
+                    if data["requestParameterType"] == "form-data":
+                        if len(data.get("requestList")):
+                            for i in data["requestList"]:
+                                if i.get("name"):
+                                    i["api"] = api_id
+                                    param_serialize = ApiParameterDeserializer(data=i)
+                                    if param_serialize.is_valid():
+                                        param_serialize.save(api=ApiInfo.objects.get(id=api_id))
+                    else:
+                        if len(data.get("requestList")):
+                            ApiParameterRaw(api=ApiInfo.objects.get(id=api_id), data=data["requestList"]).save()
+                    if len(data.get("responseList")):
+                        for i in data["responseList"]:
+                            if i.get("name"):
+                                i["api"] = api_id
+                                response_serialize = ApiResponseDeserializer(data=i)
+                                if response_serialize.is_valid():
+                                    response_serialize.save(api=ApiInfo.objects.get(id=api_id))
+                    record_dynamic(project=data["project_id"],
+                                   _type="新增", operationObject="接口", user=request.user.pk,
+                                   data="新增接口“%s”" % data["name"])
+                    api_record = ApiOperationHistory(api=ApiInfo.objects.get(id=api_id),
+                                                     user=User.objects.get(id=request.user.pk),
+                                                     description="新增接口“%s”" % data["name"])
+                    api_record.save()
+                    return JsonResponse(code="999999", msg="成功!", data={"api_id": api_id})
+                return JsonResponse(code="999996", msg="参数有误!")
 
 
 class UpdateApiMockStatus(APIView):
@@ -449,18 +422,15 @@ class UpdateApiMockStatus(APIView):
             return JsonResponse(code="999990", msg="接口不存在!")
         obi.mockStatus = not obi.mockStatus
         obi.save()
-        try:
-            if obi.mockStatus:
-                record_dynamic(project=data["project_id"],
-                               _type="mock", operationObject="接口", user=request.user.pk,
-                               data="关闭“%s”Mock" % obi.name)
-            else:
-                record_dynamic(project=data["project_id"],
-                               _type="mock", operationObject="接口", user=request.user.pk,
-                               data="启动“%s”Mock" % obi.name)
-            return JsonResponse(code="999999", msg="成功!")
-        except:
-            return JsonResponse(code="999998", msg="失败!")
+        if obi.mockStatus:
+            record_dynamic(project=data["project_id"],
+                           _type="mock", operationObject="接口", user=request.user.pk,
+                           data="关闭“%s”Mock" % obi.name)
+        else:
+            record_dynamic(project=data["project_id"],
+                           _type="mock", operationObject="接口", user=request.user.pk,
+                           data="启动“%s”Mock" % obi.name)
+        return JsonResponse(code="999999", msg="成功!")
 
 
 class MockRequest(APIView):
@@ -476,7 +446,7 @@ class MockRequest(APIView):
         """
         url = "/"+apiAdr
         try:
-            obj = ApiInfo.objects.get(apiAddress=url, mockStatus=True)
+            obj = ApiInfo.objects.get(apiAddress=url, mockStatus=1)
         except ObjectDoesNotExist:
             return JsonResponse(code="999984", msg="未匹配到mock地址或未开启!")
         head_data = ApiHead.objects.filter(api=obj)
@@ -647,84 +617,98 @@ class UpdateApi(APIView):
         except ObjectDoesNotExist:
             return JsonResponse(code="999990", msg="接口不存在!")
         with transaction.atomic():
-            try:
-                serialize = ApiInfoDeserializer(data=data)
-                if serialize.is_valid():
-                    data["userUpdate"] = request.user
-                    try:
-                        if not isinstance(data["apiGroupLevelFirst_id"], int):
-                            return JsonResponse(code="999996", msg="参数有误!")
-                        ApiGroupLevelFirst.objects.get(id=data["apiGroupLevelFirst_id"], project=data["project_id"])
-                        User.objects.get(id=request.user.pk)
-                        serialize.update(instance=obi, validated_data=data)
-                    except KeyError:
-                        User.objects.get(id=request.user.pk)
-                        serialize.update(instance=obi, validated_data=data)
-                    try:
-                        ApiHead.objects.filter(api=data["id"]).delete()
-                        if len(data["headDict"]):
-                            for i in data["headDict"]:
-                                try:
-                                    if i["name"]:
-                                        i["api"] = data['id']
-                                        head_serialize = ApiHeadDeserializer(data=i)
-                                        if head_serialize.is_valid():
-                                            head_serialize.save(api=ApiInfo.objects.get(id=data["id"]))
-                                except KeyError:
-                                    return JsonResponse(code="999996", msg="参数有误!")
-                    except KeyError:
-                        pass
-                    ApiParameter.objects.filter(api=data["id"]).delete()
-                    ApiParameterRaw.objects.filter(api=data["id"]).delete()
+            serialize = ApiInfoDeserializer(data=data)
+            if serialize.is_valid():
+                data["userUpdate"] = request.user
+                try:
+                    if not isinstance(data.get("apiGroupLevelFirst_id"), int):
+                        return JsonResponse(code="999996", msg="参数有误!")
+                    ApiGroupLevelFirst.objects.get(id=data["apiGroupLevelFirst_id"], project=data["project_id"])
+                    User.objects.get(id=request.user.pk)
+                    serialize.update(instance=obi, validated_data=data)
+                except KeyError:
+                    User.objects.get(id=request.user.pk)
+                    serialize.update(instance=obi, validated_data=data)
+                except ObjectDoesNotExist:
+                    return JsonResponse(code="999991", msg="分组不存在!")
+                header = Q()
+                if len(data.get("headDict")):
+                    for i in data["headDict"]:
+                        if i.get("api") and i.get("id"):
+                            header = header | Q(id=i["id"])
+                            if i["name"]:
+                                head_serialize = ApiHeadDeserializer(data=i)
+                                if head_serialize.is_valid():
+                                    i["api"] = ApiInfo.objects.get(id=i["api"])
+                                    head_serialize.update(instance=ApiHead.objects.get(id=i["id"]), validated_data=i)
+                        else:
+                            if i.get("name"):
+                                i["api"] = data['id']
+                                head_serialize = ApiHeadDeserializer(data=i)
+                                if head_serialize.is_valid():
+                                    head_serialize.save(api=ApiInfo.objects.get(id=data["id"]))
+                                    header = header | Q(id=head_serialize.data.get("id"))
+                ApiHead.objects.exclude(header).delete()
+                api_param = Q()
+                api_param_raw = Q()
+                if len(data.get("requestList")):
                     if data["requestParameterType"] == "form-data":
-                        try:
-                            if len(data["requestList"]):
-                                for i in data["requestList"]:
-                                    try:
-                                        if i["name"]:
-                                            i["api"] = data['id']
-                                            param_serialize = ApiParameterDeserializer(data=i)
-                                            if param_serialize.is_valid():
-                                                param_serialize.save(api=ApiInfo.objects.get(id=data["id"]))
-                                            else:
-                                                return JsonResponse(code="999998", msg="失败!")
-                                    except KeyError:
-                                        return JsonResponse(code="999996", msg="参数有误!")
-                        except KeyError:
-                            pass
+                        ApiParameterRaw.objects.filter(api=data["id"]).delete()
+                        for i in data["requestList"]:
+                            if i.get("api") and i.get("id"):
+                                api_param = api_param | Q(id=i["id"])
+                                if i["name"]:
+                                    param_serialize = ApiParameterDeserializer(data=i)
+                                    if param_serialize.is_valid():
+                                        i["api"] = ApiInfo.objects.get(id=i["api"])
+                                        param_serialize.update(instance=ApiParameter.objects.get(id=i["id"]),
+                                                               validated_data=i)
+                            else:
+                                if i.get("name"):
+                                    i["api"] = data['id']
+                                    param_serialize = ApiParameterDeserializer(data=i)
+                                    if param_serialize.is_valid():
+                                        param_serialize.save(api=ApiInfo.objects.get(id=data["id"]))
+                                        api_param = api_param | Q(id=param_serialize.data.get("id"))
                     else:
                         try:
-                            if len(data["requestList"]):
-                                ApiParameterRaw(api=ApiInfo.objects.get(id=data['id']), data=data["requestList"]).save()
-                        except KeyError:
-                            pass
-                    try:
-                        ApiResponse.objects.filter(api=data["id"]).delete()
-                        if len(data["responseList"]):
-                            for i in data["responseList"]:
-                                try:
-                                    if i["name"]:
-                                        i["api"] = data['id']
-                                        response_serialize = ApiResponseDeserializer(data=i)
-                                        if response_serialize.is_valid():
-                                            response_serialize.save(api=ApiInfo.objects.get(id=data['id']))
-                                        else:
-                                            return JsonResponse(code="999998", msg="失败!")
-                                except KeyError:
-                                    return JsonResponse(code="999998", msg="失败!")
-                    except KeyError:
-                        pass
-                    record_dynamic(project=data["project_id"],
-                                   _type="新增", operationObject="接口", user=request.user.pk,
-                                   data="新增接口“%s”" % data["name"])
-                    api_record = ApiOperationHistory(api=ApiInfo.objects.get(id=data['id']),
-                                                     user=User.objects.get(id=request.user.pk),
-                                                     description="新增接口\"%s\"" % data["name"])
-                    api_record.save()
-                    return JsonResponse(code="999999", msg="成功!")
-                return JsonResponse(code="999998", msg="失败!")
-            except ObjectDoesNotExist:
-                return JsonResponse(code="999991", msg="分组不存在!")
+                            obj = ApiParameterRaw.objects.get(api=data["id"])
+                            obj.data = data["requestList"]
+                            obj.save()
+                        except ObjectDoesNotExist:
+                            obj = ApiParameterRaw(api=ApiInfo.objects.get(id=data['id']), data=data["requestList"])
+                            obj.save()
+                        api_param_raw = api_param_raw | Q(id=obj.id)
+                ApiParameter.objects.exclude(api_param).delete()
+                ApiParameterRaw.objects.exclude(api_param_raw).delete()
+                api_response = Q()
+                if len(data.get("responseList")):
+                    for i in data["responseList"]:
+                        if i.get("api") and i.get("id"):
+                            api_response = api_response | Q(id=i["id"])
+                            if i["name"]:
+                                response_serialize = ApiResponseDeserializer(data=i)
+                                if response_serialize.is_valid():
+                                    i["api"] = ApiInfo.objects.get(id=i["api"])
+                                    response_serialize.update(instance=ApiResponse.objects.get(id=i["id"]),
+                                                              validated_data=i)
+                        else:
+                            if i.get("name"):
+                                i["api"] = data['id']
+                                response_serialize = ApiResponseDeserializer(data=i)
+                                if response_serialize.is_valid():
+                                    response_serialize.save(api=ApiInfo.objects.get(id=data["id"]))
+                                    api_response = api_response | Q(id=response_serialize.data.get("id"))
+                ApiResponse.objects.exclude(api_response).delete()
+                record_dynamic(project=data["project_id"],
+                               _type="新增", operationObject="接口", user=request.user.pk,
+                               data="新增接口“%s”" % data["name"])
+                api_record = ApiOperationHistory(api=ApiInfo.objects.get(id=data['id']),
+                                                 user=User.objects.get(id=request.user.pk),
+                                                 description="新增接口\"%s\"" % data["name"])
+                api_record.save()
+                return JsonResponse(code="999999", msg="成功!")
+            return JsonResponse(code="999996", msg="参数有误!")
 
 
 class DelApi(APIView):

@@ -219,26 +219,6 @@ class ApiGroupLevelFirst(models.Model):
         verbose_name_plural = '接口分组'
 
 
-# class ApiGroupLevelSecond(models.Model):
-#     """
-#     接口二级分组
-#     """
-#     id = models.AutoField(primary_key=True)
-#     apiGroupLevelFirst = models.ForeignKey(ApiGroupLevelFirst, related_name='secondGroup',
-#                                            on_delete=models.CASCADE, verbose_name='项目')
-#     name = models.CharField(max_length=50, verbose_name='接口二级分组名称')
-#
-#     def __unicode__(self):
-#         return self.name
-#
-#     def __str__(self):
-#         return self.name
-#
-#     class Meta:
-#         verbose_name = '接口二级分组'
-#         verbose_name_plural = '接口二级分组'
-
-
 class ApiInfo(models.Model):
     """
     接口信息
@@ -248,9 +228,6 @@ class ApiInfo(models.Model):
     apiGroupLevelFirst = models.ForeignKey(ApiGroupLevelFirst, blank=True, null=True,
                                            related_name='First',
                                            on_delete=models.SET_NULL, verbose_name='所属一级分组')
-    # apiGroupLevelSecond = models.ForeignKey(ApiGroupLevelSecond, blank=True, null=True,
-    #                                         related_name='ApiGroupLevelSecond_id',
-    #                                         on_delete=models.SET_NULL, verbose_name='所属二级分组')
     name = models.CharField(max_length=50, verbose_name='接口名称')
     httpType = models.CharField(max_length=50, default='HTTP', verbose_name='http/https', choices=HTTP_CHOICE)
     requestType = models.CharField(max_length=50, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)
@@ -316,7 +293,7 @@ class ApiParameter(models.Model):
 
 class ApiParameterRaw(models.Model):
     id = models.AutoField(primary_key=True)
-    api = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, verbose_name="所属接口", related_name='requestParameterRaw')
+    api = models.OneToOneField(ApiInfo, on_delete=models.CASCADE, verbose_name="所属接口", related_name='requestParameterRaw')
     data = models.TextField(blank=True, null=True, verbose_name='内容')
 
     class Meta:
@@ -397,27 +374,6 @@ class AutomationGroupLevelFirst(models.Model):
     class Meta:
         verbose_name = '用例分组'
         verbose_name_plural = '用例分组管理'
-
-
-# class AutomationGroupLevelSecond(models.Model):
-#     """
-#     自动化用例二级分组
-#     """
-#     id = models.AutoField(primary_key=True)
-#     automationGroupLevelFirst = models.ForeignKey(AutomationGroupLevelFirst,
-#                                                   related_name='secondGroup',
-#                                                   on_delete=models.CASCADE, verbose_name='一级分组')
-#     name = models.CharField(max_length=50, verbose_name='用例二级分组名称')
-#
-#     def __unicode__(self):
-#         return self.name
-#
-#     def __str__(self):
-#         return self.name
-#
-#     class Meta:
-#         verbose_name = '用例二级分组'
-#         verbose_name_plural = '用例二级分组管理'
 
 
 class AutomationTestCase(models.Model):
@@ -518,8 +474,8 @@ class AutomationParameterRaw(models.Model):
     请求的源数据参数
     """
     id = models.AutoField(primary_key=True)
-    automationCaseApi = models.ForeignKey(AutomationCaseApi, related_name='parameterRaw',
-                                          on_delete=models.CASCADE, verbose_name='接口')
+    automationCaseApi = models.OneToOneField(AutomationCaseApi, related_name='parameterRaw',
+                                             on_delete=models.CASCADE, verbose_name='接口')
     data = models.TextField(verbose_name='源数据请求参数', blank=True, null=True)
 
     class Meta:

@@ -138,7 +138,7 @@
                             self.error = data.data.error;
                             self.tableData = data.data.data
                             self.tableData.forEach((i) =>{
-                                i["responseData"] = JSON.parse(i["responseData"].replace(/'/g, "\""));
+                                i["responseData"] = JSON.parse(i["responseData"].replace(/'/g, "\"").replace(/None/g, "null").replace(/True/g, "true").replace(/False/g, "false"));
                             })
                         }
                         else {

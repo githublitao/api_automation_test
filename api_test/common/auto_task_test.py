@@ -180,11 +180,20 @@ def test_api(host, case_id, _id, time):
 
     elif examine_type == 'json':
         if int(http_code) == code:
+            # try:
+            #     result = check_json(eval(response_parameter_list), response_data)
+            # except:
+            #     result = check_json(eval(response_parameter_list.replace('true', 'True').replace('false', 'False')),
+            #                         response_data)
+            if not response_parameter_list:
+                response_parameter_list = "{}"
             try:
-                result = check_json(eval(response_parameter_list), response_data)
-            except:
-                result = check_json(eval(response_parameter_list.replace('true', 'True').replace('false', 'False')),
-                                    response_data)
+                logging.info(response_parameter_list)
+                logging.info(response_data)
+                result = check_json(json.loads(response_parameter_list), response_data)
+            except Exception:
+                logging.info(response_parameter_list)
+                result = check_json(eval(response_parameter_list.replace('true', 'True').replace('false', 'False').replace("null", "None")), response_data)
             if result:
                 record_auto_results(_id=_id, header=header, parameter=parameter,
                                     _result='PASS', code=code, response_data=response_data,
@@ -217,7 +226,7 @@ def test_api(host, case_id, _id, time):
             try:
                 result = operator.eq(eval(response_parameter_list), response_data)
             except:
-                result = operator.eq(eval(response_parameter_list.replace('true', 'True').replace('false', 'False')),
+                result = operator.eq(eval(response_parameter_list.replace('true', 'True').replace('false', 'False').replace("null", "None")),
                                      response_data)
             if result:
                 record_auto_results(_id=_id, header=header, parameter=parameter,
@@ -237,10 +246,17 @@ def test_api(host, case_id, _id, time):
 
     elif examine_type == 'Regular_check':
         if int(http_code) == code:
+            # try:
+            #     result = re.findall(response_parameter_list, json.dumps(response_data))
+            # except:
+            #     result = re.findall(response_parameter_list, eval(response_data.replace('true', 'True').replace('false', 'False')))
             try:
-                result = re.findall(response_parameter_list, json.dumps(response_data))
-            except:
-                result = re.findall(response_parameter_list, eval(response_data.replace('true', 'True').replace('false', 'False')))
+                logging.info(response_parameter_list)
+                result = re.findall(response_parameter_list, json.dumps(response_data).encode('latin-1').decode('unicode_escape'))
+                logging.info(result)
+            except Exception as e:
+                logging.exception(e)
+                return "fail"
             if result:
                 record_auto_results(_id=_id, header=header, parameter=parameter,
                                     _result='PASS', code=code, response_data=response_data,

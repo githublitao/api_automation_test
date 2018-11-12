@@ -23,10 +23,18 @@
 						<template v-for="(items,index) in item.children">
 							<el-menu-item :index="items.path" v-if="items.leaf" :key="items.path">
 								<template v-if="!items.child">
-									<router-link :to="{ name: items.name, params: {id: project_id}}" style='text-decoration: none;color: #000000;'>{{items.name }}</router-link>
+									<router-link :to="{ name: items.name, params: {id: project_id}}" style='text-decoration: none;color: #000000;'>
+										<div>
+											{{items.name }}
+										</div>
+									</router-link>
 								</template>
 								<template v-if="items.child">
-									<router-link :to="{ name: items.children[0].name, params: {id: project_id}}" style='text-decoration: none;color: #000000;'>{{items.name }}</router-link>
+									<router-link :to="{ name: items.children[0].name, params: {id: project_id}}" style='text-decoration: none;color: #000000;'>
+										<div>
+											{{items.name }}
+										</div>
+									</router-link>
 								</template>
 							</el-menu-item>
 							<el-submenu :index="index+''" v-if="!items.leaf">

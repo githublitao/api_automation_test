@@ -384,7 +384,7 @@
                             "Content-Type": "application/json",
                             Authorization: 'Token '+JSON.parse(sessionStorage.getItem('token'))
                         },
-                        timeout: 5000,
+                        // timeout: 5000,
                         success: function(data) {
                             if (data.code === '999999') {
                                 self.$message({

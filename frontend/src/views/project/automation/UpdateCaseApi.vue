@@ -478,7 +478,7 @@
                                 })
                             }
                             try {
-                                self.form.parameterRaw = data.parameterRaw[0].data;
+                                self.form.parameterRaw = data.parameterRaw.data.replace(/'/g, "\"").replace(/None/g, "null").replace(/True/g, "true").replace(/False/g, "false");
                             } catch (e){
 
                             }
