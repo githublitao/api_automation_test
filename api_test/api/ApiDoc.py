@@ -648,7 +648,7 @@ class UpdateApi(APIView):
                                 if head_serialize.is_valid():
                                     head_serialize.save(api=ApiInfo.objects.get(id=data["id"]))
                                     header = header | Q(id=head_serialize.data.get("id"))
-                ApiHead.objects.exclude(header).delete()
+                ApiHead.objects.exclude(header).filter(api=data["id"]).delete()
                 api_param = Q()
                 api_param_raw = Q()
                 if len(data.get("requestList")):
@@ -679,8 +679,8 @@ class UpdateApi(APIView):
                             obj = ApiParameterRaw(api=ApiInfo.objects.get(id=data['id']), data=data["requestList"])
                             obj.save()
                         api_param_raw = api_param_raw | Q(id=obj.id)
-                ApiParameter.objects.exclude(api_param).delete()
-                ApiParameterRaw.objects.exclude(api_param_raw).delete()
+                ApiParameter.objects.exclude(api_param).filter(api=data["id"]).delete()
+                ApiParameterRaw.objects.exclude(api_param_raw).filter(api=data["id"]).delete()
                 api_response = Q()
                 if len(data.get("responseList")):
                     for i in data["responseList"]:
@@ -699,7 +699,7 @@ class UpdateApi(APIView):
                                 if response_serialize.is_valid():
                                     response_serialize.save(api=ApiInfo.objects.get(id=data["id"]))
                                     api_response = api_response | Q(id=response_serialize.data.get("id"))
-                ApiResponse.objects.exclude(api_response).delete()
+                ApiResponse.objects.exclude(api_response).filter(api=data["id"]).delete()
                 record_dynamic(project=data["project_id"],
                                _type="新增", operationObject="接口", user=request.user.pk,
                                data="新增接口“%s”" % data["name"])
