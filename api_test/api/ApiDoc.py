@@ -701,11 +701,11 @@ class UpdateApi(APIView):
                                     api_response = api_response | Q(id=response_serialize.data.get("id"))
                 ApiResponse.objects.exclude(api_response).filter(api=data["id"]).delete()
                 record_dynamic(project=data["project_id"],
-                               _type="新增", operationObject="接口", user=request.user.pk,
-                               data="新增接口“%s”" % data["name"])
+                               _type="修改", operationObject="接口", user=request.user.pk,
+                               data="修改接口“%s”" % data["name"])
                 api_record = ApiOperationHistory(api=ApiInfo.objects.get(id=data['id']),
                                                  user=User.objects.get(id=request.user.pk),
-                                                 description="新增接口\"%s\"" % data["name"])
+                                                 description="修改接口\"%s\"" % data["name"])
                 api_record.save()
                 return JsonResponse(code="999999", msg="成功!")
             return JsonResponse(code="999996", msg="参数有误!")
