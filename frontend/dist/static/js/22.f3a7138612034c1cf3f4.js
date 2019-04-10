@@ -1,0 +1,2 @@
+webpackJsonp([22],{"7FDS":function(e,n,t){"use strict";Object.defineProperty(n,"__esModule",{value:!0});var a={render:function(){var e=this.$createElement;return(this._self._c||e)("p",{staticClass:"page-container"},[this._v("404 page not found")])},staticRenderFns:[]};var r=t("VU/8")(null,a,!1,function(e){t("wqnk")},"data-v-352b0fe2",null);n.default=r.exports},wqnk:function(e,n){}});
+//# sourceMappingURL=22.f3a7138612034c1cf3f4.js.map

@@ -1,114 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1bff3874-0f80-4ef6-957e-fc1f35d5523e" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/api_automation_test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/api_automation_test.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="1bff3874-0f80-4ef6-957e-fc1f35d5523e" name="Default" comment="修复修改接口后，其他接口信息丢失的bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/all.log" beforeDir="false" afterPath="$PROJECT_DIR$/all.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_test/api/ApiDoc.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_test/api/ApiDoc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.babelrc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/build.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/check-versions.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/dev-client.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/dev-server.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/utils.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/vue-loader.conf.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/webpack.base.conf.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/webpack.dev.conf.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/webpack.prod.conf.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/config/dev.env.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/config/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/config/prod.env.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/css/app.71b5d1ef4c96b60d602a597a5683b4b0.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/img/page1_3.17bc0b8.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/img/userphoto.6d73d26.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/0.1224e8a3cf25a70e6780.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/1.70138ec7eb08e93110b3.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/10.6db98f63243f89edd6ec.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/11.0c5749ae90d52fab4d53.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/12.f5a42363fa8743f22277.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/13.3a1b23205807242b984a.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/14.71d2173d05a51c11c4c8.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/15.e05ef1af2046ffaac17d.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/16.2966a9cb35b4d75d7303.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/17.1f7aa1c9b9bc08ea5d77.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/18.9d3b74d7e3d6ca86ddf4.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/19.d2346c657e9c14ed7f65.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/2.b4e24326149f63a7baba.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/20.7412edb380cbbb9a643b.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/21.61d12aa012b82a26b786.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/22.7cff9e4e20abf1c8fafa.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/23.6dee659560d002ed04ce.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/24.e1259c08d8fedae574ad.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/25.20ee7e3d6c3a0cc5f709.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/26.9772d1a411184cab0714.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/27.0d770980778193bb5083.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/3.b523b6899b7e1b9bd94a.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/4.5e40b188f2adbdc452cb.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/5.47f64adbe6e751268cb0.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/6.7fbc409b8c320c472a88.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/7.e2baf83765900071467e.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/8.e985434d93940fccb600.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/9.58f625d059d59135cd91.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/app.be5b4b56e548f3e0f95f.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/manifest.a3fc4f437cb174ce7a3f.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/vendor.119b66335249c4abf452.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/api.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/icon-no.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/icon-yes.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/member.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/page1_0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/page1_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/page1_2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/page1_3.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/userphoto.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/wx.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/common/js/util.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/.gitkeep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/main.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/routes.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/styles/vars.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/About.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/Home.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/Project.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/Projectlist.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/common/404.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/common/Login.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/ProjectDynamic.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/ProjectMember.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/ProjectReport.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/API.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/Addapi.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/ApiList.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/ApiListGroup.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/FestTest.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/updateApi/ApiDynamic.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/updateApi/ApiForm.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/updateApi/ApiInfo.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/updateApi/TestApi.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/updateApi/UpdateApi.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/automation/AddCaseApi.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/automation/AutomationTest.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/automation/CaseApiList.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/automation/CaseList.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/automation/CaseListGroup.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/automation/TestReport.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/automation/UpdateCaseApi.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/global/Globalhost.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/projectTitle/ProjectTitle.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/vuex/actions.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/vuex/getters.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/vuex/store.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/static/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_automation_test/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_automation_test/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.gitignore" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -118,7 +14,7 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/api_automation_test$1234.coverage" NAME="1234 Coverage Results" MODIFIED="1528428148814" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Desktop" />
-    <SUITE FILE_PATH="coverage/api_automation_test$manage.coverage" NAME="manage Coverage Results" MODIFIED="1554806629345" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/api_automation_test$manage.coverage" NAME="manage Coverage Results" MODIFIED="1554858529884" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/api_automation_test$sendEmail.coverage" NAME="sendEmail Coverage Results" MODIFIED="1528942850726" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api_test/common" />
     <SUITE FILE_PATH="coverage/api_automation_test$Operation1.coverage" NAME="Operation1 Coverage Results" MODIFIED="1528428375677" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Desktop" />
   </component>
@@ -141,7 +37,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api_test/api/ApiDoc.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="367">
+            <state relative-caret-position="10455">
               <caret line="639" column="45" selection-start-line="639" selection-start-column="45" selection-end-line="639" selection-end-column="45" />
             </state>
           </provider>
@@ -156,11 +52,44 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/.babelrc">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/.editorconfig">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/.eslintignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/.eslintrc.js">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/frontend/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frontend/src/api/api.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="7" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
+            <state relative-caret-position="442">
+              <caret line="26" column="66" selection-start-line="26" selection-start-column="65" selection-end-line="26" selection-end-column="66" />
             </state>
           </provider>
         </entry>
@@ -239,7 +168,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/frontend/src/routes.js" />
         <option value="$PROJECT_DIR$/api_test/common/confighttp.py" />
         <option value="$PROJECT_DIR$/frontend/src/views/project/automation/CaseApiList.vue" />
         <option value="$PROJECT_DIR$/frontend/src/views/common/Login.vue" />
@@ -288,8 +216,9 @@
         <option value="$PROJECT_DIR$/frontende/src/views/Home.vue" />
         <option value="$PROJECT_DIR$/frontende/build/webpack.base.conf.js" />
         <option value="$PROJECT_DIR$/api_test/api/ApiDoc.py" />
-        <option value="$PROJECT_DIR$/api_automation_test/settings.py" />
         <option value="$PROJECT_DIR$/frontend/src/api/api.js" />
+        <option value="$PROJECT_DIR$/api_automation_test/settings.py" />
+        <option value="$PROJECT_DIR$/frontend/.gitignore" />
       </list>
     </option>
   </component>
@@ -299,11 +228,10 @@
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-7" />
-    <option name="y" value="20" />
-    <option name="width" value="1038" />
-    <option name="height" value="694" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1920" />
+    <option name="height" value="986" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -313,7 +241,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -329,36 +256,50 @@
             <path>
               <item name="api_automation_test" type="b2602c69:ProjectViewProjectNode" />
               <item name="api_automation_test" type="462c0819:PsiDirectoryNode" />
-              <item name="api_test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="api_automation_test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="api_automation_test" type="462c0819:PsiDirectoryNode" />
-              <item name="api_test" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="api_automation_test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="api_automation_test" type="462c0819:PsiDirectoryNode" />
               <item name="frontend" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="api_automation_test" type="b2602c69:ProjectViewProjectNode" />
               <item name="api_automation_test" type="462c0819:PsiDirectoryNode" />
               <item name="frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="dist" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="api_automation_test" type="b2602c69:ProjectViewProjectNode" />
               <item name="api_automation_test" type="462c0819:PsiDirectoryNode" />
               <item name="frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
+              <item name="dist" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="api_automation_test" type="b2602c69:ProjectViewProjectNode" />
+              <item name="api_automation_test" type="462c0819:PsiDirectoryNode" />
+              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="dist" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="api_automation_test" type="b2602c69:ProjectViewProjectNode" />
+              <item name="api_automation_test" type="462c0819:PsiDirectoryNode" />
+              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="dist" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="img" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="api_automation_test" type="b2602c69:ProjectViewProjectNode" />
+              <item name="api_automation_test" type="462c0819:PsiDirectoryNode" />
+              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="dist" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -455,7 +396,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1524535824353</updated>
-      <workItem from="1554803440624" duration="5684000" />
+      <workItem from="1554803440624" duration="5820000" />
+      <workItem from="1554858425800" duration="70000" />
     </task>
     <task id="LOCAL-00001" summary="1.重构新增项目，修改项目接口代码，增加详细注释">
       <created>1527915774102</created>
@@ -597,11 +539,18 @@
       <option name="project" value="LOCAL" />
       <updated>1529028124928</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="修复修改接口后，其他接口信息丢失的bug">
+      <created>1554815427041</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1554815427041</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5684000" />
+    <option name="totallyTimeSpent" value="5890000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -613,9 +562,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1920" height="982" extended-state="6" />
+    <frame x="0" y="23" width="1920" height="986" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23003195" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23216188" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -627,7 +577,7 @@
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.4989339" weight="0.3279396" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.62100214" visible="true" weight="0.3011236" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.62100214" visible="true" weight="0.30089486" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.37899786" side_tool="true" weight="0.5026969" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.32921347" />
       <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49733475" weight="0.3269663" />
@@ -683,20 +633,14 @@
     <MESSAGE value="1.修复发送邮件超时时间为25秒" />
     <MESSAGE value="1.新增mock功能&#10;2.优化前端页面" />
     <MESSAGE value="1.修改数据库地址" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.修改数据库地址" />
+    <MESSAGE value="修复修改接口后，其他接口信息丢失的bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复修改接口后，其他接口信息丢失的bug" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/api_test/common/auto_test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
           <caret line="52" column="13" lean-forward="true" selection-start-line="52" selection-start-column="13" selection-end-line="52" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/src/api/api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -801,28 +745,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/frontend/package-lock.json" />
-    <entry file="file://$PROJECT_DIR$/frontend/build/build.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-178" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/frontend/build/check-versions.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-412" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/build/dev-client.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/build/dev-server.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/build/dev-client.js" />
+    <entry file="file://$PROJECT_DIR$/frontend/build/dev-server.js" />
     <entry file="file://$PROJECT_DIR$/frontend/build/vue-loader.conf.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -841,20 +770,7 @@
     <entry file="file://$PROJECT_DIR$/frontend/build/utils.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/node_modules/webpack-dev-middleware/lib/context.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="93" selection-start-line="93" selection-end-line="93" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/build/webpack.dev.conf.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="19" column="12" selection-start-line="19" selection-start-column="12" selection-end-line="19" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/node_modules/webpack-dev-middleware/lib/context.js" />
     <entry file="file://$PROJECT_DIR$/frontend/build/build.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -863,25 +779,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/frontend/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-213">
-          <caret line="45" column="15" selection-start-line="45" selection-start-column="9" selection-end-line="45" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/package.json">
-      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="23" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/src/views/Project.vue">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/src/views/Home.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="116" column="23" selection-start-line="116" selection-start-column="14" selection-end-line="116" selection-end-column="23" />
         </state>
       </provider>
     </entry>
@@ -889,13 +788,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="116" column="21" selection-start-line="116" selection-start-column="12" selection-end-line="116" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/build/webpack.base.conf.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="99">
-          <caret line="33" selection-start-line="33" selection-end-line="33" selection-end-column="45" />
         </state>
       </provider>
     </entry>
@@ -915,15 +807,6 @@
           <caret line="48" column="13" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/.editorconfig">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/.eslintignore">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/.eslintrc.js">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/frontend/src/main.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -967,8 +850,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api_test/api/ApiDoc.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
+        <state relative-caret-position="10455">
           <caret line="639" column="45" selection-start-line="639" selection-start-column="45" selection-end-line="639" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/api/api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="26" column="66" selection-start-line="26" selection-start-column="65" selection-end-line="26" selection-end-column="66" />
         </state>
       </provider>
     </entry>
@@ -979,10 +869,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/src/api/api.js">
+    <entry file="file://$PROJECT_DIR$/frontend/.babelrc">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/.editorconfig">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/.eslintignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="7" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
+        <state relative-caret-position="34">
+          <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/.eslintrc.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
         </state>
       </provider>
     </entry>
