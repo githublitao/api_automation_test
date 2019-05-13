@@ -583,7 +583,6 @@ class CaseApiInfo(APIView):
         except ObjectDoesNotExist:
             return JsonResponse(code="999990", msg="接口不存在！")
         data = AutomationCaseApiSerializer(obm).data
-        print(data)
         try:
             name = AutomationResponseJson.objects.get(automationCaseApi=api_id, type="Regular")
             data["RegularParam"] = name.name
@@ -747,7 +746,7 @@ class AddNewApi(APIView):
                                 head_serialize.save(automationCaseApi=AutomationCaseApi.objects.get(id=api_id))
                 if data["requestParameterType"] == "form-data":
                     if len(data.get("requestList")):
-                        for i in data.get["requestList"]:
+                        for i in data.get("requestList"):
                             if i.get("name"):
                                 i["automationCaseApi_id"] = api_id
                                 param_serialize = AutomationParameterDeserializer(data=i)
@@ -897,7 +896,7 @@ class UpdateApi(APIView):
                                 if head_serialize.is_valid():
                                     head_serialize.save(automationCaseApi=AutomationCaseApi.objects.get(id=data["id"]))
                                     header = header | Q(id=head_serialize.data.get("id"))
-                AutomationHead.objects.exclude(header).delete()
+                AutomationHead.objects.exclude(header).filter(automationCaseApi=data["id"]).delete()
                 api_param = Q()
                 api_param_raw = Q()
                 if len(data.get("requestList")):
@@ -928,10 +927,10 @@ class UpdateApi(APIView):
                             obj = AutomationParameterRaw(automationCaseApi=AutomationCaseApi.objects.get(id=data['id']), data=data["requestList"])
                             obj.save()
                         api_param_raw = api_param_raw | Q(id=obj.id)
-                AutomationParameter.objects.exclude(api_param).delete()
-                AutomationParameterRaw.objects.exclude(api_param_raw).delete()
+                AutomationParameter.objects.exclude(api_param).filter(automationCaseApi=data["id"]).delete()
+                AutomationParameterRaw.objects.exclude(api_param_raw).filter(automationCaseApi=data["id"]).delete()
                 api_id = AutomationCaseApi.objects.get(id=data["id"])
-                AutomationResponseJson.objects.filter(automationCaseApi=api_id).delete()
+                AutomationResponseJson.objects.filter(automationCaseApi=api_id).filter(automationCaseApi=data["id"]).delete()
                 if data.get("examineType") == "json":
                     try:
                         response = eval(data["responseData"].replace("true", "True").replace("false", "False").replace("null", "None"))
