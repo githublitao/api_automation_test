@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1bff3874-0f80-4ef6-957e-fc1f35d5523e" name="Default" comment="上传前端打包文件">
-      <change beforePath="$PROJECT_DIR$/.idea/api_automation_test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/api_automation_test.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_test/ApiDoc/all.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/updateApi/ApiInfo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/project/api/updateApi/ApiInfo.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/dist/index.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -39,24 +32,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/frontend/src/views/project/global/Globalhost.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2669">
-              <caret line="158" selection-start-line="158" selection-end-line="164" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/frontend/src/views/project/api/updateApi/UpdateApi.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="11118">
-              <caret line="655" column="13" selection-start-line="655" selection-start-column="8" selection-end-line="655" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frontend/src/views/project/api/Addapi.vue">
           <provider selected="true" editor-type-id="text-editor">
@@ -101,11 +76,25 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frontend/src/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="246">
-              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+            <state relative-caret-position="131">
+              <caret line="64" column="14" selection-start-line="64" selection-start-column="14" selection-end-line="64" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/static/.gitkeep">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/frontend/build/webpack.prod.conf.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1">
+              <caret line="64" column="25" selection-start-line="64" selection-start-column="8" selection-end-line="64" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -288,7 +277,13 @@
               <item name="api_automation_test" type="b2602c69:ProjectViewProjectNode" />
               <item name="api_automation_test" type="462c0819:PsiDirectoryNode" />
               <item name="frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="api_automation_test" type="b2602c69:ProjectViewProjectNode" />
+              <item name="api_automation_test" type="462c0819:PsiDirectoryNode" />
+              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -440,7 +435,7 @@
       <workItem from="1560925512247" duration="615000" />
       <workItem from="1560933726868" duration="35491000" />
       <workItem from="1561450669752" duration="4474000" />
-      <workItem from="1561966758272" duration="34000" />
+      <workItem from="1561966758272" duration="350000" />
     </task>
     <task id="LOCAL-00001" summary="1.重构新增项目，修改项目接口代码，增加详细注释">
       <created>1527915774102</created>
@@ -596,11 +591,18 @@
       <option name="project" value="LOCAL" />
       <updated>1554858595665</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="上传前端打包文件">
+      <created>1561967013449</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1561967013449</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="84574000" />
+    <option name="totallyTimeSpent" value="84890000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -627,7 +629,7 @@
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.4989339" weight="0.3279396" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.62100214" weight="0.30056497" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.62100214" visible="true" weight="0.5141243" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.37899786" side_tool="true" weight="0.5026969" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.32921347" />
       <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49733475" weight="0.3269663" />
@@ -688,9 +690,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="上传前端打包文件" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/frontend/src/api/index.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/frontend/src/App.vue">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -735,11 +734,6 @@
     <entry file="file://$PROJECT_DIR$/frontend/build/webpack.dev.conf.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-879" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/build/webpack.prod.conf.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1797" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/frontend/config/dev.env.js">
@@ -995,8 +989,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/frontend/src/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+        <state relative-caret-position="131">
+          <caret line="64" column="14" selection-start-line="64" selection-start-column="14" selection-end-line="64" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/static/.gitkeep">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/build/webpack.prod.conf.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1">
+          <caret line="64" column="25" selection-start-line="64" selection-start-column="8" selection-end-line="64" selection-end-column="25" />
         </state>
       </provider>
     </entry>
