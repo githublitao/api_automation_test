@@ -10,14 +10,14 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "babel-polyfill": "^6.26.0",
     "compression-webpack-plugin": "^1.1.11",
     "echarts": "^4.1.0",
     "element-ui": "^2.4.6",
     "eventsource-polyfill": "^0.9.6",
     "font-awesome": "^4.7.0",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.1",
     "moment": "^2.22.2",
     "node-sass": "^4.9.3",
     "vue": "^2.5.2",

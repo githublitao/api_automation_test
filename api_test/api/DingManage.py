@@ -63,18 +63,15 @@ class DingManage(APIView):
                     user = User.objects.get(id=user.user_id)
                 except Exception as e:
                     password = make_password('admin')
-                    try:
-                        with transaction.atomic():
-                            try:
-                                user = User.objects.create(username=pypinyin.slug(response['user_info']['nick'], separator=''), password=password,
-                                                           first_name=response['user_info']['nick'])
-                            except Exception as e:
-                                user = User.objects.create(username=pypinyin.slug(response['user_info']['nick'], separator='') + str(random.randint(0,9999)),
-                                                           password=password,
-                                                           first_name=response['user_info']['nick'])
-                            UserProfile.objects.create(user=user, openId=response['user_info']['openid'], unionid=response['user_info']['unionid'])
-                    except Exception:
-                        return JsonResponse(code='999998', msg='事务执行失败！')
+                    with transaction.atomic():
+                        try:
+                            user = User.objects.create(username=pypinyin.slug(response['user_info']['nick'], separator=''), password=password,
+                                                       first_name=response['user_info']['nick'])
+                        except Exception as e:
+                            user = User.objects.create(username=pypinyin.slug(response['user_info']['nick'], separator='') + str(random.randint(0,9999)),
+                                                       password=password,
+                                                       first_name=response['user_info']['nick'])
+                        UserProfile.objects.create(user=user, openId=response['user_info']['openid'], unionid=response['user_info']['unionid'])
                 data = TokenSerializer(Token.objects.get(user=user)).data
                 data["userphoto"] = '/file/userphoto.jpg'
                 return JsonResponse(data=data, code="999999", msg="成功")
