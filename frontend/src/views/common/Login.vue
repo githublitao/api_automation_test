@@ -186,9 +186,10 @@
                     let _this = this;
                     let {msg, code, data} = _data;
                     if (code === '999999') {
-                        var url = encodeURIComponent(url+'/#/register');
+                        var _url = encodeURIComponent(url+'/#/register');
+                        console.log(_url)
                         // var url = encodeURIComponent('http://127.0.0.1:8080/#/register');
-                        var goto = encodeURIComponent('https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=' + data.app_id + '&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=' + url);
+                        var goto = encodeURIComponent('https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=' + data.app_id + '&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=' + _url);
 
                         var obj = DDLogin({
                             id: "login_container",//这里需要你在自己的页面定义一个HTML标签并设置id，例如<div id="login_container"></div>或<span id="login_container"></span>
@@ -203,7 +204,7 @@
                             if (origin === "https://login.dingtalk.com") { //判断是否来自ddLogin扫码事件。
                                 var loginTmpCode = event.data; //拿到loginTmpCode后就可以在这里构造跳转链接进行跳转了
                                 console.log("loginTmpCode", loginTmpCode);
-                                var url2 = 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid='+data.app_id+'&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=' + url + "&loginTmpCode=" + loginTmpCode;
+                                var url2 = 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid='+data.app_id+'&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=' + _url + "&loginTmpCode=" + loginTmpCode;
                                 window.location.href = url2;
                             }
                         };
