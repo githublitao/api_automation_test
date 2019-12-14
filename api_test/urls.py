@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from api_test.api import ApiDoc, automationCase as Case, member, dynamic, user, VisitorRecord
+from api_test.api import ApiDoc, automationCase as Case, member, dynamic, user, VisitorRecord, DingManage
 from api_test.api import automationReport as Report
 from api_test.api.global_parameter import HostTotal, AddHost, UpdateHost, DelHost, DisableHost, EnableHost
 from api_test.api.projectList import ProjectList, AddProject, DelProject, \
@@ -8,6 +8,8 @@ from api_test.api.projectList import ProjectList, AddProject, DelProject, \
 from api_test.api.projectTitle import ProjectInfo
 
 urlpatterns = [
+    url(r'user/dingConfig', DingManage.DingManage.as_view()),
+    # url(r'user/dingLogin', DingManage.DingLogin.as_view()),
     url(r'project/project_list', ProjectList.as_view()),
     url(r'project/add_project', AddProject.as_view()),
     url(r'project/update_project', UpdateProject.as_view()),

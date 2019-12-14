@@ -74,7 +74,9 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 # ==================扩展用户====================================
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='用户', related_name='user')
-    phone = models.CharField(max_length=11, default='', blank=True, verbose_name='手机号')
+    phone = models.CharField(max_length=11, default='无', blank=True, verbose_name='手机号')
+    openId = models.CharField(max_length=50, default=0, verbose_name="唯一标识")
+    unionid = models.CharField(max_length=50, default=0, verbose_name="企业内唯一标识")
 
     def __unicode__(self):
         return self.user.username

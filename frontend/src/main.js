@@ -18,7 +18,6 @@ Vue.use(Vuex);
 //NProgress.configure({ showSpinner: false });
 
 const router = new VueRouter({
-  mode: 'history',
   routes
 });
 
@@ -27,11 +26,19 @@ router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
     sessionStorage.removeItem('token');
   }
-  let token = JSON.parse(sessionStorage.getItem('token'));
-  if (!token && to.path !== '/login') {
+  let token = sessionStorage.getItem('token');
+  if (token === 'undefined'){
+      token = ''
+  }
+
+  if (!token && to.path === '/register') {
+      next()
+  }
+  else if (!token && to.path !== '/login') {
     console.log(to.path);
     next({ path: '/login', query: {url: to.path}})
-  } else {
+  }
+  else {
     next()
   }
   if (to.path === '/') {

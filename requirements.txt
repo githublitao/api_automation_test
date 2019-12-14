@@ -16,3 +16,4 @@ PyMySQL==0.8.1
 XlsxWriter==1.0.5
 PyMySQL==0.8.1
 python-docx==0.8.6
+pypinyin==0.36.0

@@ -23,27 +23,36 @@
         </div>
         <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px" class="demo-ruleForm login-container">
             <h3 class="title">系统登录</h3>
-            <el-form-item prop="account">
-                <el-input type="text" v-model.trim="ruleForm2.account" auto-complete="off" placeholder="账号"></el-input>
-            </el-form-item>
-            <el-form-item prop="checkPass">
-                <el-input type="password" v-model.trim="ruleForm2.checkPass" auto-complete="off" placeholder="密码"></el-input>
-            </el-form-item>
-            <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>
-            <el-form-item style="width:100%;">
-                <el-button type="primary" style="width:100%;" @click.native.prevent="handleSubmit2" :loading="logining">登录</el-button>
-                <!--<el-button @click.native.prevent="handleReset2">重置</el-button>-->
-            </el-form-item>
+            <el-tabs v-model="activeName" @tab-click="handleClick" :stretch="true">
+                <el-tab-pane label="钉钉登录" name="first">
+                    <div id="login_container"></div>
+                </el-tab-pane>
+                <el-tab-pane label="账号登录" name="second">
+                    <el-form-item prop="account">
+                        <el-input type="text" v-model.trim="ruleForm2.account" auto-complete="off" placeholder="账号"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="checkPass">
+                        <el-input type="password" v-model.trim="ruleForm2.checkPass" auto-complete="off" placeholder="密码"></el-input>
+                    </el-form-item>
+                    <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>
+                    <el-form-item style="width:100%;">
+                        <el-button type="primary" style="width:100%;" @click.native.prevent="handleSubmit2" :loading="logining">登录</el-button>
+                        <!--<el-button @click.native.prevent="handleReset2">重置</el-button>-->
+                    </el-form-item>
+                </el-tab-pane>
+            </el-tabs>
         </el-form>
     </div>
 </template>
 
 <script>
     /* eslint-disable */
-    import { requestLogin, recordVisitor } from '../../api/api';
+    import {requestLogin, recordVisitor, dingConfig, test} from '../../api/api';
+
     export default {
-        data () {
+        data() {
             return {
+                activeName: 'first',
                 logining: false,
                 ruleForm2: {
                     account: '',
@@ -51,11 +60,11 @@
                 },
                 rules2: {
                     account: [
-                        { required: true, message: '请输入账号', trigger: 'blur' }
+                        {required: true, message: '请输入账号', trigger: 'blur'}
                         // { validator: validaePass }
                     ],
                     checkPass: [
-                        { required: true, message: '请输入密码', trigger: 'blur' }
+                        {required: true, message: '请输入密码', trigger: 'blur'}
                         // { validator: validaePass2 }
                     ]
                 },
@@ -63,7 +72,7 @@
             }
         },
         methods: {
-            handleReset2 () {
+            handleReset2() {
                 this.$refs.ruleForm2.resetFields()
             },
             handleSubmit2(ev) {
@@ -73,10 +82,10 @@
                         //_this.$router.replace('/table');
                         this.logining = true;
                         //NProgress.start();
-                        var loginParams = { username: this.ruleForm2.account, password: this.ruleForm2.checkPass };
+                        var loginParams = {username: this.ruleForm2.account, password: this.ruleForm2.checkPass};
                         requestLogin(loginParams).then(_data => {
                             _this.logining = false;
-                            let { msg, code, data } = _data;
+                            let {msg, code, data} = _data;
                             console.log(_data);
                             if (code === '999999') {
                                 sessionStorage.setItem('username', JSON.stringify(data.first_name));
@@ -125,11 +134,11 @@
             },
             //解析定位结果
             onComplete(data) {
-                var str=['定位成功'];
+                var str = ['定位成功'];
                 str.push('经度：' + data.position.getLng());
                 str.push('纬度：' + data.position.getLat());
                 console.log(str);
-                if(data.accuracy){
+                if (data.accuracy) {
                     str.push('精度：' + data.accuracy + ' 米');
                 }//如为IP精确定位结果则没有精度信息
                 str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
@@ -139,13 +148,13 @@
                     "latitude": data.position.getLat(),
                 };
                 recordVisitor(param).then(_data => {
-                    let { msg, code, data } = _data;
+                    let {msg, code, data} = _data;
                     if (code === '999999') {
-                            console.log("成功")
-                        }
-                        else {
-                            console.log("失败")
-                        }
+                        console.log("成功")
+                    }
+                    else {
+                        console.log("失败")
+                    }
                 });
             },
             //解析定位错误信息
@@ -155,7 +164,7 @@
                     "success": 0,
                 };
                 recordVisitor(param).then(_data => {
-                    let { msg, code, data } = _data;
+                    let {msg, code, data} = _data;
                     if (code === '999999') {
                         console.log("成功")
                     }
@@ -165,18 +174,59 @@
                 });
                 // document.getElementById('tip').innerHTML = '定位失败';
             },
-            carouselPicture(){
+            carouselPicture() {
                 this.ab(1)
             },
-            ab(num){
+            ab(num) {
                 var carouse = document.getElementsByClassName("carouse");
-                carouse.item(0).id = 'carouse'+num;
+                carouse.item(0).id = 'carouse' + num;
+            },
+            login_ding() {
+                dingConfig({}).then(_data => {
+                    let _this = this;
+                    let {msg, code, data} = _data;
+                    if (code === '999999') {
+                        var url = encodeURIComponent(test+'/#/register');
+                        // var url = encodeURIComponent('http://127.0.0.1:8080/#/register');
+                        var goto = encodeURIComponent('https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=' + data.app_id + '&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=' + url);
+
+                        var obj = DDLogin({
+                            id: "login_container",//这里需要你在自己的页面定义一个HTML标签并设置id，例如<div id="login_container"></div>或<span id="login_container"></span>
+                            goto: goto, //请参考注释里的方式
+                            style: "border:none;background-color:#FFFFFF;",
+                            width: "300",
+                            height: "300"
+                        });
+                        var handleMessage = function (event) {
+                            var origin = event.origin;
+                            console.log("origin", event.origin);
+                            if (origin === "https://login.dingtalk.com") { //判断是否来自ddLogin扫码事件。
+                                var loginTmpCode = event.data; //拿到loginTmpCode后就可以在这里构造跳转链接进行跳转了
+                                console.log("loginTmpCode", loginTmpCode);
+                                var url2 = 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid='+data.app_id+'&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=' + url + "&loginTmpCode=" + loginTmpCode;
+                                window.location.href = url2;
+                            }
+                        };
+                        if (typeof window.addEventListener !== 'undefined') {
+                            window.addEventListener('message', handleMessage, false);
+                        } else if (typeof window.attachEvent !== 'undefined') {
+                            window.attachEvent('onmessage', handleMessage);
+                        }
+                    } else {
+                        _this.$message.error({
+                            message: "服务器钉钉配置错误",
+                            center: true
+                        })
+                    }
+                })
+
             }
 
         },
         mounted() {
             this.getVisitor();
-            this.carouselPicture()
+            this.carouselPicture();
+            this.login_ding();
         }
     }
 
@@ -202,7 +252,7 @@
       /*right: 50px;*/
     width: 300px;
     padding: 35px 35px 15px 35px;
-    background: #23305a;
+    background: #eaeaea;
     border: 1px solid #eaeaea;
     box-shadow: 0 0 25px #cac6c6;
       z-index: 1000;
