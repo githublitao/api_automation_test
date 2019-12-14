@@ -5,9 +5,10 @@
 # 版本更新：
 ## v2.2<br>
 1.新增钉钉登录<br>
-```1.先在钉钉开发平台上创建账号<br>
-  2.替换dingConfig.py里的appid和APPSECRET<br>
-  3.修改前段login.vue里的回调地址<br>
+```
+1.先在钉钉开发平台上创建账号<br>
+2.替换dingConfig.py里的appid和APPSECRET<br>
+3.修改前段login.vue里的回调地址<br>
   ```
 ## V2.1.2<br>
 1.增加导出测试用例功能<br>
