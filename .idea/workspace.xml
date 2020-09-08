@@ -48,7 +48,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1bff3874-0f80-4ef6-957e-fc1f35d5523e" name="Default" comment="docker">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/init.sql" beforeDir="false" afterPath="$PROJECT_DIR$/mysql/init.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/install.sh" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -233,7 +234,7 @@
       <workItem from="1560933726868" duration="35491000" />
       <workItem from="1561450669752" duration="4474000" />
       <workItem from="1561966758272" duration="350000" />
-      <workItem from="1599534253551" duration="6027000" />
+      <workItem from="1599534253551" duration="6362000" />
     </task>
     <task id="LOCAL-00001" summary="1.重构新增项目，修改项目接口代码，增加详细注释">
       <created>1527915774102</created>
@@ -480,7 +481,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599542792309</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="docker">
+      <created>1599543622110</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1599543622110</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -528,18 +536,18 @@
       <screen x="0" y="23" width="1920" height="978" />
     </state>
     <state x="192" y="110" key="MergeDialog/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599534144512" />
-    <state x="560" y="252" key="Vcs.Push.Dialog.v2" timestamp="1599542794865">
+    <state x="560" y="252" key="Vcs.Push.Dialog.v2" timestamp="1599543624391">
       <screen x="0" y="23" width="1920" height="978" />
     </state>
-    <state x="560" y="252" key="Vcs.Push.Dialog.v2/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599542794865" />
+    <state x="560" y="252" key="Vcs.Push.Dialog.v2/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599543624391" />
     <state x="763" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1599541334405">
       <screen x="0" y="23" width="1920" height="978" />
     </state>
     <state x="763" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599541334405" />
-    <state x="667" y="267" width="586" height="490" key="find.popup" timestamp="1599543505734">
+    <state x="667" y="267" width="586" height="490" key="find.popup" timestamp="1599543843347">
       <screen x="0" y="23" width="1920" height="978" />
     </state>
-    <state x="667" y="267" width="586" height="490" key="find.popup/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599543505734" />
+    <state x="667" y="267" width="586" height="490" key="find.popup/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599543843347" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
