@@ -68,8 +68,7 @@ LOGGING = {
     }
 }
 
-ALLOWED_HOSTS = ['192.168.89.198', '127.0.0.1', '192.168.88.131',
-                 '192.168.88.108', '192.168.1.10', 'apitest.60community.com', '*']
+ALLOWED_HOSTS = ['*']
 
 AUTH_PROFILE_MODULE = 'djangoadmin.api_test.UserProfile'
 
@@ -165,9 +164,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'api_test',
         'USER': 'root',
-        'PASSWORD': 'lt19910301',
+        'PASSWORD': '123456',
         # 'HOST': '120.79.232.23',
-        'HOST': '172.18.162.26',
+        'HOST': 'auto_mysql',
         'PORT': '3306',
     }
 }
