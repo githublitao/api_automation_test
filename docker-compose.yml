@@ -16,6 +16,8 @@ services:
       - |
         python manage.py makemigrations
         python manage.py migrate
+        cp -r /opt/app-root/lib/python3.6/site-packages/suit/static/admin /api_automation_test/frontend/dist/static
+        cp -r /opt/app-root/lib/python3.6/site-packages/suit/static/suit /api_automation_test/frontend/dist/static
         cp -rf /opt/app-root/lib/python3.6/site-packages/django/contrib/admin/static/admin /api_automation_test/frontend/dist/static
         cp -r /opt/app-root/lib/python3.6/site-packages/rest_framework_swagger/static/rest_framework_swagger /api_automation_test/frontend/dist/static
         cp -r /opt/app-root/lib/python3.6/site-packages/rest_framework/static/rest_framework /api_automation_test/frontend/dist/static
