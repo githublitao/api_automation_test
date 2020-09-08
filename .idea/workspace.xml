@@ -233,7 +233,7 @@
       <workItem from="1560933726868" duration="35491000" />
       <workItem from="1561450669752" duration="4474000" />
       <workItem from="1561966758272" duration="350000" />
-      <workItem from="1599534253551" duration="8947000" />
+      <workItem from="1599534253551" duration="9687000" />
     </task>
     <task id="LOCAL-00001" summary="1.重构新增项目，修改项目接口代码，增加详细注释">
       <created>1527915774102</created>
@@ -522,7 +522,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599545622870</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="docker">
+      <created>1599547104542</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1599547104542</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -574,10 +581,10 @@
       <screen x="0" y="23" width="1920" height="978" />
     </state>
     <state x="192" y="110" key="MergeDialog/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599534144512" />
-    <state x="560" y="252" key="Vcs.Push.Dialog.v2" timestamp="1599545625067">
+    <state x="560" y="252" key="Vcs.Push.Dialog.v2" timestamp="1599547106096">
       <screen x="0" y="23" width="1920" height="978" />
     </state>
-    <state x="560" y="252" key="Vcs.Push.Dialog.v2/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599545625067" />
+    <state x="560" y="252" key="Vcs.Push.Dialog.v2/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599547106096" />
     <state x="763" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1599541334405">
       <screen x="0" y="23" width="1920" height="978" />
     </state>
