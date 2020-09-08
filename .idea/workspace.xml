@@ -233,7 +233,7 @@
       <workItem from="1560933726868" duration="35491000" />
       <workItem from="1561450669752" duration="4474000" />
       <workItem from="1561966758272" duration="350000" />
-      <workItem from="1599534253551" duration="5213000" />
+      <workItem from="1599534253551" duration="6027000" />
     </task>
     <task id="LOCAL-00001" summary="1.重构新增项目，修改项目接口代码，增加详细注释">
       <created>1527915774102</created>
@@ -473,7 +473,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599541515776</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="docker">
+      <created>1599542792309</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1599542792309</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -521,18 +528,18 @@
       <screen x="0" y="23" width="1920" height="978" />
     </state>
     <state x="192" y="110" key="MergeDialog/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599534144512" />
-    <state x="560" y="252" key="Vcs.Push.Dialog.v2" timestamp="1599541528090">
+    <state x="560" y="252" key="Vcs.Push.Dialog.v2" timestamp="1599542794865">
       <screen x="0" y="23" width="1920" height="978" />
     </state>
-    <state x="560" y="252" key="Vcs.Push.Dialog.v2/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599541528089" />
+    <state x="560" y="252" key="Vcs.Push.Dialog.v2/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599542794865" />
     <state x="763" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1599541334405">
       <screen x="0" y="23" width="1920" height="978" />
     </state>
     <state x="763" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599541334405" />
-    <state x="667" y="267" width="586" height="490" key="find.popup" timestamp="1599534163184">
+    <state x="667" y="267" width="586" height="490" key="find.popup" timestamp="1599543505734">
       <screen x="0" y="23" width="1920" height="978" />
     </state>
-    <state x="667" y="267" width="586" height="490" key="find.popup/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599534163184" />
+    <state x="667" y="267" width="586" height="490" key="find.popup/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599543505734" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
