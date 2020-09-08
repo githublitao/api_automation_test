@@ -73,7 +73,6 @@ services:
       - MYSQL_ROOT_HOST=%
     volumes:
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/
-      - ./mysql/createDb.sh:/docker-entrypoint-initdb.d/
       - ./mysql/my.cnf:/etc/my.cnf
       - /home/test_platform/datadir:/var/lib/mysql
     network_mode: bridge
