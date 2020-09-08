@@ -1,5 +1,5 @@
 FROM centos/python-36-centos7:latest
-COPY ./requirements.txt /AutoTest_New/
+COPY ./requirements.txt /api_automation_test/
 USER root
 WORKDIR /api_automation_test
 RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --no-cache-dir --upgrade pip\
