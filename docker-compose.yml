@@ -71,13 +71,9 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_ROOT_HOST=%
-      - WORK_PATH=/usr/local/work
-      - FILE_0=init.sql
-      - CREATE_DATA_SHELL=createDb.sh
-      - AUTO_RUN_DIR=/docker-entrypoint-initdb.d
     volumes:
-      - ./mysql/$FILE_0:$WORK_PATH/
-      - ./mysql/$CREATE_DATA_SHELL:$AUTO_RUN_DIR
+      - ./mysql/init.sql:/usr/local/work/
+      - ./mysql/createDb.sh:/docker-entrypoint-initdb.d/
       - ./mysql/my.cnf:/etc/my.cnf
       - /home/test_platform/datadir:/var/lib/mysql
     network_mode: bridge
