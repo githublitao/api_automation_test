@@ -67,7 +67,7 @@ services:
     expose:
       - 3306
     ports:
-    - 3307:3306
+    - 3306:3306
     command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_ROOT_PASSWORD=123456
