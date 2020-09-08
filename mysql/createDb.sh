@@ -1,3 +1,3 @@
-mysql -uroot -p$MYSQL_ROOT_PASSWORD <<EOF
+mysql -uroot -p 123456 <<EOF
 
 source /docker-entrypoint-initdb.d/init.sql;

@@ -72,7 +72,7 @@ services:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_ROOT_HOST=%
     volumes:
-      - ./mysql/init.sql:/usr/local/work/
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/
       - ./mysql/createDb.sh:/docker-entrypoint-initdb.d/
       - ./mysql/my.cnf:/etc/my.cnf
       - /home/test_platform/datadir:/var/lib/mysql
