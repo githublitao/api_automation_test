@@ -68,7 +68,7 @@ LOGGING = {
     }
 }
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["api_automation_test:8000", "*"]
 
 AUTH_PROFILE_MODULE = 'djangoadmin.api_test.UserProfile'
 

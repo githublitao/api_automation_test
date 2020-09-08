@@ -49,6 +49,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1bff3874-0f80-4ef6-957e-fc1f35d5523e" name="Default" comment="docker">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/{" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -233,7 +234,7 @@
       <workItem from="1560933726868" duration="35491000" />
       <workItem from="1561450669752" duration="4474000" />
       <workItem from="1561966758272" duration="350000" />
-      <workItem from="1599534253551" duration="11496000" />
+      <workItem from="1599534253551" duration="12277000" />
     </task>
     <task id="LOCAL-00001" summary="1.重构新增项目，修改项目接口代码，增加详细注释">
       <created>1527915774102</created>
@@ -550,7 +551,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599548751233</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="docker">
+      <created>1599549999824</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1599549999824</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -602,10 +610,10 @@
       <screen x="0" y="23" width="1920" height="978" />
     </state>
     <state x="192" y="110" key="MergeDialog/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599534144512" />
-    <state x="560" y="252" key="Vcs.Push.Dialog.v2" timestamp="1599548755757">
+    <state x="560" y="252" key="Vcs.Push.Dialog.v2" timestamp="1599550001186">
       <screen x="0" y="23" width="1920" height="978" />
     </state>
-    <state x="560" y="252" key="Vcs.Push.Dialog.v2/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599548755757" />
+    <state x="560" y="252" key="Vcs.Push.Dialog.v2/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599550001186" />
     <state x="763" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1599541334405">
       <screen x="0" y="23" width="1920" height="978" />
     </state>
