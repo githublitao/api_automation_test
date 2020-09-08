@@ -47,7 +47,7 @@ services:
       - 8002:8002
     restart: always
     volumes:
-      - .:/var/lib/test/api_automation_test
+      - .:/api_automation_test
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./UwsgiScript/:/etc/script/
     network_mode: bridge
