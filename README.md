@@ -4,7 +4,10 @@
 
 # 版本更新：
 ## v2.3<br>
-引入docker部署，执行docker-compose up
+引入docker部署,由于采用的docker，基础镜像为centos，所以Windows下部署仍然可以使用定时任务
+```
+ docker-compose up
+```
 ## v2.2<br>
 1.新增钉钉登录<br>
 ```
