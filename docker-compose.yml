@@ -8,6 +8,7 @@ services:
     restart: always
     volumes:
       - .:/api_automation_test
+      - ./cron:/var/spool/cron
     depends_on:
       - mysql
     command:
