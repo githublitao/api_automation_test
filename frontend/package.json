@@ -19,7 +19,7 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.1",
     "moment": "^2.22.2",
-    "node-sass": "^4.9.3",
+    "node-sass": "^7.0.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
