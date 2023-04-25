@@ -48,8 +48,200 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1bff3874-0f80-4ef6-957e-fc1f35d5523e" name="Default" comment="docker">
+      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/{" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jenkinsfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/UwsgiScript/uwsgi.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_automation_test/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_automation_test/settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_automation_test/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_automation_test/wsgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/ApiDoc/all.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/Util/Signature.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/Util/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/api/ApiDoc.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/api/DingManage.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/api/VisitorRecord.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/api/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/api/automationCase.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/api/automationReport.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/api/dynamic.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/api/global_parameter.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/api/member.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/api/projectList.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/api/projectTitle.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/api/user.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/common/GlobalStatusCode.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/common/WriteDocx.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/common/WriteExcel.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/common/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/common/addTask.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/common/api_response.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/common/auto_start.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/common/auto_task_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/common/auto_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/common/common.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/common/confighttp.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/common/end_task.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/common/loadSwaggerApi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/common/sendEmail.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/config/DingConfig.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/config/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/serializers.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_test/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.babelrc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/build.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/check-versions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/dev-client.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/dev-server.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/utils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/vue-loader.conf.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/webpack.base.conf.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/webpack.dev.conf.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/webpack.prod.conf.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/config/dev.env.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/config/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/config/prod.env.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/css/app.71b5d1ef4c96b60d602a597a5683b4b0.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/img/page1_3.17bc0b8.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/img/userphoto.6d73d26.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/0.9d783b0e62a27e8ac28e.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/1.0361da2a432e53ed650e.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/10.4664cbacc35230444330.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/11.f127c45e64f6ccb15486.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/12.1187cd4d0933799f64b9.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/13.d42875ad80794d82545a.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/14.c54ecee4254912947184.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/15.75d9f1a46138ab4335b6.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/16.6294ce540c2b88cb1f0c.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/17.4f8eeb5a2ccfad84129a.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/18.0dd4f78379a06dfdd0c4.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/19.c625e65b8e2b62471a8d.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/2.fc65a494cb391acab5e1.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/20.c93e5f5f035f2d7f5bac.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/21.25e1b674d45e351ad4ce.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/22.51d766d611c49e651722.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/23.835b49ec35801d28d24e.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/24.a85cf559858f1b6a4848.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/25.5203a2781b4258e5b6df.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/26.0d7f082d9ca441af7729.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/27.81a9e270eefa1be143e2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/28.0bd813eda27a5dbd948a.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/3.4fcdbb611191939ffff0.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/4.37b982cd32ecbc53c210.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/5.cc532fccc319a68a76d8.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/6.f02679938619a893921e.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/7.7ad576b8a9cb55da8cc7.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/8.655374a1fd32a6bcfe0e.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/9.f427f8d235ff84ff5a5b.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/app.855bc64b0cdf7fa6adf6.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/manifest.25ce1c6ff082f4563852.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/dist/static/js/vendor.5d4e5ff7427b25b14a8c.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/api.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/assets/icon-no.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/assets/icon-yes.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/assets/member.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/assets/page1_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/assets/page1_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/assets/page1_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/assets/page1_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/assets/userphoto.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/assets/wx.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/common/js/util.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/styles/vars.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/About.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/Home.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/Project.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/Projectlist.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/Register.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/common/404.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/common/Login.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/ProjectDynamic.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/ProjectMember.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/ProjectReport.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/API.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/Addapi.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/ApiList.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/ApiListGroup.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/FestTest.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/updateApi/ApiDynamic.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/updateApi/ApiForm.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/updateApi/ApiInfo.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/updateApi/TestApi.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/api/updateApi/UpdateApi.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/automation/AddCaseApi.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/automation/AutomationTest.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/automation/CaseApiList.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/automation/CaseList.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/automation/CaseListGroup.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/automation/TestReport.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/automation/UpdateCaseApi.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/global/Globalhost.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/project/projectTitle/ProjectTitle.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/vuex/actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/vuex/getters.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/vuex/store.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/API列表.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/HOST配置.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/前端目录简介.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/后台目录简介.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/后台管理页面.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/快速测试.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/成员管理.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/接口文档模块.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/接口详情.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/收款码.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/数据库配置.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/新增API.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/新增Host.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/新增分组.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/新增用例.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/新增项目.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/添加用例下已有的接口.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/用例下接口列表.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/用例列表.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/登录页面.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/系统图解.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/自动化测试报告.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/退出登录.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/项目动态.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/项目概况.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/项目结构图.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/首页.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/license" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/docker-entrypoint.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/init.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/my.cnf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nginx/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nginx/nginx.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/接口测试平台.xmind" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,6 +269,11 @@
     <select />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master_old" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="JsFlowSettings">
@@ -99,6 +296,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -106,6 +304,9 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.django.DjangoModulesConfigurable" />
@@ -169,11 +370,15 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.sendEmail" />
+        <item itemvalue="Python.manage" />
+        <item itemvalue="Python.sendEmail" />
         <item itemvalue="Python.manage" />
         <item itemvalue="Python.sendEmail" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -235,6 +440,8 @@
       <workItem from="1561450669752" duration="4474000" />
       <workItem from="1561966758272" duration="350000" />
       <workItem from="1599534253551" duration="12277000" />
+      <workItem from="1682388954769" duration="88000" />
+      <workItem from="1682389290517" duration="1631000" />
     </task>
     <task id="LOCAL-00001" summary="1.重构新增项目，修改项目接口代码，增加详细注释">
       <created>1527915774102</created>
@@ -562,7 +769,7 @@
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -600,28 +807,6 @@
     <MESSAGE value="js丢失" />
     <MESSAGE value="docker" />
     <option name="LAST_COMMIT_MESSAGE" value="docker" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="704" y="321" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1599544363617">
-      <screen x="0" y="23" width="1920" height="978" />
-    </state>
-    <state x="704" y="321" key="#com.intellij.fileTypes.FileTypeChooser/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599544363617" />
-    <state x="192" y="110" key="MergeDialog" timestamp="1599534144512">
-      <screen x="0" y="23" width="1920" height="978" />
-    </state>
-    <state x="192" y="110" key="MergeDialog/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599534144512" />
-    <state x="560" y="252" key="Vcs.Push.Dialog.v2" timestamp="1599550001186">
-      <screen x="0" y="23" width="1920" height="978" />
-    </state>
-    <state x="560" y="252" key="Vcs.Push.Dialog.v2/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599550001186" />
-    <state x="763" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1599541334405">
-      <screen x="0" y="23" width="1920" height="978" />
-    </state>
-    <state x="763" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599541334405" />
-    <state x="667" y="267" width="586" height="490" key="find.popup" timestamp="1599543843347">
-      <screen x="0" y="23" width="1920" height="978" />
-    </state>
-    <state x="667" y="267" width="586" height="490" key="find.popup/1920.23.1080.1897/0.23.1920.978@0.23.1920.978" timestamp="1599543843347" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
