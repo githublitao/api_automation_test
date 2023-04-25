@@ -8,3 +8,10 @@ test.py
 *.egg-info
 .DS_Store
 __pycache__
+*.idea
+*__pycycache_
+*__pycache__*
+**.pyc
+.pytest_cache
+.push
+.idea
