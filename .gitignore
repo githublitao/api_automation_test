@@ -1,0 +1,9 @@
+/.idea/*
+*.log
+test.py
+.vscode
+*.py[cod]
+*.so
+*.egg
+*.egg-info
+.DS_Store
