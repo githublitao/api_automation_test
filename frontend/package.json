@@ -57,7 +57,7 @@
     "file-loader": "^1.1.4",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
-    "nightwatch": "^1.0.12",
+    "nightwatch": "^1.7.13",
     "node-notifier": "^8.0.1",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "ora": "^1.2.0",
@@ -76,7 +76,7 @@
     "vue-style-loader": "^3.1.2",
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
-    "webpack-bundle-analyzer": "^3.3.2",
+    "webpack-bundle-analyzer": "^4.8.0",
     "webpack-dev-server": "^3.1.10",
     "webpack-merge": "^4.1.0"
   },
