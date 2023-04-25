@@ -10,7 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.21.2",
     "babel-polyfill": "^6.26.0",
     "compression-webpack-plugin": "^1.1.11",
     "echarts": "^4.1.0",
