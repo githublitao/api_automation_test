@@ -13,7 +13,7 @@
     "axios": "^0.21.2",
     "babel-polyfill": "^6.26.0",
     "compression-webpack-plugin": "^1.1.11",
-    "echarts": "^4.1.0",
+    "echarts": "^5.4.2",
     "element-ui": "^2.4.6",
     "eventsource-polyfill": "^0.9.6",
     "font-awesome": "^4.7.0",
