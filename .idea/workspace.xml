@@ -47,7 +47,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bff3874-0f80-4ef6-957e-fc1f35d5523e" name="Default" comment="docker">
+    <list default="true" id="1bff3874-0f80-4ef6-957e-fc1f35d5523e" name="Default" comment="add allure">
       <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -441,7 +441,7 @@
       <workItem from="1561966758272" duration="350000" />
       <workItem from="1599534253551" duration="12277000" />
       <workItem from="1682388954769" duration="88000" />
-      <workItem from="1682389290517" duration="1631000" />
+      <workItem from="1682389290517" duration="1667000" />
     </task>
     <task id="LOCAL-00001" summary="1.重构新增项目，修改项目接口代码，增加详细注释">
       <created>1527915774102</created>
@@ -765,7 +765,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599549999824</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="add allure">
+      <created>1682390948771</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1682390948771</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -806,7 +813,8 @@
     <MESSAGE value="钉钉登录，修改事务失败的bug" />
     <MESSAGE value="js丢失" />
     <MESSAGE value="docker" />
-    <option name="LAST_COMMIT_MESSAGE" value="docker" />
+    <MESSAGE value="add allure" />
+    <option name="LAST_COMMIT_MESSAGE" value="add allure" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
