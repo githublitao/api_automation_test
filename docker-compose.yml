@@ -1,0 +1,116 @@
+version: '3'
+services:
+
+  api_automation_test:
+    build: .
+    container_name: api_automation_test
+    working_dir: /api_automation_test
+    restart: always
+    volumes:
+      - .:/api_automation_test
+      - /home/dev/test_platform/static:/static
+      - /home/dev/test_platform/templates:/templates
+      - /home/dev/test_platform/index.html:/index.html
+    depends_on:
+      - redis
+      - rabbitmq
+      - mysql
+    command:
+      - /bin/bash
+      - -c
+      - |
+        uwsgi --ini UwsgiScript/uwsgi.ini
+        supervisord -c supervisord.conf
+        while true; do sleep 1; done
+    expose:
+      - 8000
+      - 8001
+    ports:
+      - 8000:8000
+    links:
+      - mysql
+      - rabbitmq
+      - redis
+    network_mode: bridge
+    logging:
+      options:
+        max-size: "12m"
+        max-file: "5"
+      driver: json-file
+
+
+  redis:
+    image: "redis:alpine"
+    container_name: auto_redis
+    restart: always
+    user: root
+    expose:
+      - 6379
+    network_mode: bridge
+    logging:
+      options:
+        max-size: "12m"
+        max-file: "5"
+      driver: json-file
+
+
+  nginx:
+    build: nginx/.
+    container_name: auto_nginx
+    working_dir: /etc/nginx
+    ports:
+      - 5555:5555
+    restart: always
+    volumes:
+      - .:/var/lib/test/api_automation_test
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    network_mode: bridge
+    depends_on:
+      - api_automation_test
+    links:
+      - api_automation_test
+    logging:
+      options:
+        max-size: "12m"
+        max-file: "5"
+      driver: json-file
+
+
+  rabbitmq:
+    image: rabbitmq
+    container_name: auto_mq
+    restart: always
+    user: root
+    expose:
+      - 5672
+    network_mode: bridge
+    logging:
+      options:
+        max-size: "12m"
+        max-file: "5"
+      driver: json-file
+
+  mysql:
+    image: mysql:5.7
+    container_name: auto_mysql
+    expose:
+      - 3306
+    ports:
+    - 3307:3306
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_ROOT_HOST=%
+    volumes:
+      - ./mysql/my.cnf:/etc/my.cnf
+      - ./mysql:/docker-entrypoint-initdb.d/
+      - /home/dev/test_platform/datadir:/var/lib/mysql
+    network_mode: bridge
+    logging:
+      options:
+        max-size: "12m"
+        max-file: "5"
+      driver: json-file
+
+
+
