@@ -1,0 +1,40 @@
+stages:
+  - lint
+  - check-release
+  - publish
+
+before_script:
+  - nvm use --lts || nvm i --lts
+  - cd frontend
+  - ci-npm-cache yarn install
+
+lint:
+  stage: lint
+  except:
+    - master
+    - dev
+    - pub
+    - /^v.+$/
+  script:
+    - yarn run lint
+
+check-release:
+  before_script:
+    - echo 'instead of global script'
+  stage: check-release
+  only:
+    - /^v\d{1,2}\.\d{1,2}\.\d{1,2}$/
+  tags:
+    - rd-172.20.5.53-php
+  script:
+    - check-release
+
+publish:
+  stage: publish
+  only:
+    - master
+    - dev
+    - pub
+    - /^v.+$/
+  script:
+    - cd ..
